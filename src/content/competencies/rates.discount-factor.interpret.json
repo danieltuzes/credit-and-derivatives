@@ -1,0 +1,17 @@
+{
+  "id": "rates.discount-factor.interpret",
+  "title": "Interpret a discount factor",
+  "domain": "rates",
+  "facet": "interpretation",
+  "outcome": "Explain a discount factor as today's value of one unit paid at a future date.",
+  "prerequisites": [],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A discount factor is itself an interest rate or a payment probability."
+  ],
+  "editorialStatus": "draft"
+}

@@ -1,0 +1,18 @@
+{
+  "id": "bonds.price-from-yield.calculate",
+  "title": "Price a fixed-coupon bond from yield",
+  "domain": "bonds",
+  "facet": "calculation",
+  "outcome": "Price a simplified fixed-coupon bond by discounting each promised cash flow at a flat yield.",
+  "prerequisites": [
+    "bonds.fixed-cashflows.identify",
+    "finance.present-value.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": ["Yield is a cash flow paid by the issuer."],
+  "editorialStatus": "draft"
+}

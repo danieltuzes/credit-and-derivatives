@@ -1,0 +1,17 @@
+{
+  "id": "finance.present-value.calculate",
+  "title": "Calculate present value",
+  "domain": "finance",
+  "facet": "calculation",
+  "outcome": "Discount and add dated deterministic cash flows to calculate present value.",
+  "prerequisites": ["rates.discount-factor.calculate"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Cash flows paid at different dates can be added before discounting."
+  ],
+  "editorialStatus": "draft"
+}

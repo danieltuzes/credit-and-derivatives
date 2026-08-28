@@ -1,0 +1,82 @@
+@import 'katex/dist/katex.min.css';
+
+:root {
+  --sl-color-accent-low: #132f2a;
+  --sl-color-accent: #31b48d;
+  --sl-color-accent-high: #b8f2df;
+  --sl-content-width: 52rem;
+}
+
+:root[data-theme='light'] {
+  --sl-color-accent-low: #d9f4e9;
+  --sl-color-accent: #08775b;
+  --sl-color-accent-high: #123c32;
+}
+
+.lab-shell {
+  margin-block: 1.5rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.75rem;
+  background: var(--sl-color-gray-7);
+}
+
+.lab-shell label,
+.lab-shell output {
+  font-variant-numeric: tabular-nums;
+}
+
+.lab-shell input,
+.lab-shell select {
+  font: inherit;
+}
+
+.lab-shell input[type='number'],
+.lab-shell select {
+  min-height: 2.5rem;
+  padding-inline: 0.5rem;
+  color: var(--sl-color-text);
+  border: 1px solid var(--sl-color-gray-4);
+  border-radius: 0.35rem;
+  background: var(--sl-color-bg);
+}
+
+.lab-shell :focus-visible {
+  outline: 3px solid var(--sl-color-accent);
+  outline-offset: 2px;
+}
+
+.lab-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 1rem;
+}
+
+.lab-control {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.lab-result {
+  margin-block: 1.25rem;
+  padding: 1rem;
+  border-left: 0.3rem solid var(--sl-color-accent);
+  background: var(--sl-color-bg);
+}
+
+.lab-chart {
+  overflow-x: auto;
+  min-height: 18rem;
+}
+
+.lab-chart svg {
+  max-width: 100%;
+  height: auto;
+  color: var(--sl-color-text);
+  background: var(--sl-color-bg);
+}
+
+.lab-data-table {
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}

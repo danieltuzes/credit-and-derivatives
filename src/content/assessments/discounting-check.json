@@ -1,0 +1,77 @@
+{
+  "id": "discounting-check",
+  "title": "Discounting check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "df-meaning-direct",
+      "type": "single-choice",
+      "competencyId": "rates.discount-factor.interpret",
+      "evidenceKind": "direct",
+      "prompt": "If D(0,2) = 0.94, what does 0.94 mean?",
+      "options": [
+        {
+          "id": "today-value",
+          "label": "The value today of one unit paid in two years"
+        },
+        { "id": "interest-rate", "label": "A 94% annual interest rate" },
+        {
+          "id": "payment-probability",
+          "label": "The probability that payment occurs"
+        }
+      ],
+      "correctOptionId": "today-value",
+      "explanation": "A discount factor converts a future unit into today's value; it is neither an interest rate nor a survival probability."
+    },
+    {
+      "id": "df-meaning-transfer",
+      "type": "single-choice",
+      "competencyId": "rates.discount-factor.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "For the same positive future cash flow, which discount factor gives the lower present value?",
+      "options": [
+        { "id": "factor-091", "label": "0.91" },
+        { "id": "factor-097", "label": "0.97" },
+        { "id": "same-value", "label": "They give the same value" }
+      ],
+      "correctOptionId": "factor-091",
+      "explanation": "Present value is the cash flow multiplied by the discount factor, so the smaller positive factor produces the smaller value."
+    },
+    {
+      "id": "df-calc-direct",
+      "type": "numeric",
+      "competencyId": "rates.discount-factor.calculate",
+      "evidenceKind": "direct",
+      "prompt": "Calculate the two-year discount factor at 5% with annual compounding.",
+      "answer": { "value": 0.9070294784580498, "tolerance": 0.000001 },
+      "explanation": "D(0,2) = 1 / 1.05^2."
+    },
+    {
+      "id": "df-calc-transfer",
+      "type": "numeric",
+      "competencyId": "rates.discount-factor.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "Calculate the three-year discount factor at 2% with annual compounding.",
+      "answer": { "value": 0.9423223345470444, "tolerance": 0.000001 },
+      "explanation": "D(0,3) = 1 / 1.02^3."
+    },
+    {
+      "id": "pv-direct",
+      "type": "numeric",
+      "competencyId": "finance.present-value.calculate",
+      "evidenceKind": "direct",
+      "prompt": "A certain 1,000 payment has a discount factor of 0.9070294785. What is its present value?",
+      "answer": { "value": 907.0294785, "tolerance": 0.01 },
+      "explanation": "Multiply the future cash flow by its discount factor."
+    },
+    {
+      "id": "pv-transfer",
+      "type": "numeric",
+      "competencyId": "finance.present-value.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A 100 payment has discount factor 0.97 and a second 100 payment has discount factor 0.93. What is their total present value?",
+      "answer": { "value": 190, "tolerance": 0.01 },
+      "explanation": "Discount each dated payment and then add: 100 × 0.97 + 100 × 0.93 = 190."
+    }
+  ]
+}

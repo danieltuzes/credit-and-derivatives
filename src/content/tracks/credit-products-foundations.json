@@ -1,0 +1,13 @@
+{
+  "id": "credit-products-foundations",
+  "title": "Credit products foundations",
+  "description": "A first path from discounting to bond pricing, later extended to credit risk and derivatives.",
+  "audience": "Learners comfortable with basic algebra, exponents, probability, and descriptive statistics.",
+  "entryAssumptions": [
+    "Basic algebra",
+    "Percentages and decimal notation",
+    "Integer exponents"
+  ],
+  "lessons": ["foundations.discounting", "bonds.price-and-yield"],
+  "editorialStatus": "draft"
+}

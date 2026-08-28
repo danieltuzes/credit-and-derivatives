@@ -1,0 +1,912 @@
+---
+/**
+ * Usage:
+ *   1. Run `pnpm install && pnpm dev` from the repository root.
+ *   2. Open http://localhost:4321/test_equation/ (MathJax is loaded from its
+ *      pinned CDN URL, so the page needs internet access).
+ *   3. Hover/focus a variable for help. Click/tap or press Enter/Space to pin
+ *      it; press Escape or click elsewhere to close it.
+ *
+ * Adding a new equation group:
+ *   - Give the group a wrapping `<div class="equation-group" data-group="id">`
+ *     containing one or more `<div class="equation" data-mount="...">` mounts
+ *     (each inside its own `.equation-stage`), plus a `<p class="status">`.
+ *   - Call `setupEquationGroup({ id, root, mounts, variableExplanations, status })`
+ *     with that root and those mounts, and add the result to `groups`. All
+ *     mounts in a group share one explanation dictionary and one floating
+ *     panel, and the panel is kept clear of every mount in the group.
+ *
+ * Mapping variables to help:
+ *   - Add an entry to `variableExplanations` using a stable semantic key,
+ *     with a `short` explanation, a `long` explanation, and a `formula`.
+ *     Both `short` and `long` are plain text and may embed LaTeX with
+ *     `\(...\)` (inline) or `\[...\]` (block) — MathJax typesets the whole
+ *     page, so the delimiters just work.
+ *   - Wrap the complete token in the equation's LaTeX with
+ *     `\explain{key}{latex}`. For example, `\explain{cashFlow}{CF_t}` makes
+ *     the base and index one target. Reuse a key to share an explanation —
+ *     within a group, or even across groups that pass the same key.
+ *   - Explanations can overlap: wrapping a sub-expression that already
+ *     contains its own `\explain{...}` calls (e.g.
+ *     `\explain{discountFactor}{(1+\explain{discountRate}{r})^{...}}`)
+ *     gives the compound expression its own hover/click target, while the
+ *     inner symbols keep theirs — whichever is nearest to the pointer wins.
+ *
+ * Semantic keys are intentionally separate from LaTeX. Raw-LaTeX lookup is
+ * brittle because `x_i` and `x_{i}` render identically, and the same symbol
+ * can have different meanings in different equations.
+ */
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Interactive equation</title>
+
+    <script is:inline>
+      window.MathJax = {
+        loader: { load: ['[tex]/html', 'ui/safe'] },
+        tex: {
+          packages: { '[+]': ['html'] },
+          // \data carries the semantic key into MathJax's CommonHTML output.
+          macros: {
+            explain: [String.raw`\data{mjx-var=#1}{#2}`, 2],
+          },
+        },
+        options: {
+          // Custom variable controls replace sub-expression exploration here;
+          // separate role="math" labels below expose each complete equation.
+          menuOptions: {
+            settings: {
+              speech: false,
+              braille: false,
+              assistiveMml: false,
+            },
+          },
+        },
+        startup: {
+          pageReady() {
+            return window.MathJax.startup
+              .defaultPageReady()
+              .then(() => window.enhanceEquation?.())
+              .catch((error) => {
+                window.reportEquationError?.(error);
+                throw error;
+              });
+          },
+        },
+      };
+    </script>
+    <script
+      is:inline
+      defer
+      src="https://cdn.jsdelivr.net/npm/mathjax@4.1.3/tex-chtml.js"
+      onerror="window.reportEquationError?.(new Error('MathJax failed to load.'))"
+    ></script>
+
+    <style is:global>
+      :root {
+        color-scheme: light;
+        font-family: Inter, system-ui, sans-serif;
+        --text: #182033;
+        --muted: #5d687c;
+        --surface: #fff;
+        --soft: #f5f7fb;
+        --border: #dce2ec;
+        --accent: #3157c8;
+        --highlight: #fff0a8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 20rem;
+        min-height: 100vh;
+        margin: 0;
+        color: var(--text);
+        background: var(--soft);
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        min-height: 100vh;
+        padding: clamp(1rem, 5vw, 4rem);
+      }
+
+      .card {
+        width: min(100%, 50rem);
+        padding: clamp(1.25rem, 4vw, 2.4rem);
+        border: 1px solid var(--border);
+        border-radius: 1rem;
+        background: var(--surface);
+        box-shadow: 0 1rem 3rem rgb(24 32 51 / 8%);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(1.4rem, 3vw, 1.9rem);
+      }
+
+      .intro,
+      .status {
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .intro {
+        margin: 0.55rem 0 0;
+      }
+
+      .leg-heading {
+        margin: 1.5rem 0 0;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--muted);
+      }
+
+      .leg-heading + .equation-stage {
+        margin-top: 0.6rem;
+      }
+
+      .equation-stage {
+        margin-top: 1.5rem;
+        overflow-x: auto;
+        padding: clamp(1.4rem, 5vw, 2.25rem);
+        border: 1px solid var(--border);
+        border-radius: 0.75rem;
+        background: var(--soft);
+      }
+
+      .equation {
+        display: grid;
+        min-width: max-content;
+        min-height: 3rem;
+        place-items: center;
+        font-size: clamp(1.2rem, 3.5vw, 1.8rem);
+      }
+
+      .equation mjx-container[display='true'] {
+        margin: 0;
+      }
+
+      .status {
+        min-height: 1.4em;
+        margin: 0.75rem 0 0;
+        font-size: 0.86rem;
+      }
+
+      [data-mjx-var].interactive-variable {
+        border-radius: 0.16em;
+        color: inherit;
+        cursor: help;
+        text-decoration: none;
+      }
+
+      [data-mjx-var].interactive-variable.is-active {
+        background: var(--highlight);
+        box-shadow: 0 0 0 0.14em var(--highlight);
+      }
+
+      [data-mjx-var].interactive-variable.is-focus-anchor {
+        outline: 0.11em solid var(--accent);
+        outline-offset: 0.2em;
+      }
+
+      .explanation {
+        position: fixed;
+        z-index: 10;
+        width: min(23rem, calc(100vw - 1.5rem));
+        max-height: calc(100vh - 1.5rem);
+        overflow: auto;
+        padding: 1rem;
+        border: 1px solid var(--border);
+        border-top: 0.25rem solid var(--accent);
+        border-radius: 0.7rem;
+        background: var(--surface);
+        box-shadow: 0 1rem 2.5rem rgb(24 32 51 / 20%);
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      .explanation-heading {
+        display: flex;
+        align-items: baseline;
+        gap: 0.65rem;
+      }
+
+      .explanation-heading h2 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .symbol {
+        padding: 0.15rem 0.4rem;
+        border-radius: 0.3rem;
+        color: #1d3d9f;
+        background: #edf1ff;
+      }
+
+      .description,
+      .long-description {
+        margin: 0.7rem 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .long-description {
+        margin-top: 0;
+      }
+
+      .long-description mjx-container[display='true'] {
+        margin: 0.5rem 0;
+      }
+
+      .formula {
+        overflow-x: auto;
+        padding: 0.45rem 0.6rem;
+        border-radius: 0.4rem;
+        background: var(--soft);
+        font-size: 0.86rem;
+      }
+
+      .formula mjx-container[display='true'] {
+        margin: 0.2rem 0;
+      }
+
+      .load-error {
+        color: #b42318 !important;
+      }
+
+      .visually-hidden {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        overflow: hidden !important;
+        clip: rect(0 0 0 0) !important;
+        clip-path: inset(50%) !important;
+        white-space: nowrap !important;
+      }
+
+      @media (forced-colors: active) {
+        [data-mjx-var].interactive-variable.is-active {
+          outline: 2px solid Highlight;
+          background: Highlight;
+          color: HighlightText;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <article class="card" aria-labelledby="pv-title">
+        <h1 id="pv-title">Present value of future cash flows</h1>
+        <p class="intro">
+          The equation stays compact until you point to or focus a variable.
+        </p>
+        <div class="equation-group" data-group="pv">
+          <div
+            class="visually-hidden"
+            role="math"
+            aria-label="Present value equals the sum, from period t equals 1 through n, of cash flow at t divided by one plus the per-period discount rate, raised to period t."
+          >
+          </div>
+          <div class="equation-stage">
+            <div
+              class="equation"
+              data-mount="pv"
+              aria-busy="true"
+              aria-describedby="pv-status"
+            >
+            </div>
+          </div>
+        </div>
+        <p class="status" id="pv-status" role="status">Loading MathJax…</p>
+        <noscript>This example needs JavaScript.</noscript>
+      </article>
+
+      <article class="card" aria-labelledby="cds-title">
+        <h1 id="cds-title">Credit default swap: premium vs. protection leg</h1>
+        <p class="intro">
+          A CDS is priced by setting these two legs equal in value. Hover or
+          focus a variable in either equation for help — shared symbols open the
+          same panel.
+        </p>
+        <div class="equation-group" data-group="cds">
+          <div
+            class="visually-hidden"
+            role="math"
+            aria-label="The premium-leg present value equals the spread times notional times the sum of scheduled discounted premiums and an approximation for premium accrued on default."
+          >
+          </div>
+          <h2 class="leg-heading">Premium leg</h2>
+          <div class="equation-stage">
+            <div
+              class="equation"
+              data-mount="cds-premium"
+              aria-busy="true"
+              aria-describedby="cds-status"
+            >
+            </div>
+          </div>
+          <div
+            class="visually-hidden"
+            role="math"
+            aria-label="The protection-leg present value equals loss given default times notional times the sum of discounted default probabilities."
+          >
+          </div>
+          <h2 class="leg-heading">Protection leg</h2>
+          <div class="equation-stage">
+            <div
+              class="equation"
+              data-mount="cds-protection"
+              aria-busy="true"
+              aria-describedby="cds-status"
+            >
+            </div>
+          </div>
+        </div>
+        <p class="status" id="cds-status" role="status">Loading MathJax…</p>
+      </article>
+    </main>
+
+    <script is:inline>
+      (() => {
+        const element = (tag, className, text) => {
+          const node = document.createElement(tag);
+          if (className) node.className = className;
+          if (text) node.textContent = text;
+          return node;
+        };
+
+        // Build with textContent (not innerHTML), then let MathJax typeset once.
+        const buildPanels = (explanation, variableExplanations) => {
+          const panels = new Map();
+          for (const [key, definition] of Object.entries(
+            variableExplanations,
+          )) {
+            if (!/^[a-z][a-zA-Z0-9]*$/.test(key)) {
+              throw new Error(`Unsafe variable key: ${key}`);
+            }
+
+            const panel = element('section', 'explanation-panel');
+            const heading = element('div', 'explanation-heading');
+            const symbol = element(
+              'span',
+              'symbol',
+              `\\(${definition.latex}\\)`,
+            );
+            const title = element('h2', '', definition.title);
+            const shortCopy = element('p', 'description', definition.short);
+            const longCopy = element(
+              'div',
+              'long-description',
+              definition.long,
+            );
+            const formula = element(
+              'div',
+              'formula',
+              `\\[${definition.formula}\\]`,
+            );
+
+            panel.id = `${explanation.id}-${key}`;
+            panel.dataset.key = key;
+            panel.hidden = true;
+            heading.append(symbol, title);
+            panel.append(heading, shortCopy, longCopy, formula);
+            explanation.append(panel);
+            panels.set(key, panel);
+          }
+          return panels;
+        };
+
+        // Wires up one interactive equation group: one or more equation
+        // mounts that share a single explanation dictionary and a single
+        // floating panel. Everything (hit-testing, positioning, keyboard
+        // handling) is scoped to `root`, so independent groups on the same
+        // page never interfere with each other, and the panel stays clear
+        // of every mount in the group, not just the one that was hovered.
+        const setupEquationGroup = ({
+          id,
+          root,
+          mounts,
+          variableExplanations,
+          status,
+        }) => {
+          for (const { el, latex } of mounts) el.textContent = latex;
+
+          const explanation = element('aside', 'explanation');
+          explanation.id = `explanation-${id}`;
+          explanation.setAttribute('aria-label', 'Variable explanation');
+          explanation.setAttribute('aria-live', 'polite');
+          explanation.hidden = true;
+          document.body.append(explanation);
+
+          const panels = buildPanels(explanation, variableExplanations);
+
+          const enhance = () => {
+            const annotatedTokens = Array.from(
+              root.querySelectorAll('[data-mjx-var]'),
+            ).filter((token) => !token.closest('mjx-assistive-mml'));
+            const triggers = annotatedTokens.filter((trigger) => {
+              const known = panels.has(trigger.dataset.mjxVar);
+              if (!known)
+                console.warn('Unknown variable:', trigger.dataset.mjxVar);
+              return known;
+            });
+
+            if (!triggers.length)
+              throw new Error(`No annotated variables found in group "${id}".`);
+
+            let active = null;
+            let pinned = null;
+
+            // Inline MathJax nodes remain pointer targets. A non-visual native
+            // button per concept provides a flat keyboard tree, so overlapping
+            // annotations never produce nested interactive controls. Focusing
+            // a proxy visibly outlines its corresponding equation token.
+            const proxyContainer = element(
+              'div',
+              'variable-proxies visually-hidden',
+            );
+            proxyContainer.setAttribute('role', 'group');
+            proxyContainer.setAttribute(
+              'aria-label',
+              'Equation variable explanations',
+            );
+            const anchorsByKey = new Map();
+            const controls = [];
+
+            for (const trigger of triggers) {
+              trigger.classList.add('interactive-variable');
+              if (!anchorsByKey.has(trigger.dataset.mjxVar)) {
+                anchorsByKey.set(trigger.dataset.mjxVar, trigger);
+              }
+            }
+
+            for (const [key, definition] of Object.entries(
+              variableExplanations,
+            )) {
+              const anchor = anchorsByKey.get(key);
+              if (!anchor) continue;
+              const accessibleTitle =
+                definition.accessibleTitle ?? definition.title;
+              const control = element(
+                'button',
+                'variable-proxy',
+                accessibleTitle,
+              );
+              control.type = 'button';
+              control.dataset.mjxControl = key;
+              control.setAttribute(
+                'aria-label',
+                `${accessibleTitle}. Show explanation.`,
+              );
+              control.setAttribute('aria-describedby', panels.get(key).id);
+              control.setAttribute('aria-controls', explanation.id);
+              control.setAttribute('aria-expanded', 'false');
+              proxyContainer.append(control);
+              controls.push(control);
+            }
+            root.append(proxyContainer);
+
+            const findTrigger = (node) => {
+              if (!(node instanceof Element)) return null;
+              const trigger = node.closest(
+                '[data-mjx-var].interactive-variable',
+              );
+              return trigger && root.contains(trigger) ? trigger : null;
+            };
+
+            const findControl = (node) => {
+              if (!(node instanceof Element)) return null;
+              const control = node.closest('[data-mjx-control]');
+              return control && root.contains(control) ? control : null;
+            };
+
+            const position = () => {
+              if (!active || explanation.hidden) return;
+              const gap = 12;
+              const edge = 12;
+              const stageRect = root.getBoundingClientRect();
+              const anchor = active.getBoundingClientRect();
+
+              // The panel is placed fully above or fully below the whole
+              // group's equation(s) — never beside a symbol within them —
+              // so it can never cover another part of any equation in this
+              // group. Whichever side has more room gets a max-height
+              // clamp (with the panel's own overflow: auto) so this holds
+              // even on very short viewports.
+              const spaceBelow = innerHeight - stageRect.bottom - gap - edge;
+              const spaceAbove = stageRect.top - gap - edge;
+              const onBottom = spaceBelow >= spaceAbove;
+              // Floor at 0, never at some "reasonable minimum" — a floor
+              // above the true available space would let the panel grow
+              // past the room that actually exists and overlap the group.
+              const available = Math.max(onBottom ? spaceBelow : spaceAbove, 0);
+
+              explanation.style.maxHeight = `${available}px`;
+              const popup = explanation.getBoundingClientRect();
+
+              let top = onBottom
+                ? stageRect.bottom + gap
+                : stageRect.top - gap - popup.height;
+              top = Math.max(
+                edge,
+                Math.min(top, innerHeight - popup.height - edge),
+              );
+
+              let left = anchor.left + anchor.width / 2 - popup.width / 2;
+              left = Math.max(
+                edge,
+                Math.min(left, innerWidth - popup.width - edge),
+              );
+
+              explanation.style.top = `${Math.round(top)}px`;
+              explanation.style.left = `${Math.round(left)}px`;
+            };
+
+            const show = (trigger, controller = null) => {
+              active = trigger;
+              const key = trigger.dataset.mjxVar;
+              const keyboardActivation = Boolean(findControl(controller));
+
+              for (const item of triggers) {
+                const isRelated = item.dataset.mjxVar === key;
+                item.classList.toggle('is-active', isRelated);
+                item.classList.toggle(
+                  'is-focus-anchor',
+                  keyboardActivation && item === trigger,
+                );
+              }
+              for (const control of controls) {
+                control.setAttribute(
+                  'aria-expanded',
+                  String(control === controller),
+                );
+              }
+              for (const [panelKey, panel] of panels) {
+                panel.hidden = panelKey !== key;
+              }
+
+              explanation.style.visibility = 'hidden';
+              explanation.hidden = false;
+              position();
+              explanation.style.visibility = 'visible';
+            };
+
+            const close = () => {
+              active = null;
+              explanation.hidden = true;
+              for (const item of triggers) {
+                item.classList.remove('is-active');
+                item.classList.remove('is-focus-anchor');
+              }
+              for (const control of controls) {
+                control.setAttribute('aria-expanded', 'false');
+              }
+            };
+
+            const closeIfIdle = () => {
+              requestAnimationFrame(() => {
+                const focusedControl = findControl(document.activeElement);
+                if (
+                  focusedControl &&
+                  focusedControl.dataset.mjxControl === active?.dataset.mjxVar
+                ) {
+                  return;
+                }
+                if (pinned) {
+                  show(pinned.trigger, pinned.controller);
+                  return;
+                }
+                if (active?.matches(':hover') || explanation.matches(':hover'))
+                  return;
+                close();
+              });
+            };
+
+            const togglePin = (trigger, controller = trigger) => {
+              if (pinned?.controller === controller) {
+                pinned = null;
+                close();
+              } else {
+                pinned = { trigger, controller };
+                show(trigger, controller);
+              }
+            };
+
+            root.addEventListener('pointerover', (event) => {
+              if (event.pointerType === 'touch' || pinned) return;
+              const trigger = findTrigger(event.target);
+              if (trigger && trigger !== findTrigger(event.relatedTarget)) {
+                show(trigger);
+              }
+            });
+
+            root.addEventListener('pointerout', (event) => {
+              if (event.pointerType === 'touch') return;
+              const trigger = findTrigger(event.target);
+              if (!trigger || trigger === findTrigger(event.relatedTarget))
+                return;
+              if (
+                event.relatedTarget instanceof Node &&
+                explanation.contains(event.relatedTarget)
+              ) {
+                return;
+              }
+              closeIfIdle();
+            });
+
+            root.addEventListener(
+              'focusin',
+              (event) => {
+                const control = findControl(event.target);
+                if (!control) return;
+                const trigger = anchorsByKey.get(control.dataset.mjxControl);
+                trigger.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+                show(trigger, control);
+              },
+              true,
+            );
+            root.addEventListener('focusout', closeIfIdle, true);
+
+            root.addEventListener('click', (event) => {
+              const control = findControl(event.target);
+              if (control) {
+                const trigger = anchorsByKey.get(control.dataset.mjxControl);
+                togglePin(trigger, control);
+                return;
+              }
+              const trigger = findTrigger(event.target);
+              if (trigger) {
+                event.preventDefault();
+                togglePin(trigger);
+              }
+            });
+
+            root.addEventListener(
+              'keydown',
+              (event) => {
+                if (event.key === 'Escape' && active) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  pinned = null;
+                  close();
+                }
+              },
+              true,
+            );
+
+            explanation.addEventListener('pointerleave', closeIfIdle);
+            document.addEventListener('pointerdown', (event) => {
+              if (
+                !findTrigger(event.target) &&
+                !findControl(event.target) &&
+                event.target instanceof Node &&
+                !explanation.contains(event.target)
+              ) {
+                pinned = null;
+                close();
+              }
+            });
+            document.addEventListener('keydown', (event) => {
+              if (event.key === 'Escape' && active) {
+                pinned = null;
+                close();
+              }
+            });
+            addEventListener('resize', position, { passive: true });
+            addEventListener('scroll', position, {
+              passive: true,
+              capture: true,
+            });
+
+            for (const { el } of mounts) el.removeAttribute('aria-busy');
+            status.textContent =
+              'Hover a variable, use Tab to focus it, or click/tap to pin it.';
+          };
+
+          return { enhance, mounts, status };
+        };
+
+        // ---------------------------------------------------------------
+        // Group: present value
+        // ---------------------------------------------------------------
+        const presentValueExplanations = {
+          presentValue: {
+            latex: String.raw`PV`,
+            title: 'Present value',
+            short:
+              "Today's value of all future cash flows, once each is discounted back to the valuation date.",
+            long: String.raw`Present value collapses a stream of future payments into a single number you can compare against a price today. Each cash flow \(CF_t\) is shrunk by its own compounding factor before the amounts are added together, so payments further in the future count for less.`,
+            formula: String.raw`PV = \sum_{t=1}^{n}\frac{CF_t}{(1+r)^t}`,
+          },
+          cashFlow: {
+            latex: String.raw`CF_t`,
+            title: String.raw`Cash flow in period \(t\)`,
+            accessibleTitle: 'Cash flow in period t',
+            short: String.raw`The amount received at the end of period \(t\).`,
+            long: String.raw`For a coupon bond, \(CF_t\) is just the coupon \(C_t\) in every period except the last, where the principal \(F\) is repaid alongside it.`,
+            formula: String.raw`CF_t = C_t + \mathbf{1}_{\{t=n\}}F`,
+          },
+          discountRate: {
+            latex: String.raw`r`,
+            title: 'Discount rate per period',
+            short:
+              'The return required for a single period, applied once per compounding period.',
+            long: String.raw`Quoted rates are usually annualized, so this is the per-period slice of the annual yield \(y_{\mathrm{annual}}\) once compounding frequency \(m\) is taken into account. A larger \(r\) discounts future cash flows more aggressively, lowering present value.`,
+            formula: String.raw`r = (1+y_{\mathrm{annual}})^{1/m}-1`,
+          },
+          period: {
+            latex: String.raw`t`,
+            title: 'Period index',
+            short:
+              'Counts periods from the valuation date to a particular cash flow, starting at 1.',
+            long: String.raw`The same symbol \(t\) is reused everywhere in this equation: as the running index inside the sum, and again in the compounding factor's exponent \((1+r)^t\). Every appearance means the same thing.`,
+            formula: String.raw`t \in \{1,2,\ldots,n\}`,
+          },
+          maturity: {
+            latex: String.raw`n`,
+            title: 'Total number of periods',
+            short:
+              'The final period being discounted — how many payments remain.',
+            long: String.raw`For a bond paying \(m\) times per year over \(T\) years, the total number of periods is \(n\); the last cash flow at \(t=n\) usually includes repayment of principal.`,
+            formula: String.raw`n = mT`,
+          },
+          discountFactor: {
+            latex: String.raw`(1+r)^t`,
+            title: 'Compounding factor',
+            short: String.raw`How much \(1\) unit of currency grows to after \(t\) periods of compounding at rate \(r\).`,
+            long: String.raw`Dividing a future cash flow by this factor is what "discounting" means: it undoes \(t\) periods of compounding in one step. Repeated compounding is just this factor multiplied by itself, or written with logarithms: \[ (1+r)^t = e^{\,t\ln(1+r)} \] which is often how it's actually computed in code.`,
+            formula: String.raw`(1+r)^t = \underbrace{(1+r)\times(1+r)\times\cdots\times(1+r)}_{t\text{ times}}`,
+          },
+        };
+
+        const presentValueLatex = String.raw`\[
+          \explain{presentValue}{PV}
+          = \sum_{\explain{period}{t}=1}^{\explain{maturity}{n}}
+          \frac{\explain{cashFlow}{CF_t}}
+          {\explain{discountFactor}{(1 + \explain{discountRate}{r})^{\explain{period}{t}}}}
+        \]`;
+
+        const pvGroup = setupEquationGroup({
+          id: 'pv',
+          root: document.querySelector('.equation-group[data-group="pv"]'),
+          mounts: [
+            {
+              el: document.querySelector('[data-mount="pv"]'),
+              latex: presentValueLatex,
+            },
+          ],
+          variableExplanations: presentValueExplanations,
+          status: document.querySelector('#pv-status'),
+        });
+
+        // ---------------------------------------------------------------
+        // Group: CDS premium leg vs. protection leg
+        // ---------------------------------------------------------------
+        const cdsExplanations = {
+          spread: {
+            latex: String.raw`s`,
+            title: 'CDS spread',
+            short:
+              'The annualized rate, quoted like an interest rate, that the protection buyer pays on the notional.',
+            long: String.raw`Also called the par spread. At inception \(s\) is set so the two legs have equal present value, \(PV_{\text{premium}} = PV_{\text{protection}}\), which is what makes entering the swap free for both sides.`,
+            formula: String.raw`s = \dfrac{PV_{\text{protection}}}{\sum_{i=1}^{n}\Delta t_i\,Q(t_i)\,D(t_i)}`,
+          },
+          notional: {
+            latex: String.raw`N`,
+            title: 'Notional',
+            short:
+              'The reference amount of protection being bought, e.g. $10 million of bonds.',
+            long: String.raw`Both legs scale linearly with \(N\): doubling it doubles the premiums paid and doubles the payout owed on default. It never changes hands itself — only the spread payments and any default payout do.`,
+            formula: String.raw`\text{Premium per period} = s\,N\,\Delta t_i`,
+          },
+          accrualFraction: {
+            latex: String.raw`\Delta t_i`,
+            title: 'Accrual period',
+            short:
+              'The year fraction covered by payment period i — roughly 0.25 for a quarterly coupon.',
+            long: String.raw`Computed from a day-count convention (commonly Actual/360 for CDS) applied to the dates bounding period \(i\). It converts the annualized spread \(s\) into an actual cash amount for that period.`,
+            formula: String.raw`\Delta t_i = t_i - t_{i-1}\ \text{(year fraction)}`,
+          },
+          survivalProb: {
+            latex: String.raw`Q(t)`,
+            title: 'Survival probability',
+            short: String.raw`The probability the reference entity has not defaulted by time \(t\), under the pricing (risk-neutral) measure.`,
+            long: String.raw`\(Q(t)\) falls from \(Q(0)=1\) as default risk accumulates, and is typically backed out from quoted CDS spreads rather than assumed directly: \[ Q(t) = \exp\!\left(-\int_0^t h(u)\,du\right) \] where \(h\) is the hazard rate. The gap \(Q(t_{i-1})-Q(t_i)\) is the probability of defaulting inside period \(i\) — used by the protection leg, and by the premium leg's accrual term.`,
+            formula: String.raw`Q(t) = e^{-\lambda t}\ \text{for a constant hazard rate }\lambda`,
+          },
+          discFactor: {
+            latex: String.raw`D(t)`,
+            title: 'Discount factor',
+            short: String.raw`Converts a cash amount at time \(t\) into present value, off the risk-free curve.`,
+            long: String.raw`Unlike \(Q(t)\), this has nothing to do with default risk — it's the same time-value-of-money adjustment used for any future cash flow, credit-risky or not.`,
+            formula: String.raw`D(t) = e^{-rt}`,
+          },
+          recoveryRate: {
+            latex: String.raw`R`,
+            title: 'Recovery rate',
+            short:
+              'The fraction of notional expected back if default happens — commonly assumed to be 40% for senior unsecured debt.',
+            long: String.raw`Usually fixed by market convention rather than estimated per trade, since the quoted spread is far more sensitive to \(Q(t)\) than to \(R\).`,
+            formula: String.raw`0 \le R \le 1`,
+          },
+          lossGivenDefault: {
+            latex: String.raw`(1-R)`,
+            title: 'Loss given default',
+            short: String.raw`The fraction of notional actually lost on default — everything the recovery rate \(R\) doesn't give back.`,
+            long: String.raw`This is the protection seller's payout rate: on default they pay \((1-R)N\) to make the buyer whole, since the buyer is assumed to recover \(R\) on the dollar some other way (e.g. delivering a defaulted bond worth \(R\)).`,
+            formula: String.raw`\text{Payout} = (1-R)\,N`,
+          },
+        };
+
+        const premiumLegLatex = String.raw`\[
+          PV_{\text{premium}} = \explain{spread}{s}\,\explain{notional}{N}
+          \left[
+            \sum_{i=1}^{n} \explain{accrualFraction}{\Delta t_i}\,
+            \explain{survivalProb}{Q(t_i)}\,
+            \explain{discFactor}{D(t_i)}
+            \;+\;
+            \sum_{i=1}^{n} \frac{\explain{accrualFraction}{\Delta t_i}}{2}
+            \big(\explain{survivalProb}{Q(t_{i-1})}-\explain{survivalProb}{Q(t_i)}\big)
+            \explain{discFactor}{D(t_i)}
+          \right]
+        \]`;
+
+        const protectionLegLatex = String.raw`\[
+          PV_{\text{protection}} = \explain{lossGivenDefault}{(1-\explain{recoveryRate}{R})}\,
+          \explain{notional}{N}
+          \sum_{i=1}^{n}
+          \big(\explain{survivalProb}{Q(t_{i-1})} - \explain{survivalProb}{Q(t_i)}\big)\,
+          \explain{discFactor}{D(t_i)}
+        \]`;
+
+        const cdsGroup = setupEquationGroup({
+          id: 'cds',
+          root: document.querySelector('.equation-group[data-group="cds"]'),
+          mounts: [
+            {
+              el: document.querySelector('[data-mount="cds-premium"]'),
+              latex: premiumLegLatex,
+            },
+            {
+              el: document.querySelector('[data-mount="cds-protection"]'),
+              latex: protectionLegLatex,
+            },
+          ],
+          variableExplanations: cdsExplanations,
+          status: document.querySelector('#cds-status'),
+        });
+
+        const groups = [pvGroup, cdsGroup];
+
+        window.reportEquationError = (error) => {
+          for (const group of groups) {
+            for (const { el } of group.mounts) el.removeAttribute('aria-busy');
+            group.status.textContent =
+              'The equation could not be rendered. Check the network connection.';
+            group.status.classList.add('load-error');
+          }
+          console.error(error);
+        };
+
+        window.enhanceEquation = () => {
+          for (const group of groups) group.enhance();
+        };
+      })();
+    </script>
+  </body>
+</html>

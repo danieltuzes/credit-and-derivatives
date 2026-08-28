@@ -1,0 +1,17 @@
+{
+  "id": "bonds.price-yield-direction.explain",
+  "title": "Explain the price-yield direction",
+  "domain": "bonds",
+  "facet": "knowledge",
+  "outcome": "Explain why the price of positive fixed cash flows moves inversely to yield.",
+  "prerequisites": ["bonds.price-from-yield.calculate"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A higher yield increases both the discount rate and today's price."
+  ],
+  "editorialStatus": "draft"
+}

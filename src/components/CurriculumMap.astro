@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+
+const competencies = (await getCollection('competencies')).sort((left, right) =>
+  left.data.id.localeCompare(right.data.id),
+);
+---
+
+<ol class="competency-map">
+  {
+    competencies.map(({ data }) => (
+      <li>
+        <strong>{data.title}</strong>
+        <br />
+        <code>{data.id}</code>
+        <p>{data.outcome}</p>
+        {data.prerequisites.length > 0 ? (
+          <small>
+            Requires: <code>{data.prerequisites.join(', ')}</code>
+          </small>
+        ) : (
+          <small>Entry competency: no declared prerequisites.</small>
+        )}
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .competency-map {
+    display: grid;
+    gap: 1rem;
+    padding-inline-start: 1.5rem;
+  }
+
+  .competency-map li {
+    padding: 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+  }
+
+  .competency-map p {
+    margin-block: 0.4rem;
+  }
+</style>

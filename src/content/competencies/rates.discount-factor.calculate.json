@@ -1,0 +1,17 @@
+{
+  "id": "rates.discount-factor.calculate",
+  "title": "Calculate a discount factor",
+  "domain": "rates",
+  "facet": "calculation",
+  "outcome": "Calculate D(0,t) = (1+y)^(-t) under annual compounding.",
+  "prerequisites": ["rates.discount-factor.interpret"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A quoted annual rate can be multiplied by time in every compounding convention."
+  ],
+  "editorialStatus": "draft"
+}

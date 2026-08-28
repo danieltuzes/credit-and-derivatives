@@ -1,0 +1,85 @@
+---
+title: Discounting and present value
+description: Turn future deterministic cash flows into comparable values today.
+lessonId: foundations.discounting
+editorialStatus: draft
+riskTier: 2
+estimatedMinutes: 20
+requires: []
+teaches:
+  - rates.discount-factor.interpret
+  - rates.discount-factor.calculate
+  - finance.present-value.calculate
+assessments:
+  - discounting-check
+sources:
+  - tuckman-serrat-fixed-income
+assumptions:
+  - Annual compounding
+  - Deterministic cash flows
+  - Integer-year payment dates
+aiAssisted: true
+sidebar:
+  order: 1
+---
+
+import DiscountingExplorer from '../../../components/labs/DiscountingExplorer';
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- explain what a discount factor means;
+- calculate a discount factor under annual compounding;
+- discount and add deterministic cash flows.
+
+## One future dollar is not one dollar today
+
+A discount factor, $D(0,t)$, converts one unit paid at future time $t$ into its
+value today. Under a deliberately simple annual-compounding model,
+
+$$
+D(0,t)=\frac{1}{(1+y)^t}.
+$$
+
+For a future cash flow $CF_t$,
+
+$$
+PV(CF_t)=CF_tD(0,t).
+$$
+
+The rate $y$ and time $t$ must use compatible units and conventions. A discount
+factor is not itself an interest rate, and in this deterministic lesson it is
+not a probability of payment.
+
+<DiscountingExplorer client:visible />
+
+## Worked example
+
+At 5% for two years,
+
+$$
+D(0,2)=\frac{1}{1.05^2}\approx0.907029.
+$$
+
+A certain USD 1,000 payment therefore has present value of approximately USD
+907.03. For several dated payments, discount each one to today before adding
+them.
+
+## Check your understanding
+
+The assessment record `discounting-check` contains direct and transfer items
+for all three competencies. In this first skeleton, open
+`src/content/assessments/discounting-check.json` to inspect the evidence model;
+an assessment renderer is a deliberate next vertical slice.
+
+## Model boundary
+
+This example ignores term structures, day counts, calendars, uncertain cash
+flows, default, recovery, liquidity, and funding. Those are additions to the
+model, not details to hide inside a default.
+
+## Source note
+
+The lesson currently cites a draft bibliography record. An editor must verify
+the exact chapter or section before changing the lesson to `reviewed`.

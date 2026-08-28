@@ -1,0 +1,147 @@
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
+import { docsLoader } from '@astrojs/starlight/loaders';
+import { docsSchema } from '@astrojs/starlight/schema';
+
+const editorialStatus = z.enum(['draft', 'in-review', 'reviewed']);
+const id = z.string().regex(/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/);
+
+const docs = defineCollection({
+  loader: docsLoader(),
+  schema: docsSchema({
+    extend: z.object({
+      lessonId: id.optional(),
+      editorialStatus: editorialStatus.default('draft'),
+      riskTier: z.number().int().min(1).max(3).optional(),
+      estimatedMinutes: z.number().int().positive().optional(),
+      requires: z.array(id).default([]),
+      teaches: z.array(id).default([]),
+      assessments: z.array(id).default([]),
+      sources: z.array(id).default([]),
+      assumptions: z.array(z.string().min(1)).default([]),
+      aiAssisted: z.boolean().default(false),
+      lastReviewed: z.coerce.date().optional(),
+    }),
+  }),
+});
+
+const competencies = defineCollection({
+  loader: glob({
+    pattern: '**/*.json',
+    base: './src/content/competencies',
+  }),
+  schema: z.object({
+    id,
+    title: z.string().min(1),
+    domain: id,
+    facet: z.enum([
+      'knowledge',
+      'calculation',
+      'interpretation',
+      'convention',
+      'risk',
+    ]),
+    outcome: z.string().min(1),
+    prerequisites: z.array(id).default([]),
+    evidence: z.object({
+      minimumIndependentItems: z.number().int().min(1),
+      requiresTransfer: z.boolean(),
+      requiresUnassistedPass: z.boolean(),
+    }),
+    misconceptions: z.array(z.string().min(1)).default([]),
+    editorialStatus,
+  }),
+});
+
+const assessmentItemBase = z.object({
+  id,
+  competencyId: id,
+  evidenceKind: z.enum(['direct', 'transfer']),
+  prompt: z.string().min(1),
+  explanation: z.string().min(1),
+});
+
+const assessments = defineCollection({
+  loader: glob({
+    pattern: '**/*.json',
+    base: './src/content/assessments',
+  }),
+  schema: z.object({
+    id,
+    title: z.string().min(1),
+    editorialStatus,
+    items: z
+      .array(
+        z.discriminatedUnion('type', [
+          assessmentItemBase.extend({
+            type: z.literal('numeric'),
+            answer: z.object({
+              value: z.number(),
+              tolerance: z.number().positive(),
+            }),
+          }),
+          assessmentItemBase.extend({
+            type: z.literal('single-choice'),
+            options: z
+              .array(
+                z.object({
+                  id,
+                  label: z.string().min(1),
+                }),
+              )
+              .min(2),
+            correctOptionId: id,
+          }),
+        ]),
+      )
+      .min(1),
+  }),
+});
+
+const tracks = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/tracks' }),
+  schema: z.object({
+    id,
+    title: z.string().min(1),
+    description: z.string().min(1),
+    audience: z.string().min(1),
+    entryAssumptions: z.array(z.string().min(1)),
+    lessons: z.array(id).min(1),
+    editorialStatus,
+  }),
+});
+
+const sources = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/sources' }),
+  schema: z.object({
+    id,
+    type: z.enum([
+      'primary',
+      'official-guidance',
+      'paper',
+      'book',
+      'secondary',
+    ]),
+    title: z.string().min(1),
+    authors: z.array(z.string().min(1)).optional(),
+    organization: z.string().min(1).optional(),
+    edition: z.string().optional(),
+    publisher: z.string().optional(),
+    year: z.number().int().optional(),
+    isbn: z.string().optional(),
+    url: z.url().optional(),
+    locator: z.string().optional(),
+    accessed: z.coerce.date().optional(),
+    licenseNotes: z.string().optional(),
+    editorialStatus,
+  }),
+});
+
+export const collections = {
+  docs,
+  competencies,
+  assessments,
+  tracks,
+  sources,
+};
