@@ -1,0 +1,28 @@
+---
+key: maturity-time
+notation: 'T'
+title: Maturity time
+aliases:
+  - term to maturity
+domain: bonds
+units: years from the valuation date in the simplified model
+perspective: Final scheduled time at which principal is redeemed.
+sources:
+  - tuckman-serrat-fixed-income
+seeAlso:
+  - payment-time
+  - bond-payment-frequency
+  - face-value
+alignment:
+  kind: competency
+  introducedByCompetency: bonds.fixed-rate-contract.interpret
+  introducedInLesson: bonds.fixed-rate-contract-and-cash-flows
+editorialStatus: draft
+aiAssisted: true
+---
+
+The maturity time $T$ is the final scheduled payment time of the simplified
+bond, measured from \term{valuation-time}.
+
+With a regular \term{bond-payment-frequency} $m_B$, the toy model has
+$n=m_BT$ payment periods and requires that product to be a whole number.

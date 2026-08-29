@@ -7,6 +7,38 @@ import { docsSchema } from '@astrojs/starlight/schema';
 const editorialStatus = z.enum(['draft', 'in-review', 'reviewed']);
 const id = z.string().regex(/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/);
 
+const notationAlignment = z.discriminatedUnion('kind', [
+  z.object({
+    kind: z.literal('competency'),
+    introducedByCompetency: id,
+    introducedInLesson: id,
+  }),
+  z.object({
+    kind: z.literal('general'),
+    rationale: z.string().min(1),
+  }),
+]);
+
+const localNotationDefinition = z.object({
+  key: id,
+  notation: z.string().min(1),
+  title: z.string().min(1),
+  summary: z.string().min(1),
+  details: z.string().min(1).optional(),
+  formula: z.string().min(1).optional(),
+  units: z.string().min(1).optional(),
+  sources: z.array(id).default([]),
+  seeAlso: z.array(id).default([]),
+  alignment: notationAlignment,
+});
+
+const lessonNotation = z
+  .object({
+    uses: z.array(id).default([]),
+    local: z.array(localNotationDefinition).default([]),
+  })
+  .default({ uses: [], local: [] });
+
 const docs = defineCollection({
   loader: docsLoader(),
   schema: docsSchema({
@@ -20,6 +52,7 @@ const docs = defineCollection({
       assessments: z.array(id).default([]),
       sources: z.array(id).default([]),
       assumptions: z.array(z.string().min(1)).default([]),
+      notation: lessonNotation,
       aiAssisted: z.boolean().default(false),
       lastReviewed: z.coerce.date().optional(),
     }),
@@ -138,10 +171,29 @@ const sources = defineCollection({
   }),
 });
 
+const notation = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/notation' }),
+  schema: z.object({
+    key: id,
+    notation: z.string().min(1),
+    title: z.string().min(1),
+    aliases: z.array(z.string().min(1)).default([]),
+    domain: id,
+    units: z.string().min(1).optional(),
+    perspective: z.string().min(1).optional(),
+    sources: z.array(id).default([]),
+    seeAlso: z.array(id).default([]),
+    alignment: notationAlignment,
+    editorialStatus,
+    aiAssisted: z.boolean().default(false),
+  }),
+});
+
 export const collections = {
   docs,
   competencies,
   assessments,
   tracks,
   sources,
+  notation,
 };

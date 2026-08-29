@@ -1,0 +1,146 @@
+---
+title: Discount factors
+description: Convert one deterministic future unit into its value at time zero.
+lessonId: foundations.discount-factors
+editorialStatus: draft
+riskTier: 2
+estimatedMinutes: 25
+requires:
+  - rates.periodic-rate.calculate
+teaches:
+  - rates.discount-factor.interpret
+  - rates.discount-factor.calculate
+assessments:
+  - discount-factor-check
+sources:
+  - tuckman-serrat-fixed-income
+assumptions:
+  - Deterministic payment of one unit
+  - Non-negative nominal annual rate
+  - Equal compounding periods and exact model-year time
+  - Every example horizon is grid-aligned so m times t is a non-negative integer
+notation:
+  uses:
+    - valuation-time
+    - payment-time
+    - nominal-annual-rate
+    - compounding-frequency
+    - periodic-rate
+    - accumulation-factor
+    - discount-factor
+  local:
+    - key: discounted-unit-value
+      notation: 'V_0(1_t)'
+      title: Time-zero value of one future unit
+      summary: A local reading aid that makes the units behind D(0,t) explicit.
+      details: It equals one future currency unit multiplied by the discount factor for its payment time.
+      formula: 'V_0(1_t)=1_tD(0,t)'
+      seeAlso:
+        - discount-factor
+        - payment-time
+      alignment:
+        kind: competency
+        introducedByCompetency: rates.discount-factor.interpret
+        introducedInLesson: foundations.discount-factors
+aiAssisted: true
+sidebar:
+  order: 3
+---
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- explain the units and meaning of a discount factor;
+- calculate one from a stated nominal rate, frequency, and time;
+- distinguish discounting from compounding and from payment probability.
+
+## Undo accumulation
+
+An \term\{accumulation-factor\} grows a time-zero unit forward. A
+\term\{discount-factor\} reverses that operation:
+
+$$
+\explain{discount-factor}{D(0,t)}
+=
+\frac{1}{\explain{accumulation-factor}{A(0,t)}}
+=
+\left(
+  1+
+  \explain{periodic-rate}{r_m}
+\right)^{
+  -\explain{compounding-frequency}{m}
+  \explain{payment-time}{t}
+}.
+$$
+
+The semantic annotation covers both the full factor and its ingredients. A
+reader can ask about the whole object or the nearest nested symbol.
+
+## Meaning before arithmetic
+
+If $D(0,2)=0.94$, then one deterministic unit paid at $t=2$ years has value
+0.94 units at \term\{valuation-time\}. In the local notation,
+
+$$
+\explain{discounted-unit-value}{V_0(1_2)}
+=1\times\explain{discount-factor}{D(0,2)}
+=0.94.
+$$
+
+The number 0.94 is not a 94% annual interest rate and is not a 94% probability
+that payment occurs.
+
+## Example 1: annual compounding
+
+At a 5% \term\{nominal-annual-rate\} with $m=1$ and $t=2$,
+
+$$
+D(0,2)
+=\left(1+\frac{0.05}{1}\right)^{-1\times2}
+=\frac{1}{1.05^2}
+\approx0.907029.
+$$
+
+## Example 2: semiannual compounding
+
+At a 6% nominal annual rate compounded twice per year for 1.5 years,
+
+$$
+D(0,1.5)
+=\left(1+\frac{0.06}{2}\right)^{-2(1.5)}
+=\frac{1}{1.03^3}
+\approx0.915142.
+$$
+
+The time horizon contains three compounding periods; using exponent 1.5 would
+silently mix years with half-year periods.
+
+## Example 3: read a small curve
+
+Under the same 6% nominal semiannual model:
+
+| Time $t$, years | Periods $mt$ | Discount factor $D(0,t)$ |
+| --------------: | -----------: | -----------------------: |
+|             0.0 |            0 |                 1.000000 |
+|             0.5 |            1 |                 0.970874 |
+|             1.0 |            2 |                 0.942596 |
+|             1.5 |            3 |                 0.915142 |
+
+With the stated non-negative rate, later deterministic units receive
+non-increasing discount factors. They are strictly smaller when the rate is
+strictly positive.
+
+## Check your understanding
+
+The assessment set **discount-factor-check** tests meaning, annual calculation,
+and a semiannual transfer case.
+
+## Model boundary and review note
+
+The rate is flat across time and cash flows are deterministic. The page does
+not yet teach spot curves, interpolation, day counts, default, recovery,
+liquidity, or funding.
+
+The source record remains draft and its exact locator requires human
+verification.

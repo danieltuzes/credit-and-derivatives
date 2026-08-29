@@ -1,0 +1,136 @@
+---
+title: Bond price from discount factors
+description: Apply one discount factor to each promised payment before adding.
+lessonId: bonds.price-from-discount-factors
+editorialStatus: draft
+riskTier: 2
+estimatedMinutes: 25
+requires:
+  - finance.present-value.calculate
+  - bonds.fixed-cashflows.identify
+teaches:
+  - bonds.price-from-discount-factors.calculate
+assessments:
+  - bond-discount-factor-price-check
+sources:
+  - tuckman-serrat-fixed-income
+assumptions:
+  - Promised fixed cash flows from the preceding toy contract
+  - One supplied deterministic discount factor for each payment time
+  - Settlement on a coupon date and no accrued interest
+  - No default, liquidity, tax, funding, or embedded option
+notation:
+  uses:
+    - valuation-time
+    - payment-time
+    - present-value
+    - discount-factor
+    - bond-cash-flow
+    - bond-price
+  local:
+    - key: bond-price-payment-index
+      notation: k
+      title: Bond-pricing payment index
+      summary: Selects one promised payment and its matching discount factor.
+      details: Matching by k prevents a cash flow from being discounted with a factor for another time.
+      formula: 'k \in \{1,\ldots,n\}'
+      seeAlso:
+        - bond-cash-flow
+        - discount-factor
+      alignment:
+        kind: general
+        rationale: Finite summation indexing is part of the track's algebra assumptions.
+aiAssisted: true
+sidebar:
+  order: 2
+---
+
+## What you will be able to do
+
+After this lesson, you should be able to calculate a toy bond's price from its
+promised cash-flow schedule and supplied discount factors.
+
+## Bond pricing is a present-value application
+
+The \term\{bond-price\} is the \term\{present-value\} at
+\term\{valuation-time\}:
+
+$$
+\explain{bond-price}{P_0}
+=
+\sum_{\explain{bond-price-payment-index}{k}=1}^{n}
+\explain{bond-cash-flow}{
+  CF_{\explain{bond-price-payment-index}{k}}^{\mathrm{bond}}
+}
+\explain{discount-factor}{
+  D(0,\explain{payment-time}{t_k})
+}.
+$$
+
+The semantic key for price is not overloaded with clean price, quoted price,
+or a probability. Those concepts are outside this slice.
+
+## Example 1: two supplied factors
+
+The annual-coupon bond from the preceding lesson pays USD 50 after one year and
+USD 1,050 after two years. Suppose the matching factors are 0.96 and 0.91.
+
+| Payment index $k$ | Cash flow, USD | Discount factor | Present value, USD |
+| ----------------: | -------------: | --------------: | -----------------: |
+|                 1 |             50 |            0.96 |              48.00 |
+|                 2 |          1,050 |            0.91 |             955.50 |
+
+Therefore,
+
+$$
+P_0=50(0.96)+1050(0.91)=\text{USD }1{,}003.50.
+$$
+
+The price is above USD 1,000 because this particular pair of supplied factors
+makes the promised payments worth more than face value. No one-number yield has
+been introduced yet.
+
+## Example 2: unfamiliar schedule
+
+Consider payments of USD 20 at 0.5 years, USD 20 at 1.0 year, and USD 1,020 at
+1.5 years with discount factors 0.98, 0.95, and 0.92:
+
+$$
+P_0
+=20(0.98)+20(0.95)+1020(0.92)
+=19.60+19.00+938.40
+=\text{USD }977.00.
+$$
+
+## Example 3: a zero-coupon boundary
+
+If every coupon is zero, only face value at maturity remains:
+
+$$
+P_0=F D(0,T).
+$$
+
+This is the same pricing rule, not a separate exception.
+
+## Error pattern: discount after adding
+
+The expression
+
+$$
+\left(\sum_k CF_k^{\mathrm{bond}}\right)D
+$$
+
+is generally incomplete because payments at different times require different
+factors. It is valid only if the same factor genuinely applies to every
+included amount.
+
+## Check your understanding
+
+The assessment set **bond-discount-factor-price-check** includes one coupon-bond
+calculation and one transfer schedule.
+
+## Model boundary and review note
+
+Discount factors are supplied, not calibrated. Credit risk is absent even
+though the broader project concerns credit products. The registered source
+locator remains draft and needs human verification.

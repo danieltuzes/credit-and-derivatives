@@ -1,6 +1,6 @@
 {
-  "id": "discounting-check",
-  "title": "Discounting check",
+  "id": "discount-factor-check",
+  "title": "Discount factors check",
   "editorialStatus": "draft",
   "items": [
     {
@@ -42,7 +42,7 @@
       "type": "numeric",
       "competencyId": "rates.discount-factor.calculate",
       "evidenceKind": "direct",
-      "prompt": "Calculate the two-year discount factor at 5% with annual compounding.",
+      "prompt": "Calculate the dimensionless two-year discount factor from a 5% nominal annual rate compounded annually.",
       "answer": { "value": 0.9070294784580498, "tolerance": 0.000001 },
       "explanation": "D(0,2) = 1 / 1.05^2."
     },
@@ -51,27 +51,9 @@
       "type": "numeric",
       "competencyId": "rates.discount-factor.calculate",
       "evidenceKind": "transfer",
-      "prompt": "Calculate the three-year discount factor at 2% with annual compounding.",
-      "answer": { "value": 0.9423223345470444, "tolerance": 0.000001 },
-      "explanation": "D(0,3) = 1 / 1.02^3."
-    },
-    {
-      "id": "pv-direct",
-      "type": "numeric",
-      "competencyId": "finance.present-value.calculate",
-      "evidenceKind": "direct",
-      "prompt": "A certain 1,000 payment has a discount factor of 0.9070294785. What is its present value?",
-      "answer": { "value": 907.0294785, "tolerance": 0.01 },
-      "explanation": "Multiply the future cash flow by its discount factor."
-    },
-    {
-      "id": "pv-transfer",
-      "type": "numeric",
-      "competencyId": "finance.present-value.calculate",
-      "evidenceKind": "transfer",
-      "prompt": "A 100 payment has discount factor 0.97 and a second 100 payment has discount factor 0.93. What is their total present value?",
-      "answer": { "value": 190, "tolerance": 0.01 },
-      "explanation": "Discount each dated payment and then add: 100 × 0.97 + 100 × 0.93 = 190."
+      "prompt": "Calculate the dimensionless 1.5-year discount factor from a 6% nominal annual rate compounded semiannually.",
+      "answer": { "value": 0.9151416593531596, "tolerance": 0.000001 },
+      "explanation": "The periodic rate is 0.06 / 2 = 0.03 and 1.5 years contains three half-year periods, so D(0,1.5) = 1 / 1.03^3."
     }
   ]
 }

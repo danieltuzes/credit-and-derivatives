@@ -1,0 +1,17 @@
+{
+  "id": "rates.nominal-rate-quote.interpret",
+  "title": "Interpret a nominal annual rate quote",
+  "domain": "rates",
+  "facet": "convention",
+  "outcome": "Interpret a nominal annual rate together with its stated compounding frequency.",
+  "prerequisites": [],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A nominal annual rate is the rate applied in every compounding period."
+  ],
+  "editorialStatus": "draft"
+}

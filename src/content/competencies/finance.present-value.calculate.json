@@ -4,7 +4,7 @@
   "domain": "finance",
   "facet": "calculation",
   "outcome": "Discount and add dated deterministic cash flows to calculate present value.",
-  "prerequisites": ["rates.discount-factor.calculate"],
+  "prerequisites": ["finance.present-value.interpret"],
   "evidence": {
     "minimumIndependentItems": 2,
     "requiresTransfer": true,

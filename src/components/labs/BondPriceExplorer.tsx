@@ -2,7 +2,6 @@ import * as Plot from '@observablehq/plot';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import {
   createFixedCouponBond,
-  macaulayDuration,
   priceFixedCouponBond,
 } from '../../domain/bonds/fixed-coupon-bond';
 
@@ -41,7 +40,6 @@ export default function BondPriceExplorer() {
 
     return {
       price: priceFixedCouponBond(bond, yieldPercent / 100),
-      duration: macaulayDuration(bond, yieldPercent / 100),
       curve,
     };
   }, [couponPercent, frequency, years, yieldPercent]);
@@ -53,7 +51,7 @@ export default function BondPriceExplorer() {
       ariaLabel:
         'Bond price by yield. The curve slopes downward as yield increases.',
       ariaDescription:
-        'The controls update the selected yield, price, duration, and the tabular text alternative below.',
+        'The controls update the selected yield, price, and the tabular text alternative below.',
       width: 680,
       height: 320,
       marginLeft: 58,
@@ -166,8 +164,6 @@ export default function BondPriceExplorer() {
       <div className="lab-result" aria-live="polite">
         <strong>Price: {priceFormat.format(result.price)}</strong> per 100 face
         value
-        <br />
-        Macaulay duration: {result.duration.toFixed(2)} years
       </div>
 
       <div className="lab-chart" ref={chartRef} />

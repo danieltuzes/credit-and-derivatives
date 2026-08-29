@@ -1,0 +1,194 @@
+---
+title: Fixed-rate bond contract and cash flows
+description: Translate face value, coupon rate, frequency, and maturity into promised payments.
+lessonId: bonds.fixed-rate-contract-and-cash-flows
+editorialStatus: draft
+riskTier: 2
+estimatedMinutes: 30
+requires:
+  - finance.cash-flow-perspective.apply
+  - rates.nominal-rate-quote.interpret
+teaches:
+  - bonds.fixed-rate-contract.interpret
+  - bonds.coupon-amount.calculate
+  - bonds.fixed-cashflows.identify
+assessments:
+  - bond-contract-cash-flows-check
+sources:
+  - tuckman-serrat-fixed-income
+assumptions:
+  - Level fixed coupons on a regular schedule
+  - Payment frequency times maturity in years is a positive integer, so no stub period occurs
+  - Principal redeemed at par on the final coupon date
+  - Settlement and valuation occur on a coupon date
+  - Bondholder perspective with promised payments treated as positive receipts
+  - No default, accrued interest, tax, callability, or other embedded option
+notation:
+  uses:
+    - valuation-time
+    - payment-time
+    - face-value
+    - annual-coupon-rate
+    - bond-payment-frequency
+    - maturity-time
+    - coupon-payment
+    - bond-cash-flow
+  local:
+    - key: bond-payment-index
+      notation: k
+      title: Bond payment index
+      summary: Labels one scheduled coupon date in increasing time order.
+      details: The index runs from 1 to n; t_k gives the associated time in years.
+      formula: 'k \in \{1,\ldots,n\}'
+      seeAlso:
+        - bond-cash-flow
+        - payment-time
+      alignment:
+        kind: general
+        rationale: Finite sequence indexing is part of the track's algebra assumptions.
+    - key: number-of-bond-payments
+      notation: n
+      title: Number of bond payments
+      summary: Counts the remaining regular coupon dates, including maturity.
+      details: In this toy schedule n equals payment frequency times maturity in years.
+      formula: 'n=m_BT'
+      seeAlso:
+        - bond-payment-frequency
+        - maturity-time
+      alignment:
+        kind: competency
+        introducedByCompetency: bonds.fixed-rate-contract.interpret
+        introducedInLesson: bonds.fixed-rate-contract-and-cash-flows
+aiAssisted: true
+sidebar:
+  order: 1
+---
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- identify the terms that determine a toy fixed-rate bond's payments;
+- calculate the level coupon amount;
+- construct the complete promised cash-flow schedule.
+
+## Read the contract before valuing it
+
+The simplified contract specifies \term\{face-value\}
+$\explain{face-value}{F}$, \term\{annual-coupon-rate\}
+$\explain{annual-coupon-rate}{c}$, \term\{bond-payment-frequency\}
+$\explain{bond-payment-frequency}{m_B}$, and \term\{maturity-time\}
+$\explain{maturity-time}{T}$.
+
+The local number of dates is
+
+$$
+\explain{number-of-bond-payments}{n}
+=
+\explain{bond-payment-frequency}{m_B}
+\explain{maturity-time}{T}.
+$$
+
+The page uses $m_B$, not the generic rate symbol $m$, so payment frequency
+and compounding frequency remain distinct concepts.
+
+## Calculate the coupon
+
+The level \term\{coupon-payment\} is
+
+$$
+\explain{coupon-payment}{C}
+=
+\frac{
+  \explain{annual-coupon-rate}{c}
+  \explain{face-value}{F}
+}{
+  \explain{bond-payment-frequency}{m_B}
+}.
+$$
+
+The coupon rate is applied to face value, not the bond's eventual market price.
+
+## Construct every promised payment
+
+For the bondholder, the promised \term\{bond-cash-flow\} is
+
+$$
+\explain{bond-cash-flow}{
+  CF_{\explain{bond-payment-index}{k}}^{\mathrm{bond}}
+}
+=
+\explain{coupon-payment}{C}
++
+\mathbf{1}_{\{
+  \explain{bond-payment-index}{k}
+  =
+  \explain{number-of-bond-payments}{n}
+\}}
+\explain{face-value}{F}.
+$$
+
+The indicator contributes face value only on the final date.
+
+For the regular schedule, each date is measured from
+\term\{valuation-time\}:
+
+$$
+\explain{payment-time}{t_k}
+=
+\frac{\explain{bond-payment-index}{k}}
+{\explain{bond-payment-frequency}{m_B}},
+\qquad
+\explain{valuation-time}{0}\text{ is the valuation time}.
+$$
+
+## Example 1: annual coupons
+
+A two-year bond has USD 1,000 face value, a 5% annual coupon rate, and one
+payment per year:
+
+$$
+C=\frac{0.05\times1000}{1}=\text{USD }50.
+$$
+
+| Payment index $k$ | Payment time $t_k$, years | Coupon, USD | Principal, USD | Total, USD |
+| ----------------: | ------------------------: | ----------: | -------------: | ---------: |
+|                 1 |                       1.0 |          50 |              0 |         50 |
+|                 2 |                       2.0 |          50 |          1,000 |      1,050 |
+
+## Example 2: semiannual coupons
+
+An 18-month bond has USD 1,000 face value, a 4% annual coupon rate, and two
+payments per year:
+
+$$
+C=\frac{0.04\times1000}{2}=\text{USD }20,
+\qquad
+n=2\times1.5=3.
+$$
+
+Its payments at 0.5, 1.0, and 1.5 years are USD 20, USD 20, and USD 1,020.
+
+## Example 3: quarterly coupon amount
+
+For USD 500 face value, a 4.8% annual coupon rate, and quarterly payments,
+
+$$
+C=\frac{0.048\times500}{4}=\text{USD }6.
+$$
+
+Maturity determines how many such payments occur; it does not change the
+periodic coupon amount under the level-coupon assumption.
+
+## Check your understanding
+
+The assessment set **bond-contract-cash-flows-check** covers term
+interpretation, coupon arithmetic, and schedule construction.
+
+## Model boundary and review note
+
+This page describes promised cash flows only. It does not assign a price,
+yield, payment probability, or expected recovery.
+
+**NEEDS_SOURCE:** exact fixed-rate contract and quotation locators must be
+verified before review.

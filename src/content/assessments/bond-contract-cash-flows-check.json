@@ -1,0 +1,102 @@
+{
+  "id": "bond-contract-cash-flows-check",
+  "title": "Fixed-rate bond contract and cash flows check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "bond-contract-direct",
+      "type": "single-choice",
+      "competencyId": "bonds.fixed-rate-contract.interpret",
+      "evidenceKind": "direct",
+      "prompt": "A simplified bond has USD 1,000 face value, a 5% annual coupon rate, two coupon payments per year, and two years to maturity. Which field determines the principal redeemed at maturity under the lesson convention?",
+      "options": [
+        { "id": "contract-face-value", "label": "Face value" },
+        { "id": "contract-coupon-rate", "label": "Annual coupon rate" },
+        { "id": "contract-frequency", "label": "Coupon frequency" }
+      ],
+      "correctOptionId": "contract-face-value",
+      "explanation": "The simplified contract redeems principal at face value; the coupon rate and frequency determine periodic coupons."
+    },
+    {
+      "id": "bond-contract-transfer",
+      "type": "single-choice",
+      "competencyId": "bonds.fixed-rate-contract.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "A simplified fixed-rate bond's market price changes while its contract is unchanged. Which listed field remains a contractual input to promised coupon cash flows?",
+      "options": [
+        { "id": "contractual-coupon-rate", "label": "The annual coupon rate" },
+        { "id": "market-price-field", "label": "The new market price" },
+        {
+          "id": "price-change-field",
+          "label": "The size of the market-price change"
+        }
+      ],
+      "correctOptionId": "contractual-coupon-rate",
+      "explanation": "In the simplified model, promised coupons follow the contractual face value, annual coupon rate, and frequency rather than the current market price."
+    },
+    {
+      "id": "coupon-amount-direct",
+      "type": "numeric",
+      "competencyId": "bonds.coupon-amount.calculate",
+      "evidenceKind": "direct",
+      "prompt": "Under the lesson convention, a bond has USD 1,000 face value, a 6% annual coupon rate, and two equal coupon payments per year. What is each coupon amount in USD?",
+      "answer": { "value": 30, "tolerance": 0.000000001 },
+      "explanation": "Coupon = face value × annual coupon rate / payments per year = 1,000 × 0.06 / 2 = 30."
+    },
+    {
+      "id": "coupon-amount-transfer",
+      "type": "numeric",
+      "competencyId": "bonds.coupon-amount.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "Under the lesson convention, a bond has USD 2,000 face value, a 4.5% annual coupon rate, and two equal coupon payments per year. What is each coupon amount in USD?",
+      "answer": { "value": 45, "tolerance": 0.000000001 },
+      "explanation": "Coupon = 2,000 × 0.045 / 2 = 45."
+    },
+    {
+      "id": "bond-cashflows-direct",
+      "type": "single-choice",
+      "competencyId": "bonds.fixed-cashflows.identify",
+      "evidenceKind": "direct",
+      "prompt": "From the holder's perspective, what are the promised cash flows of a two-year bond with USD 1,000 face value, a 5% annual coupon rate, and one coupon payment per year?",
+      "options": [
+        {
+          "id": "correct-cashflows",
+          "label": "USD +50 after year one and USD +1,050 after year two"
+        },
+        {
+          "id": "coupon-only",
+          "label": "USD +50 after each year and no principal"
+        },
+        {
+          "id": "single-payment",
+          "label": "USD +1,100 after year two only"
+        }
+      ],
+      "correctOptionId": "correct-cashflows",
+      "explanation": "The coupon is 5% of face value each year; principal is added to the final coupon."
+    },
+    {
+      "id": "bond-cashflows-transfer",
+      "type": "single-choice",
+      "competencyId": "bonds.fixed-cashflows.identify",
+      "evidenceKind": "transfer",
+      "prompt": "From the holder's perspective, what are the promised cash flows of an 18-month bond with USD 1,000 face value, a 4% annual coupon rate, and semiannual coupons?",
+      "options": [
+        {
+          "id": "semiannual-correct",
+          "label": "USD +20, USD +20, and USD +1,020 at six-month intervals"
+        },
+        {
+          "id": "annual-coupons",
+          "label": "USD +40, USD +40, and USD +1,040 at six-month intervals"
+        },
+        {
+          "id": "principal-each-date",
+          "label": "USD +1,020 at every coupon date"
+        }
+      ],
+      "correctOptionId": "semiannual-correct",
+      "explanation": "Each semiannual coupon is 1,000 × 4% / 2 = 20, with principal paid only at maturity."
+    }
+  ]
+}

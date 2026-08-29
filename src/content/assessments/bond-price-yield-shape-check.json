@@ -1,0 +1,87 @@
+{
+  "id": "bond-price-yield-shape-check",
+  "title": "Bond price-yield shape check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "price-yield-direction-direct",
+      "type": "single-choice",
+      "competencyId": "bonds.price-yield-direction.explain",
+      "evidenceKind": "direct",
+      "prompt": "Within the lesson's non-negative-yield domain, all else equal, what happens to a fixed bond's price when its yield rises?",
+      "options": [
+        { "id": "price-falls", "label": "The price falls" },
+        { "id": "price-rises", "label": "The price rises" },
+        { "id": "price-unchanged", "label": "The price is unchanged" }
+      ],
+      "correctOptionId": "price-falls",
+      "explanation": "A higher yield produces smaller discount factors for every positive future cash flow."
+    },
+    {
+      "id": "price-yield-direction-transfer",
+      "type": "single-choice",
+      "competencyId": "bonds.price-yield-direction.explain",
+      "evidenceKind": "transfer",
+      "prompt": "A bond's yield falls from 6% to 5% while promised cash flows stay fixed. Which explanation is correct?",
+      "options": [
+        {
+          "id": "denominators-shrink",
+          "label": "Discounting denominators shrink, so price rises"
+        },
+        {
+          "id": "coupons-grow",
+          "label": "The contractual coupons grow, so price rises"
+        },
+        {
+          "id": "principal-shrinks",
+          "label": "The principal shrinks, so price falls"
+        }
+      ],
+      "correctOptionId": "denominators-shrink",
+      "explanation": "The promised coupons do not change; the change comes from discounting them at a lower yield."
+    },
+    {
+      "id": "price-yield-curvature-direct",
+      "type": "single-choice",
+      "competencyId": "bonds.price-yield-curvature.interpret",
+      "evidenceKind": "direct",
+      "prompt": "A fixed bond's prices at yields of 4%, 5%, and 6% are 103.0, 100.0, and 97.2. What do the unequal changes for equal one-percentage-point yield steps show?",
+      "options": [
+        {
+          "id": "curve-not-line",
+          "label": "The price-yield relationship is not a straight line"
+        },
+        { "id": "curve-horizontal", "label": "Price is independent of yield" },
+        {
+          "id": "cash-flows-change",
+          "label": "The promised cash flows must change with yield"
+        }
+      ],
+      "correctOptionId": "curve-not-line",
+      "explanation": "The first equal yield step changes price by 3.0 while the second changes it by 2.8, so the slope is not constant."
+    },
+    {
+      "id": "price-yield-curvature-transfer",
+      "type": "single-choice",
+      "competencyId": "bonds.price-yield-curvature.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "For three equally spaced yields, the middle bond price differs from the average of the two endpoint prices. What is the best interpretation?",
+      "options": [
+        {
+          "id": "midpoint-curvature",
+          "label": "The sampled price-yield relationship has curvature"
+        },
+        {
+          "id": "midpoint-linear",
+          "label": "The sampled price-yield relationship is exactly linear"
+        },
+        {
+          "id": "midpoint-no-direction",
+          "label": "Yield has no relationship to price"
+        }
+      ],
+      "correctOptionId": "midpoint-curvature",
+      "explanation": "For a straight line, the value at the midpoint equals the average of endpoint values; a difference is evidence of curvature."
+    }
+  ]
+}

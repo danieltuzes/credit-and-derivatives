@@ -3,8 +3,11 @@
   "title": "Calculate a discount factor",
   "domain": "rates",
   "facet": "calculation",
-  "outcome": "Calculate D(0,t) = (1+y)^(-t) under annual compounding.",
-  "prerequisites": ["rates.discount-factor.interpret"],
+  "outcome": "Calculate D(0,T) = (1+j^(m)/m)^(-mT) from a nominal annual rate j^(m) compounded m times per year.",
+  "prerequisites": [
+    "rates.discount-factor.interpret",
+    "rates.periodic-rate.calculate"
+  ],
   "evidence": {
     "minimumIndependentItems": 2,
     "requiresTransfer": true,

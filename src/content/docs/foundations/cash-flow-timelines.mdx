@@ -1,0 +1,120 @@
+---
+title: Cash-flow timelines and perspective
+description: Place signed payments on one clock before trying to value them.
+lessonId: foundations.cash-flow-timelines
+editorialStatus: draft
+riskTier: 1
+estimatedMinutes: 20
+requires: []
+teaches:
+  - finance.cash-flow-timeline.interpret
+  - finance.cash-flow-perspective.apply
+assessments:
+  - cash-flow-timelines-check
+sources:
+  - tuckman-serrat-fixed-income
+assumptions:
+  - All examples use synthetic USD amounts
+  - Time is measured in years from a stated valuation date
+  - Positive means received and negative means paid by the named holder
+notation:
+  uses:
+    - valuation-time
+    - payment-time
+    - signed-cash-flow
+  local:
+    - key: payment-index
+      notation: k
+      title: Payment index
+      summary: Labels one row in the ordered cash-flow schedule.
+      details: The index is an ordering label; t_k is the associated time measured in years.
+      formula: 'k \in \{0,1,\ldots,n\}'
+      seeAlso:
+        - payment-time
+        - signed-cash-flow
+      alignment:
+        kind: general
+        rationale: Finite sequence indexing is part of the track entry assumptions.
+aiAssisted: true
+sidebar:
+  order: 1
+---
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- read an ordered schedule of payment amounts and times;
+- state the unit and clock used by a timeline;
+- apply a consistent sign convention from a named perspective.
+
+## Start with events, not formulas
+
+A financial calculation begins with a list of events. Each event pairs a
+\term\{signed-cash-flow\} with a \term\{payment-time\}, all measured from one
+\term\{valuation-time\}. The local symbol \term\{payment-index\} identifies a row;
+it is not itself a time or date.
+
+$$
+\explain{signed-cash-flow}{
+  CF_{\explain{payment-index}{k}}
+}
+\quad\text{occurs at}\quad
+\explain{payment-time}{
+  t_{\explain{payment-index}{k}}
+}.
+$$
+
+The nested annotation is deliberate: the entire cash-flow token and its local
+index have different explanations even though they occupy one visual
+expression.
+
+## Example 1: read a timeline
+
+Suppose, in a simplified primary-issuance example, a bondholder pays an issuer
+USD 980 now, receives USD 30 after one year, and receives USD 1,030 after two
+years.
+
+| Payment index $k$ | Payment time $t_k$, years from time 0 | Signed cash flow $CF_k$, USD | Event                         |
+| ----------------: | ------------------------------------: | ---------------------------: | ----------------------------- |
+|                 0 |                                     0 |                         -980 | Purchase price paid           |
+|                 1 |                                     1 |                          +30 | Coupon received               |
+|                 2 |                                     2 |                       +1,030 | Coupon and principal received |
+
+This table does **not** say whether USD 980 is a fair price. It only describes
+who exchanges what, and when.
+
+## Example 2: reverse the perspective
+
+From that issuer's perspective, every amount above changes sign:
+
+|    Time | Bondholder |     Issuer |
+| ------: | ---------: | ---------: |
+| 0 years |   USD -980 |   USD +980 |
+|  1 year |    USD +30 |    USD -30 |
+| 2 years | USD +1,030 | USD -1,030 |
+
+Changing perspective does not move the dates or change absolute amounts.
+Adding cash flows from opposite perspectives without first reconciling their
+signs would mix two different models.
+
+## Example 3: same amount, different time
+
+USD +100 at $t_1=0.5$ years and USD +100 at $t_2=2$ years are two distinct
+events. The amounts match; the times do not. A later lesson introduces the
+discount factors needed to compare them at time zero.
+
+## Check your understanding
+
+The assessment set **cash-flow-timelines-check** contains direct and transfer
+items for reading a schedule and reversing perspective.
+
+## Model boundary and review note
+
+The year-valued times here are already supplied. Real schedules require
+calendar dates, business-day adjustments, and year-fraction conventions; none
+is inferred in this lesson.
+
+The registered textbook record remains draft. **NEEDS_SOURCE:** a human editor
+must verify the exact locator for contractual timeline terminology before this
+lesson can advance beyond draft.

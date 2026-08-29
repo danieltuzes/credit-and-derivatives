@@ -2,9 +2,11 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 test('renders and operates the bond lesson', async ({ page }) => {
-  await page.goto('/bonds/price-and-yield/');
+  await page.goto('/bonds/price-yield-relationship/');
   await expect(
-    page.getByRole('heading', { name: 'Bond cash flows, price, and yield' }),
+    page.getByRole('heading', {
+      name: 'The bond price-yield relationship',
+    }),
   ).toBeVisible();
 
   const price = page.getByText(/Price:/).first();
@@ -21,7 +23,7 @@ test('renders and operates the bond lesson', async ({ page }) => {
 test('has no automatically detectable accessibility violations', async ({
   page,
 }) => {
-  await page.goto('/bonds/price-and-yield/');
+  await page.goto('/bonds/price-yield-relationship/');
   await expect(
     page.getByRole('heading', { name: 'Explore the bond price–yield curve' }),
   ).toBeVisible();

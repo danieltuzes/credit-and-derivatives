@@ -9,7 +9,9 @@ sidebar:
 
 import CurriculumMap from '../../components/CurriculumMap.astro';
 
-The map is generated from competency records. Sidebar position does not define
-prerequisites; directed `prerequisites` references do.
+The ordered lesson path is generated from the track and lesson records; the
+atomic graph is generated from competency records. Sidebar position does not
+define prerequisites—directed `prerequisites`, `requires`, and `teaches`
+references do.
 
 <CurriculumMap />

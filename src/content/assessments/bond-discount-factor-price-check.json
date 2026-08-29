@@ -1,0 +1,25 @@
+{
+  "id": "bond-discount-factor-price-check",
+  "title": "Bond price from discount factors check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "bond-df-price-direct",
+      "type": "numeric",
+      "competencyId": "bonds.price-from-discount-factors.calculate",
+      "evidenceKind": "direct",
+      "prompt": "From the holder's perspective, a simplified bond pays USD +50 at t = 1 year and USD +1,050 at t = 2 years. The matching discount factors are 0.95 and 0.90. What is its time-zero price in USD?",
+      "answer": { "value": 992.5, "tolerance": 0.000000001 },
+      "explanation": "Price = 50 × 0.95 + 1,050 × 0.90 = 47.5 + 945 = 992.5."
+    },
+    {
+      "id": "bond-df-price-transfer",
+      "type": "numeric",
+      "competencyId": "bonds.price-from-discount-factors.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "From the holder's perspective, a simplified bond pays USD +20, USD +20, and USD +1,020 at three successive dates. Their matching discount factors are 0.98, 0.95, and 0.91. What is its time-zero price in USD?",
+      "answer": { "value": 966.8, "tolerance": 0.000000001 },
+      "explanation": "Price = 20 × 0.98 + 20 × 0.95 + 1,020 × 0.91 = 19.6 + 19 + 928.2 = 966.8."
+    }
+  ]
+}

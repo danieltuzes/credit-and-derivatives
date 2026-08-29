@@ -1,0 +1,71 @@
+{
+  "id": "bond-yield-check",
+  "title": "Yield to maturity check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "ytm-meaning-direct",
+      "type": "single-choice",
+      "competencyId": "bonds.yield-to-maturity.interpret",
+      "evidenceKind": "direct",
+      "prompt": "In the simplified lesson model, what is yield to maturity?",
+      "options": [
+        {
+          "id": "ytm-price-equating-rate",
+          "label": "The single nominal annual rate, compounded at coupon frequency, that reproduces price from promised cash flows"
+        },
+        {
+          "id": "ytm-extra-cash-flow",
+          "label": "An additional cash flow paid by the issuer at maturity"
+        },
+        {
+          "id": "ytm-coupon-amount",
+          "label": "The currency amount of each coupon"
+        }
+      ],
+      "correctOptionId": "ytm-price-equating-rate",
+      "explanation": "The toy model defines yield to maturity as one rate that discounts all promised cash flows to the stated price under the stated compounding convention."
+    },
+    {
+      "id": "ytm-meaning-transfer",
+      "type": "single-choice",
+      "competencyId": "bonds.yield-to-maturity.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "Two bonds have different promised cash-flow amounts and maturities, but the same coupon frequency and the same quoted yield to maturity under the simplified nominal convention. Which statement follows?",
+      "options": [
+        {
+          "id": "same-summary-rate",
+          "label": "The same summary rate is used, but each bond's own cash flows still determine its price"
+        },
+        {
+          "id": "same-price",
+          "label": "The two bonds must have the same price"
+        },
+        {
+          "id": "same-coupons",
+          "label": "The two bonds must have identical coupon cash flows"
+        }
+      ],
+      "correctOptionId": "same-summary-rate",
+      "explanation": "A common yield does not erase differences in amount or timing; the model discounts each bond's own promised cash flows."
+    },
+    {
+      "id": "bond-price-direct",
+      "type": "numeric",
+      "competencyId": "bonds.price-from-yield.calculate",
+      "evidenceKind": "direct",
+      "prompt": "Price in USD a two-year bond with USD 1,000 face value, a 5% annual coupon rate, and one coupon payment per year at a 6% nominal annual yield compounded annually. Assume valuation on a coupon date and no accrued interest.",
+      "answer": { "value": 981.6660733357066, "tolerance": 0.01 },
+      "explanation": "P = 50 / 1.06 + 1,050 / 1.06^2."
+    },
+    {
+      "id": "bond-price-transfer",
+      "type": "numeric",
+      "competencyId": "bonds.price-from-yield.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "Price in USD a two-year bond with USD 1,000 face value, a 5% annual coupon rate, and two coupon payments per year at a 6% nominal annual yield compounded semiannually. Assume valuation on a coupon date and no accrued interest.",
+      "answer": { "value": 981.4145079859479, "tolerance": 0.01 },
+      "explanation": "Each coupon is USD 25 and the periodic yield is 0.06 / 2 = 0.03, so P = 25 / 1.03 + 25 / 1.03^2 + 25 / 1.03^3 + 1,025 / 1.03^4."
+    }
+  ]
+}

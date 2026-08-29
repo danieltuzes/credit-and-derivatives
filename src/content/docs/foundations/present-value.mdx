@@ -1,0 +1,150 @@
+---
+title: Present value of a cash-flow schedule
+description: Discount each signed dated amount and then add the comparable values.
+lessonId: foundations.present-value
+editorialStatus: draft
+riskTier: 2
+estimatedMinutes: 30
+requires:
+  - finance.cash-flow-perspective.apply
+  - rates.discount-factor.calculate
+teaches:
+  - finance.present-value.interpret
+  - finance.present-value.calculate
+assessments:
+  - present-value-check
+sources:
+  - tuckman-serrat-fixed-income
+assumptions:
+  - Deterministic signed cash flows
+  - A supplied discount factor for every payment time
+  - USD examples and a holder perspective
+notation:
+  uses:
+    - valuation-time
+    - payment-time
+    - signed-cash-flow
+    - discount-factor
+    - present-value
+  local:
+    - key: present-value-payment-index
+      notation: k
+      title: Present-value payment index
+      summary: Selects one dated cash flow in the finite schedule.
+      details: This page-local index keeps sequence bookkeeping separate from the year-valued time t_k.
+      formula: 'k \in \{1,\ldots,n\}'
+      seeAlso:
+        - payment-time
+        - signed-cash-flow
+      alignment:
+        kind: general
+        rationale: Finite summation indexing is part of the track's algebra assumptions.
+    - key: number-of-future-payments
+      notation: n
+      title: Number of future payments
+      summary: The final index in the finite present-value sum.
+      details: It counts included future rows and does not itself specify maturity in years.
+      formula: 'n \in \mathbb{N}'
+      seeAlso:
+        - payment-time
+      alignment:
+        kind: general
+        rationale: Counting a finite list is part of the track's entry assumptions.
+aiAssisted: true
+sidebar:
+  order: 4
+---
+
+import DiscountingExplorer from '../../../components/labs/DiscountingExplorer';
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- interpret present value from the same perspective as its cash flows;
+- discount each dated deterministic amount;
+- add discounted amounts without mixing payment dates.
+
+## Make values comparable before adding
+
+The \term\{present-value\} of a deterministic schedule is
+
+$$
+\explain{present-value}{PV_0}
+=
+\sum_{\explain{present-value-payment-index}{k}=1}^{
+  \explain{number-of-future-payments}{n}
+}
+\explain{signed-cash-flow}{CF_k}
+\explain{discount-factor}{D(0,\explain{payment-time}{t_k})}.
+$$
+
+The formula references definitions rather than repeating an explanation
+dictionary on this page. The two page-local bookkeeping symbols are resolved
+only here; the financial quantities come from the shared registry.
+
+## Example 1: one payment
+
+For a deterministic USD 1,000 receipt at $t=2$ with
+$D(0,2)=0.9070294785$,
+
+$$
+PV_0
+=1000\times0.9070294785
+=\text{USD }907.0294785
+\approx\text{USD }907.03.
+$$
+
+The output unit is USD at \term\{valuation-time\} from the holder's
+perspective.
+
+## Example 2: mixed signed cash flows
+
+Suppose the holder receives USD 100 at $t_1$, pays USD 40 at $t_2$, and
+receives USD 300 at $t_3$. The supplied discount factors are 0.97, 0.93, and
+0.88.
+
+| Payment index $k$ | Cash flow $CF_k$, USD | Discount factor $D(0,t_k)$ | Discounted cash flow $CF_kD(0,t_k)$, USD |
+| ----------------: | --------------------: | -------------------------: | ---------------------------------------: |
+|                 1 |                  +100 |                       0.97 |                                   +97.00 |
+|                 2 |                   -40 |                       0.93 |                                   -37.20 |
+|                 3 |                  +300 |                       0.88 |                                  +264.00 |
+
+Therefore,
+
+$$
+PV_0=97.00-37.20+264.00=\text{USD }323.80.
+$$
+
+Discounting preserves the declared signs. Reversing perspective would negate
+the entire result.
+
+## Example 3: additivity
+
+Let $A\mathbin{\|}B$ mean concatenating two schedules while retaining every
+row, including duplicate payments. If schedules $A$ and $B$ use the same
+valuation time, perspective, currency, and discount factors, then
+
+$$
+PV_0(A\mathbin{\|}B)=PV_0(A)+PV_0(B).
+$$
+
+This identity is covered by a domain property test. The compatibility
+conditions matter: values from different currencies or valuation dates cannot
+be added without another model.
+
+<DiscountingExplorer client:visible />
+
+The lab keeps its calculation in the tested domain module. Its percentage input
+is converted to a decimal at the UI boundary.
+
+## Check your understanding
+
+The assessment set **present-value-check** separates interpretation from
+calculation and includes an unfamiliar multi-payment case.
+
+## Model boundary and review note
+
+This is deterministic present value. It omits curves, calendars, uncertainty,
+credit, recovery, liquidity, tax, and funding. The exact textbook locator must
+be verified by a human before review.

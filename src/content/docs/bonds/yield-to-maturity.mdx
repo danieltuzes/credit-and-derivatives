@@ -1,0 +1,155 @@
+---
+title: Yield to maturity as a single-rate summary
+description: Interpret the rate that reproduces a toy bond price, then price from a supplied yield.
+lessonId: bonds.yield-to-maturity
+editorialStatus: draft
+riskTier: 2
+estimatedMinutes: 30
+requires:
+  - bonds.price-from-discount-factors.calculate
+  - rates.periodic-rate.calculate
+teaches:
+  - bonds.yield-to-maturity.interpret
+  - bonds.price-from-yield.calculate
+assessments:
+  - bond-yield-check
+sources:
+  - tuckman-serrat-fixed-income
+  - finra-bond-yield
+assumptions:
+  - Level fixed coupons and principal redeemed at par
+  - Settlement on a coupon date
+  - One nominal annual yield compounded at the bond payment frequency
+  - The same yield discounts every promised payment
+  - No default, liquidity, tax, funding, or embedded option
+notation:
+  uses:
+    - bond-price
+    - yield-to-maturity
+    - bond-cash-flow
+    - bond-payment-frequency
+    - coupon-payment
+    - face-value
+  local:
+    - key: yield-pricing-index
+      notation: k
+      title: Yield-pricing payment index
+      summary: Counts coupon periods from valuation to each promised payment.
+      details: In the toy regular schedule, period k occurs at t_k=k/m_B years.
+      formula: 'k \in \{1,\ldots,n\}'
+      seeAlso:
+        - bond-payment-frequency
+        - bond-cash-flow
+      alignment:
+        kind: general
+        rationale: Finite summation indexing is part of the track's algebra assumptions.
+aiAssisted: true
+sidebar:
+  order: 3
+---
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- interpret yield to maturity as a model-dependent single-rate summary;
+- state its annualization and compounding convention;
+- calculate price from a supplied yield without changing promised cash flows.
+
+## What yield means in this toy model
+
+\term\{yield-to-maturity\} is the one nominal annual rate, compounded at the
+\term\{bond-payment-frequency\}, that makes the discounted promised payments
+equal the \term\{bond-price\}:
+
+$$
+\explain{bond-price}{P_0}
+=
+\sum_{\explain{yield-pricing-index}{k}=1}^{n}
+\frac{
+  \explain{bond-cash-flow}{
+    CF_{\explain{yield-pricing-index}{k}}^{\mathrm{bond}}
+  }
+}{
+  \left(
+    1+
+    \frac{
+      \explain{yield-to-maturity}{y^{(m_B)}}
+    }{
+      \explain{bond-payment-frequency}{m_B}
+    }
+  \right)^{
+    \explain{yield-pricing-index}{k}
+  }
+}.
+$$
+
+The semantic key matters because the glyph $y$ could otherwise mean a spot
+rate, effective annual rate, expected return, or another quote. Here it means
+only the explicitly defined bond yield.
+
+## Coupon rate and yield do different jobs
+
+- The coupon rate fixes the promised \term\{coupon-payment\} in the contract.
+- The supplied yield controls the denominators used by this pricing summary.
+
+Changing the yield input does not rewrite the bond's coupons or
+\term\{face-value\}.
+
+## Example 1: annual payments
+
+A two-year, 5% annual-coupon bond with USD 1,000 face value pays USD 50 and USD
+1,050. At a 6% annual yield with annual compounding,
+
+$$
+P_0
+=\frac{50}{1.06}
++\frac{1050}{1.06^2}
+\approx\text{USD }981.67.
+$$
+
+This migrates the original skeleton's numerical example without changing its
+expected value.
+
+## Example 2: semiannual payments and compounding
+
+For the same face value and coupon rate over two years, but with semiannual
+payments, $C=25$, $m_B=2$, and $n=4$. A 6% nominal annual yield gives a
+3% periodic rate:
+
+$$
+P_0
+=\frac{25}{1.03}
++\frac{25}{1.03^2}
++\frac{25}{1.03^3}
++\frac{1025}{1.03^4}
+\approx\text{USD }981.41.
+$$
+
+The annual and semiannual examples use the same percentage number but not the
+same timing or compounding model.
+
+## Example 3: zero-coupon special case
+
+With no coupons,
+
+$$
+P_0=\frac{F}{(1+y^{(m_B)}/m_B)^{m_BT}}.
+$$
+
+For USD 1,000 due in three years at 4% with annual compounding, the price is
+approximately USD 889.00.
+
+## Check your understanding
+
+The assessment set **bond-yield-check** separates yield interpretation from
+annual and periodic-compounding calculations.
+
+## Model boundary and review note
+
+This page prices from a supplied yield; it does not solve numerically for yield
+from a price. A real bond implementation also needs schedules, day counts,
+accrued interest, clean/dirty price, and potentially credit and option models.
+
+**NEEDS_SOURCE:** exact source locators for yield quotation and interpretation
+must be verified before review.

@@ -1,0 +1,706 @@
+---
+export type NotationAlignment =
+  | {
+      kind: 'competency';
+      introducedByCompetency: string;
+      introducedInLesson: string;
+    }
+  | { kind: 'general'; rationale: string };
+
+export interface NotationLayerDefinition {
+  key: string;
+  notation: string;
+  title: string;
+  summary: string;
+  details?: string;
+  formula?: string;
+  units?: string;
+  seeAlso?: readonly string[];
+  alignment?: NotationAlignment;
+  editorialStatus?: 'draft' | 'in-review' | 'reviewed';
+  scope?: 'local' | 'shared';
+  href?: string;
+}
+
+export interface Props {
+  definitions: NotationLayerDefinition[];
+  id?: string;
+  label?: string;
+  glossaryHref?: string;
+}
+
+const {
+  definitions,
+  id = 'page-notation',
+  label = 'Notation used on this page',
+  glossaryHref = '/glossary/',
+} = Astro.props;
+
+const keyPattern = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
+const idPattern = /^[A-Za-z][A-Za-z0-9_-]*$/;
+
+if (!idPattern.test(id)) {
+  throw new Error(`Unsafe NotationLayer id: ${id}`);
+}
+
+const seen = new Set<string>();
+const items = definitions.map((definition) => {
+  if (!keyPattern.test(definition.key)) {
+    throw new Error(`Unsafe notation key: ${definition.key}`);
+  }
+  if (seen.has(definition.key)) {
+    throw new Error(
+      `Duplicate notation key in NotationLayer: ${definition.key}`,
+    );
+  }
+  seen.add(definition.key);
+
+  const scope = definition.scope ?? 'shared';
+  const href =
+    definition.href ??
+    (scope === 'local'
+      ? `#notation-${definition.key}`
+      : `${glossaryHref}#notation-${definition.key}`);
+
+  return { ...definition, scope, href };
+});
+
+const panelId = `${id}-panel`;
+---
+
+{
+  items.length > 0 && (
+    <section
+      class="notation-layer"
+      data-notation-layer
+      data-notation-layer-id={id}
+      aria-labelledby={`${id}-heading`}
+    >
+      <h2 id={`${id}-heading`} class="notation-layer-heading">
+        Page notation
+      </h2>
+
+      <details class="notation-list">
+        <summary>
+          {label} <span class="notation-count">({items.length})</span>
+        </summary>
+        <dl>
+          {items.map((definition) => (
+            <div
+              class="notation-entry"
+              id={`notation-${definition.key}`}
+              data-notation-entry={definition.key}
+              data-notation-href={definition.href}
+            >
+              <dt>
+                <code
+                  class="notation-symbol"
+                  aria-label={`LaTeX symbol: ${definition.notation}`}
+                >
+                  {definition.notation}
+                </code>
+                <a
+                  href={definition.href}
+                  data-notation-link={definition.key}
+                  aria-label={`${definition.title}: open the full definition`}
+                >
+                  {definition.title}
+                </a>
+                {definition.editorialStatus &&
+                  definition.editorialStatus !== 'reviewed' && (
+                    <span class="notation-status">
+                      {definition.editorialStatus}
+                    </span>
+                  )}
+              </dt>
+              <dd>
+                <p data-notation-summary>{definition.summary}</p>
+                {definition.details && (
+                  <p class="notation-details" data-notation-details>
+                    {definition.details}
+                  </p>
+                )}
+                {definition.formula && (
+                  <code
+                    class="notation-formula"
+                    data-notation-formula
+                    aria-label={`LaTeX definition: ${definition.formula}`}
+                  >
+                    {definition.formula}
+                  </code>
+                )}
+                {definition.units && (
+                  <p class="notation-units" data-notation-units>
+                    <strong>Units:</strong> {definition.units}
+                  </p>
+                )}
+                <button
+                  class="notation-pin"
+                  type="button"
+                  data-notation-control={definition.key}
+                  aria-controls={panelId}
+                  aria-expanded="false"
+                  aria-pressed="false"
+                  hidden
+                >
+                  Pin explanation
+                </button>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </details>
+
+      <p class="notation-enhancement-help" data-notation-help hidden>
+        Point to a marked symbol for a quick explanation, or use the list above.
+        Select “Pin explanation” to keep one open; press Escape to close it.
+      </p>
+
+      <aside
+        class="notation-panel"
+        id={panelId}
+        data-notation-panel
+        role="region"
+        aria-label="Notation explanation"
+        aria-live="polite"
+        aria-atomic="true"
+        hidden
+      >
+        <header class="notation-panel-heading">
+          <span class="notation-panel-symbol" data-panel-symbol />
+          <h3 data-panel-title />
+        </header>
+        <p data-panel-summary />
+        <p data-panel-details hidden />
+        <div data-panel-formula hidden />
+        <p data-panel-units hidden />
+        <a data-panel-link>Open the full definition</a>
+      </aside>
+    </section>
+  )
+}
+
+<script>
+  const triggerSelector = '[data-notation-key]';
+
+  function closestElement(node: EventTarget | null, selector: string) {
+    return node instanceof Element ? node.closest<HTMLElement>(selector) : null;
+  }
+
+  function setOptionalText(element: HTMLElement, value: string) {
+    element.textContent = value;
+    element.hidden = value.length === 0;
+  }
+
+  function setupNotationLayer(root: HTMLElement) {
+    if (root.dataset.notationEnhanced === 'true') return;
+    root.dataset.notationEnhanced = 'true';
+
+    const entryElements = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-notation-entry]'),
+    );
+    const entries = new Map(
+      entryElements.map((entry) => [entry.dataset.notationEntry ?? '', entry]),
+    );
+    entries.delete('');
+    if (entries.size === 0) return;
+
+    const panel = root.querySelector<HTMLElement>('[data-notation-panel]');
+    const panelSymbol = root.querySelector<HTMLElement>('[data-panel-symbol]');
+    const panelTitle = root.querySelector<HTMLElement>('[data-panel-title]');
+    const panelSummary = root.querySelector<HTMLElement>(
+      '[data-panel-summary]',
+    );
+    const panelDetails = root.querySelector<HTMLElement>(
+      '[data-panel-details]',
+    );
+    const panelFormula = root.querySelector<HTMLElement>(
+      '[data-panel-formula]',
+    );
+    const panelUnits = root.querySelector<HTMLElement>('[data-panel-units]');
+    const panelLink =
+      root.querySelector<HTMLAnchorElement>('[data-panel-link]');
+    if (
+      !panel ||
+      !panelSymbol ||
+      !panelTitle ||
+      !panelSummary ||
+      !panelDetails ||
+      !panelFormula ||
+      !panelUnits ||
+      !panelLink
+    ) {
+      return;
+    }
+
+    const controls = Array.from(
+      root.querySelectorAll<HTMLButtonElement>('[data-notation-control]'),
+    );
+    const triggers = Array.from(
+      document.querySelectorAll<HTMLElement>(triggerSelector),
+    ).filter(
+      (element) =>
+        !root.contains(element) &&
+        !element.closest('.katex-mathml') &&
+        entries.has(element.dataset.notationKey ?? ''),
+    );
+    const triggerSet = new Set(triggers);
+
+    for (const trigger of triggers) trigger.classList.add('notation-trigger');
+    for (const control of controls) control.hidden = false;
+    const help = root.querySelector<HTMLElement>('[data-notation-help]');
+    if (help) help.hidden = false;
+
+    let activeKey: string | null = null;
+    let activeAnchor: HTMLElement | null = null;
+    let pinned: { key: string; anchor: HTMLElement } | null = null;
+
+    const keyFor = (element: HTMLElement | null) =>
+      element?.dataset.notationKey ??
+      element?.dataset.notationControl ??
+      element?.dataset.notationLink ??
+      null;
+
+    const externalTriggerFrom = (node: EventTarget | null) => {
+      const candidate = closestElement(node, triggerSelector);
+      return candidate && triggerSet.has(candidate) ? candidate : null;
+    };
+
+    const controlFrom = (node: EventTarget | null) => {
+      const candidate = closestElement(node, '[data-notation-control]');
+      return candidate && root.contains(candidate)
+        ? (candidate as HTMLButtonElement)
+        : null;
+    };
+
+    const staticLinkFrom = (node: EventTarget | null) => {
+      const candidate = closestElement(node, '[data-notation-link]');
+      return candidate && root.contains(candidate)
+        ? (candidate as HTMLAnchorElement)
+        : null;
+    };
+
+    const interactiveFrom = (node: EventTarget | null) =>
+      controlFrom(node) ?? staticLinkFrom(node) ?? externalTriggerFrom(node);
+
+    const updateControls = () => {
+      for (const control of controls) {
+        const selected = control.dataset.notationControl === pinned?.key;
+        control.setAttribute('aria-pressed', String(selected));
+        control.setAttribute(
+          'aria-expanded',
+          String(selected && panel.hidden === false),
+        );
+        control.textContent = selected
+          ? 'Unpin explanation'
+          : 'Pin explanation';
+      }
+    };
+
+    const position = () => {
+      if (panel.hidden || !activeAnchor) return;
+
+      const edge = 12;
+      const gap = 10;
+      const displayEquation =
+        activeAnchor.closest<HTMLElement>('.katex-display');
+      const safeRegion = displayEquation ?? activeAnchor;
+      const regionRect = safeRegion.getBoundingClientRect();
+      const anchorRect = activeAnchor.getBoundingClientRect();
+      const below = window.innerHeight - regionRect.bottom - gap - edge;
+      const above = regionRect.top - gap - edge;
+      const placeBelow = below >= above;
+      const available = Math.max(placeBelow ? below : above, 0);
+
+      panel.style.maxHeight = `${available}px`;
+      const panelRect = panel.getBoundingClientRect();
+      let top = placeBelow
+        ? regionRect.bottom + gap
+        : regionRect.top - gap - panelRect.height;
+      let left = anchorRect.left + anchorRect.width / 2 - panelRect.width / 2;
+
+      top = Math.max(
+        edge,
+        Math.min(top, window.innerHeight - panelRect.height - edge),
+      );
+      left = Math.max(
+        edge,
+        Math.min(left, window.innerWidth - panelRect.width - edge),
+      );
+
+      panel.style.top = `${Math.round(top)}px`;
+      panel.style.left = `${Math.round(left)}px`;
+    };
+
+    const show = (key: string, anchor: HTMLElement) => {
+      const entry = entries.get(key);
+      if (!entry) return;
+
+      activeKey = key;
+      activeAnchor = anchor;
+      for (const trigger of triggers) {
+        trigger.classList.toggle(
+          'is-notation-active',
+          trigger.dataset.notationKey === key,
+        );
+      }
+
+      const sourceSymbol = entry.querySelector<HTMLElement>('.notation-symbol');
+      panelSymbol.replaceChildren(
+        ...(sourceSymbol
+          ? [sourceSymbol.cloneNode(true)]
+          : [document.createTextNode(entry.dataset.notationEntry ?? key)]),
+      );
+      panelTitle.textContent =
+        entry
+          .querySelector<HTMLAnchorElement>('[data-notation-link]')
+          ?.textContent?.trim() ?? key;
+      panelSummary.textContent =
+        entry
+          .querySelector<HTMLElement>('[data-notation-summary]')
+          ?.textContent?.trim() ?? '';
+      setOptionalText(
+        panelDetails,
+        entry
+          .querySelector<HTMLElement>('[data-notation-details]')
+          ?.textContent?.trim() ?? '',
+      );
+      const sourceFormula = entry.querySelector<HTMLElement>(
+        '[data-notation-formula]',
+      );
+      panelFormula.replaceChildren(
+        ...(sourceFormula ? [sourceFormula.cloneNode(true)] : []),
+      );
+      panelFormula.hidden = sourceFormula === null;
+      setOptionalText(
+        panelUnits,
+        entry
+          .querySelector<HTMLElement>('[data-notation-units]')
+          ?.textContent?.trim() ?? '',
+      );
+      panelLink.href = entry.dataset.notationHref ?? `#notation-${key}`;
+
+      panel.style.visibility = 'hidden';
+      panel.hidden = false;
+      panel.dataset.activeNotationKey = key;
+      position();
+      panel.style.visibility = 'visible';
+      updateControls();
+    };
+
+    const close = () => {
+      activeKey = null;
+      activeAnchor = null;
+      panel.hidden = true;
+      delete panel.dataset.activeNotationKey;
+      for (const trigger of triggers) {
+        trigger.classList.remove('is-notation-active');
+      }
+      updateControls();
+    };
+
+    const restorePinnedOrClose = () => {
+      window.requestAnimationFrame(() => {
+        const focused = interactiveFrom(document.activeElement);
+        if (focused && keyFor(focused) === activeKey) return;
+        if (pinned) {
+          show(pinned.key, pinned.anchor);
+          return;
+        }
+        if (
+          activeAnchor?.matches(':hover') ||
+          panel.matches(':hover') ||
+          panel.contains(document.activeElement)
+        ) {
+          return;
+        }
+        close();
+      });
+    };
+
+    const togglePin = (key: string, anchor: HTMLElement) => {
+      if (pinned?.key === key && pinned.anchor === anchor) {
+        pinned = null;
+        close();
+        return;
+      }
+      pinned = { key, anchor };
+      show(key, anchor);
+    };
+
+    document.addEventListener('pointerover', (event) => {
+      if (event.pointerType === 'touch' || pinned) return;
+      const anchor = interactiveFrom(event.target);
+      const key = keyFor(anchor);
+      if (anchor && key && anchor !== interactiveFrom(event.relatedTarget)) {
+        show(key, anchor);
+      }
+    });
+
+    document.addEventListener('pointerout', (event) => {
+      if (event.pointerType === 'touch') return;
+      const anchor = interactiveFrom(event.target);
+      if (!anchor || anchor === interactiveFrom(event.relatedTarget)) return;
+      if (
+        event.relatedTarget instanceof Node &&
+        panel.contains(event.relatedTarget)
+      ) {
+        return;
+      }
+      restorePinnedOrClose();
+    });
+
+    document.addEventListener('focusin', (event) => {
+      const anchor = interactiveFrom(event.target);
+      const key = keyFor(anchor);
+      if (anchor && key) show(key, anchor);
+    });
+    document.addEventListener('focusout', restorePinnedOrClose);
+
+    document.addEventListener('click', (event) => {
+      const control = controlFrom(event.target);
+      if (control) {
+        const key = keyFor(control);
+        if (key) togglePin(key, control);
+        return;
+      }
+
+      const trigger = externalTriggerFrom(event.target);
+      if (!trigger || trigger.closest('a')) return;
+      const key = keyFor(trigger);
+      if (!key) return;
+      event.preventDefault();
+      togglePin(key, trigger);
+    });
+
+    document.addEventListener('pointerdown', (event) => {
+      if (!pinned) return;
+      if (
+        interactiveFrom(event.target) ||
+        (event.target instanceof Node && panel.contains(event.target))
+      ) {
+        return;
+      }
+      pinned = null;
+      close();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || (!activeKey && !pinned)) return;
+      pinned = null;
+      close();
+    });
+
+    panel.addEventListener('pointerleave', restorePinnedOrClose);
+    window.addEventListener('resize', position, { passive: true });
+    window.addEventListener('scroll', position, {
+      passive: true,
+      capture: true,
+    });
+  }
+
+  for (const root of document.querySelectorAll<HTMLElement>(
+    '[data-notation-layer]',
+  )) {
+    setupNotationLayer(root);
+  }
+</script>
+
+<style>
+  @layer starlight.components {
+    .notation-layer {
+      margin-block: 2.5rem 1rem;
+      color: var(--sl-color-text);
+    }
+
+    .notation-layer-heading {
+      margin: 0 0 0.65rem;
+      font-size: var(--sl-text-lg);
+    }
+
+    .notation-list {
+      border: 1px solid var(--sl-color-gray-5);
+      border-radius: 0.6rem;
+      background: var(--sl-color-gray-7);
+    }
+
+    .notation-list > summary {
+      padding: 0.8rem 1rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .notation-count,
+    .notation-enhancement-help {
+      color: var(--sl-color-gray-3);
+      font-weight: 400;
+    }
+
+    .notation-list dl {
+      display: grid;
+      gap: 0;
+      margin: 0;
+      padding: 0 1rem 1rem;
+    }
+
+    .notation-entry {
+      display: grid;
+      grid-template-columns: minmax(9rem, 0.65fr) minmax(12rem, 1.35fr);
+      gap: 0.5rem 1rem;
+      padding-block: 0.85rem;
+      border-top: 1px solid var(--sl-color-gray-5);
+    }
+
+    .notation-entry dt,
+    .notation-entry dd,
+    .notation-entry p {
+      margin: 0;
+    }
+
+    .notation-entry dt {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.35rem 0.65rem;
+      font-weight: 600;
+    }
+
+    .notation-entry dd {
+      display: grid;
+      gap: 0.45rem;
+      color: var(--sl-color-gray-2);
+    }
+
+    .notation-symbol {
+      min-width: 2.25rem;
+      color: var(--sl-color-accent-high);
+    }
+
+    .notation-status {
+      padding: 0.08rem 0.35rem;
+      border: 1px solid var(--sl-color-gray-5);
+      border-radius: 999px;
+      color: var(--sl-color-gray-3);
+      font-size: var(--sl-text-xs);
+      font-weight: 500;
+    }
+
+    .notation-details,
+    .notation-formula,
+    .notation-units {
+      font-size: var(--sl-text-sm);
+    }
+
+    .notation-formula {
+      overflow-x: auto;
+      padding-block: 0.15rem;
+      color: var(--sl-color-text);
+    }
+
+    .notation-pin {
+      justify-self: start;
+      padding: 0.25rem 0.55rem;
+      border: 1px solid var(--sl-color-gray-5);
+      border-radius: 0.35rem;
+      color: var(--sl-color-text-accent);
+      background: var(--sl-color-bg);
+      font: inherit;
+      font-size: var(--sl-text-sm);
+      cursor: pointer;
+    }
+
+    .notation-pin:hover,
+    .notation-pin[aria-pressed='true'] {
+      border-color: var(--sl-color-accent);
+      background: var(--sl-color-accent-low);
+    }
+
+    .notation-enhancement-help {
+      margin: 0.55rem 0 0;
+      font-size: var(--sl-text-xs);
+    }
+
+    .notation-panel {
+      position: fixed;
+      z-index: 100;
+      width: min(23rem, calc(100vw - 1.5rem));
+      overflow: auto;
+      padding: 1rem;
+      border: 1px solid var(--sl-color-gray-5);
+      border-top: 0.25rem solid var(--sl-color-accent);
+      border-radius: 0.65rem;
+      color: var(--sl-color-text);
+      background: var(--sl-color-bg);
+      box-shadow: var(--sl-shadow-lg);
+    }
+
+    .notation-panel-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 0.7rem;
+    }
+
+    .notation-panel-heading h3,
+    .notation-panel p {
+      margin: 0;
+    }
+
+    .notation-panel-heading h3 {
+      font-size: var(--sl-text-base);
+    }
+
+    .notation-panel p {
+      margin-block: 0.65rem;
+      color: var(--sl-color-gray-2);
+      font-size: var(--sl-text-sm);
+      line-height: 1.5;
+    }
+
+    .notation-panel [data-panel-formula] {
+      overflow-x: auto;
+      margin-block: 0.65rem;
+      color: var(--sl-color-text);
+    }
+
+    .notation-panel-symbol {
+      color: var(--sl-color-accent-high);
+    }
+
+    .notation-layer :focus-visible,
+    .notation-panel :focus-visible {
+      outline: 3px solid var(--sl-color-accent);
+      outline-offset: 2px;
+    }
+  }
+
+  :global(.katex-html [data-notation-key]),
+  :global(.notation-term[data-notation-key]) {
+    border-radius: 0.16em;
+  }
+
+  :global(.katex-html [data-notation-key]) {
+    cursor: help;
+  }
+
+  :global(.katex-html [data-notation-key]:hover),
+  :global([data-notation-key].is-notation-active) {
+    background: var(--sl-color-accent-low);
+    box-shadow: 0 0 0 0.12em var(--sl-color-accent-low);
+  }
+
+  @media (max-width: 40rem) {
+    .notation-entry {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (forced-colors: active) {
+    :global(.katex-html [data-notation-key]:hover),
+    :global([data-notation-key].is-notation-active) {
+      outline: 2px solid Highlight;
+      color: HighlightText;
+      background: Highlight;
+      box-shadow: none;
+    }
+  }
+</style>

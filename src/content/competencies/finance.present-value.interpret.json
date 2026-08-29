@@ -1,0 +1,20 @@
+{
+  "id": "finance.present-value.interpret",
+  "title": "Interpret present value",
+  "domain": "finance",
+  "facet": "interpretation",
+  "outcome": "Explain present value as the valuation-time sum of discounted cash flows under stated assumptions.",
+  "prerequisites": [
+    "finance.cash-flow-perspective.apply",
+    "rates.discount-factor.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Present value is the undiscounted sum of all future cash flows."
+  ],
+  "editorialStatus": "draft"
+}

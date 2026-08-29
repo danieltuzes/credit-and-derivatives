@@ -1,0 +1,17 @@
+{
+  "id": "bonds.price-yield-curvature.interpret",
+  "title": "Interpret price-yield curvature",
+  "domain": "bonds",
+  "facet": "interpretation",
+  "outcome": "Recognize that equal yield changes generally produce unequal price changes in the simplified fixed-cash-flow model.",
+  "prerequisites": ["bonds.price-yield-direction.explain"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A fixed bond's price is a straight-line function of its yield."
+  ],
+  "editorialStatus": "draft"
+}

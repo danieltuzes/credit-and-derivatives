@@ -1,0 +1,17 @@
+{
+  "id": "rates.periodic-rate.calculate",
+  "title": "Calculate a periodic rate",
+  "domain": "rates",
+  "facet": "calculation",
+  "outcome": "Calculate the per-period rate j^(m)/m from a nominal annual rate j^(m) compounded m times per year.",
+  "prerequisites": ["rates.nominal-rate-quote.interpret"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Changing compounding frequency leaves the per-period rate unchanged."
+  ],
+  "editorialStatus": "draft"
+}

@@ -1,0 +1,17 @@
+{
+  "id": "bonds.coupon-amount.calculate",
+  "title": "Calculate a periodic coupon amount",
+  "domain": "bonds",
+  "facet": "calculation",
+  "outcome": "Calculate each level coupon as face value times annual coupon rate divided by payments per year.",
+  "prerequisites": ["bonds.fixed-rate-contract.interpret"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A bond's annual coupon rate is applied in full at every coupon date."
+  ],
+  "editorialStatus": "draft"
+}

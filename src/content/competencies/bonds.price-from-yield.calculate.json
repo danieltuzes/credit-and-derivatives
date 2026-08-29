@@ -3,11 +3,8 @@
   "title": "Price a fixed-coupon bond from yield",
   "domain": "bonds",
   "facet": "calculation",
-  "outcome": "Price a simplified fixed-coupon bond by discounting each promised cash flow at a flat yield.",
-  "prerequisites": [
-    "bonds.fixed-cashflows.identify",
-    "finance.present-value.calculate"
-  ],
+  "outcome": "Price a simplified fixed-coupon bond from a nominal annual yield compounded at the coupon frequency.",
+  "prerequisites": ["bonds.yield-to-maturity.interpret"],
   "evidence": {
     "minimumIndependentItems": 2,
     "requiresTransfer": true,

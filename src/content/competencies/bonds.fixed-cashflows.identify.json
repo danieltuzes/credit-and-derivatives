@@ -4,7 +4,7 @@
   "domain": "bonds",
   "facet": "calculation",
   "outcome": "Construct the coupon and principal cash-flow schedule of a simplified fixed-rate bond.",
-  "prerequisites": [],
+  "prerequisites": ["bonds.coupon-amount.calculate"],
   "evidence": {
     "minimumIndependentItems": 2,
     "requiresTransfer": true,

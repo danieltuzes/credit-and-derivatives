@@ -1,0 +1,86 @@
+{
+  "id": "rates-compounding-check",
+  "title": "Rates, compounding, and basis points check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "nominal-rate-quote-direct",
+      "type": "single-choice",
+      "competencyId": "rates.nominal-rate-quote.interpret",
+      "evidenceKind": "direct",
+      "prompt": "Under the lesson convention, what does a 6% nominal annual rate compounded semiannually imply?",
+      "options": [
+        {
+          "id": "three-per-half-year",
+          "label": "A 3% rate in each six-month period"
+        },
+        {
+          "id": "six-per-half-year",
+          "label": "A 6% rate in each six-month period"
+        },
+        { "id": "six-per-month", "label": "A 6% rate in each month" }
+      ],
+      "correctOptionId": "three-per-half-year",
+      "explanation": "For a nominal annual rate y compounded m times per year, the lesson convention uses y/m in each period: 6% / 2 = 3%."
+    },
+    {
+      "id": "nominal-rate-quote-transfer",
+      "type": "single-choice",
+      "competencyId": "rates.nominal-rate-quote.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "Two rates are both quoted as 6% nominal annually, but one compounds annually and the other monthly. Which statement is correct under the lesson convention?",
+      "options": [
+        {
+          "id": "frequency-matters",
+          "label": "Their per-period rates differ, and their one-year accumulation generally differs"
+        },
+        {
+          "id": "frequency-irrelevant",
+          "label": "They have identical per-period rates because both are quoted as 6%"
+        },
+        {
+          "id": "both-effective",
+          "label": "Both quotes must be 6% effective annual rates"
+        }
+      ],
+      "correctOptionId": "frequency-matters",
+      "explanation": "A nominal quote is incomplete without frequency; the period rate is y/m and compounding applies it m times."
+    },
+    {
+      "id": "periodic-rate-direct",
+      "type": "numeric",
+      "competencyId": "rates.periodic-rate.calculate",
+      "evidenceKind": "direct",
+      "prompt": "Enter the per-period rate as a decimal for a 6% nominal annual rate compounded twice per year.",
+      "answer": { "value": 0.03, "tolerance": 0.000000000001 },
+      "explanation": "With y = 0.06 and m = 2, the period rate is y/m = 0.06/2 = 0.03."
+    },
+    {
+      "id": "periodic-rate-transfer",
+      "type": "numeric",
+      "competencyId": "rates.periodic-rate.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "Enter the quarterly rate as a decimal for a 4.8% nominal annual rate compounded four times per year.",
+      "answer": { "value": 0.012, "tolerance": 0.000000000001 },
+      "explanation": "With y = 0.048 and m = 4, the quarterly rate is y/m = 0.048/4 = 0.012."
+    },
+    {
+      "id": "basis-points-direct",
+      "type": "numeric",
+      "competencyId": "rates.basis-points.convert",
+      "evidenceKind": "direct",
+      "prompt": "Express 75 basis points as a decimal rate.",
+      "answer": { "value": 0.0075, "tolerance": 0.000000000001 },
+      "explanation": "One basis point is 0.0001 in decimal-rate units, so 75 × 0.0001 = 0.0075."
+    },
+    {
+      "id": "basis-points-transfer",
+      "type": "numeric",
+      "competencyId": "rates.basis-points.convert",
+      "evidenceKind": "transfer",
+      "prompt": "A rate rises from 3.25% to 3.70%. How many basis points is the increase? Enter a number of basis points.",
+      "answer": { "value": 45, "tolerance": 0.000000001 },
+      "explanation": "The increase is 0.45 percentage point, and each percentage point contains 100 basis points: 0.45 × 100 = 45."
+    }
+  ]
+}

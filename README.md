@@ -50,17 +50,21 @@ Run `pnpm verify` before requesting review. It checks formatting, content
 references, TypeScript/Astro, numerical and curriculum tests, and the static
 production build.
 
-## What the skeleton already demonstrates
+## What the playground already demonstrates
 
 - A Starlight documentation site built as static HTML.
-- Two MDX lessons: discounting and bond price/yield.
+- One ordered eight-lesson path: four financial/rate foundations followed by
+  four fixed-rate bond lessons.
 - React learning labs embedded as selectively hydrated islands.
-- KaTeX equations and an Observable Plot price/yield curve.
+- Build-time KaTeX equations, semantic symbol explanations, a generated
+  notation glossary, and an Observable Plot price/yield curve.
 - Pure TypeScript present-value and bond-pricing functions.
-- Six atomic competencies and twelve direct/transfer assessment items.
+- Seventeen atomic competencies and eight assessment sets containing 34
+  direct/transfer items.
+- Nineteen shared notation entries plus page-local definitions.
 - A generated curriculum map.
 - Semantic validation of IDs, prerequisites, lesson order, track readiness,
-  assessment coverage, sources, and review status.
+  assessment coverage, notation scope, sources, and review status.
 - Unit, property-based, curriculum, browser, and accessibility test examples.
 
 The assessment records exist, but a learner-facing assessment renderer and
@@ -73,12 +77,15 @@ progress store are intentionally left for the next vertical slice.
 | `src/content/docs/`         | MDX lesson and site pages                               |
 | `src/content/competencies/` | Atomic knowledge and skill records                      |
 | `src/content/assessments/`  | Direct and transfer questions                           |
+| `src/content/notation/`     | Centralized shared notation definitions                 |
 | `src/content/sources/`      | Registered references                                   |
 | `src/content/tracks/`       | Intended learning paths                                 |
 | `src/content.config.ts`     | Authoritative schemas for all content                   |
 | `src/components/labs/`      | Interactive React views                                 |
 | `src/domain/`               | Pure financial and mathematical calculations            |
 | `src/curriculum/`           | Curriculum graph and semantic validation                |
+| `src/notation/`             | Notation parsing, registry, scoping, and KaTeX adapters |
+| `src/components/notation/`  | Page notation layer and generated glossary              |
 | `scripts/`                  | Repository-level validation commands                    |
 | `tests/`                    | Numerical, curriculum, browser, and accessibility tests |
 | `docs/`                     | Architecture, conventions, and review policies          |
@@ -93,6 +100,8 @@ The site separates concepts that are often accidentally conflated:
 - A **lesson** teaches an ordered set of competencies.
 - An **assessment item** provides evidence for one competency.
 - A **source** supports a factual, contractual, or quantitative claim.
+- A **notation entry** gives one semantic quantity a stable key, glyph, units,
+  meaning, curriculum home, and review state.
 - A **track** gives lessons an intended order.
 - A **lab** lets a learner manipulate a reviewed model.
 
@@ -131,12 +140,13 @@ Build one complete vertical slice at a time:
 4. Add at least two independent assessment items per competency, including a
    transfer item.
 5. Register the sources and exact locators that support the material.
-6. Write the MDX lesson, declaring `requires`, ordered `teaches`, assessments,
-   sources, and model assumptions.
-7. Add a lab only when changing an input materially improves understanding.
-8. Add the lesson ID to a track after its required competencies are available.
-9. Preview the lesson and curriculum map locally.
-10. Run `pnpm verify` and complete separate editorial and quantitative reviews.
+6. Reuse shared notation entries and add genuinely page-local definitions.
+7. Write the MDX lesson, declaring `requires`, ordered `teaches`, assessments,
+   sources, notation, and model assumptions.
+8. Add a lab only when changing an input materially improves understanding.
+9. Add the lesson ID to a track after its required competencies are available.
+10. Preview the lesson, notation layer, glossary, and curriculum map locally.
+11. Run `pnpm verify` and complete separate editorial and quantitative reviews.
 
 This order prevents polished prose from hiding a missing prerequisite or
 unassessed skill.
@@ -232,7 +242,7 @@ competency and declares whether it is `direct` or `transfer` evidence.
 ```
 
 The full schema supports numeric and single-choice items. See
-`src/content/assessments/discounting-check.json` for both forms.
+`src/content/assessments/discount-factor-check.json` for both forms.
 
 Assess the outcome, not trivia from the lesson. Numeric answers should come
 from reviewed domain code or an independent calculation. Do not copy a prose
@@ -257,11 +267,27 @@ teaches:
   - credit.hazard-from-survival.calculate
 assessments:
   - hazard-check
-sources:
-  - approved-credit-source
+sources: [] # NEEDS_SOURCE: register and verify the supporting source first.
 assumptions:
   - Piecewise-constant deterministic hazard
   - ACT/365F year fractions
+notation:
+  uses:
+    - valuation-time
+    - payment-time
+  local:
+    - key: hazard-interval-index
+      notation: i
+      title: Hazard interval index
+      summary: Selects one interval in this lesson's piecewise model.
+      details: The index is local bookkeeping, not a time or probability.
+      formula: 'i \in \{1,\ldots,n\}'
+      sources: []
+      seeAlso:
+        - payment-time
+      alignment:
+        kind: general
+        rationale: Finite indexing is part of the track entry assumptions.
 aiAssisted: true
 ---
 
@@ -308,7 +334,149 @@ Every quantitative lesson should include:
 - visible assumptions and failure modes;
 - registered sources with useful locators.
 
-### 5. Add or revise an interactive lab
+### 5. Author notation by semantic key
+
+Notation is define-once/reference-many content. The stable key describes the
+meaning; the LaTeX describes how that meaning is drawn. Do not use a glyph such
+as `r`, `P`, or `t` as the lookup key because the same glyph can mean different
+things in different models.
+
+Search `src/content/notation/` before adding anything. A quantity reused across
+lessons belongs in one Markdown file there:
+
+```md
+---
+key: discount-factor
+notation: 'D(0,t)'
+title: Discount factor
+aliases:
+  - present-value factor
+domain: rates
+units: current currency-units per future currency-unit
+perspective: Converts a deterministic future unit into value at valuation time.
+sources:
+  - tuckman-serrat-fixed-income
+seeAlso:
+  - valuation-time
+  - payment-time
+alignment:
+  kind: competency
+  introducedByCompetency: rates.discount-factor.interpret
+  introducedInLesson: foundations.discount-factors
+editorialStatus: draft
+aiAssisted: true
+---
+
+The discount factor is the value at \term{valuation-time} of one deterministic
+unit paid at a future \term{payment-time} under the stated model.
+```
+
+The first body paragraph should work as the short page-layer explanation. The
+remaining body can add equations, distinctions, and limitations. Shared entries
+have their own sources and review state; AI-assisted entries begin as `draft`.
+
+Each lesson declares the shared keys it imports and any definitions that are
+meaningful only on that page:
+
+```yaml
+notation:
+  uses:
+    - discount-factor
+    - payment-time
+  local:
+    - key: discounting-payment-index
+      notation: k
+      title: Discounting payment index
+      summary: Selects one payment and its matching discount factor.
+      details: The index is bookkeeping; t_k is the time in years.
+      formula: 'k \in \{1,\ldots,n\}'
+      sources: []
+      seeAlso:
+        - payment-time
+      alignment:
+        kind: general
+        rationale: Finite indexing is part of the track entry assumptions.
+```
+
+`notation.uses` imports **shared** definitions. Local keys are automatically in
+that lesson's lexical scope and should not be repeated in `uses`. Promote a
+local entry to `src/content/notation/` when another lesson needs the same
+meaning. A local entry inherits the lesson's review state; its sources must
+still be declared explicitly when it makes a sourced claim.
+
+Reference an imported or local definition in prose with:
+
+```md
+The \term\{discount-factor\} converts a future unit to valuation time.
+```
+
+In an `.mdx` lesson, the braces in `\term\{key\}` must be backslash-escaped so
+MDX does not treat them as a JavaScript expression. The Markdown parser removes
+those brace escapes, so the notation plugin receives the normal `\term{key}`
+form and replaces it with the definition's titled glossary link. Shared
+notation bodies are `.md`, not `.mdx`, and therefore use normal
+`\term{key}` without escaped braces.
+
+Inside math, annotate the complete visual token separately from its semantic
+key:
+
+```tex
+\explain{discount-factor}{D(0,t)}
+```
+
+Annotations can nest when a complete expression and an inner symbol need
+different explanations:
+
+```tex
+\explain{signed-cash-flow}{CF_{\explain{payment-index}{k}}}
+```
+
+Use `\term\{key\}` only in MDX prose and `\explain{key}{latex}` only inside
+`$...$` or `$$...$$` math. Do not use `\(...\)` or `\[...\]` as lesson math
+delimiters. Code spans and code blocks are left literal. Bare LaTeX continues
+to render normally but does not receive a semantic explanation. Inline
+definition forms such as
+`\explain[def]` and `:::def` are intentionally unsupported: definitions must
+remain visible in schema-checked frontmatter or the notation collection.
+
+At build time, the registry resolves local scope before shared scope, checks
+declared imports and references, detects conflicts and reference cycles,
+validates curriculum alignment and review states, and records transitive page
+bundles and backlinks. KaTeX then renders HTML and MathML; its trusted
+`\explain` macro may emit only a validated `data-notation-key`. Direct
+author-written `\htmlData` is rejected, and the marker cannot inject links,
+styles, scripts, or arbitrary HTML.
+
+Every notation-enabled lesson receives a static native disclosure containing
+the registry's resolved transitive definition bundle. The glossary renders
+shared definitions. A small browser enhancement adds hover, focus, tap, and
+pin behavior, but it does not perform math or own definitions. With JavaScript
+disabled, equations, MathML, the page notation list, and glossary links still
+work.
+
+When editing notation:
+
+1. Decide whether the meaning is shared or truly page-local.
+2. Reuse the existing semantic key; do not create a synonym to change only a
+   glyph.
+3. Declare every shared key in `notation.uses`.
+4. Add MDX `\term\{key\}` and math `\explain{key}{latex}` only where an
+   explanation aids the learner.
+5. Check title, glyph, units, perspective, `seeAlso`, sources, and curriculum
+   alignment together.
+6. Preview the symbol interaction with pointer, keyboard, touch, and JavaScript
+   disabled.
+7. Run `pnpm validate:content` and `pnpm verify`.
+
+See [`docs/notation-and-units.md`](docs/notation-and-units.md) for canonical
+symbols and [ADR 0002](docs/adr/0002-notation-authoring.md) for the architectural
+decision.
+
+`seeAlso` is navigation, not a prerequisite edge. Its targets are still
+scope-checked; a shared target used by a local definition must appear in that
+lesson's `notation.uses`.
+
+### 6. Add or revise an interactive lab
 
 Editors should reuse approved labs. A new model requires developer and
 quantitative review.
@@ -326,7 +494,7 @@ A lab must have:
 
 Never evaluate a formula string as JavaScript or compile user-submitted MDX.
 
-### 6. Put the lesson in a track
+### 7. Put the lesson in a track
 
 Add the lesson ID to a record under `src/content/tracks/`. The validator walks
 the track in order and fails if a lesson appears before a required competency
@@ -350,6 +518,7 @@ A reviewed quantitative lesson requires:
 - quantitative review of formulas, conventions, units, and examples;
 - an independent numerical check;
 - reviewed source records;
+- reviewed shared notation entries and verified local notation;
 - successful `pnpm verify`;
 - manual keyboard and responsive-layout inspection.
 
@@ -363,6 +532,10 @@ separate passes and record it honestly. AI review is not human approval.
 - [ ] Each new competency has sufficient direct and transfer evidence.
 - [ ] Current or contractual claims have dated, registered sources.
 - [ ] Units, dates, calendars, day counts, signs, and compounding are explicit.
+- [ ] Shared notation is imported with `notation.uses`; local notation is
+      page-specific, aligned, sourced where necessary, and referenced.
+- [ ] `\term` and `\explain` keys resolve to the intended meaning and the
+      generated page layer remains useful without JavaScript.
 - [ ] Worked numbers reproduce from reviewed code or an independent check.
 - [ ] Important simplifications are visible beside the model.
 - [ ] Charts have a meaningful text and tabular alternative.
@@ -405,9 +578,9 @@ See [`AI_POLICY.md`](AI_POLICY.md) for the enforceable project policy.
 | Command                 | Purpose                                                 |
 | ----------------------- | ------------------------------------------------------- |
 | `pnpm dev`              | Start the editor preview                                |
-| `pnpm validate:content` | Validate graph and cross-content references             |
+| `pnpm validate:content` | Validate curriculum and notation references             |
 | `pnpm check`            | Run Astro and TypeScript checks                         |
-| `pnpm test`             | Run numerical and curriculum tests once                 |
+| `pnpm test`             | Run numerical, curriculum, and notation tests once      |
 | `pnpm test:watch`       | Rerun tests while editing                               |
 | `pnpm test:e2e`         | Run browser and automated accessibility examples        |
 | `pnpm build`            | Validate and build the static production site           |
@@ -415,9 +588,22 @@ See [`AI_POLICY.md`](AI_POLICY.md) for the enforceable project policy.
 | `pnpm format`           | Format supported files                                  |
 | `pnpm verify`           | Run all required pre-review checks except browser tests |
 
-## Recommended next vertical slices
+## Current eight-lesson path and next slices
 
-Proceed in this order rather than generating the full curriculum at once:
+The current draft track deliberately separates ideas that the original
+two-page skeleton combined:
+
+1. Cash-flow timelines and perspective.
+2. Rate quotes, compounding, and basis points.
+3. Discount factors.
+4. Present value of a cash-flow schedule.
+5. Fixed-rate bond contract and cash flows.
+6. Bond price from discount factors.
+7. Yield to maturity as a single-rate summary.
+8. The bond price-yield relationship.
+
+Complete review of this path before using it as assumed knowledge. The next
+vertical slices are:
 
 1. Render assessment JSON in lessons and store versioned local attempts.
 2. Add bond schedules, day counts, accrued interest, and clean/dirty price.
@@ -428,8 +614,8 @@ Proceed in this order rather than generating the full curriculum at once:
 7. Add CDX series, rolls, index factor, defaults, and risk mapping.
 8. Add option foundations, then bond, CDS, and CDX option branches.
 
-For each slice, finish competencies, assessment evidence, sources, lesson,
-model, lab, tests, and review before starting the next product.
+For each slice, finish competencies, assessment evidence, sources, notation,
+lesson, model, lab, tests, and review before starting the next product.
 
 ## Troubleshooting
 
@@ -454,6 +640,22 @@ changing sidebar order.
 Check frontmatter against `src/content.config.ts`. Close JSX tags and import
 only repository components. Browser APIs belong inside client components, not
 at MDX module scope.
+
+### Validation reports an undeclared or undefined notation key
+
+Check the semantic key, not the displayed LaTeX. A shared `\term\{key\}` or
+`\explain{key}{latex}` key must exist under `src/content/notation/` and appear in the
+lesson's `notation.uses`. A local key must exist in that lesson's
+`notation.local`. Keys are case-sensitive. Do not fix the error by duplicating
+the definition under a new key.
+
+### A symbol renders but has no explanation
+
+Bare LaTeX is valid and intentionally has no notation behavior. Wrap the
+complete visual token with `\explain{semantic-key}{latex}` and confirm the key
+is in scope. Use `\term\{semantic-key\}` for MDX prose. Math must use `$...$`
+or `$$...$$`; do not use `\(...\)` or `\[...\]`. If KaTeX reports an error,
+check balanced braces and keep the key separate from the LaTeX argument.
 
 ### A test disagrees with a worked example
 

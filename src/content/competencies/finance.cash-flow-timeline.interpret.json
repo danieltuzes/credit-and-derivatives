@@ -1,0 +1,17 @@
+{
+  "id": "finance.cash-flow-timeline.interpret",
+  "title": "Interpret a cash-flow timeline",
+  "domain": "finance",
+  "facet": "interpretation",
+  "outcome": "Read the amount and timing of each cash flow from a stated valuation-time timeline.",
+  "prerequisites": [],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Cash flows with the same amount are interchangeable even when their payment times differ."
+  ],
+  "editorialStatus": "draft"
+}

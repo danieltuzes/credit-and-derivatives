@@ -1,0 +1,15 @@
+{
+  "id": "rates.basis-points.convert",
+  "title": "Convert basis points",
+  "domain": "rates",
+  "facet": "calculation",
+  "outcome": "Convert rate changes among decimal, percentage-point, and basis-point units.",
+  "prerequisites": ["rates.nominal-rate-quote.interpret"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": ["One basis point is one percentage point."],
+  "editorialStatus": "draft"
+}

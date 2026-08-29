@@ -3,7 +3,7 @@
   "title": "Explain the price-yield direction",
   "domain": "bonds",
   "facet": "knowledge",
-  "outcome": "Explain why the price of positive fixed cash flows moves inversely to yield.",
+  "outcome": "Explain why the price of positive fixed cash flows moves inversely to yield while discounting denominators remain positive.",
   "prerequisites": ["bonds.price-from-yield.calculate"],
   "evidence": {
     "minimumIndependentItems": 2,

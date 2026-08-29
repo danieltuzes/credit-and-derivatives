@@ -1,0 +1,62 @@
+{
+  "id": "present-value-check",
+  "title": "Present value check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "pv-meaning-direct",
+      "type": "single-choice",
+      "competencyId": "finance.present-value.interpret",
+      "evidenceKind": "direct",
+      "prompt": "Under stated discount factors and a valuation time of 0, what does the present value of a future cash-flow stream represent?",
+      "options": [
+        {
+          "id": "valuation-time-sum",
+          "label": "The valuation-time sum of the individually discounted cash flows"
+        },
+        {
+          "id": "future-total",
+          "label": "The undiscounted total of every future cash flow"
+        },
+        {
+          "id": "latest-payment",
+          "label": "Only the cash flow at the latest payment time"
+        }
+      ],
+      "correctOptionId": "valuation-time-sum",
+      "explanation": "Present value puts each dated cash flow at the common valuation time using its discount factor, then adds the contributions."
+    },
+    {
+      "id": "pv-meaning-transfer",
+      "type": "single-choice",
+      "competencyId": "finance.present-value.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "Every cash flow in a stream is positive. A second stated discount-factor set is smaller at every payment time. What happens to present value?",
+      "options": [
+        { "id": "pv-lower", "label": "Present value is lower" },
+        { "id": "pv-higher", "label": "Present value is higher" },
+        { "id": "pv-same", "label": "Present value is unchanged" }
+      ],
+      "correctOptionId": "pv-lower",
+      "explanation": "Each positive cash flow is multiplied by a smaller non-negative factor, so every contribution and their sum are lower."
+    },
+    {
+      "id": "pv-direct",
+      "type": "numeric",
+      "competencyId": "finance.present-value.calculate",
+      "evidenceKind": "direct",
+      "prompt": "From a holder's perspective, a deterministic USD 1,000 receipt at t = 2 years has discount factor D(0,2) = 0.9070294785. What is its time-zero present value in USD?",
+      "answer": { "value": 907.0294785, "tolerance": 0.01 },
+      "explanation": "Multiply the future cash flow by its discount factor."
+    },
+    {
+      "id": "pv-transfer",
+      "type": "numeric",
+      "competencyId": "finance.present-value.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "From a holder's perspective, two deterministic USD 100 receipts at different future dates have matching discount factors 0.97 and 0.93. What is their total time-zero present value in USD?",
+      "answer": { "value": 190, "tolerance": 0.01 },
+      "explanation": "Discount each dated payment and then add: 100 × 0.97 + 100 × 0.93 = 190."
+    }
+  ]
+}

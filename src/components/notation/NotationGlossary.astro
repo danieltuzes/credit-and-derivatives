@@ -1,0 +1,250 @@
+---
+import { getCollection, render } from 'astro:content';
+
+const [notationEntries, lessonEntries] = await Promise.all([
+  getCollection('notation'),
+  getCollection('docs', ({ data }) => typeof data.lessonId === 'string'),
+]);
+const lessonsByNotationKey = new Map<string, typeof lessonEntries>();
+const notationTitleByKey = new Map(
+  notationEntries.map((entry) => [entry.data.key, entry.data.title]),
+);
+for (const lesson of lessonEntries) {
+  for (const key of lesson.data.notation.uses) {
+    const current = lessonsByNotationKey.get(key) ?? [];
+    current.push(lesson);
+    lessonsByNotationKey.set(key, current);
+  }
+}
+
+const renderedEntries = await Promise.all(
+  notationEntries
+    .sort(
+      (left, right) =>
+        left.data.domain.localeCompare(right.data.domain) ||
+        left.data.title.localeCompare(right.data.title),
+    )
+    .map(async (entry) => ({
+      entry,
+      Content: (await render(entry)).Content,
+    })),
+);
+---
+
+<p class="glossary-intro">
+  These definitions are generated from the shared notation collection. Every
+  entry is still <strong>draft</strong> until its wording, convention, source locator,
+  and curriculum owner receive human review.
+</p>
+
+<nav class="glossary-index" aria-label="Notation glossary index">
+  <ul>
+    {
+      renderedEntries.map(({ entry }) => (
+        <li>
+          <a href={`#notation-${entry.data.key}`}>{entry.data.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<div class="notation-glossary">
+  {
+    renderedEntries.map(({ entry, Content }) => {
+      const backlinks = (lessonsByNotationKey.get(entry.data.key) ?? []).sort(
+        (left, right) => left.data.title.localeCompare(right.data.title),
+      );
+      return (
+        <article id={`notation-${entry.data.key}`}>
+          <header>
+            <code
+              class="glossary-symbol"
+              aria-label={`LaTeX symbol: ${entry.data.notation}`}
+            >
+              {entry.data.notation}
+            </code>
+            <div>
+              <h2>{entry.data.title}</h2>
+              <code>{entry.data.key}</code>
+            </div>
+            <span class="glossary-status">{entry.data.editorialStatus}</span>
+          </header>
+
+          <dl class="glossary-metadata">
+            <div>
+              <dt>Domain</dt>
+              <dd>{entry.data.domain}</dd>
+            </div>
+            {entry.data.units && (
+              <div>
+                <dt>Units</dt>
+                <dd>{entry.data.units}</dd>
+              </div>
+            )}
+            {entry.data.perspective && (
+              <div>
+                <dt>Perspective</dt>
+                <dd>{entry.data.perspective}</dd>
+              </div>
+            )}
+            {entry.data.aliases.length > 0 && (
+              <div>
+                <dt>Aliases</dt>
+                <dd>{entry.data.aliases.join(', ')}</dd>
+              </div>
+            )}
+            {entry.data.seeAlso.length > 0 && (
+              <div>
+                <dt>See also</dt>
+                <dd class="see-also">
+                  {entry.data.seeAlso.map((key) => (
+                    <a href={`#notation-${key}`}>
+                      {notationTitleByKey.get(key) ?? key}
+                    </a>
+                  ))}
+                </dd>
+              </div>
+            )}
+          </dl>
+
+          <div class="glossary-definition">
+            <Content />
+          </div>
+
+          <footer>
+            <p>
+              <strong>Introduced by:</strong>{' '}
+              {entry.data.alignment.kind === 'competency' ? (
+                <>
+                  <code>{entry.data.alignment.introducedByCompetency}</code> in{' '}
+                  <code>{entry.data.alignment.introducedInLesson}</code>
+                </>
+              ) : (
+                entry.data.alignment.rationale
+              )}
+            </p>
+            {backlinks.length > 0 && (
+              <p>
+                <strong>Used directly in:</strong>{' '}
+                {backlinks.map((lesson, index) => (
+                  <>
+                    {index > 0 && ', '}
+                    <a href={`/${lesson.id}/`}>{lesson.data.title}</a>
+                  </>
+                ))}
+              </p>
+            )}
+            <p>
+              <strong>Source records:</strong>{' '}
+              {entry.data.sources.length > 0
+                ? entry.data.sources.map((source) => <code>{source}</code>)
+                : 'None declared.'}
+            </p>
+          </footer>
+        </article>
+      );
+    })
+  }
+</div>
+
+<style>
+  .glossary-index ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 0.35rem 1rem;
+    padding-inline-start: 1.25rem;
+  }
+
+  .notation-glossary {
+    display: grid;
+    gap: 1.5rem;
+    margin-block-start: 2rem;
+  }
+
+  article {
+    scroll-margin-block-start: 5rem;
+    padding: 1.25rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.7rem;
+    background: var(--sl-color-gray-7);
+  }
+
+  article > header {
+    display: grid;
+    grid-template-columns: minmax(4rem, auto) 1fr auto;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  article h2 {
+    margin: 0;
+    font-size: var(--sl-text-xl);
+  }
+
+  .glossary-symbol {
+    color: var(--sl-color-accent-high);
+    font-size: 1.2rem;
+  }
+
+  .glossary-status {
+    padding: 0.15rem 0.5rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 999px;
+    color: var(--sl-color-gray-3);
+    font-size: var(--sl-text-xs);
+  }
+
+  .glossary-metadata {
+    display: grid;
+    gap: 0.45rem;
+    margin-block: 1rem;
+  }
+
+  .glossary-metadata div {
+    display: grid;
+    grid-template-columns: minmax(6rem, 0.3fr) 1fr;
+    gap: 0.75rem;
+  }
+
+  .glossary-metadata dt {
+    font-weight: 600;
+  }
+
+  .glossary-metadata dd {
+    margin: 0;
+  }
+
+  .see-also {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.8rem;
+  }
+
+  article > footer {
+    margin-block-start: 1rem;
+    padding-block-start: 0.75rem;
+    border-top: 1px solid var(--sl-color-gray-5);
+    color: var(--sl-color-gray-2);
+    font-size: var(--sl-text-sm);
+  }
+
+  article > footer p {
+    margin-block: 0.4rem;
+  }
+
+  article > footer code + code {
+    margin-inline-start: 0.35rem;
+  }
+
+  @media (max-width: 36rem) {
+    article > header {
+      grid-template-columns: 1fr;
+    }
+
+    .glossary-metadata div {
+      grid-template-columns: 1fr;
+      gap: 0.1rem;
+    }
+  }
+</style>

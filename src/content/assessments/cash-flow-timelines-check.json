@@ -1,0 +1,72 @@
+{
+  "id": "cash-flow-timelines-check",
+  "title": "Cash-flow timelines check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "cash-flow-timeline-direct",
+      "type": "single-choice",
+      "competencyId": "finance.cash-flow-timeline.interpret",
+      "evidenceKind": "direct",
+      "prompt": "From a holder's perspective, a timeline is measured in years from valuation time 0 and shows USD +25 at t = 1 and USD +100 at t = 2. Which reading is correct?",
+      "options": [
+        {
+          "id": "timeline-correct",
+          "label": "The USD 25 receipt occurs after one year and the USD 100 receipt after two years"
+        },
+        {
+          "id": "timeline-reversed",
+          "label": "The USD 100 receipt occurs after one year and the USD 25 receipt after two years"
+        },
+        {
+          "id": "timeline-today",
+          "label": "Both cash flows occur at valuation time"
+        }
+      ],
+      "correctOptionId": "timeline-correct",
+      "explanation": "Each amount is paired with its stated time measured from valuation time 0."
+    },
+    {
+      "id": "cash-flow-timeline-transfer",
+      "type": "single-choice",
+      "competencyId": "finance.cash-flow-timeline.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "Time is measured in years from valuation time 0. Where does a payment scheduled 18 months later belong?",
+      "options": [
+        { "id": "time-one-half", "label": "t = 0.5" },
+        { "id": "time-one", "label": "t = 1" },
+        { "id": "time-one-five", "label": "t = 1.5" }
+      ],
+      "correctOptionId": "time-one-five",
+      "explanation": "Under the stated units, 18 months is 1.5 years after valuation time."
+    },
+    {
+      "id": "cash-flow-perspective-direct",
+      "type": "single-choice",
+      "competencyId": "finance.cash-flow-perspective.apply",
+      "evidenceKind": "direct",
+      "prompt": "Use the convention that inflows are positive and outflows are negative. From an investor's perspective, how is principal received at maturity signed?",
+      "options": [
+        { "id": "investor-positive", "label": "Positive" },
+        { "id": "investor-negative", "label": "Negative" },
+        { "id": "investor-no-sign", "label": "It has no sign" }
+      ],
+      "correctOptionId": "investor-positive",
+      "explanation": "Principal received is an inflow to the investor, so it is positive under the stated convention."
+    },
+    {
+      "id": "cash-flow-perspective-transfer",
+      "type": "single-choice",
+      "competencyId": "finance.cash-flow-perspective.apply",
+      "evidenceKind": "transfer",
+      "prompt": "Use the convention that inflows are positive and outflows are negative. From an issuer's perspective, how is a coupon paid to investors signed?",
+      "options": [
+        { "id": "issuer-positive", "label": "Positive" },
+        { "id": "issuer-negative", "label": "Negative" },
+        { "id": "issuer-no-sign", "label": "It has no sign" }
+      ],
+      "correctOptionId": "issuer-negative",
+      "explanation": "A coupon payment is an outflow from the issuer, so it is negative under the stated convention."
+    }
+  ]
+}

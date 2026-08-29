@@ -1,0 +1,20 @@
+{
+  "id": "bonds.price-from-discount-factors.calculate",
+  "title": "Price a bond from discount factors",
+  "domain": "bonds",
+  "facet": "calculation",
+  "outcome": "Price a simplified fixed-rate bond by multiplying each promised cash flow by its stated discount factor and summing the results.",
+  "prerequisites": [
+    "bonds.fixed-cashflows.identify",
+    "finance.present-value.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "One discount factor can be applied to every payment regardless of its date."
+  ],
+  "editorialStatus": "draft"
+}

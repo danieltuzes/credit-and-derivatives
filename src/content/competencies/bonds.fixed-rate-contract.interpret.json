@@ -1,0 +1,20 @@
+{
+  "id": "bonds.fixed-rate-contract.interpret",
+  "title": "Interpret a simplified fixed-rate bond contract",
+  "domain": "bonds",
+  "facet": "interpretation",
+  "outcome": "Identify face value, annual coupon rate, coupon frequency, maturity, and principal redemption in a simplified fixed-rate bond description.",
+  "prerequisites": [
+    "finance.cash-flow-perspective.apply",
+    "rates.nominal-rate-quote.interpret"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The face value, coupon rate, and market price are the same contract field."
+  ],
+  "editorialStatus": "draft"
+}

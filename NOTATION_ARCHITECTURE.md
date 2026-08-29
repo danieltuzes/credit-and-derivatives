@@ -1,218 +1,320 @@
 # Notation, explanations, and the build pipeline
 
-Working notes for a define-once / reference-many system for mathematical
-notation, and how it would sit inside the current Astro + Starlight build.
-Nothing here is built yet; `src/pages/test_equation.astro` is a standalone
-prototype that does not use the site pipeline.
+Technical notes for the define-once/reference-many notation system. Editors
+should start with the root `README.md`; the accepted decision is summarized in
+`docs/adr/0002-notation-authoring.md`.
 
-## 1. What exists today
+## 1. Implementation status
 
-| Piece                                 | Role                                                                                                                                                                                                                           |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Astro** (`output: 'static'`)        | Routing from the file tree, content collections + Zod schema checks, orchestration of remark/rehype, static HTML generation, island hydration, asset bundling via Vite, dev server.                                            |
-| **Starlight**                         | Docs shell: sidebar, table of contents, search, page layout. Owns the `docs` collection loader.                                                                                                                                |
-| **MDX**                               | The lesson format. `src/content/docs/**/*.mdx`. Frontmatter is schema-checked in `src/content.config.ts`.                                                                                                                      |
-| **remark-math + rehype-katex**        | Math is rendered to HTML+MathML **at build time**. No math JavaScript is shipped.                                                                                                                                              |
-| **React islands**                     | `src/components/labs/*.tsx`, imported into MDX and hydrated with `client:visible`. Interactivity only.                                                                                                                         |
-| **`src/domain/*.ts`**                 | Pure, typed, tested math. Imported by islands and by Vitest. Never imports React, Astro, or DOM.                                                                                                                               |
-| **`scripts/validate-curriculum.ts`**  | Build-time semantic validation across collections (unknown IDs, cycles, ordering). Run by `pnpm build` and `pnpm verify`.                                                                                                      |
-| **Prototype** (`test_equation.astro`) | Loads **MathJax from CDN** and hand-writes `variableExplanations` objects in inline `<script>`. Diverges from the real pipeline (which is KaTeX, build-time). Treat it as a sketch of the _interaction_, not the architecture. |
+The production path now uses the existing Astro, Starlight, remark-math, and
+build-time KaTeX pipeline. It does not use MathJax, a CDN, runtime math
+rendering, or hand-written JavaScript explanation dictionaries.
 
-## 2. Where the explanation database comes from
+Implemented in the current notation slice:
 
-The database is a **build artifact**, never hand-maintained. It is assembled
-from content the author already writes:
+- a shared Markdown collection under `src/content/notation/`;
+- schema-checked `notation.uses` and `notation.local` lesson frontmatter;
+- MDX prose `\term\{key\}` references, normalized by the parser to
+  `\term{key}`, and math `\explain{key}{latex}` annotations;
+- lexical local-then-shared scope;
+- nested math annotations;
+- deterministic registry validation, page bundles, and basic backlinks;
+- curriculum-alignment and review-state checks;
+- a narrowly trusted KaTeX `data-notation-key` marker;
+- build-time HTML and MathML;
+- a static page notation disclosure and shared glossary;
+- optional hover, focus, tap, and pin presentation behavior.
 
-- **Shared symbols** -- one file per reused quantity in a new
-  `src/content/notation/` collection (`pricing-measure.md`,
-  `survival-probability.md`, ...). Frontmatter: `key`, `notation`, `aliases`,
-  `domain`, `sources`, `seeAlso`, `editorialStatus`, `aiAssisted`. Body: the
-  explanation prose, which **may itself contain `\term{...}` references** to
-  other entries.
-- **Local glosses** -- `:::def{key=...}` blocks inside a single lesson's MDX,
-  for symbols that only that lesson uses.
-- **References** -- `\explain{key}{latex}` in math and `\term{key}` in prose.
-  These consume entries; a bare first `\explain[def]{key}{latex}{one-line}` may
-  also _create_ a trivial entry.
+Deliberately deferred:
 
-A `build:notation` step (sibling of `validate:content`) harvests all three,
-merges them, resolves references, and emits:
+- `\explain[def]`, `:::def`, and equation-local definition syntax;
+- a generated JSON file or Vite virtual registry module;
+- richer recursively nested panel bodies;
+- automatic per-equation notation tables;
+- automated round-trips from notation examples to `src/domain/` functions.
+
+The old `src/pages/test_equation.astro` prototype, if retained while migration
+is reviewed, is only a historical interaction sketch. Its MathJax/CDN and
+inline dictionary approach is not part of the site architecture.
+
+## 2. Author-owned inputs
+
+There are three explicit inputs.
+
+### Shared definitions
+
+One Markdown file under `src/content/notation/` owns a reused meaning. Its
+frontmatter includes:
+
+```yaml
+key: discount-factor
+notation: 'D(0,t)'
+title: Discount factor
+aliases:
+  - present-value factor
+domain: rates
+units: current currency-units per future currency-unit
+perspective: Converts a deterministic future unit to valuation time.
+sources:
+  - tuckman-serrat-fixed-income
+seeAlso:
+  - valuation-time
+  - payment-time
+alignment:
+  kind: competency
+  introducedByCompetency: rates.discount-factor.interpret
+  introducedInLesson: foundations.discount-factors
+editorialStatus: draft
+aiAssisted: true
+```
+
+The body contains the explanation and may itself use `\term{...}` to reference
+other shared definitions. The first paragraph is suitable for the compact page
+layer; the complete rendered body belongs in the glossary.
+
+### Lesson imports and local definitions
+
+Lessons import reusable entries and own page-specific bookkeeping in
+frontmatter:
+
+```yaml
+notation:
+  uses:
+    - discount-factor
+    - payment-time
+  local:
+    - key: discounting-payment-index
+      notation: k
+      title: Discounting payment index
+      summary: Selects one payment and its matching discount factor.
+      details: The index is bookkeeping; t_k is the time in years.
+      formula: 'k \in \{1,\ldots,n\}'
+      sources: []
+      seeAlso:
+        - payment-time
+      alignment:
+        kind: general
+        rationale: Finite indexing is part of the track entry assumptions.
+```
+
+`uses` lists shared imports only. Local keys are automatically available in
+that lesson and inherit its editorial status. When a second page needs a local
+meaning, the editor promotes it to a shared collection entry rather than
+copying it.
+
+### References
+
+MDX prose consumes a definition with escaped braces:
+
+```md
+The \term\{discount-factor\} converts one future unit to valuation time.
+```
+
+The escape is for MDX's expression grammar, not part of the semantic key. The
+Markdown AST exposes normal `\term{discount-factor}` to the notation adapter.
+Shared notation bodies use ordinary `.md`, so they author `\term{key}` without
+brace escapes.
+
+Math uses `$...$` or `$$...$$` delimiters and keeps semantic identity separate
+from visual LaTeX:
+
+```tex
+\explain{discount-factor}{D(0,t)}
+```
+
+Annotations may nest:
+
+```tex
+\explain{signed-cash-flow}{CF_{\explain{payment-index}{k}}}
+```
+
+Do not use `\(...\)` or `\[...\]` as lesson math delimiters.
+
+The nearest nested marker wins pointer hit-testing, while the outer expression
+retains its own definition. Code spans, code blocks, MDX expressions, and raw
+HTML are not rewritten. Bare math remains ordinary KaTeX without a semantic
+target.
+
+## 3. Registry construction and validation
+
+The registry is a deterministic in-memory build product, not an author-edited
+database or committed generated file.
 
 ```mermaid
 flowchart TD
-  A["src/content/notation/*.md<br/>shared, reused symbols"] --> H
-  B[":::def blocks inside<br/>lesson .mdx -- local glosses"] --> H
-  C["\explain{key}{latex} in math<br/>\term{key} in prose"] -. referenced by .-> H
-  H["build:notation<br/>harvest + merge + resolve + validate"] --> R["notation registry JSON<br/>.astro/ cache or virtual:notation module"]
-  R --> P["lesson pages: symbol links + hover panels"]
-  R --> G["auto-generated glossary page"]
-  R --> E["interactive equation island"]
-  H --> V["validation report:<br/>undefined / ambiguous / cyclic / unused / conflicting"]
+  A["src/content/notation/**/*.md<br/>shared definitions"] --> R
+  B["lesson notation.uses/local<br/>scope and local definitions"] --> R
+  C["\\term and \\explain<br/>semantic references"] --> R
+  R["notation registry<br/>resolve + validate"] --> BUNDLE["validated page bundles"]
+  R --> BACK["validated backlink records"]
+  A --> GLOSS
+  BUNDLE --> PAGE
+  B --> GLOSS
+  R --> DIAG["errors and warnings"]
+  BUNDLE --> DIAG
+  BACK --> DIAG
+  C --> MATH["KaTeX semantic markers"]
+  PAGE["page notation layer"]
+  GLOSS["shared glossary"]
 ```
 
-**When:** at `pnpm build`, and on dev-server start / file watch.
-**From what:** the `notation` collection + `:::def` blocks + `\explain`
-payloads. **Consumed by:** the rendered pages, the generated glossary, and the
-equation island (as props / embedded JSON -- not a hand-written object).
+Shared definition bodies can resolve only shared definitions. A page and its
+local definition prose resolve local definitions first and then shared imports.
+This is lexical scope; “most recently defined” and raw-glyph matching are never
+used. `seeAlso` targets follow the same lexical/import checks but remain
+navigational links, not dependency edges; reciprocal “see also” links therefore
+do not create definition cycles or enlarge a page bundle.
 
-## 3. MDX to HTML: steps and intermediate forms
+Validation covers:
+
+- invalid or duplicate keys and pages;
+- duplicate or conflicting definitions;
+- missing and duplicate shared imports;
+- undeclared, undefined, and unused references;
+- unused imports and unreachable definitions;
+- definition-reference cycles, including nested definition prose;
+- unknown competency and lesson alignment IDs;
+- introduction order and alignment availability;
+- inconsistent review states;
+- deterministic page bundles and backlinks.
+
+The page disclosure consumes the registry's resolved transitive bundle at
+build time. The glossary consumes the schema-checked shared notation
+collection directly. No generated registry file is committed; a generated or
+virtual module remains deferred until it would materially simplify or speed up
+the build.
+
+Errors fail `pnpm validate:content`, `pnpm build`, and `pnpm verify`. Warnings
+surface review debt without silently changing authored content.
+
+## 4. MDX to static output
 
 ```mermaid
 flowchart TD
-  MDX["lesson.mdx"] --> FM["content layer:<br/>parse frontmatter, Zod schema check<br/>to .astro/data-store.json"]
-  FM --> RM["remark stage (mdast):<br/>remark-math, remark-directive,<br/>notation harvest + reference rewrite"]
-  RM --> RH["rehype stage (hast):<br/>rehype-katex (math to HTML+MathML),<br/>symbol linkify (to anchors + data-key)"]
-  RH --> MOD["MDX compiled to a JS/JSX component module"]
-  MOD --> SL["Starlight layout wrap<br/>sidebar / TOC / nav"]
-  SL --> SSG["astro build: static render per route"]
-  SSG --> HTML["dist/**/index.html"]
-  SSG --> ISL["island: SSR markup + hydration marker"]
-  ISL --> VITE["Vite / Rollup bundle<br/>to dist/_astro/*.js, *.css (content-hashed)"]
-  HTML --> PF["Pagefind post-build index<br/>to dist/pagefind/"]
+  MDX["lesson.mdx"] --> VALID["workspace loader<br/>registry validation"]
+  VALID --> GATE["build gate"]
+  MDX --> FM["Astro content loader<br/>frontmatter + Zod"]
+  FM --> RM["remark-math + notation adapter<br/>mdast"]
+  RM --> KH["rehype-katex<br/>HTML + MathML"]
+  KH --> MK["validated data-notation-key markers"]
+  VALID --> BUNDLE["resolved transitive page bundle"]
+  BUNDLE --> LAYER["static page notation disclosure"]
+  FM --> GL["glossary + direct lesson backlinks"]
+  MK --> SL["Starlight page"]
+  LAYER --> SL
+  SL --> HTML["dist/**/index.html"]
+  SL --> JS["small optional presentation bundle"]
 ```
 
-Intermediate artifacts you can actually find:
+Intermediate artifacts remain the normal Astro outputs:
 
-- `.astro/data-store.json`, `.astro/content.d.ts` -- parsed + validated
-  collection entries and their generated types.
-- In-memory only: **mdast** (Markdown AST, where remark plugins run) then
-  **hast** (HTML AST, where rehype runs). The notation harvest and the
-  math-to-KaTeX conversion happen here.
-- `dist/**/index.html` -- one directory per route.
-- `dist/_astro/*.js` / `*.css` -- hydration bundles for islands
-  (`BondPriceExplorer.<hash>.js`, `react.<hash>.js`) and KaTeX fonts.
-- `dist/pagefind/` -- search index built from the final HTML.
+- `.astro/data-store.json` and `.astro/content.d.ts` for parsed collections;
+- in-memory mdast, registry records, and hast during compilation;
+- `dist/**/index.html` with equations, MathML, disclosures, and links;
+- content-hashed JavaScript/CSS under `dist/_astro/` only for labs and optional
+  notation presentation;
+- `dist/pagefind/` for the final static search index.
 
-## 4. Astro's job vs. our JavaScript's job
+A separate generated registry file is unnecessary at the current scale. If
+build profiling later justifies one, it can be added without changing author
+syntax or semantic rules.
 
-- **Astro / Starlight (build time):** file-tree routing, schema validation,
-  remark/rehype orchestration, layout, static HTML, island hydration wiring,
-  Vite bundling, dev HMR.
-- **remark-math + rehype-katex (build time):** all math rendering. Nothing math
-  ships to the browser.
-- **Build scripts (`tsx`, build time):** cross-collection semantic checks;
-  proposed `build:notation` harvest + merge + reference resolution.
-- **Our React island JS (browser):** lab controls and state only. The formula
-  itself is a call into `src/domain/`.
-- **Our equation-enhancement JS (browser):** hover / focus / pin / position the
-  explanation panel; read the registry JSON embedded in the page. Pure
-  presentation -- no formula logic, no definitions authored here.
-- **`src/domain/` (isomorphic, pure):** the math. Imported by islands and
-  tests; never touches the DOM.
+## 5. KaTeX trust boundary
 
-## 5. Adding an interactive island to an MDX lesson
+The `\explain` KaTeX macro expands to the equivalent of:
 
-After the frontmatter, import the (allowlisted) component, then use it as JSX
-with a hydration directive:
-
-```mdx
----
-title: ...
----
-
-import BondPriceExplorer from '../../../components/labs/BondPriceExplorer';
-
-## From contract to cash flows
-
-...prose and $math$...
-
-<BondPriceExplorer client:visible />
+```tex
+\htmlData{notation-key=<validated-key>}{<latex>}
 ```
 
-`client:*` picks when the island hydrates: `load`, `idle`, `visible`
-(used here), `media`, `only`. Astro renders the component's SSR HTML at build
-and ships a matching bundle in `dist/_astro/` that hydrates it in place.
+KaTeX's trust callback accepts only `\htmlData` with exactly one
+`data-notation-key` whose value matches the repository key pattern. It rejects
+arbitrary HTML classes, IDs, styles, links, protocols, and additional data
+attributes. The remark and registry stages separately ensure the key exists and
+is in scope. Author-written `\htmlData` is rejected before KaTeX runs, so the
+trusted marker can be reached only through a validated `\explain` call.
 
-_Friction worth removing:_ the `../../../components/...` path is error-prone for
-an AI author. A tsconfig path alias (`@labs/*`) or auto-injecting approved
-components via a remark plugin lets the author write only the tag.
+Math is still rendered at build time with `output: htmlAndMathml`. The marker is
+presentation metadata on KaTeX's visual HTML; the MathML remains the accessible
+mathematical representation. No financial formula is evaluated by the
+notation layer.
 
-## 6. Reference semantics: scoping, nesting, and links
+## 6. Progressive rendering and interaction
 
-**Scoping** -- resolve like lexical scope with imports, not "most recent wins":
+The static page contains a native disclosure with a flat list of resolved
+definitions and canonical links. Shared entries link to the glossary; local
+entries link to their page anchor. This is the keyboard and no-JavaScript
+baseline.
 
-```mermaid
-flowchart TD
-  REF["reference: \term{Q} or \explain{...}{Q(t)}"] --> S1{"equation-local<br/>\deflocal gloss?"}
-  S1 -- yes --> USE["bind"]
-  S1 -- no --> S2{"page-declared<br/>uses: list import?"}
-  S2 -- "one match" --> USE
-  S2 -- "2+ matches" --> ERR["build error:<br/>ambiguous glyph -- name the key"]
-  S2 -- "no" --> S3{"in notation<br/>collection?"}
-  S3 -- yes --> USE
-  S3 -- no --> ERR2["build error:<br/>undefined symbol"]
-  USE --> NEST{"entry body has<br/>nested \term?"}
-  NEST -- yes --> RESOLVE["resolve recursively<br/>track visited set to catch cycles"]
-  NEST -- no --> DONE["emit panel + 'defined in' link"]
-  RESOLVE --> DONE
-```
+The optional browser adapter reads definition content already emitted into the
+page. It does not fetch or author another registry. It may:
 
-**Nesting** -- an entry explains itself using other entries (`survivalProb`'s
-body references `pricingMeasure`). The panel for `Q(t)` then carries
-`pricingMeasure` as its own nested hover/link. A visited-set guards against
-definition cycles; a cycle is a build error listing the path, exactly like the
-competency-graph cycle check.
+- highlight every occurrence of one semantic key;
+- show a compact explanation on hover or focus;
+- let pointer and touch users pin an explanation;
+- keep the panel clear of the whole display equation;
+- close on Escape or outside interaction.
 
-**Home link** -- every entry records where it is canonically defined (a
-`notation/` page, or the lesson section holding its `:::def`). Each reference
-renders as an anchor to `#def-key`: hover shows the panel, click jumps to the
-full treatment with worked examples and context. This also gives free
-backlinks ("used in these lessons") on the definition page.
+Nested KaTeX markers remain pointer targets without creating nested buttons.
+Flat controls in the page layer provide the accessible focus tree. If the
+enhancement fails, the equation, MathML, static disclosure, and glossary links
+remain usable.
 
-## 7. Review flow (AI draft -> author -> finance professional)
+## 7. Glossary and backlinks
+
+The glossary renders shared notation collection bodies, not copies. It includes
+the canonical symbol, title, aliases, domain, units or perspective, source IDs,
+alignment, review status, `seeAlso`, and basic direct lesson backlinks derived
+from validated `notation.uses` declarations.
+
+Page-local definitions are not promoted into the shared glossary. Their
+canonical home is the lesson that declares them. This keeps temporary sequence
+indices from becoming misleading global concepts.
+
+## 8. Division of responsibility
+
+- **Editors:** shared/local choice, semantic key, glyph, explanation, units,
+  perspective, sources, alignment, and reference placement.
+- **Content schemas:** field shape and basic key/status constraints.
+- **Notation registry:** lexical resolution, cross-entry semantics,
+  diagnostics, bundles, and backlinks.
+- **Remark adapter:** prose rewriting and math-reference inspection while
+  skipping code and executable MDX regions.
+- **KaTeX:** build-time HTML and MathML plus the narrowly trusted marker.
+- **Starlight/Astro:** static layout, routing, glossary, disclosure, bundling,
+  and search.
+- **Browser adapter:** optional hover/focus/tap/pin presentation only.
+- **`src/domain/`:** all financial calculations; it has no notation UI or DOM
+  dependency.
+
+## 9. Review and AI flow
 
 ```mermaid
 flowchart LR
-  AI["AI drafts lesson + :::def blocks<br/>editorialStatus: draft"] --> CI["automated: pnpm verify<br/>schema / refs / cycles / notation conflicts"]
-  CI --> PR["author pre-review<br/>pedagogy / prerequisite fit / clarity"]
-  PR --> FR["finance professional review<br/>formulas / conventions / numbers / sources"]
-  FR --> RV["editorialStatus: reviewed"]
-  CI -. fails .-> AI
-  PR -. send back .-> AI
-  FR -. send back .-> AI
+  AI["AI draft<br/>lesson + notation"] --> CI["pnpm verify<br/>schema + registry + tests + build"]
+  CI --> ED["editor review<br/>meaning + pedagogy + scope"]
+  ED --> QR["quantitative review<br/>formula + units + conventions + sources"]
+  QR --> AX["manual accessibility<br/>keyboard + touch + no JS"]
+  AX --> RV["human marks reviewed"]
 ```
 
-Three cheap filters in series: mechanical errors never reach a human; the
-author checks teaching; the professional checks correctness. Notation entries
-carry their own `editorialStatus`, so a lesson referencing an unreviewed term
-is visible in validation output.
+Material AI assistance is recorded under `ai/provenance/`. AI-created shared
+entries and materially changed lessons remain `draft`. The registry can prove
+that references resolve; it cannot prove that a definition, convention,
+formula, or source is financially correct. A human must verify those claims
+and must not infer review from a passing build.
 
-## 8. Human- and token-friendliness checklist
+## 10. Future extensions
 
-- **Terse reference syntax** -- `\term{pricingMeasure}` or `[[pricingMeasure]]`:
-  short, greppable, no closing tag, cheap for an AI to emit.
-- **Convention over schema for panel slots** -- first paragraph = short, rest =
-  long, first display math = formula. Nothing to memorize.
-- **One concept per file, referenced by ID** -- small diffs, localized review;
-  matches how competencies and sources already work.
-- **A canonical symbol list** (extend `docs/notation-and-units.md`) given to
-  the AI as context so it reuses `pricingMeasure` instead of coining
-  `riskNeutralMeasure`.
-- **Definitions cite `sources`** from the existing collection -- the finance
-  reviewer verifies a citation once, centrally.
-- **Generated artifacts** -- per-lesson notation table, site glossary, "symbols
-  introduced here". The AI writes prose; the tables cannot drift and need no
-  review.
-- **Fail the build on undefined / ambiguous / duplicated-with-different-text**
-  references. No silent `console.warn` like the prototype. Duplicate-with-
-  conflict forces promotion to a shared `notation/` entry.
-- **Round-trip with `src/domain/`** -- an entry's `formula` and numeric example
-  can reference tested domain functions, so "do the numbers check out" is
-  partly automated.
-- **Progressive enhancement** -- `:::def` blocks render as visible prose; JS
-  only collapses them into panels. Better with JS off than the prototype's
-  "needs JavaScript".
+Preserve these ideas without treating them as current behavior:
 
-## 9. Open decisions
+- a generated JSON or virtual module if registry construction becomes costly;
+- richer nested panels that render reviewed Markdown safely;
+- automatic per-equation symbol tables and “introduced here” views;
+- expanded backlink filtering by direct versus transitive use;
+- tested numerical examples bound to `src/domain/` functions;
+- compact alternative syntax if it retains explicit definitions and scope;
+- an allowlisted component alias for labs to reduce fragile relative imports.
 
-- **Symbol markers through KaTeX.** The prototype's `\explain` relies on
-  MathJax's HTML extension. In the KaTeX pipeline, either (a) define `\explain`
-  to expand to `\htmlData{key=...}{...}` with `trust` enabled and pick it up in
-  a rehype pass, (b) post-process KaTeX output in rehype by matching markers,
-  or (c) move the site to MathJax. Option (a) keeps the current build.
-- **Registry delivery.** A generated file under `.astro/` vs. a
-  `virtual:notation` module vs. a real generated collection entry.
-- **Entry home.** Co-locate each shared symbol with the lesson that first
-  teaches it (like `teaches` competencies) vs. a flat `notation/` collection.
-- **Scope source.** Derive a page's in-scope symbols from an explicit
-  `uses:` frontmatter list vs. from its `requires`/`teaches` competencies.
+Inline definition creation remains intentionally deferred because it makes
+duplicate meanings, missing provenance, and review-state drift too easy.

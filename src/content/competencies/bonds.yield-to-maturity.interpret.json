@@ -1,0 +1,20 @@
+{
+  "id": "bonds.yield-to-maturity.interpret",
+  "title": "Interpret yield to maturity in the simplified model",
+  "domain": "bonds",
+  "facet": "interpretation",
+  "outcome": "Interpret yield to maturity as the single nominal annual rate, compounded at coupon frequency, that reproduces price from promised cash flows in the simplified model.",
+  "prerequisites": [
+    "bonds.price-from-discount-factors.calculate",
+    "rates.periodic-rate.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Yield to maturity is an additional cash flow promised by the issuer."
+  ],
+  "editorialStatus": "draft"
+}

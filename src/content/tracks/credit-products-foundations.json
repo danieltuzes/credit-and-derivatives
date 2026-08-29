@@ -8,6 +8,15 @@
     "Percentages and decimal notation",
     "Integer exponents"
   ],
-  "lessons": ["foundations.discounting", "bonds.price-and-yield"],
+  "lessons": [
+    "foundations.cash-flow-timelines",
+    "foundations.rates-compounding-and-basis-points",
+    "foundations.discount-factors",
+    "foundations.present-value",
+    "bonds.fixed-rate-contract-and-cash-flows",
+    "bonds.price-from-discount-factors",
+    "bonds.yield-to-maturity",
+    "bonds.price-yield-relationship"
+  ],
   "editorialStatus": "draft"
 }
