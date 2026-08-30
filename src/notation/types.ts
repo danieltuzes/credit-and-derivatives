@@ -31,6 +31,7 @@ export interface SharedNotationDefinitionInput {
   readonly key: string;
   readonly notation: string;
   readonly title: string;
+  readonly summary: string;
   readonly aliases: readonly string[];
   readonly domain: string;
   readonly units?: string;
@@ -137,6 +138,7 @@ interface NotationDefinitionRecordBase {
 
 export interface SharedNotationDefinitionRecord extends NotationDefinitionRecordBase {
   readonly kind: 'shared';
+  readonly summary: string;
   readonly aliases: readonly string[];
   readonly domain: string;
   readonly units?: string;

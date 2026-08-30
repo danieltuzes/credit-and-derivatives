@@ -6,6 +6,13 @@ import { docsSchema } from '@astrojs/starlight/schema';
 
 const editorialStatus = z.enum(['draft', 'in-review', 'reviewed']);
 const id = z.string().regex(/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/);
+const notationSummary = z
+  .string()
+  .min(1)
+  .refine((value) => !/[\\$`]/.test(value), {
+    message:
+      'Notation summaries and details must be plain prose; render the symbol or formula in its dedicated field.',
+  });
 
 const notationAlignment = z.discriminatedUnion('kind', [
   z.object({
@@ -23,8 +30,8 @@ const localNotationDefinition = z.object({
   key: id,
   notation: z.string().min(1),
   title: z.string().min(1),
-  summary: z.string().min(1),
-  details: z.string().min(1).optional(),
+  summary: notationSummary,
+  details: notationSummary.optional(),
   formula: z.string().min(1).optional(),
   units: z.string().min(1).optional(),
   sources: z.array(id).default([]),
@@ -177,6 +184,7 @@ const notation = defineCollection({
     key: id,
     notation: z.string().min(1),
     title: z.string().min(1),
+    summary: notationSummary,
     aliases: z.array(z.string().min(1)).default([]),
     domain: id,
     units: z.string().min(1).optional(),

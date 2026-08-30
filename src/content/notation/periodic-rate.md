@@ -2,6 +2,7 @@
 key: periodic-rate
 notation: 'r_m'
 title: Periodic rate
+summary: Rate applied once in each compounding period under the stated convention.
 aliases:
   - rate per period
 domain: rates

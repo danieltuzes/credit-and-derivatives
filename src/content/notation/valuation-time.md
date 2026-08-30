@@ -2,6 +2,7 @@
 key: valuation-time
 notation: '0'
 title: Valuation time
+summary: Common origin from which later model times and present values are measured.
 aliases:
   - today
   - time zero

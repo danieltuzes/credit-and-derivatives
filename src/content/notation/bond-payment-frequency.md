@@ -1,7 +1,8 @@
 ---
 key: bond-payment-frequency
-notation: 'm_B'
+notation: 'm_{\mathrm B}'
 title: Bond payment frequency
+summary: Number of scheduled coupon payments per year in the simplified regular bond.
 aliases:
   - coupon frequency
   - coupon payments per year
@@ -22,8 +23,8 @@ editorialStatus: draft
 aiAssisted: true
 ---
 
-The bond payment frequency $m_B$ is the number of scheduled coupon payments per
-year in this simplified regular bond.
+The bond payment frequency $m_{\mathrm B}$ is the number of scheduled coupon
+payments per year in this simplified regular bond.
 
 The subscript keeps it distinct from the general
 \term{compounding-frequency}. The toy yield model later sets the two numerical

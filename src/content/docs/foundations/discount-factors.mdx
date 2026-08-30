@@ -32,7 +32,7 @@ notation:
     - key: discounted-unit-value
       notation: 'V_0(1_t)'
       title: Time-zero value of one future unit
-      summary: A local reading aid that makes the units behind D(0,t) explicit.
+      summary: A local reading aid that makes discount-factor units explicit.
       details: It equals one future currency unit multiplied by the discount factor for its payment time.
       formula: 'V_0(1_t)=1_tD(0,t)'
       seeAlso:
@@ -57,34 +57,31 @@ After this lesson, you should be able to:
 
 ## Undo accumulation
 
-An \term\{accumulation-factor\} grows a time-zero unit forward. A
-\term\{discount-factor\} reverses that operation:
+On this page, $t$ is the shorter generic-horizon form of the shared
+\term\{payment-time\}, measured in years from \term\{valuation-time\} $0$.
+Write the \term\{compounding-frequency\} as $m$, the
+\term\{periodic-rate\} as $r_m$, the \term\{accumulation-factor\} as
+$A(0,t)$, and the \term\{discount-factor\} as $D(0,t)$.
+
+The accumulation factor grows a time-zero unit forward. The discount factor
+reverses that operation:
 
 $$
-\explain{discount-factor}{D(0,t)}
-=
-\frac{1}{\explain{accumulation-factor}{A(0,t)}}
-=
-\left(
-  1+
-  \explain{periodic-rate}{r_m}
-\right)^{
-  -\explain{compounding-frequency}{m}
-  \explain{payment-time}{t}
-}.
+D(0,t)=\frac{1}{A(0,t)}=\left(1+r_m\right)^{-mt}.
 $$
 
-The semantic annotation covers both the full factor and its ingredients. A
-reader can ask about the whole object or the nearest nested symbol.
+The factor and each ingredient retain separate semantic meanings even when
+they appear in one expression.
 
 ## Meaning before arithmetic
 
 If $D(0,2)=0.94$, then one deterministic unit paid at $t=2$ years has value
-0.94 units at \term\{valuation-time\}. In the local notation,
+0.94 units at valuation time. Write this local
+\term\{discounted-unit-value\} as $V_0(1_t)$. At the stated two-year horizon,
 
 $$
-\explain{discounted-unit-value}{V_0(1_2)}
-=1\times\explain{discount-factor}{D(0,2)}
+V_0(1_2)
+=1\times D(0,2)
 =0.94.
 $$
 

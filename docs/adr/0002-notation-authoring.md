@@ -1,7 +1,14 @@
 # ADR 0002: Semantic notation authoring and progressive explanation
 
-- Status: accepted for the playground
+- Status: superseded by [ADR 0003](0003-notation-completeness-and-scoped-binding.md)
 - Date: 2026-08-28
+
+> Superseded by ADR 0003 on 2026-08-28. The semantic-key model, build-time
+> KaTeX, the narrow trust callback, and the progressive-enhancement rules below
+> still hold. ADR 0003 adds the completeness gate, the deterministic resolution
+> ladder, inline `\def` / `\let` and sub-expression binding, the per-lesson
+> resolution report, and the reader-facing mute list, and it lifts this ADR's
+> deferral of inline definition syntax.
 
 ## Decision
 

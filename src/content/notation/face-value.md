@@ -2,6 +2,7 @@
 key: face-value
 notation: 'F'
 title: Face value
+summary: Contractual reference amount used to determine coupons and principal redemption.
 aliases:
   - par amount
   - principal amount

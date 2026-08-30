@@ -27,8 +27,8 @@ notation:
       notation: k
       title: Payment index
       summary: Labels one row in the ordered cash-flow schedule.
-      details: The index is an ordering label; t_k is the associated time measured in years.
-      formula: 'k \in \{0,1,\ldots,n\}'
+      details: The index is an ordering label; the associated payment time is measured in years.
+      formula: 'k \in \{0,1,2,\ldots\}'
       seeAlso:
         - payment-time
         - signed-cash-flow
@@ -50,24 +50,18 @@ After this lesson, you should be able to:
 
 ## Start with events, not formulas
 
-A financial calculation begins with a list of events. Each event pairs a
-\term\{signed-cash-flow\} with a \term\{payment-time\}, all measured from one
-\term\{valuation-time\}. The local symbol \term\{payment-index\} identifies a row;
-it is not itself a time or date.
+A financial calculation begins with a list of events. The
+\term\{valuation-time\}, written $0$, is the common origin for the page's
+clock. Use the local \term\{payment-index\} $k$ to identify one row; it is not
+itself a time or date. At row $k$, write the \term\{signed-cash-flow\} as
+$CF_k$ and its \term\{payment-time\} as $t_k$.
 
 $$
-\explain{signed-cash-flow}{
-  CF_{\explain{payment-index}{k}}
-}
-\quad\text{occurs at}\quad
-\explain{payment-time}{
-  t_{\explain{payment-index}{k}}
-}.
+CF_k \quad\text{occurs at}\quad t_k.
 $$
 
-The nested annotation is deliberate: the entire cash-flow token and its local
-index have different explanations even though they occupy one visual
-expression.
+The shared subscript connects each amount to its matching time while preserving
+the distinct meanings of amount, time, and row index.
 
 ## Example 1: read a timeline
 

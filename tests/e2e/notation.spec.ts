@@ -79,6 +79,44 @@ test('opens, pins, links, and closes a notation explanation by keyboard', async 
   await expect(control).toHaveAttribute('aria-expanded', 'false');
 });
 
+test('renders a hovered CF_k label with MathML and a smaller subscript', async ({
+  page,
+}) => {
+  await page.goto('/foundations/cash-flow-timelines/');
+
+  await page
+    .locator('.katex-html [data-notation-key="signed-cash-flow"] > .mathnormal')
+    .first()
+    .hover();
+
+  await expect(page.locator('[data-notation-panel]')).toHaveAttribute(
+    'data-active-notation-key',
+    'signed-cash-flow',
+  );
+  const layer = page.locator('[data-notation-layer]');
+  await layer.locator('details > summary').click();
+  await layer.locator('[data-notation-control="signed-cash-flow"]').click();
+
+  const panelSymbol = page.locator(
+    '[data-notation-panel] [data-panel-symbol] .notation-symbol',
+  );
+  await expect(panelSymbol).toBeVisible();
+  await expect(panelSymbol.locator('math msub')).toHaveCount(1);
+  await expect(
+    page.locator('[data-notation-panel] [data-panel-summary]'),
+  ).not.toContainText(/CF_?k/);
+
+  const baseAtom = panelSymbol.locator('.katex-html .mathnormal:not(.mtight)');
+  const subscriptAtom = panelSymbol.locator('.katex-html .mathnormal.mtight');
+  await expect(baseAtom).toHaveCount(2);
+  await expect(subscriptAtom).toHaveCount(1);
+  const baseBox = await baseAtom.last().boundingBox();
+  const subscriptBox = await subscriptAtom.boundingBox();
+  expect(baseBox).not.toBeNull();
+  expect(subscriptBox).not.toBeNull();
+  expect(subscriptBox!.height).toBeLessThan(baseBox!.height * 0.8);
+});
+
 test('resolves a shared definition to its generated glossary entry', async ({
   page,
 }) => {

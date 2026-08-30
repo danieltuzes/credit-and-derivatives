@@ -2,6 +2,7 @@
 key: discount-factor
 notation: 'D(0,t)'
 title: Discount factor
+summary: Converts one deterministic future unit into value at valuation time.
 aliases:
   - present-value factor
 domain: rates

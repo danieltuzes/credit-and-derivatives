@@ -1,8 +1,10 @@
 # Notation, explanations, and the build pipeline
 
 Technical notes for the define-once/reference-many notation system. Editors
-should start with the root `README.md`; the accepted decision is summarized in
-`docs/adr/0002-notation-authoring.md`.
+should start with the root `README.md`. The accepted decisions are in
+`docs/adr/0002-notation-authoring.md` (the implemented slice) and
+`docs/adr/0003-notation-completeness-and-scoped-binding.md` (the completeness
+gate and scoped binding, adopted and pending implementation).
 
 ## 1. Implementation status
 
@@ -27,11 +29,18 @@ Implemented in the current notation slice:
 
 Deliberately deferred:
 
-- `\explain[def]`, `:::def`, and equation-local definition syntax;
 - a generated JSON file or Vite virtual registry module;
 - richer recursively nested panel bodies;
 - automatic per-equation notation tables;
 - automated round-trips from notation examples to `src/domain/` functions.
+
+Adopted in ADR 0003, pending implementation: the completeness gate (every
+variable resolves to a key or the build fails), the full resolution ladder,
+inline `\def` and section-scoped `\let`, `\group` / `\underbrace`
+sub-expression binding, `:::equation{explains: key}`, the base notation
+library, the per-lesson resolution report, the reader-facing mute list, and the
+dev-only authoring overlay. Until that toolchain lands, lessons stay within the
+implemented slice above.
 
 The old `src/pages/test_equation.astro` prototype, if retained while migration
 is reviewed, is only a historical interaction sketch. Its MathJax/CDN and
@@ -135,6 +144,14 @@ retains its own definition. Code spans, code blocks, MDX expressions, and raw
 HTML are not rewritten. Bare math remains ordinary KaTeX without a semantic
 target.
 
+ADR 0003 adds three more reference forms, pending implementation:
+`\def{glyph}{key}{summary}` for a positioned page-local definition,
+`\let{glyph}{key}` to rebind an in-scope key for the enclosing section
+subtree, and a group macro -- `\group{expr}{key}` or
+`\underbrace{expr}_{\explain{key}{...}}` -- for a sub-expression. Explanation
+spans must be disjoint or fully nested; partial overlap is a build error. A
+whole relation uses the block attribute `:::equation{explains: key}`.
+
 ## 3. Registry construction and validation
 
 The registry is a deterministic in-memory build product, not an author-edited
@@ -160,10 +177,15 @@ flowchart TD
 
 Shared definition bodies can resolve only shared definitions. A page and its
 local definition prose resolve local definitions first and then shared imports.
-This is lexical scope; “most recently defined” and raw-glyph matching are never
-used. `seeAlso` targets follow the same lexical/import checks but remain
-navigational links, not dependency edges; reciprocal “see also” links therefore
-do not create definition cycles or enlarge a page bundle.
+This is lexical scope; raw-glyph matching and page-wide “most recently
+defined” are never used. Under ADR 0003 the resolver walks a fixed ladder --
+token `\explain`, equation-local gloss, nearest section `\let`, nearest
+earlier page `\def`, unique `notation.uses` match (base library included),
+then unique domain-filtered collection match -- and `\let` scope ends at the
+next heading of equal or higher level. More than one candidate at any level is
+an error. `seeAlso` targets follow the same lexical/import checks but remain
+navigational links, not dependency edges; reciprocal “see also” links
+therefore do not create definition cycles or enlarge a page bundle.
 
 Validation covers:
 
@@ -176,7 +198,10 @@ Validation covers:
 - unknown competency and lesson alignment IDs;
 - introduction order and alignment availability;
 - inconsistent review states;
-- deterministic page bundles and backlinks.
+- deterministic page bundles and backlinks;
+- (ADR 0003) any rendered-math variable that does not resolve to a key;
+- (ADR 0003) partially overlapping explanation spans;
+- (ADR 0003) a glyph resolving to two meanings in one lesson (warning).
 
 The page disclosure consumes the registry's resolved transitive bundle at
 build time. The glossary consumes the schema-checked shared notation
@@ -313,8 +338,11 @@ Preserve these ideas without treating them as current behavior:
 - automatic per-equation symbol tables and “introduced here” views;
 - expanded backlink filtering by direct versus transitive use;
 - tested numerical examples bound to `src/domain/` functions;
-- compact alternative syntax if it retains explicit definitions and scope;
-- an allowlisted component alias for labs to reduce fragile relative imports.
+- an allowlisted component alias for labs to reduce fragile relative imports;
+- an AI-assisted binding-suggestion pass and a `notation:fix` codemod;
+- account-backed sync of the reader mute list.
 
-Inline definition creation remains intentionally deferred because it makes
-duplicate meanings, missing provenance, and review-state drift too easy.
+ADR 0003 reverses this file's earlier deferral of inline definition creation:
+`\def` and `\let` are adopted, with the completeness gate, the resolution
+report, and required alignment holding duplicate meanings, missing provenance,
+and review-state drift in check.

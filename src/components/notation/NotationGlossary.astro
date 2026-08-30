@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import NotationMath from './NotationMath.astro';
 
 const [notationEntries, lessonEntries] = await Promise.all([
   getCollection('notation'),
@@ -58,12 +59,7 @@ const renderedEntries = await Promise.all(
       return (
         <article id={`notation-${entry.data.key}`}>
           <header>
-            <code
-              class="glossary-symbol"
-              aria-label={`LaTeX symbol: ${entry.data.notation}`}
-            >
-              {entry.data.notation}
-            </code>
+            <NotationMath class="glossary-symbol" latex={entry.data.notation} />
             <div>
               <h2>{entry.data.title}</h2>
               <code>{entry.data.key}</code>

@@ -30,19 +30,9 @@ notation:
     - bond-payment-frequency
     - coupon-payment
     - face-value
-  local:
-    - key: yield-pricing-index
-      notation: k
-      title: Yield-pricing payment index
-      summary: Counts coupon periods from valuation to each promised payment.
-      details: In the toy regular schedule, period k occurs at t_k=k/m_B years.
-      formula: 'k \in \{1,\ldots,n\}'
-      seeAlso:
-        - bond-payment-frequency
-        - bond-cash-flow
-      alignment:
-        kind: general
-        rationale: Finite summation indexing is part of the track's algebra assumptions.
+    - maturity-time
+    - bond-payment-index
+    - number-of-bond-payments
 aiAssisted: true
 sidebar:
   order: 3
@@ -58,43 +48,35 @@ After this lesson, you should be able to:
 
 ## What yield means in this toy model
 
-\term\{yield-to-maturity\} is the one nominal annual rate, compounded at the
-\term\{bond-payment-frequency\}, that makes the discounted promised payments
-equal the \term\{bond-price\}:
+Use the \term\{bond-payment-index\} $k$ to select one of the
+\term\{number-of-bond-payments\} $n$, and write its promised
+\term\{bond-cash-flow\} as $CF_k^{\mathrm{bond}}$. Write the
+\term\{bond-price\} as $P_0$ and the \term\{bond-payment-frequency\} as
+$m_{\mathrm B}$.
+
+Write \term\{yield-to-maturity\} as $y^{(m_{\mathrm B})}$. It is the one
+nominal annual rate, compounded at the bond payment frequency, that makes the
+discounted promised payments equal the bond price:
 
 $$
-\explain{bond-price}{P_0}
-=
-\sum_{\explain{yield-pricing-index}{k}=1}^{n}
-\frac{
-  \explain{bond-cash-flow}{
-    CF_{\explain{yield-pricing-index}{k}}^{\mathrm{bond}}
-  }
-}{
-  \left(
-    1+
-    \frac{
-      \explain{yield-to-maturity}{y^{(m_B)}}
-    }{
-      \explain{bond-payment-frequency}{m_B}
-    }
-  \right)^{
-    \explain{yield-pricing-index}{k}
-  }
-}.
+P_0
+=\sum_{k=1}^{n}
+\frac{CF_k^{\mathrm{bond}}}
+{\left(1+y^{(m_{\mathrm B})}/m_{\mathrm B}\right)^k}.
 $$
 
-The semantic key matters because the glyph $y$ could otherwise mean a spot
-rate, effective annual rate, expected return, or another quote. Here it means
-only the explicitly defined bond yield.
+The semantic key matters because the glyph $y^{(m_{\mathrm B})}$ could
+otherwise be mistaken for a spot rate, effective annual rate, expected return,
+or another quote. Here it means only the explicitly defined bond yield.
 
 ## Coupon rate and yield do different jobs
 
-- The coupon rate fixes the promised \term\{coupon-payment\} in the contract.
+- The coupon rate fixes the promised \term\{coupon-payment\} $C$ in the
+  contract.
 - The supplied yield controls the denominators used by this pricing summary.
 
 Changing the yield input does not rewrite the bond's coupons or
-\term\{face-value\}.
+\term\{face-value\} $F$.
 
 ## Example 1: annual payments
 
@@ -114,7 +96,7 @@ expected value.
 ## Example 2: semiannual payments and compounding
 
 For the same face value and coupon rate over two years, but with semiannual
-payments, $C=25$, $m_B=2$, and $n=4$. A 6% nominal annual yield gives a
+payments, $C=25$, $m_{\mathrm B}=2$, and $n=4$. A 6% nominal annual yield gives a
 3% periodic rate:
 
 $$
@@ -131,10 +113,10 @@ same timing or compounding model.
 
 ## Example 3: zero-coupon special case
 
-With no coupons,
+With no coupons and \term\{maturity-time\} $T$,
 
 $$
-P_0=\frac{F}{(1+y^{(m_B)}/m_B)^{m_BT}}.
+P_0=\frac{F}{(1+y^{(m_{\mathrm B})}/m_{\mathrm B})^{m_{\mathrm B}T}}.
 $$
 
 For USD 1,000 due in three years at 4% with annual compounding, the price is

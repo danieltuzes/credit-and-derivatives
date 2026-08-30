@@ -2,6 +2,7 @@
 key: bond-cash-flow
 notation: 'CF_k^{\mathrm{bond}}'
 title: Bond cash flow
+summary: Promised amount paid to the bondholder on one scheduled payment date.
 aliases:
   - promised bond payment
 domain: bonds

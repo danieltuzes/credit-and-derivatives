@@ -2,6 +2,7 @@
 key: coupon-payment
 notation: 'C'
 title: Coupon payment
+summary: Level periodic cash amount promised by the simplified fixed-rate bond.
 aliases:
   - periodic coupon
 domain: bonds
@@ -28,5 +29,5 @@ Its definition nests \term{face-value}, \term{annual-coupon-rate}, and
 \term{bond-payment-frequency}:
 
 $$
-C=\frac{cF}{m_B}.
+C=\frac{cF}{m_{\mathrm B}}.
 $$

@@ -71,44 +71,66 @@ progress UI    → progress interface → storage adapter
 
 1. Astro content collections schema-check every authored entry.
 2. The curriculum and notation registries resolve references and lexical
-   notation scope.
+   notation scope, applying the fixed resolution ladder (token `\explain`,
+   equation-local gloss, section `\let`, page `\def`, `notation.uses`, then
+   the domain-filtered collection).
 3. Semantic validation rejects unknown or duplicate IDs, graph and notation
    cycles, undeclared shared notation, invalid lesson and track order, missing
-   assessment evidence, invalid answers, alignment errors, and inconsistent
-   review states.
-4. Remark rewrites prose notation references and inspects semantic math
-   annotations.
+   assessment evidence, invalid answers, alignment errors, inconsistent review
+   states, any variable in rendered math that does not resolve to a semantic
+   key, and partially overlapping explanation spans. It warns when one glyph
+   resolves to two meanings in a lesson.
+4. Remark rewrites prose notation references, inspects semantic math
+   annotations, classifies identifier versus operator atoms for the
+   completeness gate, and records a per-lesson resolution report.
 5. KaTeX renders equations to HTML and MathML at build time. Astro renders the
    lesson and consumes each registry's resolved transitive page bundle for the
    static notation disclosure; the shared collection supplies the glossary and
    basic backlinks.
 6. Only labs and optional notation presentation behavior ship client
-   JavaScript.
+   JavaScript. A dev-only authoring overlay colours each symbol by binding
+   state and never enters a production build.
 
 Both `pnpm build` and `pnpm verify` run semantic validation.
 
 ## Notation boundary
 
-Notation is educational content, not calculation logic. Shared definitions
-live as Markdown entries under `src/content/notation/`; page-local definitions
-live in schema-checked lesson frontmatter. Every definition has a semantic key
-that is independent of its displayed LaTeX.
+Notation is educational content, not calculation logic. Shared definitions live
+as Markdown entries under `src/content/notation/`; page-local definitions live
+in schema-checked lesson frontmatter or in inline `\def`. Every definition has
+a semantic key that is independent of its displayed LaTeX.
 
-Lessons explicitly import shared meanings through `notation.uses`. Their
-`notation.local` entries are automatically available only in that lesson.
-Resolution is lexical: page-local definitions first, then declared shared
-definitions. Shared definition bodies resolve only against other shared
-definitions, so their meaning cannot change with the calling page.
+Lessons explicitly import shared meanings through `notation.uses`; their
+`notation.local` entries and the base notation library (universal constants and
+operators) are in scope automatically. Binding is resolved at build time by a
+fixed ladder -- `\explain` on the token, an equation-local gloss, the nearest
+section `\let`, the nearest earlier page `\def`, a unique `notation.uses`
+match, then a unique domain-filtered collection match. More than one candidate
+at a level is an error. Shared definition bodies resolve only against other
+shared definitions, so their meaning cannot change with the calling page. The
+page's static bundle must define every symbol it uses; `\let` and `\def` only
+disambiguate among in-scope meanings.
+
+Every variable in rendered lesson mathematics must resolve to a key. The remark
+stage classifies identifier atoms against operators using KaTeX's MathML, and
+`pnpm validate:content` fails on an unresolved variable and on partially
+overlapping explanation spans. It warns when one glyph resolves to two meanings
+in a lesson. The validator also writes a per-lesson resolution report -- symbol,
+key, resolving level, source span -- that is a checked snapshot and the
+quantitative reviewer's binding artifact.
 
 In MDX source prose, `\term\{key\}` escapes the braces from MDX expression
 parsing; the Markdown AST exposes `\term{key}`, which becomes a normal link.
 Shared `.md` notation bodies use `\term{key}` directly. Inside `$...$` or
 `$$...$$` math, `\explain{key}{latex}` preserves the LaTeX while attaching its
-semantic key.
+semantic key. A sub-expression is explainable only through a group macro that
+carries a key -- `\group{expr}{key}` or `\underbrace{expr}_{\explain{key}{...}}`
+-- and its span must be disjoint from or nested within every other span. A
+whole-equation meaning is the block attribute `:::equation{explains: key}`.
 Nested annotations are allowed. The notation registry validates keys,
 definitions, imports, references, cycles, curriculum alignment, introduction
-order, review states, unused imports, and unused definitions. It also builds
-page bundles and backlinks.
+order, review states, unused imports, and unused definitions, and builds page
+bundles and backlinks.
 
 KaTeX remains build-time-only and produces HTML plus MathML. Its trust callback
 accepts exactly one validated `data-notation-key` emitted by `\explain`; it
@@ -118,13 +140,18 @@ rejected before rendering, and no MathJax or remote script is used.
 
 Each notation-enabled page has a native disclosure containing its resolved
 definitions. The shared glossary is built from the same collection. Browser
-JavaScript may highlight, position, focus, or pin an explanation, but does not
-render math, resolve scope, mutate definitions, or calculate finance. With
-JavaScript disabled, the equations, MathML, disclosure, links, and glossary
-remain available.
+JavaScript may highlight, position, focus, pin, or -- per reader preference,
+keyed by semantic key through the `ProgressRepository` seam -- mute an
+explanation, but does not render math, resolve scope, mutate definitions, or
+calculate finance. Muting never removes a lesson's first canonical disclosure
+entry. A dev-only authoring overlay colours each symbol by binding state and
+toggles equations between rendered math and source; it never ships in a
+production build. With JavaScript disabled, the equations, MathML, disclosure,
+links, and glossary remain available.
 
-This decision is recorded in
-[`docs/adr/0002-notation-authoring.md`](adr/0002-notation-authoring.md).
+These decisions are recorded in
+[`docs/adr/0002-notation-authoring.md`](adr/0002-notation-authoring.md) and
+[`docs/adr/0003-notation-completeness-and-scoped-binding.md`](adr/0003-notation-completeness-and-scoped-binding.md).
 
 ## Financial calculation boundary
 
@@ -149,6 +176,9 @@ API must remain deterministic given explicit inputs and a visible random seed.
 Notation enhancement follows the same progressive-enhancement rule but is not
 a React lab. Static definition lists and links are the accessible baseline;
 hover, focus, tap, and pin behavior are an optional presentation adapter.
+Reader-set explanation muting is part of that adapter: it is keyed by semantic
+key, stored through the `ProgressRepository` seam, and only hides the inline
+affordance, never a lesson's first canonical disclosure entry.
 
 ## Progress boundary
 
@@ -185,7 +215,9 @@ and usually add an architecture decision record.
 
 The design leaves room for an assessment renderer, local progress repository,
 server-backed accounts, controlled data adapters, Web Workers, and additional
-assessment engines. The notation subsystem can later add a virtual/generated
-registry module, richer nested panels, automatic per-equation tables, and
-round-trips to tested domain examples. Inline definition syntax remains
-deliberately deferred. These are extension points, not current commitments.
+assessment engines. The notation subsystem can later add a virtual or
+generated registry module, automatic per-equation tables, round-trips to tested
+domain examples, an
+AI-assisted binding-suggestion pass with a `notation:fix` codemod, and
+account-backed sync of the reader mute list. These are extension points, not
+current commitments.

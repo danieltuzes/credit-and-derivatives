@@ -30,35 +30,12 @@ notation:
     - face-value
     - annual-coupon-rate
     - bond-payment-frequency
+    - compounding-frequency
     - maturity-time
     - coupon-payment
     - bond-cash-flow
-  local:
-    - key: bond-payment-index
-      notation: k
-      title: Bond payment index
-      summary: Labels one scheduled coupon date in increasing time order.
-      details: The index runs from 1 to n; t_k gives the associated time in years.
-      formula: 'k \in \{1,\ldots,n\}'
-      seeAlso:
-        - bond-cash-flow
-        - payment-time
-      alignment:
-        kind: general
-        rationale: Finite sequence indexing is part of the track's algebra assumptions.
-    - key: number-of-bond-payments
-      notation: n
-      title: Number of bond payments
-      summary: Counts the remaining regular coupon dates, including maturity.
-      details: In this toy schedule n equals payment frequency times maturity in years.
-      formula: 'n=m_BT'
-      seeAlso:
-        - bond-payment-frequency
-        - maturity-time
-      alignment:
-        kind: competency
-        introducedByCompetency: bonds.fixed-rate-contract.interpret
-        introducedInLesson: bonds.fixed-rate-contract-and-cash-flows
+    - bond-payment-index
+    - number-of-bond-payments
 aiAssisted: true
 sidebar:
   order: 1
@@ -74,72 +51,52 @@ After this lesson, you should be able to:
 
 ## Read the contract before valuing it
 
-The simplified contract specifies \term\{face-value\}
-$\explain{face-value}{F}$, \term\{annual-coupon-rate\}
-$\explain{annual-coupon-rate}{c}$, \term\{bond-payment-frequency\}
-$\explain{bond-payment-frequency}{m_B}$, and \term\{maturity-time\}
-$\explain{maturity-time}{T}$.
+Write the simplified contract's \term\{face-value\} as $F$, its
+\term\{annual-coupon-rate\} as $c$, its \term\{bond-payment-frequency\} as
+$m_{\mathrm B}$, and its \term\{maturity-time\} as $T$. Write the
+\term\{number-of-bond-payments\} as $n$ and index those dates with the
+\term\{bond-payment-index\} $k$. The matching \term\{payment-time\} is $t_k$,
+measured from \term\{valuation-time\} $0$.
+
+Write the level \term\{coupon-payment\} as $C$ and the promised
+\term\{bond-cash-flow\} on date $k$ as $CF_k^{\mathrm{bond}}$.
 
 The local number of dates is
 
 $$
-\explain{number-of-bond-payments}{n}
-=
-\explain{bond-payment-frequency}{m_B}
-\explain{maturity-time}{T}.
+n=m_{\mathrm B}T.
 $$
 
-The page uses $m_B$, not the generic rate symbol $m$, so payment frequency
-and compounding frequency remain distinct concepts.
+The page uses subscripted bond-frequency notation rather than reusing the
+earlier \term\{compounding-frequency\} symbol, so the two concepts remain
+distinct.
 
 ## Calculate the coupon
 
-The level \term\{coupon-payment\} is
+The level coupon payment is
 
 $$
-\explain{coupon-payment}{C}
-=
-\frac{
-  \explain{annual-coupon-rate}{c}
-  \explain{face-value}{F}
-}{
-  \explain{bond-payment-frequency}{m_B}
-}.
+C=\frac{cF}{m_{\mathrm B}}.
 $$
 
 The coupon rate is applied to face value, not the bond's eventual market price.
 
 ## Construct every promised payment
 
-For the bondholder, the promised \term\{bond-cash-flow\} is
+For the bondholder, the promised bond cash flow is
 
 $$
-\explain{bond-cash-flow}{
-  CF_{\explain{bond-payment-index}{k}}^{\mathrm{bond}}
-}
-=
-\explain{coupon-payment}{C}
-+
-\mathbf{1}_{\{
-  \explain{bond-payment-index}{k}
-  =
-  \explain{number-of-bond-payments}{n}
-\}}
-\explain{face-value}{F}.
+CF_k^{\mathrm{bond}}
+=C+\mathbf{1}_{\{k=n\}}F.
 $$
 
 The indicator contributes face value only on the final date.
 
-For the regular schedule, each date is measured from
-\term\{valuation-time\}:
+For the regular schedule, each date is measured from valuation time:
 
 $$
-\explain{payment-time}{t_k}
-=
-\frac{\explain{bond-payment-index}{k}}
-{\explain{bond-payment-frequency}{m_B}},
-\qquad
-\explain{valuation-time}{0}\text{ is the valuation time}.
+t_k=\frac{k}{m_{\mathrm B}},
+\qquad 0\text{ is the valuation time}.
 $$
 
 ## Example 1: annual coupons

@@ -24,6 +24,7 @@ const sharedDefinition = (
   key,
   notation: key,
   title: key,
+  summary: `${key} test summary`,
   aliases: [],
   domain: 'test',
   sources: [],

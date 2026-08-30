@@ -4,30 +4,63 @@ The notation collection is the authoritative glossary. This document records
 cross-cutting conventions so editors do not reuse a glyph for an incompatible
 meaning or hide a unit conversion.
 
+Every variable in rendered lesson mathematics must resolve to a semantic key
+(the content validator fails otherwise); the base notation library covers
+universal constants and operators without any binding.
+
 ## Authoring rules
 
 - A semantic key names a meaning; `notation` stores its LaTeX. Never resolve a
   definition by raw LaTeX.
-- Reuse an entry under `src/content/notation/` when the same meaning appears in
-  more than one lesson. Keep lesson-only bookkeeping in `notation.local`.
-- Declare shared imports in lesson `notation.uses`. Local keys are already in
-  that lesson's scope and are not repeated in `uses`.
-- Use `\term\{semantic-key\}` in `.mdx` prose. MDX consumes the brace escapes
-  before the notation plugin sees the normal `\term{semantic-key}` form.
-  Shared `.md` notation bodies use `\term{semantic-key}` directly.
-- Use `\explain{semantic-key}{complete LaTeX token}` inside `$...$` or
-  `$$...$$` math. Do not use `\(...\)` or `\[...\]` as lesson math delimiters.
-- Annotate the complete token, including its subscript or arguments. Nested
-  `\explain` calls are allowed when both the outer expression and inner symbol
-  have distinct meanings.
-- Bare LaTeX is allowed when no explanation is useful. Do not annotate every
-  digit, operator, or universally understood symbol merely to increase
-  coverage.
+- Coverage is enforced. Every variable in a lesson's rendered mathematics must
+  resolve to a semantic key; `pnpm validate:content` fails on an unresolved
+  variable and prints its `file:line`. Operators, digits, delimiters, the
+  differential `d`, primes, and the base notation library need no binding.
+- The base notation library (universal `notation` entries -- the circle
+  constant, Euler's number, the imaginary unit, `\exp`, `\ln`, expectation,
+  probability, the indicator, a generic summation index) is in every lesson's
+  scope automatically. Do not import or redefine these.
+- Binding resolves by a fixed ladder, checked at build time. Two candidates at
+  any level is an error, never a guess:
+  1. `\explain{key}{token}` on the token;
+  2. an equation-local gloss;
+  3. the nearest `\let{glyph}{key}` in the enclosing section;
+  4. the nearest earlier `\def{glyph}{key}{...}` on the page;
+  5. a unique match in the lesson's `notation.uses` (base library included);
+  6. a unique match in the `notation` collection within the lesson's `domain`.
+- Prefer scope. Add `\explain{key}{token}` only when the ladder cannot resolve
+  the symbol or the equation renders a non-canonical glyph for its key. Use
+  `\term\{key\}` in `.mdx` prose (MDX consumes the brace escapes before the
+  notation plugin sees `\term{key}`); shared `.md` bodies use `\term{key}`.
+- `\def{glyph}{key}{summary ...}` writes a positioned page-local definition
+  (the shape of a `notation.local` entry) and binds from that point.
+  `\let{glyph}{key}` re-binds an already-resolvable key for the enclosing
+  section subtree only -- it ends at the next heading of equal or higher level
+  -- and adds no content.
+- Every equation must also resolve from the page's static bundle alone
+  (`notation.local` plus `notation.uses` plus the base library); `\let` and
+  `\def` only choose among in-scope meanings. A symbol that resolves only
+  through narrative position, with no bundle entry, is a warning.
+- Reusing one glyph for two meanings in a lesson is a warning. Acknowledge it
+  with `notation.reusedGlyphs` or keep the meanings in separate `\let`
+  sections.
+- Sub-expressions are explainable only through a group macro carrying a key:
+  `\group{expr}{key}` renders as plain math with a hover affordance;
+  `\underbrace{expr}_{\explain{key}{...}}` renders the visible brace. Spans
+  must be disjoint or fully nested; partial overlap is an error.
+- A whole-equation meaning is the block attribute `:::equation{explains: key}`,
+  not a symbol binding.
 - Shared entries carry sources, curriculum alignment, review status, and AI
-  provenance. Page-local entries carry alignment and inherit the lesson's
-  status; add sources when they make sourced claims.
-- Do not use `\explain[def]`, `:::def`, a hand-authored JavaScript dictionary,
-  raw HTML, MathJax, or a remote math script.
+  provenance. Page-local entries (frontmatter or `\def`) carry alignment and
+  inherit the lesson's status; add sources for sourced claims.
+- The validator writes a per-lesson resolution report (symbol, key, level,
+  location). Review it, and the authoring overlay, rather than raw MDX.
+- A reader may mute an explanation by semantic key. Muting hides only the
+  inline affordance and never a lesson's first canonical entry; the repository
+  ships an initial muted set for the universal constants.
+- Nested `\explain` calls are allowed when the outer expression and inner
+  symbol have distinct meanings. Do not hand-author a JavaScript explanation
+  dictionary, raw HTML, `\htmlData`, MathJax, or a remote math script.
 
 ## Unit and convention rules
 

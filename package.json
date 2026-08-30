@@ -26,7 +26,7 @@
     "@astrojs/starlight": "0.41.9",
     "@observablehq/plot": "0.6.17",
     "astro": "7.2.7",
-    "katex": "0.18.4",
+    "katex": "0.16.47",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "rehype-katex": "7.0.1",

@@ -2,6 +2,7 @@
 key: price-yield-curve
 notation: 'P(y)'
 title: Price-yield curve
+summary: Bond price as a function of yield while promised cash flows remain fixed.
 aliases:
   - bond price as a function of yield
 domain: bonds

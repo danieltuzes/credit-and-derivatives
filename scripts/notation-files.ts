@@ -207,6 +207,7 @@ async function sharedEntries(
         key,
         notation: string(data.notation, `${file} notation`),
         title: string(data.title, `${file} title`),
+        summary: string(data.summary, `${file} summary`),
         aliases: strings(data.aliases, `${file} aliases`),
         domain: string(data.domain, `${file} domain`),
         sources: strings(data.sources, `${file} sources`),

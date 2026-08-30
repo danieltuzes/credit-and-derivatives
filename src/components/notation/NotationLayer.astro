@@ -29,6 +29,8 @@ export interface Props {
   glossaryHref?: string;
 }
 
+import NotationMath from './NotationMath.astro';
+
 const {
   definitions,
   id = 'page-notation',
@@ -93,12 +95,10 @@ const panelId = `${id}-panel`;
               data-notation-href={definition.href}
             >
               <dt>
-                <code
+                <NotationMath
                   class="notation-symbol"
-                  aria-label={`LaTeX symbol: ${definition.notation}`}
-                >
-                  {definition.notation}
-                </code>
+                  latex={definition.notation}
+                />
                 <a
                   href={definition.href}
                   data-notation-link={definition.key}
@@ -121,13 +121,9 @@ const panelId = `${id}-panel`;
                   </p>
                 )}
                 {definition.formula && (
-                  <code
-                    class="notation-formula"
-                    data-notation-formula
-                    aria-label={`LaTeX definition: ${definition.formula}`}
-                  >
-                    {definition.formula}
-                  </code>
+                  <span class="notation-formula" data-notation-formula>
+                    <NotationMath latex={definition.formula} />
+                  </span>
                 )}
                 {definition.units && (
                   <p class="notation-units" data-notation-units>

@@ -31,7 +31,7 @@ notation:
       notation: k
       title: Present-value payment index
       summary: Selects one dated cash flow in the finite schedule.
-      details: This page-local index keeps sequence bookkeeping separate from the year-valued time t_k.
+      details: This page-local index keeps sequence bookkeeping separate from the associated time measured in years.
       formula: 'k \in \{1,\ldots,n\}'
       seeAlso:
         - payment-time
@@ -67,25 +67,25 @@ After this lesson, you should be able to:
 
 ## Make values comparable before adding
 
-The \term\{present-value\} of a deterministic schedule is
+Use the local \term\{present-value-payment-index\} $k$ to select one row and
+the local \term\{number-of-future-payments\} $n$ to count the included future
+rows. At row $k$, write the \term\{signed-cash-flow\} as $CF_k$, its
+\term\{payment-time\} as $t_k$, and the matching \term\{discount-factor\} as
+$D(0,t_k)$. Write the schedule's \term\{present-value\} at
+\term\{valuation-time\} $0$ as $PV_0$.
+
+The present value of the deterministic schedule is
 
 $$
-\explain{present-value}{PV_0}
-=
-\sum_{\explain{present-value-payment-index}{k}=1}^{
-  \explain{number-of-future-payments}{n}
-}
-\explain{signed-cash-flow}{CF_k}
-\explain{discount-factor}{D(0,\explain{payment-time}{t_k})}.
+PV_0=\sum_{k=1}^{n}CF_kD(0,t_k).
 $$
 
-The formula references definitions rather than repeating an explanation
-dictionary on this page. The two page-local bookkeeping symbols are resolved
-only here; the financial quantities come from the shared registry.
+The two bookkeeping symbols are local to this page; the financial quantities
+come from the shared registry.
 
 ## Example 1: one payment
 
-For a deterministic USD 1,000 receipt at $t=2$ with
+For a deterministic USD 1,000 receipt paid after two years with
 $D(0,2)=0.9070294785$,
 
 $$
@@ -121,12 +121,13 @@ the entire result.
 
 ## Example 3: additivity
 
-Let $A\mathbin{\|}B$ mean concatenating two schedules while retaining every
-row, including duplicate payments. If schedules $A$ and $B$ use the same
-valuation time, perspective, currency, and discount factors, then
+Concatenating two schedules retains every row, including duplicate payments.
+If the two schedules use the same valuation time, perspective, currency, and
+discount factors, then
 
 $$
-PV_0(A\mathbin{\|}B)=PV_0(A)+PV_0(B).
+PV_0(\text{combined schedule})
+=PV_0(\text{first schedule})+PV_0(\text{second schedule}).
 $$
 
 This identity is covered by a domain property test. The compatibility

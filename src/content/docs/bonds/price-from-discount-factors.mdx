@@ -27,19 +27,10 @@ notation:
     - discount-factor
     - bond-cash-flow
     - bond-price
-  local:
-    - key: bond-price-payment-index
-      notation: k
-      title: Bond-pricing payment index
-      summary: Selects one promised payment and its matching discount factor.
-      details: Matching by k prevents a cash flow from being discounted with a factor for another time.
-      formula: 'k \in \{1,\ldots,n\}'
-      seeAlso:
-        - bond-cash-flow
-        - discount-factor
-      alignment:
-        kind: general
-        rationale: Finite summation indexing is part of the track's algebra assumptions.
+    - bond-payment-index
+    - number-of-bond-payments
+    - face-value
+    - maturity-time
 aiAssisted: true
 sidebar:
   order: 2
@@ -52,19 +43,17 @@ promised cash-flow schedule and supplied discount factors.
 
 ## Bond pricing is a present-value application
 
-The \term\{bond-price\} is the \term\{present-value\} at
-\term\{valuation-time\}:
+Use the \term\{bond-payment-index\} $k$ to select one of the
+\term\{number-of-bond-payments\} $n$. Write the promised
+\term\{bond-cash-flow\} as $CF_k^{\mathrm{bond}}$, its
+\term\{payment-time\} as $t_k$, and its matching \term\{discount-factor\} as
+$D(0,t_k)$. Write the \term\{bond-price\}, which is the
+\term\{present-value\} at \term\{valuation-time\} $0$, as $P_0$.
+
+The pricing rule is
 
 $$
-\explain{bond-price}{P_0}
-=
-\sum_{\explain{bond-price-payment-index}{k}=1}^{n}
-\explain{bond-cash-flow}{
-  CF_{\explain{bond-price-payment-index}{k}}^{\mathrm{bond}}
-}
-\explain{discount-factor}{
-  D(0,\explain{payment-time}{t_k})
-}.
+P_0=\sum_{k=1}^{n}CF_k^{\mathrm{bond}}D(0,t_k).
 $$
 
 The semantic key for price is not overloaded with clean price, quoted price,
@@ -104,7 +93,8 @@ $$
 
 ## Example 3: a zero-coupon boundary
 
-If every coupon is zero, only face value at maturity remains:
+If every coupon is zero, only the \term\{face-value\} $F$ at
+\term\{maturity-time\} $T$ remains:
 
 $$
 P_0=F D(0,T).
@@ -114,15 +104,10 @@ This is the same pricing rule, not a separate exception.
 
 ## Error pattern: discount after adding
 
-The expression
-
-$$
-\left(\sum_k CF_k^{\mathrm{bond}}\right)D
-$$
-
-is generally incomplete because payments at different times require different
-factors. It is valid only if the same factor genuinely applies to every
-included amount.
+Adding payments from different dates first and then multiplying the total by
+one unnamed discount factor is generally incomplete. Each payment needs the
+factor for its own time. A single common factor is valid only when the model
+genuinely assigns that same factor to every included amount.
 
 ## Check your understanding
 

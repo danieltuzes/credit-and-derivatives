@@ -68,6 +68,7 @@ const alignedDefinition = (
   key: 'discount-factor',
   notation: 'D(0,t)',
   title: 'Discount factor',
+  summary: 'A test discount factor.',
   aliases: [],
   domain: 'rates',
   sources: [],

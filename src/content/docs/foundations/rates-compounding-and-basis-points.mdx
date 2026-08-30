@@ -33,8 +33,8 @@ notation:
     - key: number-of-compounding-periods
       notation: N
       title: Number of compounding periods
-      summary: Counts how many times the periodic rate is applied between 0 and t.
-      details: Under equal periods, N equals compounding frequency times time in years.
+      summary: Counts how many times the periodic rate is applied over the stated horizon.
+      details: Under equal periods, the count equals compounding frequency multiplied by time in years.
       formula: 'N=mt'
       seeAlso:
         - compounding-frequency
@@ -58,17 +58,19 @@ After this lesson, you should be able to:
 ## One label is not enough
 
 The phrase “an annual rate of 6%” is incomplete for compounding unless its
-convention is stated. In this slice, a \term\{nominal-annual-rate\}
-$\explain{nominal-annual-rate}{j^{(m)}}$ is paired with
-\term\{compounding-frequency\} $\explain{compounding-frequency}{m}$.
+convention is stated. In this slice, write the \term\{nominal-annual-rate\} as
+$j^{(m)}$ and pair it with the \term\{compounding-frequency\} $m$. Write the
+resulting \term\{periodic-rate\} as $r_m$.
 
-The \term\{periodic-rate\} is
+On this page, $t$ is the shorter generic-horizon form of the shared
+\term\{payment-time\}. The \term\{valuation-time\} is $0$. Use the local
+\term\{number-of-compounding-periods\} $N$ for the number of rate applications,
+and write the resulting \term\{accumulation-factor\} as $A(0,t)$.
+
+Under the stated nominal-rate convention, the periodic rate is
 
 $$
-\explain{periodic-rate}{r_m}
-=
-\frac{\explain{nominal-annual-rate}{j^{(m)}}}
-{\explain{compounding-frequency}{m}}.
+r_m=\frac{j^{(m)}}{m}.
 $$
 
 This is a declared convention, not a universal conversion rule for every kind
@@ -87,7 +89,7 @@ The model applies 3% once every half-year. Over $t=1.5$ years, the local
 \term\{accumulation-factor\} is
 
 $$
-\explain{accumulation-factor}{A(0,1.5)}
+A(0,1.5)
 =(1+0.03)^3
 =1.092727.
 $$
@@ -112,7 +114,7 @@ quantities. The semantic key prevents an author from calling both merely
 A \term\{basis-point\} is a unit for rate differences:
 
 $$
-\explain{basis-point}{25\,\mathrm{bp}}
+25\,\mathrm{bp}
 =25\times0.0001
 =0.0025
 =0.25\%.

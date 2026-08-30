@@ -27,6 +27,9 @@ notation:
     - yield-to-maturity
     - price-yield-curve
     - bond-cash-flow
+    - bond-payment-frequency
+    - bond-payment-index
+    - number-of-bond-payments
   local:
     - key: yield-shock
       notation: '\Delta y'
@@ -70,14 +73,20 @@ After this lesson, you should be able to:
 
 ## Direction comes from every denominator
 
-For promised positive \term\{bond-cash-flow\} amounts,
+Write the \term\{bond-payment-frequency\} as $m_{\mathrm B}$. On this page,
+$y$ is the shorter functional-argument form of the
+\term\{yield-to-maturity\} $y^{(m_{\mathrm B})}$. Write the
+\term\{price-yield-curve\} as $P(y)$.
+
+Use the \term\{bond-payment-index\} $k$ to select one of the
+\term\{number-of-bond-payments\} $n$, and write each promised positive
+\term\{bond-cash-flow\} as $CF_k^{\mathrm{bond}}$. Then
 
 $$
-\explain{price-yield-curve}{P(y)}
-=
+P(y)=
 \sum_{k=1}^{n}
 \frac{CF_k^{\mathrm{bond}}}
-{\left(1+\explain{yield-to-maturity}{y}/m_B\right)^k}.
+{\left(1+y/m_{\mathrm B}\right)^k}.
 $$
 
 Within the stated non-negative-yield domain, if yield rises while every cash
@@ -85,10 +94,14 @@ flow stays fixed, every positive denominator increases. Every discounted
 contribution decreases, so \term\{bond-price\} decreases. The shock table also
 assumes the new yield remains in that domain.
 
-| Yield shock                         | Denominators | Price change                         |
-| ----------------------------------- | ------------ | ------------------------------------ |
-| $\explain{yield-shock}{\Delta y}>0$ | Increase     | $\explain{price-change}{\Delta P}<0$ |
-| $\explain{yield-shock}{\Delta y}<0$ | Decrease     | $\explain{price-change}{\Delta P}>0$ |
+Define the local \term\{yield-shock\} $\Delta y$ as new yield minus old
+yield, and define the local \term\{price-change\} $\Delta P$ as new price
+minus old price.
+
+| Yield shock   | Denominators | Price change   |
+| ------------- | ------------ | -------------- |
+| $\Delta y>0$ | Increase     | $\Delta P<0$ |
+| $\Delta y<0$ | Decrease     | $\Delta P>0$ |
 
 This statement is conditional on the promised cash flows being held fixed.
 

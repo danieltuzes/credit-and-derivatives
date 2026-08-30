@@ -10,6 +10,10 @@ runtime tutor, pricing engine, or publishing agent.
   must be marked `NEEDS_SOURCE`; citations must never be invented.
 - Humans verify the actual sources, formulas, conventions, examples, answer
   keys, and model boundaries.
+- AI may draft equations and their notation bindings, but every new or changed
+  `notation` entry and the resulting resolution report stay `draft` until a
+  human quantitative review. AI must not rebind an existing glyph to a new
+  meaning without flagging it.
 - Quantitative output is produced by deterministic reviewed code, not generated
   prose.
 - Material AI assistance records the date, model/tool, prompt-template version,
