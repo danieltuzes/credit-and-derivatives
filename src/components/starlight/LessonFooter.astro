@@ -1,4 +1,10 @@
 ---
+/**
+ * Starlight only allows one `Footer` override, so this component composes the
+ * page-notation layer and the source-citation layer ahead of Starlight's own
+ * footer. Both layers are optional progressive enhancements over static
+ * markup that the remark adapters and the content collections already emit.
+ */
 import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
 import { loadNotationRegistryInput } from '../../../scripts/notation-files';
 import {
@@ -8,6 +14,7 @@ import {
 import NotationLayer, {
   type NotationLayerDefinition,
 } from '../notation/NotationLayer.astro';
+import CitationLayer from '../citation/CitationLayer.astro';
 
 const routeData = Astro.locals.starlightRoute.entry
   .data as typeof Astro.locals.starlightRoute.entry.data & {
@@ -63,4 +70,5 @@ if (routeData.lessonId) {
 ---
 
 <NotationLayer definitions={definitions} />
+{routeData.lessonId && <CitationLayer />}
 <DefaultFooter />

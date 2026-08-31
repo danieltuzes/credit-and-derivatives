@@ -27,6 +27,14 @@ export interface Props {
   id?: string;
   label?: string;
   glossaryHref?: string;
+  /**
+   * `'full'` (default) renders the visible "Notation used on this page"
+   * disclosure plus the hover panel. `'panel'` renders only the hover panel
+   * and keeps the entry data as a hidden source, for pages that already show
+   * every definition in full (the glossary) but still want marked `\term`
+   * links to reveal an explanation on hover.
+   */
+  presentation?: 'full' | 'panel';
 }
 
 import NotationMath from './NotationMath.astro';
@@ -36,7 +44,10 @@ const {
   id = 'page-notation',
   label = 'Notation used on this page',
   glossaryHref = '/glossary/',
+  presentation = 'full',
 } = Astro.props;
+
+const panelOnly = presentation === 'panel';
 
 const keyPattern = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const idPattern = /^[A-Za-z][A-Za-z0-9_-]*$/;
@@ -73,16 +84,19 @@ const panelId = `${id}-panel`;
 {
   items.length > 0 && (
     <section
-      class="notation-layer"
+      class:list={['notation-layer', panelOnly && 'notation-layer--panel-only']}
       data-notation-layer
       data-notation-layer-id={id}
-      aria-labelledby={`${id}-heading`}
+      aria-labelledby={panelOnly ? undefined : `${id}-heading`}
+      aria-label={panelOnly ? 'Notation explanations' : undefined}
     >
-      <h2 id={`${id}-heading`} class="notation-layer-heading">
-        Page notation
-      </h2>
+      {!panelOnly && (
+        <h2 id={`${id}-heading`} class="notation-layer-heading">
+          Page notation
+        </h2>
+      )}
 
-      <details class="notation-list">
+      <details class="notation-list" hidden={panelOnly}>
         <summary>
           {label} <span class="notation-count">({items.length})</span>
         </summary>
@@ -90,15 +104,21 @@ const panelId = `${id}-panel`;
           {items.map((definition) => (
             <div
               class="notation-entry"
-              id={`notation-${definition.key}`}
+              id={panelOnly ? undefined : `notation-${definition.key}`}
               data-notation-entry={definition.key}
               data-notation-href={definition.href}
             >
               <dt>
-                <NotationMath
-                  class="notation-symbol"
-                  latex={definition.notation}
-                />
+                <span
+                  class="notation-symbol-trigger"
+                  data-notation-symbol-trigger
+                  data-notation-key={definition.key}
+                >
+                  <NotationMath
+                    class="notation-symbol"
+                    latex={definition.notation}
+                  />
+                </span>
                 <a
                   href={definition.href}
                   data-notation-link={definition.key}
@@ -147,10 +167,13 @@ const panelId = `${id}-panel`;
         </dl>
       </details>
 
-      <p class="notation-enhancement-help" data-notation-help hidden>
-        Point to a marked symbol for a quick explanation, or use the list above.
-        Select “Pin explanation” to keep one open; press Escape to close it.
-      </p>
+      {!panelOnly && (
+        <p class="notation-enhancement-help" data-notation-help hidden>
+          Point to a marked symbol for a quick explanation, or use the list
+          above. Select “Pin explanation” to keep one open; press Escape to
+          close it.
+        </p>
+      )}
 
       <aside
         class="notation-panel"
@@ -242,7 +265,19 @@ const panelId = `${id}-panel`;
     );
     const triggerSet = new Set(triggers);
 
-    for (const trigger of triggers) trigger.classList.add('notation-trigger');
+    // Symbol glyphs rendered inside the page-notation list. They live within
+    // `root`, so the external-marker filter above deliberately excludes them;
+    // wire them as their own trigger set so pointing at a listed symbol opens
+    // the same explanation as pointing at one embedded in prose or an equation.
+    const symbolTriggers = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-notation-symbol-trigger]'),
+    ).filter((element) => entries.has(element.dataset.notationKey ?? ''));
+    const symbolTriggerSet = new Set(symbolTriggers);
+    const highlightTargets = [...triggers, ...symbolTriggers];
+
+    for (const trigger of highlightTargets) {
+      trigger.classList.add('notation-trigger');
+    }
     for (const control of controls) control.hidden = false;
     const help = root.querySelector<HTMLElement>('[data-notation-help]');
     if (help) help.hidden = false;
@@ -262,6 +297,11 @@ const panelId = `${id}-panel`;
       return candidate && triggerSet.has(candidate) ? candidate : null;
     };
 
+    const symbolTriggerFrom = (node: EventTarget | null) => {
+      const candidate = closestElement(node, '[data-notation-symbol-trigger]');
+      return candidate && symbolTriggerSet.has(candidate) ? candidate : null;
+    };
+
     const controlFrom = (node: EventTarget | null) => {
       const candidate = closestElement(node, '[data-notation-control]');
       return candidate && root.contains(candidate)
@@ -277,7 +317,10 @@ const panelId = `${id}-panel`;
     };
 
     const interactiveFrom = (node: EventTarget | null) =>
-      controlFrom(node) ?? staticLinkFrom(node) ?? externalTriggerFrom(node);
+      controlFrom(node) ??
+      staticLinkFrom(node) ??
+      externalTriggerFrom(node) ??
+      symbolTriggerFrom(node);
 
     const updateControls = () => {
       for (const control of controls) {
@@ -303,26 +346,56 @@ const panelId = `${id}-panel`;
       const safeRegion = displayEquation ?? activeAnchor;
       const regionRect = safeRegion.getBoundingClientRect();
       const anchorRect = activeAnchor.getBoundingClientRect();
-      const below = window.innerHeight - regionRect.bottom - gap - edge;
-      const above = regionRect.top - gap - edge;
-      const placeBelow = below >= above;
-      const available = Math.max(placeBelow ? below : above, 0);
 
-      panel.style.maxHeight = `${available}px`;
-      const panelRect = panel.getBoundingClientRect();
+      // The usable band is bounded by the sticky header, not the raw viewport
+      // edge. Decide the side against that real space so a clamp against the
+      // header can never push the panel back down over the equation.
+      const headerBottom =
+        document.querySelector<HTMLElement>('.header')?.getBoundingClientRect()
+          .bottom ?? 0;
+      const verticalStart = Math.max(edge, headerBottom + edge);
+      const verticalEnd = window.innerHeight - edge;
+      const spaceAbove = regionRect.top - gap - verticalStart;
+      const spaceBelow = verticalEnd - regionRect.bottom - gap;
+
+      // Measure the panel in the roomier band, then keep it on whichever side
+      // actually clears the safe region; shrink only when neither side fits.
+      panel.style.maxHeight = `${Math.max(spaceAbove, spaceBelow, 0)}px`;
+      let panelRect = panel.getBoundingClientRect();
+      const placeBelow =
+        spaceBelow >= panelRect.height || spaceBelow >= spaceAbove;
+      panel.style.maxHeight = `${Math.max(placeBelow ? spaceBelow : spaceAbove, 0)}px`;
+      panelRect = panel.getBoundingClientRect();
+
       let top = placeBelow
         ? regionRect.bottom + gap
         : regionRect.top - gap - panelRect.height;
       let left = anchorRect.left + anchorRect.width / 2 - panelRect.width / 2;
 
+      const article = root
+        .closest<HTMLElement>('.main-pane')
+        ?.querySelector<HTMLElement>('.sl-markdown-content');
+      const articleRect = article?.getBoundingClientRect();
+      const horizontalStart = Math.max(edge, articleRect?.left ?? edge);
+      const horizontalEnd = Math.min(
+        window.innerWidth - edge,
+        articleRect?.right ?? window.innerWidth - edge,
+      );
+
       top = Math.max(
-        edge,
-        Math.min(top, window.innerHeight - panelRect.height - edge),
+        verticalStart,
+        Math.min(top, verticalEnd - panelRect.height),
       );
-      left = Math.max(
-        edge,
-        Math.min(left, window.innerWidth - panelRect.width - edge),
-      );
+      left =
+        horizontalEnd - horizontalStart >= panelRect.width
+          ? Math.max(
+              horizontalStart,
+              Math.min(left, horizontalEnd - panelRect.width),
+            )
+          : Math.max(
+              edge,
+              Math.min(left, window.innerWidth - panelRect.width - edge),
+            );
 
       panel.style.top = `${Math.round(top)}px`;
       panel.style.left = `${Math.round(left)}px`;
@@ -334,7 +407,7 @@ const panelId = `${id}-panel`;
 
       activeKey = key;
       activeAnchor = anchor;
-      for (const trigger of triggers) {
+      for (const trigger of highlightTargets) {
         trigger.classList.toggle(
           'is-notation-active',
           trigger.dataset.notationKey === key,
@@ -389,7 +462,7 @@ const panelId = `${id}-panel`;
       activeAnchor = null;
       panel.hidden = true;
       delete panel.dataset.activeNotationKey;
-      for (const trigger of triggers) {
+      for (const trigger of highlightTargets) {
         trigger.classList.remove('is-notation-active');
       }
       updateControls();
@@ -461,7 +534,8 @@ const panelId = `${id}-panel`;
         return;
       }
 
-      const trigger = externalTriggerFrom(event.target);
+      const trigger =
+        externalTriggerFrom(event.target) ?? symbolTriggerFrom(event.target);
       if (!trigger || trigger.closest('a')) return;
       const key = keyFor(trigger);
       if (!key) return;
@@ -507,6 +581,12 @@ const panelId = `${id}-panel`;
     .notation-layer {
       margin-block: 2.5rem 1rem;
       color: var(--sl-color-text);
+    }
+
+    /* Panel-only mode contributes just the fixed-position explanation panel;
+       the section itself must take no layout space. */
+    .notation-layer--panel-only {
+      margin: 0;
     }
 
     .notation-layer-heading {
@@ -570,6 +650,27 @@ const panelId = `${id}-panel`;
     .notation-symbol {
       min-width: 2.25rem;
       color: var(--sl-color-accent-high);
+    }
+
+    .notation-symbol-trigger {
+      border-radius: 0.16em;
+      cursor: help;
+    }
+
+    .notation-symbol-trigger:hover,
+    .notation-symbol-trigger.is-notation-active {
+      background: var(--sl-color-accent-low);
+      box-shadow: 0 0 0 0.12em var(--sl-color-accent-low);
+    }
+
+    @media (forced-colors: active) {
+      .notation-symbol-trigger:hover,
+      .notation-symbol-trigger.is-notation-active {
+        outline: 2px solid Highlight;
+        color: HighlightText;
+        background: Highlight;
+        box-shadow: none;
+      }
     }
 
     .notation-status {
@@ -672,6 +773,13 @@ const panelId = `${id}-panel`;
   :global(.katex-html [data-notation-key]),
   :global(.notation-term[data-notation-key]) {
     border-radius: 0.16em;
+  }
+
+  /* KaTeX represents vertical-list depth with a guaranteed-empty second
+     table row. Because that row is painted last, it can otherwise intercept
+     pointer hits meant for visible notation in fractions and subscripts. */
+  :global(.katex-html .vlist-t2 > .vlist-r:nth-child(2)) {
+    pointer-events: none;
   }
 
   :global(.katex-html [data-notation-key]) {

@@ -14,6 +14,7 @@ assessments:
   - discount-factor-check
 sources:
   - tuckman-serrat-fixed-income
+  - hull-options-futures
 assumptions:
   - Deterministic payment of one unit
   - Non-negative nominal annual rate
@@ -46,6 +47,10 @@ aiAssisted: true
 sidebar:
   order: 3
 ---
+
+import CompactExample from '../../../components/examples/CompactExample.astro';
+import CompactExamples from '../../../components/examples/CompactExamples.astro';
+import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
 
 ## What you will be able to do
 
@@ -88,7 +93,8 @@ $$
 The number 0.94 is not a 94% annual interest rate and is not a 94% probability
 that payment occurs.
 
-## Example 1: annual compounding
+<CompactExamples summary="Worked examples (3)">
+  <CompactExample label="Annual compounding">
 
 At a 5% \term\{nominal-annual-rate\} with $m=1$ and $t=2$,
 
@@ -99,7 +105,8 @@ D(0,2)
 \approx0.907029.
 $$
 
-## Example 2: semiannual compounding
+  </CompactExample>
+  <CompactExample label="Semiannual compounding">
 
 At a 6% nominal annual rate compounded twice per year for 1.5 years,
 
@@ -113,7 +120,8 @@ $$
 The time horizon contains three compounding periods; using exponent 1.5 would
 silently mix years with half-year periods.
 
-## Example 3: read a small curve
+  </CompactExample>
+  <CompactExample label="Read a small curve">
 
 Under the same 6% nominal semiannual model:
 
@@ -128,10 +136,16 @@ With the stated non-negative rate, later deterministic units receive
 non-increasing discount factors. They are strictly smaller when the rate is
 strictly positive.
 
+  </CompactExample>
+</CompactExamples>
+
 ## Check your understanding
 
-The assessment set **discount-factor-check** tests meaning, annual calculation,
-and a semiannual transfer case.
+These items test meaning, annual calculation, and a semiannual transfer case.
+Each question stays collapsed until you open it; answers and explanations appear
+once you check.
+
+<AssessmentSet id="discount-factor-check" />
 
 ## Model boundary and review note
 
@@ -139,5 +153,10 @@ The rate is flat across time and cash flows are deterministic. The page does
 not yet teach spot curves, interpolation, day counts, default, recovery,
 liquidity, or funding.
 
-The source record remains draft and its exact locator requires human
-verification.
+The discount-factor definition and the $D(0,t)=(1+r_m)^{-mt}$ form follow
+Tuckman & Serrat\cite\{tuckman-serrat-fixed-income\}\{§1.2, the discount
+factor as the value today of one unit paid at t; §2.4, eqs. 2.17-2.19, the
+semiannually compounded form\}; Hull gives the same
+present-value-of-a-future-unit
+reading\cite\{hull-options-futures\}\{Ch. 4, "Bond Pricing"\}. The lesson
+stays `draft` pending human confirmation of the printed locators.

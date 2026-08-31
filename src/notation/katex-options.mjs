@@ -2,11 +2,19 @@ import { NOTATION_KEY_PATTERN } from './remark-notation.mjs';
 
 export const EXPLAIN_MACRO = String.raw`\htmlData{notation-key=#1}{#2}`;
 
+// Interactive labs render developer-authored math templates that carry two
+// kinds of inert marker: `\explain` for a notation key (as above) and `\slot`
+// for a numeric hole the island rewrites at runtime. Both compile to a single
+// `data-*` attribute and nothing else.
+export const SLOT_MACRO = String.raw`\htmlData{lab-slot=#1}{#2}`;
+const LAB_SLOT_PATTERN = /^[a-z][a-z0-9]*$/;
+
 /**
- * KaTeX trust callback that permits exactly one inert semantic marker.
- * Links, styles, classes, IDs, protocols, and arbitrary data attributes stay
- * untrusted. Cross-entry existence is checked by the remark adapter and the
- * workspace validator before KaTeX runs.
+ * KaTeX trust callback that permits exactly one inert marker attribute:
+ * `data-notation-key` (a registry key) or `data-lab-slot` (a lab value hole).
+ * Links, styles, classes, IDs, protocols, and every other data attribute stay
+ * untrusted. Key existence is checked by the remark adapter, the lab-math
+ * renderer, and the workspace validator before KaTeX runs.
  */
 export function trustNotationMarker(context) {
   if (context?.command !== '\\htmlData') return false;
@@ -15,16 +23,17 @@ export function trustNotationMarker(context) {
   }
 
   const entries = Object.entries(context.attributes);
-  return (
-    entries.length === 1 &&
-    entries[0][0] === 'data-notation-key' &&
-    typeof entries[0][1] === 'string' &&
-    NOTATION_KEY_PATTERN.test(entries[0][1])
-  );
+  if (entries.length !== 1) return false;
+  const [name, value] = entries[0];
+  if (typeof value !== 'string') return false;
+
+  if (name === 'data-notation-key') return NOTATION_KEY_PATTERN.test(value);
+  if (name === 'data-lab-slot') return LAB_SLOT_PATTERN.test(value);
+  return false;
 }
 
 function strictNotation(errorCode) {
-  // The trusted macro intentionally uses KaTeX's HTML extension. Keep normal
+  // The trusted macros intentionally use KaTeX's HTML extension. Keep normal
   // strict-mode warnings for all other non-LaTeX constructs.
   return errorCode === 'htmlExtension' ? 'ignore' : 'warn';
 }
@@ -36,11 +45,12 @@ export const notationKatexOptions = Object.freeze({
   trust: trustNotationMarker,
   macros: Object.freeze({
     '\\explain': EXPLAIN_MACRO,
+    '\\slot': SLOT_MACRO,
   }),
 });
 
 /**
- * Add non-security KaTeX settings while keeping the notation macro and trust
+ * Add non-security KaTeX settings while keeping the notation macros and trust
  * boundary non-overridable.
  */
 export function createNotationKatexOptions(overrides = {}) {
@@ -62,6 +72,9 @@ export function createNotationKatexOptions(overrides = {}) {
   if (overrides.macros?.['\\explain'] !== undefined) {
     throw new TypeError('The \\explain KaTeX macro cannot be overridden.');
   }
+  if (overrides.macros?.['\\slot'] !== undefined) {
+    throw new TypeError('The \\slot KaTeX macro cannot be overridden.');
+  }
 
   return {
     ...notationKatexOptions,
@@ -72,6 +85,7 @@ export function createNotationKatexOptions(overrides = {}) {
     macros: {
       ...(overrides.macros ?? {}),
       '\\explain': EXPLAIN_MACRO,
+      '\\slot': SLOT_MACRO,
     },
   };
 }

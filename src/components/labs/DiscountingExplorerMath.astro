@@ -1,0 +1,28 @@
+---
+import { labMathScope } from '../../notation/lab-math-scope';
+import {
+  renderLabMath,
+  type RenderedLabMath,
+} from '../../notation/render-lab-math';
+import DiscountingExplorer, {
+  DISCOUNTING_LAB_MATH,
+} from './DiscountingExplorer';
+
+type TemplateId = keyof typeof DISCOUNTING_LAB_MATH;
+
+const routeData = Astro.locals.starlightRoute.entry.data as {
+  notation?: {
+    uses?: string[];
+    local?: Array<{ key: string; notation: string }>;
+  };
+};
+
+const scope = await labMathScope(routeData.notation);
+
+const math = {} as Record<TemplateId, RenderedLabMath>;
+for (const id of Object.keys(DISCOUNTING_LAB_MATH) as TemplateId[]) {
+  math[id] = renderLabMath(DISCOUNTING_LAB_MATH[id], scope);
+}
+---
+
+<DiscountingExplorer client:visible math={math} />

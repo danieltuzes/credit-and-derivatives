@@ -15,6 +15,7 @@ assessments:
   - present-value-check
 sources:
   - tuckman-serrat-fixed-income
+  - hull-options-futures
 assumptions:
   - Deterministic signed cash flows
   - A supplied discount factor for every payment time
@@ -50,12 +51,39 @@ notation:
       alignment:
         kind: general
         rationale: Counting a finite list is part of the track's entry assumptions.
+    - key: discounting-lab-rate
+      notation: y
+      title: Discounting-lab rate
+      summary: The one annual rate the discounting lab compounds to build each discount factor.
+      details: It is page-local to the lab's toy model; elsewhere this lesson takes every discount factor as given rather than deriving it from a rate.
+      formula: 'D(0,t) = (1 + y)^{-t}'
+      seeAlso:
+        - discount-factor
+        - payment-time
+      alignment:
+        kind: general
+        rationale: The lab's single-rate annual-compounding shortcut is an exploration aid, not a tracked competency.
+    - key: discounting-lab-cash-flow
+      notation: C
+      title: Discounting-lab cash flow
+      summary: The one dated amount the discounting lab discounts.
+      details: It is page-local to the lab's one-payment model; the lesson's schedule notation writes an indexed amount instead.
+      formula: 'PV_0 = C \cdot D(0,t)'
+      seeAlso:
+        - signed-cash-flow
+        - present-value
+      alignment:
+        kind: general
+        rationale: Naming a single payment is an exploration aid for the lab, not a tracked competency.
 aiAssisted: true
 sidebar:
   order: 4
 ---
 
-import DiscountingExplorer from '../../../components/labs/DiscountingExplorer';
+import DiscountingExplorerMath from '../../../components/labs/DiscountingExplorerMath.astro';
+import CompactExample from '../../../components/examples/CompactExample.astro';
+import CompactExamples from '../../../components/examples/CompactExamples.astro';
+import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
 
 ## What you will be able to do
 
@@ -83,7 +111,8 @@ $$
 The two bookkeeping symbols are local to this page; the financial quantities
 come from the shared registry.
 
-## Example 1: one payment
+<CompactExamples summary="Worked examples (3)">
+  <CompactExample label="One payment">
 
 For a deterministic USD 1,000 receipt paid after two years with
 $D(0,2)=0.9070294785$,
@@ -98,7 +127,8 @@ $$
 The output unit is USD at \term\{valuation-time\} from the holder's
 perspective.
 
-## Example 2: mixed signed cash flows
+  </CompactExample>
+  <CompactExample label="Mixed signed cash flows">
 
 Suppose the holder receives USD 100 at $t_1$, pays USD 40 at $t_2$, and
 receives USD 300 at $t_3$. The supplied discount factors are 0.97, 0.93, and
@@ -119,7 +149,8 @@ $$
 Discounting preserves the declared signs. Reversing perspective would negate
 the entire result.
 
-## Example 3: additivity
+  </CompactExample>
+  <CompactExample label="Additivity">
 
 Concatenating two schedules retains every row, including duplicate payments.
 If the two schedules use the same valuation time, perspective, currency, and
@@ -134,18 +165,36 @@ This identity is covered by a domain property test. The compatibility
 conditions matter: values from different currencies or valuation dates cannot
 be added without another model.
 
-<DiscountingExplorer client:visible />
+  </CompactExample>
+</CompactExamples>
+
+The lab below turns the one-payment case into a calculator. It builds each
+\term\{discount-factor\} from a single \term\{discounting-lab-rate\} compounded
+once a year, then applies it to one \term\{discounting-lab-cash-flow\} to report
+the \term\{present-value\} at \term\{valuation-time\} $0$. Its formulas carry the
+same explained symbols as the prose above.
+
+<DiscountingExplorerMath />
 
 The lab keeps its calculation in the tested domain module. Its percentage input
 is converted to a decimal at the UI boundary.
 
 ## Check your understanding
 
-The assessment set **present-value-check** separates interpretation from
-calculation and includes an unfamiliar multi-payment case.
+These items separate interpretation from calculation and include an unfamiliar
+multi-payment case. Each question stays collapsed until you open it; answers and
+explanations appear once you check.
+
+<AssessmentSet id="present-value-check" />
 
 ## Model boundary and review note
 
 This is deterministic present value. It omits curves, calendars, uncertainty,
-credit, recovery, liquidity, tax, and funding. The exact textbook locator must
-be verified by a human before review.
+credit, recovery, liquidity, tax, and funding.
+
+The rule $PV_0=\sum_k CF_k\,D(0,t_k)$ follows Tuckman &
+Serrat\cite\{tuckman-serrat-fixed-income\}\{§1.2, price as the sum of each cash
+flow times its discount factor (eqs. 1.1-1.3); full price equals present value
+(eq. 1.5)\}; Hull states the same
+principle\cite\{hull-options-futures\}\{Ch. 4, "Bond Pricing"\}. The lesson
+stays `draft` pending human confirmation of the printed locators.

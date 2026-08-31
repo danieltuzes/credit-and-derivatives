@@ -14,6 +14,7 @@ assessments:
   - bond-discount-factor-price-check
 sources:
   - tuckman-serrat-fixed-income
+  - hull-options-futures
 assumptions:
   - Promised fixed cash flows from the preceding toy contract
   - One supplied deterministic discount factor for each payment time
@@ -35,6 +36,10 @@ aiAssisted: true
 sidebar:
   order: 2
 ---
+
+import CompactExample from '../../../components/examples/CompactExample.astro';
+import CompactExamples from '../../../components/examples/CompactExamples.astro';
+import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
 
 ## What you will be able to do
 
@@ -59,7 +64,12 @@ $$
 The semantic key for price is not overloaded with clean price, quoted price,
 or a probability. Those concepts are outside this slice.
 
-## Example 1: two supplied factors
+<CompactExamples
+  summary="Worked examples"
+  hint="Open the set, then choose a discounting case."
+  tabsLabel="Bond price from discount factors examples"
+>
+  <CompactExample label="Two supplied factors">
 
 The annual-coupon bond from the preceding lesson pays USD 50 after one year and
 USD 1,050 after two years. Suppose the matching factors are 0.96 and 0.91.
@@ -79,7 +89,9 @@ The price is above USD 1,000 because this particular pair of supplied factors
 makes the promised payments worth more than face value. No one-number yield has
 been introduced yet.
 
-## Example 2: unfamiliar schedule
+  </CompactExample>
+
+  <CompactExample label="Unfamiliar schedule">
 
 Consider payments of USD 20 at 0.5 years, USD 20 at 1.0 year, and USD 1,020 at
 1.5 years with discount factors 0.98, 0.95, and 0.92:
@@ -91,7 +103,9 @@ P_0
 =\text{USD }977.00.
 $$
 
-## Example 3: a zero-coupon boundary
+  </CompactExample>
+
+  <CompactExample label="Zero-coupon boundary">
 
 If every coupon is zero, only the \term\{face-value\} $F$ at
 \term\{maturity-time\} $T$ remains:
@@ -102,6 +116,9 @@ $$
 
 This is the same pricing rule, not a separate exception.
 
+  </CompactExample>
+</CompactExamples>
+
 ## Error pattern: discount after adding
 
 Adding payments from different dates first and then multiplying the total by
@@ -111,11 +128,20 @@ genuinely assigns that same factor to every included amount.
 
 ## Check your understanding
 
-The assessment set **bond-discount-factor-price-check** includes one coupon-bond
-calculation and one transfer schedule.
+This set includes one coupon-bond calculation and one transfer schedule. Each
+question stays collapsed until you open it; answers and explanations appear once
+you check.
+
+<AssessmentSet id="bond-discount-factor-price-check" />
 
 ## Model boundary and review note
 
 Discount factors are supplied, not calibrated. Credit risk is absent even
-though the broader project concerns credit products. The registered source
-locator remains draft and needs human verification.
+though the broader project concerns credit products.
+
+The rule $P_0=\sum_k CF_k^{\mathrm{bond}}\,D(0,t_k)$ follows Tuckman &
+Serrat\cite\{tuckman-serrat-fixed-income\}\{§1.2, each bond price as its cash
+flows times the matching discount factors (eqs. 1.1-1.3), checked against market
+prices in Table 1.4\}; Hull discounts each cash flow at its own zero rate the
+same way\cite\{hull-options-futures\}\{Ch. 4, "Bond Pricing"\}. The lesson
+stays `draft` pending human confirmation of the printed locators.

@@ -54,10 +54,8 @@ async function lessonEntries(directory: string): Promise<LessonDefinition[]> {
 
   const lessons: LessonDefinition[] = [];
   for (const path of paths) {
-    const frontmatter = matter(await readFile(path, 'utf8')).data as Record<
-      string,
-      unknown
-    >;
+    const parsed = matter(await readFile(path, 'utf8'));
+    const frontmatter = parsed.data as Record<string, unknown>;
     if (typeof frontmatter.lessonId !== 'string') continue;
     lessons.push({
       id: frontmatter.lessonId,
@@ -67,6 +65,7 @@ async function lessonEntries(directory: string): Promise<LessonDefinition[]> {
       assessments: (frontmatter.assessments as string[] | undefined) ?? [],
       sources: (frontmatter.sources as string[] | undefined) ?? [],
       assumptions: (frontmatter.assumptions as string[] | undefined) ?? [],
+      body: parsed.content,
     });
   }
   return lessons;

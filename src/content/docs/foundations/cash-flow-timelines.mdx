@@ -40,6 +40,10 @@ sidebar:
   order: 1
 ---
 
+import CompactExample from '../../../components/examples/CompactExample.astro';
+import CompactExamples from '../../../components/examples/CompactExamples.astro';
+import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
+
 ## What you will be able to do
 
 After this lesson, you should be able to:
@@ -63,7 +67,8 @@ $$
 The shared subscript connects each amount to its matching time while preserving
 the distinct meanings of amount, time, and row index.
 
-## Example 1: read a timeline
+<CompactExamples summary="Worked examples (3)">
+  <CompactExample label="Read a timeline">
 
 Suppose, in a simplified primary-issuance example, a bondholder pays an issuer
 USD 980 now, receives USD 30 after one year, and receives USD 1,030 after two
@@ -78,7 +83,8 @@ years.
 This table does **not** say whether USD 980 is a fair price. It only describes
 who exchanges what, and when.
 
-## Example 2: reverse the perspective
+  </CompactExample>
+  <CompactExample label="Reverse the perspective">
 
 From that issuer's perspective, every amount above changes sign:
 
@@ -92,16 +98,23 @@ Changing perspective does not move the dates or change absolute amounts.
 Adding cash flows from opposite perspectives without first reconciling their
 signs would mix two different models.
 
-## Example 3: same amount, different time
+  </CompactExample>
+  <CompactExample label="Same amount, different time">
 
 USD +100 at $t_1=0.5$ years and USD +100 at $t_2=2$ years are two distinct
 events. The amounts match; the times do not. A later lesson introduces the
 discount factors needed to compare them at time zero.
 
+  </CompactExample>
+</CompactExamples>
+
 ## Check your understanding
 
-The assessment set **cash-flow-timelines-check** contains direct and transfer
-items for reading a schedule and reversing perspective.
+These direct and transfer items cover reading a schedule and reversing
+perspective. Each question stays collapsed until you open it; answers and
+explanations appear once you check.
+
+<AssessmentSet id="cash-flow-timelines-check" />
 
 ## Model boundary and review note
 
@@ -109,6 +122,9 @@ The year-valued times here are already supplied. Real schedules require
 calendar dates, business-day adjustments, and year-fraction conventions; none
 is inferred in this lesson.
 
-The registered textbook record remains draft. **NEEDS_SOURCE:** a human editor
-must verify the exact locator for contractual timeline terminology before this
-lesson can advance beyond draft.
+The dated-schedule and timeline treatment here follows Tuckman &
+Serrat\cite\{tuckman-serrat-fixed-income\}\{§1.1, the dated coupon schedule in
+Table 1.1; §1.6 and Figure 1.3, a timeline of dated events and day-count
+intervals\}. Reversing the holder's perspective flips every sign by a
+bookkeeping convention, not a claim tied to one page. The lesson stays `draft`
+pending human confirmation of the printed locators.

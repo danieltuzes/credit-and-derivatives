@@ -17,6 +17,8 @@ export interface LessonDefinition {
   readonly assessments: readonly string[];
   readonly sources: readonly string[];
   readonly assumptions: readonly string[];
+  /** Raw Markdown body, used to keep inline `\cite` in sync with `sources`. */
+  readonly body?: string;
 }
 
 interface AssessmentItemBase {
@@ -101,6 +103,23 @@ function buildIndex<T extends { readonly id: string }>(
     index.set(entry.id, entry);
   }
   return index;
+}
+
+/**
+ * Source ids referenced by `\cite\{id\}` (optionally `\cite\{id\}\{locator\}`)
+ * in a lesson body, with fenced and inline code removed first so an example
+ * of the syntax does not count as a real citation.
+ */
+function citedSourceIds(body: string | undefined): Set<string> {
+  if (!body) return new Set();
+  const withoutCode = body
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`[^`\n]*`/g, '');
+  const ids = new Set<string>();
+  for (const match of withoutCode.matchAll(/\\cite\\?\{([^{}\\]+)\\?\}/g)) {
+    ids.add((match[1] ?? '').trim());
+  }
+  return ids;
 }
 
 function findDuplicates(values: readonly string[]): readonly string[] {
@@ -238,6 +257,7 @@ export function validateCurriculum(
         });
       }
     }
+    const cited = citedSourceIds(lesson.body);
     for (const sourceId of lesson.sources) {
       const source = sources.get(sourceId);
       if (!source) {
@@ -252,6 +272,20 @@ export function validateCurriculum(
         issues.push({
           kind: 'review-state',
           message: `${lesson.id} is reviewed but source ${sourceId} is ${source.editorialStatus}`,
+        });
+      }
+      if (lesson.body !== undefined && !cited.has(sourceId)) {
+        issues.push({
+          kind: 'unknown-reference',
+          message: `${lesson.id} declares source ${sourceId} but never cites it with \\cite\\{${sourceId}\\}`,
+        });
+      }
+    }
+    for (const sourceId of cited) {
+      if (!lesson.sources.includes(sourceId)) {
+        issues.push({
+          kind: 'unknown-reference',
+          message: `${lesson.id} cites ${sourceId} in prose but does not list it in frontmatter sources`,
         });
       }
     }

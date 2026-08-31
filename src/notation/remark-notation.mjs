@@ -2,12 +2,14 @@
  * Remark adapter for semantic notation references.
  *
  * Author syntax:
- *   - Prose: `\\term{rates.discount-factor}`
- *   - Math:  `\\explain{rates.discount-factor}{D(0,t)}`
+ *   - Prose introduces a meaning: `\\term{rates.discount-factor}`
+ *   - Later math uses ordinary LaTeX: `D(0,t)`
+ *   - `\\explain{rates.discount-factor}{D(0,t)}` remains available when
+ *     lexical scope cannot select one meaning unambiguously.
  *
- * Prose references become ordinary links. Math references remain LaTeX and
- * are inspected here; KaTeX's narrowly trusted `\\explain` macro carries the
- * semantic key into the generated HTML later in the pipeline.
+ * Prose references become ordinary links. Lesson math is resolved against
+ * page-local definitions and explicit shared imports, then the adapter injects
+ * the narrowly trusted `\\explain` marker before build-time KaTeX rendering.
  *
  * Definitions can be supplied as a Map, an array, or an object keyed by the
  * semantic key. A resolver can provide page-local lexical scoping:
@@ -25,6 +27,8 @@
 
 export const NOTATION_KEY_PATTERN = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 
+import { MathBindingError, bindMathNotation } from './math-bindings.mjs';
+
 const PROSE_SKIP_TYPES = new Set([
   'code',
   'definition',
@@ -36,8 +40,6 @@ const PROSE_SKIP_TYPES = new Set([
   'linkReference',
   'math',
   'mdxFlowExpression',
-  'mdxJsxFlowElement',
-  'mdxJsxTextElement',
   'mdxTextExpression',
   'mdxjsEsm',
   'toml',
@@ -96,6 +98,19 @@ function localDefinitionsFromFile(file) {
   return definitionsMap(candidates.find(Array.isArray));
 }
 
+// Registry definition pages (`src/content/notation/*.md`) carry their own
+// worked equations. They have no `notation.uses` import list, so their math is
+// bound against the whole shared registry: an author writes ordinary LaTeX (or
+// an explicit `\explain{key}{latex}`) and every canonical symbol resolves.
+const NOTATION_REGISTRY_PATH = /[\\/]content[\\/]notation[\\/][^\\/]+\.md$/;
+
+function isNotationRegistryFile(file) {
+  const candidates = [file?.path, file?.history?.[0], file?.data?.file];
+  return candidates.some(
+    (value) => typeof value === 'string' && NOTATION_REGISTRY_PATH.test(value),
+  );
+}
+
 function lessonNotationFromFile(file) {
   const frontmatter =
     file?.data?.astro?.frontmatter ?? file?.data?.frontmatter ?? file?.data;
@@ -107,6 +122,48 @@ function lessonNotationFromFile(file) {
       Array.isArray(uses) ? uses.filter((key) => typeof key === 'string') : [],
     ),
   };
+}
+
+function lessonScopedMathDefinitions(
+  lessonNotation,
+  localDefinitions,
+  sharedDefinitions,
+) {
+  if (!lessonNotation.lessonId) return [];
+
+  return [
+    ...localDefinitions.values(),
+    ...[...lessonNotation.uses]
+      .map((key) => sharedDefinitions.get(key))
+      .filter(Boolean),
+  ].map((definition) => ({
+    key: definition.key,
+    notation: definition.notation,
+  }));
+}
+
+function replaceMathSource(node, latex) {
+  node.value = latex;
+
+  // mdast-util-math snapshots the original source into `data.hChildren`
+  // while parsing. mdast-to-hast prefers that snapshot over `node.value`, so
+  // both representations must change or rehype-katex will render the stale,
+  // unbound source even though this remark node was updated.
+  const hastChildren = node?.data?.hChildren;
+  if (!Array.isArray(hastChildren)) return;
+
+  if (node.type === 'inlineMath') {
+    node.data.hChildren = [{ type: 'text', value: latex }];
+    return;
+  }
+
+  const code = hastChildren.find(
+    (child) =>
+      child?.type === 'element' &&
+      child.tagName === 'code' &&
+      Array.isArray(child.children),
+  );
+  if (code) code.children = [{ type: 'text', value: latex }];
 }
 
 function isEscaped(value, index) {
@@ -341,9 +398,19 @@ export default function remarkNotation(options = {}) {
   const sharedDefinitions = definitionsMap(options.definitions);
   const unknown = options.unknown ?? 'error';
 
+  const registryMathDefinitions = [...sharedDefinitions.values()].map(
+    (definition) => ({ key: definition.key, notation: definition.notation }),
+  );
+
   return function transform(tree, file) {
     const localDefinitions = localDefinitionsFromFile(file);
     const lessonNotation = lessonNotationFromFile(file);
+    const registryFile = isNotationRegistryFile(file);
+    const mathDefinitions = lessonScopedMathDefinitions(
+      lessonNotation,
+      localDefinitions,
+      sharedDefinitions,
+    );
     const references = [];
     const resolved = new Map();
 
@@ -396,16 +463,58 @@ export default function remarkNotation(options = {}) {
       if (!node || typeof node !== 'object') return;
 
       if (node.type === 'math' || node.type === 'inlineMath') {
-        inspectExplainCalls(
-          String(node.value ?? ''),
-          resolve,
-          file,
-          node,
-          references,
-        );
+        const value = String(node.value ?? '');
+        inspectExplainCalls(value, resolve, file, node, references);
+
+        const bindingScope = lessonNotation.lessonId
+          ? mathDefinitions
+          : registryFile
+            ? registryMathDefinitions
+            : undefined;
+
+        if (bindingScope) {
+          const context = lessonNotation.lessonId
+            ? 'lesson math'
+            : 'notation definition math';
+
+          let result;
+          try {
+            result = bindMathNotation(value, bindingScope);
+          } catch (error) {
+            const message =
+              error instanceof MathBindingError
+                ? error.message
+                : `Could not resolve ${context}: ${
+                    error instanceof Error ? error.message : String(error)
+                  }`;
+            fail(file, message, node);
+          }
+
+          if (result.unresolved.length > 0) {
+            const unresolved = result.unresolved
+              .map(({ token, start }) => `"${token}" at offset ${start}`)
+              .join(', ');
+            fail(
+              file,
+              `Unresolved notation in ${context}: ${unresolved}. Introduce and import or locally define every variable, or wrap it in \\explain{key}{latex}.`,
+              node,
+            );
+          }
+
+          for (const binding of result.bindings) {
+            if (binding.level === 'explicit') continue;
+            resolve(binding.key, 'math', node);
+            references.push({ key: binding.key, kind: 'math' });
+          }
+          replaceMathSource(node, result.latex);
+        }
         return;
       }
 
+      // MDX component attributes and expressions are not children in the
+      // Markdown AST. The component's child Markdown is still lesson content
+      // and must pass through notation resolution; otherwise wrapping an
+      // equation in a presentation component silently disables completeness.
       const skipChildren = skipped || PROSE_SKIP_TYPES.has(node.type);
       if (skipChildren || !Array.isArray(node.children)) return;
 

@@ -1,0 +1,33 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+import DefaultPageSidebar from '@astrojs/starlight/components/PageSidebar.astro';
+---
+
+<div
+  id="starlight__page-sidebar"
+  class="layout-page-sidebar"
+  data-layout-panel="contents"
+>
+  <button
+    class="layout-edge-toggle layout-contents-toggle"
+    type="button"
+    aria-controls="starlight__page-sidebar-content"
+    aria-expanded="true"
+    data-layout-toggle="contents"
+    hidden
+  >
+    <Icon
+      name="right-caret"
+      class="layout-edge-icon layout-edge-icon-hide"
+      size="1rem"
+    />
+    <Icon
+      name="left-caret"
+      class="layout-edge-icon layout-edge-icon-restore"
+      size="1rem"
+    />
+  </button>
+  <div id="starlight__page-sidebar-content" class="layout-page-sidebar-content">
+    <DefaultPageSidebar />
+  </div>
+</div>

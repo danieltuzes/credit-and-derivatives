@@ -47,6 +47,10 @@ sidebar:
   order: 2
 ---
 
+import CompactExample from '../../../components/examples/CompactExample.astro';
+import CompactExamples from '../../../components/examples/CompactExamples.astro';
+import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
+
 ## What you will be able to do
 
 After this lesson, you should be able to:
@@ -76,7 +80,8 @@ $$
 This is a declared convention, not a universal conversion rule for every kind
 of annual rate.
 
-## Example 1: nominal 6%, compounded semiannually
+<CompactExamples summary="Worked examples (3)">
+  <CompactExample label="Nominal 6%, compounded semiannually">
 
 With $j^{(2)}=0.06$ and $m=2$,
 
@@ -97,7 +102,8 @@ $$
 One unit at \term\{valuation-time\} grows to 1.092727 model units at the
 \term\{payment-time\} 1.5 years later.
 
-## Example 2: nominal is not effective annual
+  </CompactExample>
+  <CompactExample label="Nominal is not effective annual">
 
 Under the same nominal 6% semiannual convention, one year of compounding gives
 
@@ -109,7 +115,8 @@ Thus the 6% input and 6.09% one-year effective growth rate are different
 quantities. The semantic key prevents an author from calling both merely
 “annualRate.”
 
-## Example 3: basis-point arithmetic
+  </CompactExample>
+  <CompactExample label="Basis-point arithmetic">
 
 A \term\{basis-point\} is a unit for rate differences:
 
@@ -122,6 +129,9 @@ $$
 
 A move from 4.10% to 4.35% is therefore $0.25$ percentage points, or 25 bp.
 Write the unit explicitly; the bare number 25 is ambiguous.
+
+  </CompactExample>
+</CompactExamples>
 
 ## Common unit boundary
 
@@ -136,14 +146,20 @@ decimal rates.
 
 ## Check your understanding
 
-The assessment set **rates-compounding-check** covers quote interpretation,
-periodic-rate calculation, and basis-point conversion with direct and transfer
-cases.
+These direct and transfer items cover quote interpretation, periodic-rate
+calculation, and basis-point conversion. Each question stays collapsed until you
+open it; answers and explanations appear once you check.
+
+<AssessmentSet id="rates-compounding-check" />
 
 ## Model boundary and review note
 
 This page does not introduce continuous compounding, effective-rate conversion
 as a general API, day counts, or a term structure.
 
-**NEEDS_SOURCE:** the nominal-rate and basis-point conventions need exact,
-human-verified source locators before review.
+The nominal-quote-plus-frequency convention and the basis-point unit follow
+Tuckman & Serrat\cite\{tuckman-serrat-fixed-income\}\{§2.1, rates quoted as
+annual rates over a term of fixed-length periods, simple or compound; §2.4, eq.
+2.17, the periodic-compounding form; a basis point is 0.01%, Ch. 0 footnote and
+Ch. 3\}. The lesson stays `draft` pending human confirmation of the printed
+locators.

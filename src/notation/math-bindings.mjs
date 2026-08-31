@@ -73,9 +73,9 @@ function parseMath(latex, label) {
 function isNode(value) {
   return Boolean(
     value &&
-      typeof value === 'object' &&
-      !Array.isArray(value) &&
-      typeof value.type === 'string',
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    typeof value.type === 'string',
   );
 }
 
@@ -198,7 +198,9 @@ function sourceWithoutExplainPrefixes(latex, calls) {
 
   for (const call of calls) {
     for (let index = call.callStart; index < call.prefixEnd; index++) {
-      characters[index] = /\s/.test(characters[index]) ? characters[index] : ' ';
+      characters[index] = /\s/.test(characters[index])
+        ? characters[index]
+        : ' ';
     }
   }
 
@@ -471,10 +473,14 @@ function canonicalDefinitions(definitions) {
     const key = value?.key;
     const notation = value?.notation;
     if (!KEY_PATTERN.test(key ?? '')) {
-      fail('invalid-key', `Invalid notation key at definition index ${index}.`, {
-        index,
-        key,
-      });
+      fail(
+        'invalid-key',
+        `Invalid notation key at definition index ${index}.`,
+        {
+          index,
+          key,
+        },
+      );
     }
     if (typeof notation !== 'string' || notation.trim().length === 0) {
       fail(
@@ -510,7 +516,7 @@ function canonicalDefinitions(definitions) {
       signature,
       nodeLength: tree.length,
       autoMatch: identifiers.length > 0,
-      fallbackSignature: callHeadSignature(tree),
+      fallbackSignature: canonicalBaseSignature(tree),
     };
     byKey.set(key, definition);
     byCanonicalSignature.set(signature, definition);
@@ -520,17 +526,55 @@ function canonicalDefinitions(definitions) {
   return { byKey, definitions: normalized };
 }
 
-function callHeadSignature(tree) {
+function identifierBaseSignature(node) {
+  if (isIdentifierNode(node)) return sequenceSignature([node]);
+  if (node?.type === 'supsub' && isIdentifierNode(node.base)) {
+    return sequenceSignature([node.base]);
+  }
+  return undefined;
+}
+
+function canonicalBaseSignature(tree) {
   const significant = tree.filter(
     (node) => !(node.type === 'spacing' || node.type === 'ordgroup'),
   );
+
+  // Parameterized canonical symbols such as t_k, r_m, j^(m), and
+  // y^(m_B) deliberately allow the undecorated base glyph as a shorter page
+  // form when that base identifies exactly one definition in lesson scope.
+  if (significant.length === 1) {
+    return identifierBaseSignature(significant[0]);
+  }
+
+  // Function-like notation may have either a plain head (D(0,t)) or a
+  // decorated head (V_0(1_t)). Bind its unique head when the arguments are
+  // concrete instances rather than the canonical placeholders.
   if (significant.length < 2) return undefined;
   const [head, open] = significant;
-  if (!isIdentifierNode(head)) return undefined;
   if (open.type !== 'atom' || open.family !== 'open' || open.text !== '(') {
     return undefined;
   }
-  return sequenceSignature([head]);
+  return identifierBaseSignature(head);
+}
+
+function unwrapEnclosingGroupSpan(latex, span) {
+  let start = span.start;
+  let end = span.end;
+
+  // KaTeX includes source braces in an ordgroup node's location even though
+  // signatureParts deliberately treats that node as transparent. Matching a
+  // canonical symbol inside a macro argument must therefore keep the braces
+  // outside the injected marker: `\frac{j}{m}` must become
+  // `\frac{\explain{...}{j}}{\explain{...}{m}}`, not
+  // `\frac\explain{...}{{j}}\explain{...}{{m}}`.
+  while (latex[start] === '{') {
+    const group = readBracedGroup(latex, start);
+    if (!group || group.end !== end) break;
+    start = group.contentStart;
+    end = group.contentEnd;
+  }
+
+  return { start, end };
 }
 
 function exactCandidates(latex, source, definitions) {
@@ -550,8 +594,9 @@ function exactCandidates(latex, source, definitions) {
       ) {
         const nodes = container.slice(offset, offset + definition.nodeLength);
         if (sequenceSignature(nodes) !== definition.signature) continue;
-        const span = sequenceSpan(nodes);
-        if (!span) continue;
+        const rawSpan = sequenceSpan(nodes);
+        if (!rawSpan) continue;
+        const span = unwrapEnclosingGroupSpan(latex, rawSpan);
 
         const identity = `${definition.key}:${span.start}:${span.end}`;
         if (seen.has(identity)) continue;
@@ -611,7 +656,9 @@ function selectExactBindings(candidates, explicit, scriptSpans) {
 
     const containing = selected
       .filter((binding) => contains(binding, candidate))
-      .sort((left, right) => left.end - left.start - (right.end - right.start))[0];
+      .sort(
+        (left, right) => left.end - left.start - (right.end - right.start),
+      )[0];
 
     if (
       containing &&
@@ -676,12 +723,19 @@ function injectScopeBindings(latex, bindings) {
   const closings = new Map();
 
   for (const binding of scopeBindings) {
+    let preceding = binding.start - 1;
+    while (preceding >= 0 && /\s/.test(latex[preceding])) preceding -= 1;
+    const insertion = {
+      ...binding,
+      scriptGroup: latex[preceding] === '_' || latex[preceding] === '^',
+    };
+
     const atStart = openings.get(binding.start) ?? [];
-    atStart.push(binding);
+    atStart.push(insertion);
     openings.set(binding.start, atStart);
 
     const atEnd = closings.get(binding.end) ?? [];
-    atEnd.push(binding);
+    atEnd.push(insertion);
     closings.set(binding.end, atEnd);
   }
 
@@ -690,13 +744,15 @@ function injectScopeBindings(latex, bindings) {
     const ending = (closings.get(index) ?? []).sort(
       (left, right) => right.start - left.start,
     );
-    output += '}'.repeat(ending.length);
+    for (const binding of ending) {
+      output += binding.scriptGroup ? '}}' : '}';
+    }
 
     const starting = (openings.get(index) ?? []).sort(
       (left, right) => right.end - left.end,
     );
     for (const binding of starting) {
-      output += `${EXPLAIN_COMMAND}{${binding.key}}{`;
+      output += `${binding.scriptGroup ? '{' : ''}${EXPLAIN_COMMAND}{${binding.key}}{`;
     }
 
     if (index < latex.length) output += latex[index];
@@ -742,11 +798,7 @@ export function bindMathNotation(latex, definitions, options = {}) {
   const parseableSource = sourceWithoutExplainPrefixes(latex, explicitCalls);
   const tree = parseMath(parseableSource, 'lesson math');
   const source = collectSourceStructure(tree);
-  const candidates = exactCandidates(
-    latex,
-    source,
-    canonical.definitions,
-  );
+  const candidates = exactCandidates(latex, source, canonical.definitions);
   const exact = selectExactBindings(
     candidates,
     explicitCalls,

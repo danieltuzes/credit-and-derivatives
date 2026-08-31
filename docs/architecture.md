@@ -82,16 +82,24 @@ progress UI    → progress interface → storage adapter
    resolves to two meanings in a lesson.
 4. Remark rewrites prose notation references, inspects semantic math
    annotations, classifies identifier versus operator atoms for the
-   completeness gate, and records a per-lesson resolution report.
-5. KaTeX renders equations to HTML and MathML at build time. Astro renders the
-   lesson and consumes each registry's resolved transitive page bundle for the
-   static notation disclosure; the shared collection supplies the glossary and
-   basic backlinks.
-6. Only labs and optional notation presentation behavior ship client
-   JavaScript. A dev-only authoring overlay colours each symbol by binding
-   state and never enters a production build.
+   completeness gate, and records a per-lesson resolution report. A second
+   remark pass rewrites `\cite\{source-id\}` prose markers into numbered
+   superscript links and appends a generated "References" list; semantic
+   validation keeps every `\cite` id and every `sources:` id in step.
+5. KaTeX renders equations to HTML and MathML at build time. Its upstream
+   adapter recovers parse failures as `.katex-error` markup, so a repository
+   post-render gate turns that markup into a fatal compiler diagnostic. Astro
+   renders the lesson and consumes each registry's resolved transitive page
+   bundle for the static notation disclosure; the shared collection supplies
+   the glossary and basic backlinks.
+6. Only labs and optional progressive UI adapters ship client JavaScript. The
+   notation layer, compact-example tabs, and desktop edge controls retain
+   static or native-HTML fallbacks. A dev-only authoring overlay colours each
+   symbol by binding state and never enters a production build.
 
-Both `pnpm build` and `pnpm verify` run semantic validation.
+Both `pnpm build` and `pnpm verify` run semantic validation. `pnpm verify` also
+starts the real Astro server in Playwright and independently rejects HTTP/MDX,
+browser-console, and recovered `.katex-error` failures on every lesson route.
 
 ## Notation boundary
 
@@ -153,6 +161,22 @@ These decisions are recorded in
 [`docs/adr/0002-notation-authoring.md`](adr/0002-notation-authoring.md) and
 [`docs/adr/0003-notation-completeness-and-scoped-binding.md`](adr/0003-notation-completeness-and-scoped-binding.md).
 
+## Citation boundary
+
+Citations follow the same shape as notation. An author writes
+`\cite\{source-id\}` — or `\cite\{source-id\}\{locator\}` for a use-specific
+section — in lesson prose; the id resolves against `src/content/sources/`. The
+build numbers each distinct `(source-id, locator)` pair by first appearance,
+renders a superscript `[n]` anchor, and appends a "References" list to the
+page. That list and the anchor links are the accessible baseline; the
+`CitationLayer` island only adds a hover/pin panel over the same markup.
+Locators are plain text, because earlier remark passes would consume Markdown
+or `$math$` in the brace group. Semantic validation requires every declared
+source to be cited and every citation to be declared. AI-assisted citations
+and their source records stay `draft` until a human confirms the locators.
+Recorded in
+[`docs/adr/0004-source-citations.md`](adr/0004-source-citations.md).
+
 ## Financial calculation boundary
 
 Numerical models live in `src/domain/` as pure functions with explicit input
@@ -179,6 +203,14 @@ hover, focus, tap, and pin behavior are an optional presentation adapter.
 Reader-set explanation muting is part of that adapter: it is keyed by semantic
 key, stored through the `ProgressRepository` seam, and only hides the inline
 affordance, never a lesson's first canonical disclosure entry.
+
+Worked-example groups use a closed native disclosure as their baseline. The
+optional adapter turns its directly nested examples into keyboard-operable tabs
+after the disclosure opens; without JavaScript and in print, all example
+headings and bodies remain available. Desktop navigation and page contents are
+visible by default. Optional edge controls can persist a collapsed rail and
+preview its panel on pointer hover; mobile keeps Starlight's native menu and
+table-of-contents behavior.
 
 ## Progress boundary
 

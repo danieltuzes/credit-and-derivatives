@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import AssessmentRunner from './AssessmentRunner';
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+
+const assessments = await getCollection('assessments');
+const entry = assessments.find((candidate) => candidate.data.id === id);
+
+if (!entry) {
+  throw new Error(
+    `AssessmentSet: no assessment collection entry with id "${id}"`,
+  );
+}
+---
+
+<AssessmentRunner
+  client:visible
+  title={entry.data.title}
+  items={entry.data.items}
+/>

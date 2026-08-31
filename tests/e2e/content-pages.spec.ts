@@ -13,12 +13,34 @@ const lessonPaths = [
 ] as const;
 
 for (const path of lessonPaths) {
-  test(`${path} renders without detectable accessibility violations`, async ({
+  test(`${path} compiles cleanly and has no detectable accessibility violations`, async ({
     page,
   }) => {
+    const browserErrors: string[] = [];
+    page.on('pageerror', (error) => browserErrors.push(error.message));
+    page.on('console', (message) => {
+      if (message.type() === 'error') browserErrors.push(message.text());
+    });
+
     const response = await page.goto(path);
     expect(response?.ok()).toBe(true);
+    await expect(page).not.toHaveTitle('MDXError');
     await expect(page.locator('main h1')).toBeVisible();
+
+    // Astro/MDX compiler failures return an HTTP error page. Upstream
+    // rehype-katex instead recovers to a red `.katex-error` span with HTTP 200.
+    // The compiler gate should prevent that output; this browser assertion is
+    // an independent guard against the gate being removed or bypassed.
+    const katexErrors = await page
+      .locator('.katex-error')
+      .evaluateAll((nodes) =>
+        nodes.map((node) => ({
+          source: node.textContent?.trim() ?? '',
+          error: node.getAttribute('title') ?? '',
+        })),
+      );
+    expect(katexErrors, `${path} contains rendered KaTeX errors`).toEqual([]);
+    expect(browserErrors, `${path} emitted browser errors`).toEqual([]);
 
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations).toEqual([]);

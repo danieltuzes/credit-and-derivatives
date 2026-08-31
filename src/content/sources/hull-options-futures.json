@@ -1,0 +1,13 @@
+{
+  "id": "hull-options-futures",
+  "type": "book",
+  "title": "Options, Futures, and Other Derivatives",
+  "authors": ["John C. Hull"],
+  "edition": "8",
+  "publisher": "Pearson",
+  "year": 2012,
+  "isbn": "9780132164948",
+  "locator": "Ch. 4 Interest Rates: 'Bond Pricing' (theoretical bond price = present value of all cash flows to the owner; discount each cash flow at its own zero rate); 'Bond Yield' (the single discount rate that, applied to all cash flows, makes price equal market price; solved iteratively); §4.8 Duration (cash flows c_i at times t_i, 1 <= i <= n; B = sum c_i e^{-y t_i}, eq. 4.11; negative relationship between B and y). Used as a corroborating general reference for the present-value and yield material; locators verified against the 8th-edition text, a human should confirm printed page numbers.",
+  "licenseNotes": "Citation metadata only; do not copy licensed text.",
+  "editorialStatus": "draft"
+}

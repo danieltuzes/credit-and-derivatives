@@ -41,6 +41,10 @@ sidebar:
   order: 1
 ---
 
+import CompactExample from '../../../components/examples/CompactExample.astro';
+import CompactExamples from '../../../components/examples/CompactExamples.astro';
+import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
+
 ## What you will be able to do
 
 After this lesson, you should be able to:
@@ -99,7 +103,12 @@ t_k=\frac{k}{m_{\mathrm B}},
 \qquad 0\text{ is the valuation time}.
 $$
 
-## Example 1: annual coupons
+<CompactExamples
+  summary="Worked examples"
+  hint="Open the set, then choose a payment frequency."
+  tabsLabel="Fixed-rate bond cash-flow examples"
+>
+  <CompactExample label="Annual coupons">
 
 A two-year bond has USD 1,000 face value, a 5% annual coupon rate, and one
 payment per year:
@@ -113,7 +122,9 @@ $$
 |                 1 |                       1.0 |          50 |              0 |         50 |
 |                 2 |                       2.0 |          50 |          1,000 |      1,050 |
 
-## Example 2: semiannual coupons
+  </CompactExample>
+
+  <CompactExample label="Semiannual coupons">
 
 An 18-month bond has USD 1,000 face value, a 4% annual coupon rate, and two
 payments per year:
@@ -126,7 +137,9 @@ $$
 
 Its payments at 0.5, 1.0, and 1.5 years are USD 20, USD 20, and USD 1,020.
 
-## Example 3: quarterly coupon amount
+  </CompactExample>
+
+  <CompactExample label="Quarterly coupon amount">
 
 For USD 500 face value, a 4.8% annual coupon rate, and quarterly payments,
 
@@ -137,15 +150,25 @@ $$
 Maturity determines how many such payments occur; it does not change the
 periodic coupon amount under the level-coupon assumption.
 
+  </CompactExample>
+</CompactExamples>
+
 ## Check your understanding
 
-The assessment set **bond-contract-cash-flows-check** covers term
-interpretation, coupon arithmetic, and schedule construction.
+These items cover term interpretation, coupon arithmetic, and schedule
+construction. Each question stays collapsed until you open it; answers and
+explanations appear once you check.
+
+<AssessmentSet id="bond-contract-cash-flows-check" />
 
 ## Model boundary and review note
 
 This page describes promised cash flows only. It does not assign a price,
 yield, payment probability, or expected recovery.
 
-**NEEDS_SOURCE:** exact fixed-rate contract and quotation locators must be
-verified before review.
+The contract terms and the level-coupon schedule follow Tuckman &
+Serrat\cite\{tuckman-serrat-fixed-income\}\{§1.1, "Government Coupon Bonds": a
+bond is set by coupon rate, maturity date, and face (par, principal); each
+semiannual coupon is half the annual rate times face, with principal repaid at
+maturity (Table 1.1)\}. The lesson stays `draft` pending human confirmation of
+the printed locators.

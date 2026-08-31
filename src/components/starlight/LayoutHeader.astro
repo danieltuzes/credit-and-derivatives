@@ -1,0 +1,103 @@
+---
+import DefaultHeader from '@astrojs/starlight/components/Header.astro';
+---
+
+<DefaultHeader />
+
+<script>
+  type LayoutRegion = 'navigation' | 'contents';
+
+  const regions: Record<
+    LayoutRegion,
+    {
+      attribute: string;
+      storageKey: string;
+      peekSuppressedAttribute: string;
+      panelSelector: string;
+      shownLabel: string;
+      hiddenLabel: string;
+    }
+  > = {
+    navigation: {
+      attribute: 'data-navigation-hidden',
+      storageKey: 'credit-playground:layout:navigation-hidden',
+      peekSuppressedAttribute: 'data-navigation-peek-suppressed',
+      panelSelector: '.sidebar-pane',
+      shownLabel: 'Hide navigation',
+      hiddenLabel: 'Show navigation',
+    },
+    contents: {
+      attribute: 'data-page-sidebar-hidden',
+      storageKey: 'credit-playground:layout:contents-hidden',
+      peekSuppressedAttribute: 'data-page-sidebar-peek-suppressed',
+      panelSelector: '.right-sidebar',
+      shownLabel: 'Hide page contents',
+      hiddenLabel: 'Show page contents',
+    },
+  };
+
+  const root = document.documentElement;
+
+  function readPreference(storageKey: string): boolean {
+    try {
+      return localStorage.getItem(storageKey) === 'true';
+    } catch {
+      return false;
+    }
+  }
+
+  function writePreference(storageKey: string, hidden: boolean): void {
+    try {
+      localStorage.setItem(storageKey, String(hidden));
+    } catch {
+      // The controls still work when storage is unavailable or disabled.
+    }
+  }
+
+  function applyState(
+    button: HTMLButtonElement,
+    region: LayoutRegion,
+    hidden: boolean,
+  ): void {
+    const settings = regions[region];
+    const label = hidden ? settings.hiddenLabel : settings.shownLabel;
+    root.toggleAttribute(settings.attribute, hidden);
+    if (!hidden) root.removeAttribute(settings.peekSuppressedAttribute);
+    button.setAttribute('aria-expanded', String(!hidden));
+    button.setAttribute('aria-label', label);
+    button.title = label;
+  }
+
+  document
+    .querySelectorAll<HTMLButtonElement>('[data-layout-toggle]')
+    .forEach((button) => {
+      const region = button.dataset.layoutToggle as LayoutRegion;
+      const settings = regions[region];
+      if (!settings) return;
+
+      applyState(button, region, readPreference(settings.storageKey));
+      button.removeAttribute('hidden');
+      button.addEventListener('click', (event) => {
+        const hidden = !root.hasAttribute(settings.attribute);
+        applyState(button, region, hidden);
+        writePreference(settings.storageKey, hidden);
+
+        // A pointer click should leave a newly collapsed rail collapsed even
+        // though the pointer was inside the full-width panel when clicked.
+        if (hidden && event.detail > 0) {
+          root.setAttribute(settings.peekSuppressedAttribute, '');
+          button.blur();
+
+          const panel = document.querySelector(settings.panelSelector);
+          const clearSuppression = () =>
+            root.removeAttribute(settings.peekSuppressedAttribute);
+          panel?.addEventListener('pointerleave', clearSuppression, {
+            once: true,
+          });
+          window.setTimeout(() => {
+            if (!panel?.matches(':hover')) clearSuppression();
+          }, 180);
+        }
+      });
+    });
+</script>

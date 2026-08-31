@@ -15,6 +15,7 @@ assessments:
   - bond-yield-check
 sources:
   - tuckman-serrat-fixed-income
+  - hull-options-futures
   - finra-bond-yield
 assumptions:
   - Level fixed coupons and principal redeemed at par
@@ -37,6 +38,10 @@ aiAssisted: true
 sidebar:
   order: 3
 ---
+
+import CompactExample from '../../../components/examples/CompactExample.astro';
+import CompactExamples from '../../../components/examples/CompactExamples.astro';
+import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
 
 ## What you will be able to do
 
@@ -78,7 +83,12 @@ or another quote. Here it means only the explicitly defined bond yield.
 Changing the yield input does not rewrite the bond's coupons or
 \term\{face-value\} $F$.
 
-## Example 1: annual payments
+<CompactExamples
+  summary="Worked examples"
+  hint="Open the set, then choose a yield convention."
+  tabsLabel="Yield-to-maturity pricing examples"
+>
+  <CompactExample label="Annual payments">
 
 A two-year, 5% annual-coupon bond with USD 1,000 face value pays USD 50 and USD
 1,050. At a 6% annual yield with annual compounding,
@@ -93,7 +103,9 @@ $$
 This migrates the original skeleton's numerical example without changing its
 expected value.
 
-## Example 2: semiannual payments and compounding
+  </CompactExample>
+
+  <CompactExample label="Semiannual compounding">
 
 For the same face value and coupon rate over two years, but with semiannual
 payments, $C=25$, $m_{\mathrm B}=2$, and $n=4$. A 6% nominal annual yield gives a
@@ -111,7 +123,9 @@ $$
 The annual and semiannual examples use the same percentage number but not the
 same timing or compounding model.
 
-## Example 3: zero-coupon special case
+  </CompactExample>
+
+  <CompactExample label="Zero-coupon special case">
 
 With no coupons and \term\{maturity-time\} $T$,
 
@@ -122,10 +136,16 @@ $$
 For USD 1,000 due in three years at 4% with annual compounding, the price is
 approximately USD 889.00.
 
+  </CompactExample>
+</CompactExamples>
+
 ## Check your understanding
 
-The assessment set **bond-yield-check** separates yield interpretation from
-annual and periodic-compounding calculations.
+These items separate yield interpretation from annual and periodic-compounding
+calculations. Each question stays collapsed until you open it; answers and
+explanations appear once you check.
+
+<AssessmentSet id="bond-yield-check" />
 
 ## Model boundary and review note
 
@@ -133,5 +153,12 @@ This page prices from a supplied yield; it does not solve numerically for yield
 from a price. A real bond implementation also needs schedules, day counts,
 accrued interest, clean/dirty price, and potentially credit and option models.
 
-**NEEDS_SOURCE:** exact source locators for yield quotation and interpretation
-must be verified before review.
+The single-rate definition and the $2T$-period pricing formula follow Tuckman &
+Serrat\cite\{tuckman-serrat-fixed-income\}\{§3.2, "Yield to Maturity": the
+single rate that discounts a bond's cash flows to its market price (eq. 3.5 and
+the general formula), also its internal rate of return\}; Hull gives the same
+definition, solved iteratively\cite\{hull-options-futures\}\{Ch. 4, "Bond
+Yield"\}. FINRA defines it as the return to an investor who buys at the market
+price and holds to
+maturity\cite\{finra-bond-yield\}\{"Yield to maturity" section\}. The lesson
+stays `draft` pending human confirmation of the printed locators.

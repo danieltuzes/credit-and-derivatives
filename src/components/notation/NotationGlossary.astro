@@ -1,6 +1,9 @@
 ---
 import { getCollection, render } from 'astro:content';
 import NotationMath from './NotationMath.astro';
+import NotationLayer, {
+  type NotationLayerDefinition,
+} from './NotationLayer.astro';
 
 const [notationEntries, lessonEntries] = await Promise.all([
   getCollection('notation'),
@@ -29,6 +32,24 @@ const renderedEntries = await Promise.all(
       entry,
       Content: (await render(entry)).Content,
     })),
+);
+
+// Drives the hover explanation for `\term` links inside the definition
+// bodies. Every entry is already shown in full on this page, so the layer
+// renders in panel-only mode: no visible list, just the shared panel.
+const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
+  (entry) => ({
+    key: entry.data.key,
+    notation: entry.data.notation,
+    title: entry.data.title,
+    summary: entry.data.summary,
+    details: entry.data.perspective,
+    units: entry.data.units,
+    seeAlso: entry.data.seeAlso,
+    editorialStatus: entry.data.editorialStatus,
+    scope: 'shared',
+    href: `#notation-${entry.data.key}`,
+  }),
 );
 ---
 
@@ -59,10 +80,27 @@ const renderedEntries = await Promise.all(
       return (
         <article id={`notation-${entry.data.key}`}>
           <header>
-            <NotationMath class="glossary-symbol" latex={entry.data.notation} />
+            <span
+              class="glossary-symbol-trigger"
+              data-notation-key={entry.data.key}
+            >
+              <NotationMath
+                class="glossary-symbol"
+                latex={entry.data.notation}
+              />
+            </span>
             <div>
               <h2>{entry.data.title}</h2>
               <code>{entry.data.key}</code>
+              <a
+                class="glossary-anchor"
+                href={`#notation-${entry.data.key}`}
+                data-glossary-anchor
+                aria-label={`Copy link to “${entry.data.title}”`}
+                title="Copy link to this entry"
+              >
+                <span aria-hidden="true">#</span>
+              </a>
             </div>
             <span class="glossary-status">{entry.data.editorialStatus}</span>
           </header>
@@ -144,6 +182,40 @@ const renderedEntries = await Promise.all(
   }
 </div>
 
+<NotationLayer
+  presentation="panel"
+  id="glossary-notation"
+  definitions={panelDefinitions}
+/>
+
+<script>
+  const RESET_MS = 1200;
+
+  for (const anchor of document.querySelectorAll<HTMLAnchorElement>(
+    '[data-glossary-anchor]',
+  )) {
+    anchor.addEventListener('click', () => {
+      const href = anchor.getAttribute('href');
+      if (!href || !navigator.clipboard) return;
+
+      // Keep the native hash navigation (scroll + history) and copy the
+      // absolute URL alongside it.
+      const url = new URL(href, window.location.href).href;
+      navigator.clipboard.writeText(url).then(
+        () => {
+          anchor.dataset.copied = 'true';
+          window.setTimeout(() => {
+            delete anchor.dataset.copied;
+          }, RESET_MS);
+        },
+        () => {
+          /* Clipboard blocked: the plain anchor link still works. */
+        },
+      );
+    });
+  }
+</script>
+
 <style>
   .glossary-index ul {
     display: grid;
@@ -181,6 +253,59 @@ const renderedEntries = await Promise.all(
   .glossary-symbol {
     color: var(--sl-color-accent-high);
     font-size: 1.2rem;
+  }
+
+  .glossary-symbol-trigger {
+    justify-self: start;
+    border-radius: 0.16em;
+    cursor: help;
+  }
+
+  .glossary-symbol-trigger:hover,
+  .glossary-symbol-trigger:global(.is-notation-active) {
+    background: var(--sl-color-accent-low);
+    box-shadow: 0 0 0 0.12em var(--sl-color-accent-low);
+  }
+
+  @media (forced-colors: active) {
+    .glossary-symbol-trigger:hover,
+    .glossary-symbol-trigger:global(.is-notation-active) {
+      outline: 2px solid Highlight;
+      color: HighlightText;
+      background: Highlight;
+      box-shadow: none;
+    }
+  }
+
+  .glossary-anchor {
+    position: relative;
+    margin-inline-start: 0.5rem;
+    padding-inline: 0.2rem;
+    color: var(--sl-color-gray-3);
+    font-family: monospace;
+    text-decoration: none;
+    vertical-align: baseline;
+  }
+
+  .glossary-anchor:hover,
+  .glossary-anchor:focus-visible {
+    color: var(--sl-color-text-accent);
+  }
+
+  .glossary-anchor[data-copied]::after {
+    content: 'Link copied';
+    position: absolute;
+    inset-block-end: calc(100% + 0.35rem);
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.35rem;
+    background: var(--sl-color-accent-low);
+    color: var(--sl-color-text-accent);
+    font-family: var(--sl-font, sans-serif);
+    font-size: var(--sl-text-xs);
+    white-space: nowrap;
+    pointer-events: none;
   }
 
   .glossary-status {

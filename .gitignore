@@ -57,3 +57,9 @@ desktop.ini
 .tmp/
 .temp/
 *.local
+
+# Reference library — copyrighted source PDFs/DjVu for author use only.
+# Canonical copies live in the shared team library; this dir is a local cache.
+# Cite works via src/content/sources/*.json (metadata only), never commit the files.
+reference-library/*
+!reference-library/README.md

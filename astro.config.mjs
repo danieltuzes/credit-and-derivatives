@@ -1,7 +1,8 @@
 import react from '@astrojs/react';
 import { unified } from '@astrojs/markdown-remark';
 import starlight from '@astrojs/starlight';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import matter from 'gray-matter';
@@ -9,6 +10,8 @@ import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import { createNotationKatexOptions } from './src/notation/katex-options.mjs';
 import { markdownFilesBelow } from './src/notation/markdown-files.mjs';
+import rehypeFailKatexErrors from './src/notation/rehype-fail-katex-errors.mjs';
+import remarkCitation from './src/notation/remark-citation.mjs';
 import remarkNotation from './src/notation/remark-notation.mjs';
 
 const notationDirectory = fileURLToPath(
@@ -21,6 +24,16 @@ const notationDefinitions = markdownFilesBelow(notationDirectory).map(
   },
 );
 
+const sourcesDirectory = fileURLToPath(
+  new URL('./src/content/sources/', import.meta.url),
+);
+const sourceRecords = readdirSync(sourcesDirectory)
+  .filter((name) => name.endsWith('.json'))
+  .sort()
+  .map((name) =>
+    JSON.parse(readFileSync(join(sourcesDirectory, name), 'utf8')),
+  );
+
 export default defineConfig({
   output: 'static',
   integrations: [
@@ -30,7 +43,10 @@ export default defineConfig({
         'Interactive foundations for bonds, credit risk, CDS, CDX, and their options.',
       customCss: ['./src/styles/global.css'],
       components: {
-        Footer: './src/components/starlight/NotationFooter.astro',
+        Footer: './src/components/starlight/LessonFooter.astro',
+        Header: './src/components/starlight/LayoutHeader.astro',
+        PageSidebar: './src/components/starlight/LayoutPageSidebar.astro',
+        Sidebar: './src/components/starlight/LayoutSidebar.astro',
       },
       sidebar: [
         {
@@ -57,8 +73,12 @@ export default defineConfig({
       remarkPlugins: [
         remarkMath,
         [remarkNotation, { definitions: notationDefinitions }],
+        [remarkCitation, { sources: sourceRecords }],
       ],
-      rehypePlugins: [[rehypeKatex, createNotationKatexOptions()]],
+      rehypePlugins: [
+        [rehypeKatex, createNotationKatexOptions()],
+        rehypeFailKatexErrors,
+      ],
     }),
   },
 });

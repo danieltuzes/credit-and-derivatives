@@ -28,26 +28,22 @@ pipeline.
 Requirements:
 
 - Node.js 24; the tested patch version is in `.nvmrc` and `.node-version`;
-- pnpm through Corepack.
+- pnpm through Corepack;
+- Playwright Chromium for the required browser checks.
 
 ```bash
 corepack enable
 pnpm install
+pnpm exec playwright install chromium
 pnpm verify
 pnpm dev
 ```
 
 Open the address printed by Astro, normally `http://localhost:4321`.
 
-For the optional browser tests, install Chromium once:
-
-```bash
-pnpm exec playwright install chromium
-pnpm test:e2e
-```
-
 Run `pnpm verify` before requesting review. It checks formatting, content
-references, TypeScript/Astro, numerical and curriculum tests, and the static
+references, TypeScript/Astro, numerical and curriculum tests, a real Astro
+server in Chromium, rendered KaTeX, browser accessibility, and the static
 production build.
 
 ## What the playground already demonstrates
@@ -217,6 +213,15 @@ AI output, search snippets, and unsourced market lore are not sources. Do not
 copy licensed contractual text into the repository merely because an AI model
 can access it. Market conventions need an effective or access date.
 
+Cite a registered source in lesson prose with `\cite\{source-id\}` or, with a
+use-specific locator, `\cite\{source-id\}\{§1.2, eqs. 1.1-1.3\}`. Each distinct
+`(source-id, locator)` pair renders as a superscript `[n]` that links to a
+generated **References** list at the end of the page; the hover panel is an
+optional enhancement over that list. Keep locators to plain text (section and
+equation numbers, `Table`, `Figure`) with no Markdown or `$math$`. Every id in
+`sources:` frontmatter must be cited at least once, and every `\cite` id must
+appear in `sources:`; `pnpm validate:content` enforces both.
+
 ### 3. Add assessments
 
 Create a JSON record under `src/content/assessments/`. Each item measures one
@@ -334,6 +339,35 @@ Every quantitative lesson should include:
 - visible assumptions and failure modes;
 - registered sources with useful locators.
 
+#### Keep a three-example set compact
+
+When a lesson has three reinforcing examples, keep the rule or definition they
+depend on visible, then place the examples in one collapsed set. Use labels that
+say what changes between cases; “Annual compounding” is more useful than
+“Example 1.” Keep interactive labs outside the disclosure so their hydration
+and controls are not hidden inside an inactive tab.
+
+```mdx
+import CompactExample from '../../../components/examples/CompactExample.astro';
+import CompactExamples from '../../../components/examples/CompactExamples.astro';
+
+<CompactExamples
+  summary="Worked examples"
+  hint="Open the set, then choose a compounding case."
+  tabsLabel="Compounding examples"
+>
+  <CompactExample label="Annual compounding">First example…</CompactExample>
+  <CompactExample label="Semiannual compounding">
+    Second example…
+  </CompactExample>
+  <CompactExample label="Basis-point arithmetic">Third example…</CompactExample>
+</CompactExamples>
+```
+
+The set starts collapsed. With JavaScript, the three examples become
+keyboard-operable tabs. Without JavaScript, opening the native disclosure shows
+all three headed examples. Print output shows every example.
+
 ### 5. Author notation by semantic key
 
 Notation is define-once/reference-many content. The stable key describes the
@@ -404,7 +438,7 @@ local entry to `src/content/notation/` when another lesson needs the same
 meaning. A local entry inherits the lesson's review state; its sources must
 still be declared explicitly when it makes a sourced claim.
 
-Reference an imported or local definition in prose with:
+Introduce an imported or local definition in prose before its first equation:
 
 ```md
 The \term\{discount-factor\} converts a future unit to valuation time.
@@ -417,25 +451,29 @@ form and replaces it with the definition's titled glossary link. Shared
 notation bodies are `.md`, not `.mdx`, and therefore use normal
 `\term{key}` without escaped braces.
 
-Inside math, annotate the complete visual token separately from its semantic
-key:
+After the meaning is in lesson scope, author ordinary LaTeX:
 
 ```tex
-\explain{discount-factor}{D(0,t)}
+D(0,t)
 ```
 
-Annotations can nest when a complete expression and an inner symbol need
-different explanations:
+The compiler resolves every variable to the unique semantic definition in the
+lesson's `notation.local` and `notation.uses` bundle, then injects the trusted
+rendering marker. A genuinely unresolved or ambiguous variable is a build
+error. This keeps repeated equations readable while making notation coverage
+mandatory.
+
+Use an explicit annotation only to disambiguate a glyph or to render a
+non-canonical visual form:
 
 ```tex
-\explain{signed-cash-flow}{CF_{\explain{payment-index}{k}}}
+\explain{compounding-frequency}{m}
 ```
 
-Use `\term\{key\}` only in MDX prose and `\explain{key}{latex}` only inside
-`$...$` or `$$...$$` math. Do not use `\(...\)` or `\[...\]` as lesson math
-delimiters. Code spans and code blocks are left literal. Bare LaTeX continues
-to render normally but does not receive a semantic explanation. Inline
-definition forms such as
+Use `\term\{key\}` only in MDX prose and any exceptional
+`\explain{key}{latex}` only inside `$...$` or `$$...$$` math. Do not use
+`\(...\)` or `\[...\]` as lesson math delimiters. Code spans and code blocks
+are left literal. Inline definition forms such as
 `\explain[def]` and `:::def` are intentionally unsupported: definitions must
 remain visible in schema-checked frontmatter or the notation collection.
 
@@ -460,8 +498,8 @@ When editing notation:
 2. Reuse the existing semantic key; do not create a synonym to change only a
    glyph.
 3. Declare every shared key in `notation.uses`.
-4. Add MDX `\term\{key\}` and math `\explain{key}{latex}` only where an
-   explanation aids the learner.
+4. Introduce the term in prose before its first use, then use ordinary LaTeX;
+   add `\explain{key}{latex}` only when unique scope resolution is impossible.
 5. Check title, glyph, units, perspective, `seeAlso`, sources, and curriculum
    alignment together.
 6. Preview the symbol interaction with pointer, keyboard, touch, and JavaScript
@@ -534,7 +572,7 @@ separate passes and record it honestly. AI review is not human approval.
 - [ ] Units, dates, calendars, day counts, signs, and compounding are explicit.
 - [ ] Shared notation is imported with `notation.uses`; local notation is
       page-specific, aligned, sourced where necessary, and referenced.
-- [ ] `\term` and `\explain` keys resolve to the intended meaning and the
+- [ ] Every rendered variable resolves to the intended semantic key and the
       generated page layer remains useful without JavaScript.
 - [ ] Worked numbers reproduce from reviewed code or an independent check.
 - [ ] Important simplifications are visible beside the model.
@@ -575,18 +613,18 @@ See [`AI_POLICY.md`](AI_POLICY.md) for the enforceable project policy.
 
 ## Commands
 
-| Command                 | Purpose                                                 |
-| ----------------------- | ------------------------------------------------------- |
-| `pnpm dev`              | Start the editor preview                                |
-| `pnpm validate:content` | Validate curriculum and notation references             |
-| `pnpm check`            | Run Astro and TypeScript checks                         |
-| `pnpm test`             | Run numerical, curriculum, and notation tests once      |
-| `pnpm test:watch`       | Rerun tests while editing                               |
-| `pnpm test:e2e`         | Run browser and automated accessibility examples        |
-| `pnpm build`            | Validate and build the static production site           |
-| `pnpm preview`          | Preview the production build                            |
-| `pnpm format`           | Format supported files                                  |
-| `pnpm verify`           | Run all required pre-review checks except browser tests |
+| Command                 | Purpose                                                |
+| ----------------------- | ------------------------------------------------------ |
+| `pnpm dev`              | Start the editor preview                               |
+| `pnpm validate:content` | Validate curriculum and notation references            |
+| `pnpm check`            | Run Astro and TypeScript checks                        |
+| `pnpm test`             | Run numerical, curriculum, and notation tests once     |
+| `pnpm test:watch`       | Rerun tests while editing                              |
+| `pnpm test:e2e`         | Start Astro; check pages, KaTeX, UI, and accessibility |
+| `pnpm build`            | Validate and build the static production site          |
+| `pnpm preview`          | Preview the production build                           |
+| `pnpm format`           | Format supported files                                 |
+| `pnpm verify`           | Run every required pre-review check, including browser |
 
 ## Current eight-lesson path and next slices
 
@@ -639,7 +677,9 @@ changing sidebar order.
 
 Check frontmatter against `src/content.config.ts`. Close JSX tags and import
 only repository components. Browser APIs belong inside client components, not
-at MDX module scope.
+at MDX module scope. A `KaTeX rendering failed` diagnostic means malformed
+lesson math reached the renderer; inspect the source expression named in the
+error, including braces around fractions, subscripts, and superscripts.
 
 ### Validation reports an undeclared or undefined notation key
 
@@ -651,11 +691,12 @@ the definition under a new key.
 
 ### A symbol renders but has no explanation
 
-Bare LaTeX is valid and intentionally has no notation behavior. Wrap the
-complete visual token with `\explain{semantic-key}{latex}` and confirm the key
-is in scope. Use `\term\{semantic-key\}` for MDX prose. Math must use `$...$`
-or `$$...$$`; do not use `\(...\)` or `\[...\]`. If KaTeX reports an error,
-check balanced braces and keep the key separate from the LaTeX argument.
+Every lesson variable must now receive notation behavior from scope. Confirm
+the semantic entry is in `notation.local` or `notation.uses`, is unique for the
+glyph, and was introduced in prose with `\term\{semantic-key\}`. Math must use
+`$...$` or `$$...$$`; do not use `\(...\)` or `\[...\]`. If compilation and
+`pnpm test:e2e` pass but hover still shows no panel, treat that as a UI
+regression rather than repairing content with redundant `\explain` markup.
 
 ### A test disagrees with a worked example
 
