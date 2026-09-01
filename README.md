@@ -13,16 +13,31 @@ reviewed code or a cited source; conventions are consistent across lessons.
 
 ## Quick start
 
-Requirements: Node.js per [`.nvmrc`](.nvmrc); pnpm via Corepack; Playwright
-Chromium for the browser checks.
+Requirements: **Node.js `24.20.0`** (pinned in [`.nvmrc`](.nvmrc) /
+[`.node-version`](.node-version); `engines` requires `>=24 <25` and
+[`.npmrc`](.npmrc) sets `engine-strict`), **pnpm `11.24.0`** (pinned by
+`packageManager`), and Playwright's Chromium for the browser checks.
 
 ```bash
-corepack enable
+# 1. pnpm — standalone install bundles its own Node, so it works with no system Node:
+curl -fsSL https://get.pnpm.io/install.sh | sh -   # or: brew install pnpm
+
+# 2. Node 24.20.0 — any .nvmrc-aware manager works (nvm/fnm/mise: `nvm install`),
+#    or let pnpm manage it (writes a `node` shim onto PATH via $PNPM_HOME):
+pnpm env use --global 24.20.0     # nudges toward `pnpm runtime set node 24.20.0 -g`; both work
+
+# 3. project:
 pnpm install
 pnpm exec playwright install chromium
 pnpm verify      # run before requesting review
 pnpm dev         # http://localhost:4321
 ```
+
+If `node` is installed but not found, ensure `$PNPM_HOME` (or your version
+manager's shim dir) is on `PATH` for **non-interactive** shells too — a stock
+`~/.bashrc` returns early before its pnpm block runs, so tools and agents that
+spawn non-interactive shells won't see it. A symlink in `~/.local/bin` (already
+on `PATH`) is the simplest fix.
 
 ## Commands
 
