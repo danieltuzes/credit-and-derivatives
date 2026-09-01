@@ -1,0 +1,21 @@
+{
+  "id": "finance.risk-neutral-value.calculate",
+  "title": "Calculate a risk-neutral value",
+  "domain": "finance",
+  "facet": "calculation",
+  "outcome": "Calculate time-zero value from finite-state risk-neutral probabilities, signed terminal payoffs, and a deterministic discount factor.",
+  "prerequisites": [
+    "finance.present-value.calculate",
+    "finance.risk-neutral-measure.interpret"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The expected payoff should be computed with real-world probabilities when risk-neutral probabilities are supplied for pricing.",
+    "A future expected payoff can be reported as time-zero value without discounting."
+  ],
+  "editorialStatus": "draft"
+}

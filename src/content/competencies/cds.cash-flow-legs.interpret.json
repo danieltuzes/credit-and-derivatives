@@ -1,0 +1,23 @@
+{
+  "id": "cds.cash-flow-legs.interpret",
+  "title": "Interpret CDS cash-flow legs",
+  "domain": "cds",
+  "facet": "interpretation",
+  "outcome": "Interpret a CDS as running-premium payments exchanged for contingent protection, partition default into disjoint time events, and read the protection buyer's signed value as protection minus premium.",
+  "prerequisites": [
+    "probability.events.interpret",
+    "finance.cash-flow-perspective.apply",
+    "finance.risk-neutral-measure.interpret",
+    "rates.basis-points.convert",
+    "credit.recovery-rate.interpret"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A protection buyer receives both leg magnitudes, so the buyer's net value is their sum."
+  ],
+  "editorialStatus": "draft"
+}

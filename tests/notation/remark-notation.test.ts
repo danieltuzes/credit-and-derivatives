@@ -44,6 +44,54 @@ const transform = (
 };
 
 describe('remark notation authoring adapter', () => {
+  it('reloads supplied definitions for every document transform', () => {
+    let suppliedDefinitions = [
+      {
+        key: 'first-definition',
+        title: 'first definition',
+      },
+    ];
+    const dynamicTransform = remarkNotation({
+      definitions: () => suppliedDefinitions,
+    });
+
+    const firstTree: TestNode = {
+      type: 'root',
+      children: [
+        {
+          type: 'paragraph',
+          children: [{ type: 'text', value: 'Use \\term{first-definition}.' }],
+        },
+      ],
+    };
+    dynamicTransform(firstTree, testFile());
+
+    suppliedDefinitions = [
+      ...suppliedDefinitions,
+      {
+        key: 'added-after-startup',
+        title: 'added after startup',
+      },
+    ];
+    const addedAfterStartup: TestNode = {
+      type: 'root',
+      children: [
+        {
+          type: 'paragraph',
+          children: [
+            { type: 'text', value: 'Use \\term{added-after-startup}.' },
+          ],
+        },
+      ],
+    };
+    const dynamicFile = testFile();
+    dynamicTransform(addedAfterStartup, dynamicFile);
+
+    expect(dynamicFile.data.notationReferences).toEqual([
+      { key: 'added-after-startup', kind: 'prose' },
+    ]);
+  });
+
   it('binds pure CF_k LaTeX from lesson scope so the rendered token is hoverable', () => {
     const tree: TestNode = {
       type: 'root',

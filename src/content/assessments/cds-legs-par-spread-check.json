@@ -1,0 +1,98 @@
+{
+  "id": "cds-legs-par-spread-check",
+  "title": "CDS legs and par spread check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "cds-cash-flow-legs-direct",
+      "type": "single-choice",
+      "competencyId": "cds.cash-flow-legs.interpret",
+      "evidenceKind": "direct",
+      "prompt": "Under the lesson sign convention, both CDS legs are reported as positive present-value magnitudes. Which expression gives the protection buyer's signed net value?",
+      "options": [
+        {
+          "id": "buyer-protection-minus-premium",
+          "label": "Protection-leg magnitude minus premium-leg magnitude"
+        },
+        {
+          "id": "buyer-premium-minus-protection",
+          "label": "Premium-leg magnitude minus protection-leg magnitude"
+        },
+        {
+          "id": "buyer-adds-legs",
+          "label": "Protection-leg magnitude plus premium-leg magnitude"
+        }
+      ],
+      "correctOptionId": "buyer-protection-minus-premium",
+      "explanation": "The protection leg is an inflow and the premium leg is an outflow for the protection buyer, so signed net value is protection minus premium."
+    },
+    {
+      "id": "cds-cash-flow-legs-transfer",
+      "type": "single-choice",
+      "competencyId": "cds.cash-flow-legs.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "A CDS has a positive protection-leg present-value magnitude of USD 35 and a positive premium-leg present-value magnitude of USD 28. What is the protection buyer's signed net value in USD?",
+      "options": [
+        { "id": "buyer-net-positive-seven", "label": "+7" },
+        { "id": "buyer-net-negative-seven", "label": "-7" },
+        { "id": "buyer-net-positive-sixty-three", "label": "+63" }
+      ],
+      "correctOptionId": "buyer-net-positive-seven",
+      "explanation": "From the protection buyer's perspective, net value is 35 - 28 = +7."
+    },
+    {
+      "id": "cds-premium-leg-direct",
+      "type": "numeric",
+      "competencyId": "cds.premium-leg.calculate",
+      "evidenceKind": "direct",
+      "prompt": "In the lesson's exact default-time model, a one-year annual-pay CDS has scheduled-premium annuity 0.941764533584 model-years and exact accrued-on-default annuity 0.009608857782 model-years. Calculate the positive premium-leg present-value magnitude in USD for notional USD 1,000,000 and running spread 100 basis points (0.01 per year).",
+      "answer": { "value": 9513.73391366, "tolerance": 0.01 },
+      "explanation": "The exact total premium annuity is 0.941764533584 + 0.009608857782 = 0.951373391366 model-years. The positive premium magnitude is 0.01 × 1,000,000 × 0.951373391366 = USD 9,513.73391366."
+    },
+    {
+      "id": "cds-premium-leg-transfer",
+      "type": "numeric",
+      "competencyId": "cds.premium-leg.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A two-year quarterly CDS has notional USD 3,000,000 and running spread 125 basis points (0.0125 per year). Exact integration under the supplied constant-hazard model gives scheduled-premium annuity 1.829782217887 model-years and accrued-on-default annuity 0.011512762522 model-years. Calculate the positive premium-leg magnitude in USD.",
+      "answer": { "value": 69048.56176534, "tolerance": 0.01 },
+      "explanation": "The total exact premium annuity is 1.841294980409 model-years. Multiplying 0.0125 × 3,000,000 × 1.841294980409 gives USD 69,048.56176534. The accrued factor comes from integrating default time, not a half-period replacement."
+    },
+    {
+      "id": "cds-protection-leg-direct",
+      "type": "numeric",
+      "competencyId": "cds.protection-leg.calculate",
+      "evidenceKind": "direct",
+      "prompt": "For a one-year CDS, exact integration over modeled default time gives a discounted risk-neutral default-density integral of 0.019411822139. Calculate the positive protection-leg magnitude in USD for notional USD 1,000,000 and recovery rate 0.40.",
+      "answer": { "value": 11647.0932834, "tolerance": 0.01 },
+      "explanation": "Loss given default is 1 - 0.40 = 0.60. The exact protection magnitude is 1,000,000 × 0.60 × 0.019411822139 = USD 11,647.0932834."
+    },
+    {
+      "id": "cds-protection-leg-transfer",
+      "type": "numeric",
+      "competencyId": "cds.protection-leg.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "Use the exact flat-hazard protection formula N(1-R)λ[1-exp(-(r+λ)T)]/(r+λ). Calculate the positive protection-leg magnitude in USD for N = USD 3,000,000, R = 0.35, λ = 0.05 per year, r = 0.03 per year, and T = 2 years.",
+      "answer": { "value": 180199.757197, "tolerance": 0.01 },
+      "explanation": "Here r + λ = 0.08. Substitution gives 3,000,000 × 0.65 × 0.05 × [1 - exp(-0.16)] / 0.08 = USD 180,199.757197. This discounts over actual modeled default time through the integral's closed form."
+    },
+    {
+      "id": "cds-par-spread-direct",
+      "type": "numeric",
+      "competencyId": "cds.par-spread.calculate",
+      "evidenceKind": "direct",
+      "prompt": "Calculate the zero-upfront par spread in basis points per year when the exact premium annuity is 0.951373391366 model-years and the exact protection factor is 0.011647093283 per unit notional.",
+      "answer": { "value": 122.423996602, "tolerance": 0.001 },
+      "explanation": "The par annual decimal spread is 0.011647093283 / 0.951373391366 = 0.0122423996602. Multiplying by 10,000 gives 122.423996602 basis points per year; notional cancels."
+    },
+    {
+      "id": "cds-par-spread-transfer",
+      "type": "numeric",
+      "competencyId": "cds.par-spread.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A different exact default-time model produces scheduled-premium annuity 1.829782217887 model-years, accrued-on-default annuity 0.011512762522 model-years, and protection factor 0.060066585732 per unit notional. Calculate its zero-upfront par spread in basis points per year.",
+      "answer": { "value": 326.219244453, "tolerance": 0.001 },
+      "explanation": "The exact total premium annuity is 1.841294980409. The par spread is 0.060066585732 / 1.841294980409 = 0.0326219244453 per year, or 326.219244453 basis points per year."
+    }
+  ]
+}

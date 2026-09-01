@@ -148,6 +148,22 @@ describe('remark citation adapter', () => {
     expect(testFile.data.citationReferences).toEqual([]);
   });
 
+  it('reloads supplied sources for every document transform', () => {
+    let suppliedSources = [sources[0]];
+    const transform = remarkCitation({ sources: () => suppliedSources });
+
+    const firstTree = paragraph('First \\cite{tuckman-serrat-fixed-income}.');
+    transform(firstTree, file());
+    expect(markers(firstTree)).toHaveLength(1);
+
+    suppliedSources = [...sources];
+    const addedAfterStartup = paragraph('Later \\cite{finra-bond-yield}.');
+    transform(addedAfterStartup, file());
+
+    expect(markers(addedAfterStartup)).toHaveLength(1);
+    expect(referenceList(addedAfterStartup)?.children).toHaveLength(1);
+  });
+
   it('ignores citation-like text inside code', () => {
     const tree: TestNode = {
       type: 'root',

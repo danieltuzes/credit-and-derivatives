@@ -1,8 +1,8 @@
 {
   "id": "credit-products-foundations",
   "title": "Credit products foundations",
-  "description": "A first path from discounting to bond pricing, later extended to credit risk and derivatives.",
-  "audience": "Learners comfortable with basic algebra, exponents, probability, and descriptive statistics.",
+  "description": "A first path from events and discounted expectations through bonds, credit survival, exact-time CDS legs, and quote/upfront conversion.",
+  "audience": "Learners comfortable with basic algebra, percentages, and exponents; probability and risk-neutral pricing are introduced in the track.",
   "entryAssumptions": [
     "Basic algebra",
     "Percentages and decimal notation",
@@ -10,13 +10,19 @@
   ],
   "lessons": [
     "foundations.cash-flow-timelines",
+    "foundations.probability-events-and-expectation",
     "foundations.rates-compounding-and-basis-points",
     "foundations.discount-factors",
     "foundations.present-value",
+    "foundations.risk-neutral-pricing",
     "bonds.fixed-rate-contract-and-cash-flows",
     "bonds.price-from-discount-factors",
     "bonds.yield-to-maturity",
-    "bonds.price-yield-relationship"
+    "bonds.price-yield-relationship",
+    "credit.default-hazard-and-survival",
+    "credit.recovery-and-risky-present-value",
+    "cds.premium-protection-legs-and-par-spread",
+    "cds.market-standard-quote-and-upfront"
   ],
   "editorialStatus": "draft"
 }

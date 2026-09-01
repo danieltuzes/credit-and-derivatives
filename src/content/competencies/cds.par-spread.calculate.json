@@ -1,0 +1,20 @@
+{
+  "id": "cds.par-spread.calculate",
+  "title": "Calculate a CDS par spread",
+  "domain": "cds",
+  "facet": "calculation",
+  "outcome": "Calculate the zero-upfront CDS running spread that equates the exact default-time premium- and protection-leg present-value magnitudes under one internally consistent model.",
+  "prerequisites": [
+    "cds.premium-leg.calculate",
+    "cds.protection-leg.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Notional must remain in the par-spread ratio even though it scales both leg magnitudes equally."
+  ],
+  "editorialStatus": "draft"
+}

@@ -1,0 +1,80 @@
+{
+  "id": "credit-recovery-risky-pv-check",
+  "title": "Recovery and risky present value check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "recovery-rate-direct",
+      "type": "single-choice",
+      "competencyId": "credit.recovery-rate.interpret",
+      "evidenceKind": "direct",
+      "prompt": "In the lesson's one-period recovery-of-par model, what does a recovery rate of 40% mean if default occurs by maturity?",
+      "options": [
+        {
+          "id": "recover-forty-percent-par",
+          "label": "A recovery cash flow equal to 40% of par is paid at maturity"
+        },
+        {
+          "id": "recover-forty-percent-price",
+          "label": "A recovery cash flow equal to 40% of the current market price is paid at maturity"
+        },
+        {
+          "id": "lose-forty-percent-par",
+          "label": "A recovery cash flow equal to 60% of par is paid at maturity"
+        }
+      ],
+      "correctOptionId": "recover-forty-percent-par",
+      "explanation": "Under this narrow model, recovery uses par as its base and is paid at the common maturity date."
+    },
+    {
+      "id": "recovery-rate-transfer",
+      "type": "single-choice",
+      "competencyId": "credit.recovery-rate.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "A one-period claim has USD 2,000 par, a current price of USD 1,850, and a 25% recovery-of-par rate. Under the lesson model, which positive recovery cash flow is used after default?",
+      "options": [
+        { "id": "recovery-usd-500", "label": "USD 500 at maturity" },
+        { "id": "recovery-usd-462-50", "label": "USD 462.50 at maturity" },
+        { "id": "recovery-usd-1500", "label": "USD 1,500 at maturity" }
+      ],
+      "correctOptionId": "recovery-usd-500",
+      "explanation": "Recovery is 0.25 × USD 2,000 par = USD 500; the current price is not the recovery base in this model."
+    },
+    {
+      "id": "loss-given-default-direct",
+      "type": "numeric",
+      "competencyId": "credit.loss-given-default.calculate",
+      "evidenceKind": "direct",
+      "prompt": "Enter loss given default as a decimal when the recovery rate is 35% (0.35).",
+      "answer": { "value": 0.65, "tolerance": 0.000000000001 },
+      "explanation": "Loss given default is 1 - recovery rate = 1 - 0.35 = 0.65."
+    },
+    {
+      "id": "loss-given-default-transfer",
+      "type": "numeric",
+      "competencyId": "credit.loss-given-default.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A recovery-of-par model pays USD 900 after default on a claim with USD 1,500 par. Enter loss given default as a decimal.",
+      "answer": { "value": 0.4, "tolerance": 0.000000000001 },
+      "explanation": "The recovery rate is 900 / 1,500 = 0.60, so loss given default is 1 - 0.60 = 0.40."
+    },
+    {
+      "id": "risky-present-value-direct",
+      "type": "numeric",
+      "competencyId": "credit.risky-present-value.calculate",
+      "evidenceKind": "direct",
+      "prompt": "A one-period defaultable zero-coupon claim has USD 1,000 par, survival probability 0.90 to maturity, recovery-of-par rate 0.40 after default, and maturity discount factor 0.95. Both the survival payoff and any recovery are paid at maturity. What is its time-zero present value in USD?",
+      "answer": { "value": 893, "tolerance": 0.01 },
+      "explanation": "The probability-weighted maturity payoff is 1,000 × [0.90 + (1 - 0.90) × 0.40] = 940. Discounting gives 0.95 × 940 = 893."
+    },
+    {
+      "id": "risky-present-value-transfer",
+      "type": "numeric",
+      "competencyId": "credit.risky-present-value.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A one-period defaultable zero-coupon claim has USD 2,500 par, cumulative default probability 0.08, loss given default 0.55, and maturity discount factor 0.92. The recovery-of-par amount after default is paid at maturity. What is its time-zero present value in USD?",
+      "answer": { "value": 2198.8, "tolerance": 0.01 },
+      "explanation": "The probability-weighted payoff factor is 1 - 0.08 × 0.55 = 0.956. Present value is 2,500 × 0.92 × 0.956 = 2,198.80."
+    }
+  ]
+}

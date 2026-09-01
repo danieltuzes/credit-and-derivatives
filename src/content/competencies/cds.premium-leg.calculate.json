@@ -1,0 +1,27 @@
+{
+  "id": "cds.premium-leg.calculate",
+  "title": "Calculate the CDS premium leg",
+  "domain": "cds",
+  "facet": "calculation",
+  "outcome": "Calculate the positive premium-leg present-value magnitude from scheduled survival-contingent premiums and exact accrued premium integrated over modeled default time under the stated constant-hazard model.",
+  "prerequisites": [
+    "cds.cash-flow-legs.interpret",
+    "credit.survival-probability.interpret",
+    "credit.default-probability-from-survival.calculate",
+    "credit.hazard-rate.interpret",
+    "credit.survival-from-constant-hazard.calculate",
+    "probability.expectation-by-partition.calculate",
+    "finance.present-value.calculate",
+    "finance.risk-neutral-value.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Scheduled CDS premium is paid with certainty at every date, regardless of survival.",
+    "A single half-period accrued amount is exact even when discounting and default density vary within the period."
+  ],
+  "editorialStatus": "draft"
+}

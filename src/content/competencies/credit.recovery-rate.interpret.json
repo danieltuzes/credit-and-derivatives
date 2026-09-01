@@ -1,0 +1,17 @@
+{
+  "id": "credit.recovery-rate.interpret",
+  "title": "Interpret recovery of par",
+  "domain": "credit",
+  "facet": "interpretation",
+  "outcome": "Interpret the recovery rate as the fraction of par paid at maturity after default in the lesson's one-period recovery-of-par model.",
+  "prerequisites": ["finance.cash-flow-perspective.apply"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A recovery-of-par rate is applied to the claim's current market price."
+  ],
+  "editorialStatus": "draft"
+}

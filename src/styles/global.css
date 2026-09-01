@@ -80,6 +80,15 @@
   text-align: start;
 }
 
+/* Long lesson equations must scroll inside the content column instead of
+   widening the entire page. This also contains KaTeX's visually hidden MathML
+   tree, whose intrinsic width can otherwise affect narrow viewports. */
+.sl-markdown-content .katex-display {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 .lab-chart-figure {
   margin: 1.25rem 0;
 }
@@ -108,6 +117,56 @@
   background: var(--sl-color-bg);
 }
 
+.lab-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.85rem 1.25rem;
+  margin: 0;
+}
+
+.lab-metric-grid div {
+  min-width: 0;
+}
+
+.lab-metric-grid dt {
+  color: var(--sl-color-gray-2);
+  font-size: var(--sl-text-sm);
+}
+
+.lab-metric-grid dd {
+  margin: 0.2rem 0 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.lab-checkbox-control {
+  align-content: center;
+}
+
+.lab-checkbox-control label {
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.lab-checkbox-control input {
+  inline-size: 1.2rem;
+  block-size: 1.2rem;
+  flex: none;
+  accent-color: var(--sl-color-accent);
+}
+
+.lab-model-note {
+  margin-block: 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5rem;
+  background: var(--sl-color-bg);
+}
+
+.lab-model-note h4 {
+  margin-block-start: 0;
+}
+
 .lab-chart {
   overflow-x: auto;
   min-height: 18rem;
@@ -120,9 +179,30 @@
   background: var(--sl-color-bg);
 }
 
+.cds-leg-chart:empty {
+  display: none;
+}
+
+.lab-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.5rem;
+}
+
+.lab-table-scroll:focus-visible {
+  outline: 3px solid var(--sl-color-accent);
+  outline-offset: 2px;
+}
+
 .lab-data-table {
   width: 100%;
   font-variant-numeric: tabular-nums;
+}
+
+.lab-table-scroll .lab-data-table {
+  min-width: 64rem;
+  margin: 0;
 }
 
 .assessment-shell {

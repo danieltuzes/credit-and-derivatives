@@ -1,0 +1,89 @@
+{
+  "id": "probability-events-expectation-check",
+  "title": "Events, conditioning, and expectation check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "probability-event-direct",
+      "type": "single-choice",
+      "competencyId": "probability.events.interpret",
+      "evidenceKind": "direct",
+      "prompt": "Which description is an event in a probability model?",
+      "options": [
+        {
+          "id": "event-outcome-set",
+          "label": "A specified set of possible outcomes"
+        },
+        {
+          "id": "event-probability-number",
+          "label": "Only the number assigned as a probability"
+        },
+        {
+          "id": "event-average",
+          "label": "Only the average value of a random quantity"
+        }
+      ],
+      "correctOptionId": "event-outcome-set",
+      "explanation": "An event is a set of outcomes. A probability measure assigns a number to that set."
+    },
+    {
+      "id": "probability-partition-transfer",
+      "type": "single-choice",
+      "competencyId": "probability.events.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "A one-year credit model allows at most one default. Which list is a disjoint and exhaustive partition of outcomes?",
+      "options": [
+        {
+          "id": "partition-correct",
+          "label": "Default by 6 months; default after 6 months through 1 year; survive through 1 year"
+        },
+        {
+          "id": "partition-overlap",
+          "label": "Default by 1 year; default after 6 months through 1 year; survive through 1 year"
+        },
+        {
+          "id": "partition-incomplete",
+          "label": "Default by 6 months; survive through 1 year"
+        }
+      ],
+      "correctOptionId": "partition-correct",
+      "explanation": "The three correct events cannot occur together and cover every outcome in the stated one-default model. The second list overlaps, and the third omits defaults in the second half-year."
+    },
+    {
+      "id": "conditional-probability-direct",
+      "type": "numeric",
+      "competencyId": "probability.conditional-probability.calculate",
+      "evidenceKind": "direct",
+      "prompt": "Events A and B satisfy P(A and B) = 0.12 and P(B) = 0.30. What is P(A given B)? Enter a decimal probability.",
+      "answer": { "value": 0.4, "tolerance": 0.000000000001 },
+      "explanation": "Divide the intersection probability by the conditioning-event probability: 0.12 / 0.30 = 0.40."
+    },
+    {
+      "id": "conditional-default-transfer",
+      "type": "numeric",
+      "competencyId": "probability.conditional-probability.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "In a frequency example, 80 otherwise comparable names are alive at the start of a period and 2 of those names default during it. What conditional default fraction does the sample imply for that period? Enter a decimal.",
+      "answer": { "value": 0.025, "tolerance": 0.000000000001 },
+      "explanation": "Condition on the 80 names alive at period start: 2 / 80 = 0.025, or 2.5%. This sample fraction is not by itself a calibrated pricing probability."
+    },
+    {
+      "id": "expectation-partition-direct",
+      "type": "numeric",
+      "competencyId": "probability.expectation-by-partition.calculate",
+      "evidenceKind": "direct",
+      "prompt": "A random payoff is constant at 0, 50, and 100 units on three disjoint exhaustive events with probabilities 0.10, 0.20, and 0.70. What is its expected payoff in units?",
+      "answer": { "value": 80, "tolerance": 0.000000001 },
+      "explanation": "Weight each event value by its probability: 0 × 0.10 + 50 × 0.20 + 100 × 0.70 = 80."
+    },
+    {
+      "id": "expectation-conditional-means-transfer",
+      "type": "numeric",
+      "competencyId": "probability.expectation-by-partition.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "Three disjoint exhaustive events have probabilities 0.01, 0.02, and 0.97. A payment varies inside the events, but its conditional mean in each event is 40, 30, and 0 USD respectively. What is the unconditional expected payment in USD?",
+      "answer": { "value": 1, "tolerance": 0.000000001 },
+      "explanation": "Use event probability times conditional event mean: 0.01 × 40 + 0.02 × 30 + 0.97 × 0 = USD 1.00."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "isda-cds-standard-model",
+  "type": "official-guidance",
+  "title": "ISDA CDS Standard Model and Standard CDS Contract Converter Specification",
+  "organization": "International Swaps and Derivatives Association",
+  "url": "https://www.cdsmodel.com/documentation.html",
+  "locator": "Documentation page and linked 'ISDA Standard CDS Contract Converter Specification' (version May 5, 2009), Functionality and Specification, printed p. 1: standardized conversion between spread and upfront using trade date, maturity, notional, standard coupon, recovery rate, discount inputs, and either spread or upfront; output is the converted upfront or spread and cash settlement amount. The site states that the standard model is intended to align fixed-coupon/upfront calculations and standardized spread/upfront translation.",
+  "accessed": "2026-08-31",
+  "licenseNotes": "Link and paraphrase only; this lesson does not reproduce or claim full implementation of the ISDA model.",
+  "editorialStatus": "draft"
+}

@@ -1,0 +1,71 @@
+{
+  "id": "risk-neutral-pricing-check",
+  "title": "Risk-neutral pricing check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "risk-neutral-meaning-direct",
+      "type": "single-choice",
+      "competencyId": "finance.risk-neutral-measure.interpret",
+      "evidenceKind": "direct",
+      "prompt": "Which statement correctly distinguishes a real-world probability measure P from a risk-neutral probability measure Q in this lesson?",
+      "options": [
+        {
+          "id": "forecast-versus-price",
+          "label": "P describes modeled real-world frequencies; Q supplies no-arbitrage pricing weights"
+        },
+        {
+          "id": "same-by-definition",
+          "label": "P and Q must assign the same probability to every event"
+        },
+        {
+          "id": "q-certain",
+          "label": "Q assigns certainty to every traded payoff"
+        }
+      ],
+      "correctOptionId": "forecast-versus-price",
+      "explanation": "P and Q can weight the same outcomes differently. P is the modeled real-world measure; Q is selected so discounted traded prices satisfy the model's no-arbitrage pricing condition."
+    },
+    {
+      "id": "risk-neutral-volatility-transfer",
+      "type": "single-choice",
+      "competencyId": "finance.risk-neutral-measure.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "An analyst says, 'After changing from P to Q, uncertainty disappears and volatility is absorbed by the measure.' Which response is correct for the standard diffusion result taught here?",
+      "options": [
+        {
+          "id": "drift-not-volatility",
+          "label": "The change reweights outcomes and changes drift, but it does not remove randomness or the diffusion volatility"
+        },
+        {
+          "id": "all-deterministic",
+          "label": "The change makes every future payoff deterministic"
+        },
+        {
+          "id": "volatility-zero",
+          "label": "The change sets every volatility parameter to zero"
+        }
+      ],
+      "correctOptionId": "drift-not-volatility",
+      "explanation": "Risk-neutral valuation changes the probability weights used for pricing. In the standard change-of-measure result, the drift changes while the diffusion coefficient remains; uncertainty is still present."
+    },
+    {
+      "id": "risk-neutral-value-direct",
+      "type": "numeric",
+      "competencyId": "finance.risk-neutral-value.calculate",
+      "evidenceKind": "direct",
+      "prompt": "At T, a signed payoff is USD 120 with Q-probability 0.70 and USD 20 with Q-probability 0.30. The deterministic discount factor is D(0,T) = 0.96. What is its time-zero risk-neutral value in USD?",
+      "answer": { "value": 86.4, "tolerance": 0.01 },
+      "explanation": "First compute the Q-expectation: 0.70 × 120 + 0.30 × 20 = 90 future USD. Then discount: 0.96 × 90 = USD 86.40 at time zero."
+    },
+    {
+      "id": "risk-neutral-value-transfer",
+      "type": "numeric",
+      "competencyId": "finance.risk-neutral-value.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A contract has signed terminal payoffs of USD 200, USD 50, and USD -40 in three disjoint exhaustive scenarios. Their Q-probabilities are 0.20, 0.50, and 0.30, and D(0,T) = 0.94. What is the time-zero risk-neutral value in USD?",
+      "answer": { "value": 49.82, "tolerance": 0.01 },
+      "explanation": "The Q-expected terminal payoff is 0.20 × 200 + 0.50 × 50 + 0.30 × (-40) = USD 53. Discounting gives 0.94 × 53 = USD 49.82."
+    }
+  ]
+}

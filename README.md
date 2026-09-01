@@ -49,22 +49,24 @@ production build.
 ## What the playground already demonstrates
 
 - A Starlight documentation site built as static HTML.
-- One ordered eight-lesson path: four financial/rate foundations followed by
-  four fixed-rate bond lessons.
+- One ordered fourteen-lesson path: six probability/financial foundations,
+  four fixed-rate bond lessons, two credit-risk lessons, and two CDS lessons.
 - React learning labs embedded as selectively hydrated islands.
 - Build-time KaTeX equations, semantic symbol explanations, a generated
-  notation glossary, and an Observable Plot price/yield curve.
-- Pure TypeScript present-value and bond-pricing functions.
-- Seventeen atomic competencies and eight assessment sets containing 34
+  notation glossary, and Observable Plot bond and CDS views.
+- Pure TypeScript present-value, bond, survival, recovery, exact
+  default-time CDS-leg, and simplified quote/upfront conversion functions.
+- Thirty-six atomic competencies and fourteen assessment sets containing 72
   direct/transfer items.
-- Nineteen shared notation entries plus page-local definitions.
+- Forty-two shared notation entries plus page-local definitions.
 - A generated curriculum map.
 - Semantic validation of IDs, prerequisites, lesson order, track readiness,
   assessment coverage, notation scope, sources, and review status.
 - Unit, property-based, curriculum, browser, and accessibility test examples.
 
-The assessment records exist, but a learner-facing assessment renderer and
-progress store are intentionally left for the next vertical slice.
+The assessment records render as learner-facing checks. Versioned attempt
+storage and a progress repository are intentionally left for a later vertical
+slice.
 
 ## Repository map
 
@@ -626,34 +628,44 @@ See [`AI_POLICY.md`](AI_POLICY.md) for the enforceable project policy.
 | `pnpm format`           | Format supported files                                 |
 | `pnpm verify`           | Run every required pre-review check, including browser |
 
-## Current eight-lesson path and next slices
+## Current fourteen-lesson path and next slices
 
 The current draft track deliberately separates ideas that the original
 two-page skeleton combined:
 
 1. Cash-flow timelines and perspective.
-2. Rate quotes, compounding, and basis points.
-3. Discount factors.
-4. Present value of a cash-flow schedule.
-5. Fixed-rate bond contract and cash flows.
-6. Bond price from discount factors.
-7. Yield to maturity as a single-rate summary.
-8. The bond price-yield relationship.
+2. Events, conditional probability, and expectation by partition.
+3. Rate quotes, compounding, and basis points.
+4. Discount factors.
+5. Present value of a cash-flow schedule.
+6. Risk-neutral pricing and discounted expectations.
+7. Fixed-rate bond contract and cash flows.
+8. Bond price from discount factors.
+9. Yield to maturity as a single-rate summary.
+10. The bond price-yield relationship.
+11. Default, hazard, and survival.
+12. Recovery and one-period risky present value.
+13. Exact default-time CDS premium and protection legs and par spread.
+14. CDS conventional spread quote, fixed coupon, and signed upfront amount.
 
 Complete review of this path before using it as assumed knowledge. The next
 vertical slices are:
 
-1. Render assessment JSON in lessons and store versioned local attempts.
+1. Store versioned local assessment attempts through the progress repository.
 2. Add bond schedules, day counts, accrued interest, and clean/dirty price.
 3. Add duration, DV01, convexity, and rate-curve foundations.
-4. Add conditional default, hazard, survival, recovery, and risky PV.
-5. Add CDS premium/protection legs and par spread.
-6. Add curve calibration and CDS quotation conventions.
-7. Add CDX series, rolls, index factor, defaults, and risk mapping.
-8. Add option foundations, then bond, CDS, and CDX option branches.
+4. Add dated CDS schedules, curve bootstrapping, and an independently reviewed
+   implementation of the current industry standard model.
+5. Add CDX series, rolls, index factor, defaults, and risk mapping.
+6. Add option foundations, then bond, CDS, and CDX option branches.
 
 For each slice, finish competencies, assessment evidence, sources, notation,
 lesson, model, lab, tests, and review before starting the next product.
+
+The probability, risk-neutral, credit, and CDS lessons cite registered Shreve,
+Tuckman and Serrat, Hull, and ISDA records with use-specific locators. They
+remain `draft` until a responsible human independently verifies those locators,
+formulas, examples, and answer keys.
 
 ## Troubleshooting
 

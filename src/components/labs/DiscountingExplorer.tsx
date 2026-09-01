@@ -67,10 +67,12 @@ const LabMath = memo(
           const root = rootRef.current;
           if (!root) return;
           for (const [name, value] of Object.entries(values)) {
-            const cell = root.querySelector<HTMLElement>(
+            const cells = root.querySelectorAll<HTMLElement>(
               `[data-lab-slot="${name}"]`,
             );
-            if (cell && cell.textContent !== value) cell.textContent = value;
+            for (const cell of cells) {
+              if (cell.textContent !== value) cell.textContent = value;
+            }
           }
         },
       }),
@@ -115,7 +117,10 @@ function RangeField({
 }: RangeFieldProps) {
   const rangeId = useId();
   const numberId = useId();
-  const clamp = (next: number) => Math.min(max, Math.max(min, next));
+  const update = (next: number) => {
+    if (!Number.isFinite(next)) return;
+    onChange(Math.min(max, Math.max(min, next)));
+  };
 
   return (
     <div className="lab-control">
@@ -129,7 +134,7 @@ function RangeField({
         max={max}
         step={step}
         value={value}
-        onChange={(event) => onChange(clamp(Number(event.currentTarget.value)))}
+        onChange={(event) => update(event.currentTarget.valueAsNumber)}
       />
       <label className="sr-only" htmlFor={numberId}>
         {exactLabel}
@@ -141,7 +146,7 @@ function RangeField({
         max={max}
         step={step}
         value={value}
-        onChange={(event) => onChange(clamp(Number(event.currentTarget.value)))}
+        onChange={(event) => update(event.currentTarget.valueAsNumber)}
       />
     </div>
   );

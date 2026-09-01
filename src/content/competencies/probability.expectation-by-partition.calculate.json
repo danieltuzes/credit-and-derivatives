@@ -1,0 +1,21 @@
+{
+  "id": "probability.expectation-by-partition.calculate",
+  "title": "Calculate expectation by partition",
+  "domain": "probability",
+  "facet": "calculation",
+  "outcome": "Calculate a finite expected value from event probabilities and either event values or conditional event means.",
+  "prerequisites": [
+    "probability.events.interpret",
+    "probability.conditional-probability.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A representative event value gives an exact expectation even when the random value varies within that event.",
+    "Expected value is the most likely realized value."
+  ],
+  "editorialStatus": "draft"
+}

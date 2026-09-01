@@ -10,6 +10,14 @@ const lessons = [
     ],
   },
   {
+    path: '/foundations/probability-events-and-expectation/',
+    labels: [
+      'Constant value on each event',
+      'Conditional means inside events',
+      'Default inside a period',
+    ],
+  },
+  {
     path: '/foundations/rates-compounding-and-basis-points/',
     labels: [
       'Nominal 6%, compounded semiannually',
@@ -55,6 +63,30 @@ const lessons = [
       'Three points form a curve',
       'Equal shocks, unequal moves',
       'Hold other inputs fixed',
+    ],
+  },
+  {
+    path: '/credit/default-hazard-and-survival/',
+    labels: [
+      'One interval drop',
+      'Three years at constant hazard',
+      'Two unequal interval drops',
+    ],
+  },
+  {
+    path: '/credit/recovery-and-risky-present-value/',
+    labels: [
+      'Partial recovery',
+      'Zero-recovery boundary',
+      'Full-recovery boundary',
+    ],
+  },
+  {
+    path: '/cds/premium-protection-legs-and-par-spread/',
+    labels: [
+      'A finite event partition',
+      'One-year exact legs',
+      'Solve the exact par spread',
     ],
   },
 ] as const;

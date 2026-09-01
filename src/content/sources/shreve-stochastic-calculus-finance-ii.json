@@ -1,0 +1,12 @@
+{
+  "id": "shreve-stochastic-calculus-finance-ii",
+  "type": "book",
+  "title": "Stochastic Calculus for Finance II: Continuous-Time Models",
+  "authors": ["Steven E. Shreve"],
+  "publisher": "Springer",
+  "year": 2004,
+  "isbn": "0-387-40101-6",
+  "locator": "Ch. 1 §1.1, printed pp. 1-3, Def. 1.1.2 and eqs. 1.1.2-1.1.5 (countable additivity for disjoint events); §1.3, printed pp. 13-18, Thms. 1.3.1 and 1.3.4 (expectation, finite-state value-times-probability sum, and linearity); §1.6, printed pp. 32-35 (change of measure and actual versus risk-neutral probabilities). Ch. 2 §2.3, printed pp. 66-72, eqs. 2.3.4-2.3.17, Def. 2.3.1, and eq. 2.3.25 (conditional probability, conditional expectation, and averaging). Ch. 5 §5.2.2, printed pp. 214-217, especially eqs. 5.2.22-5.2.24 (risk-neutral measure makes discounted traded prices martingales; change of measure changes drift but not volatility); §5.2.4, printed pp. 218-219, eqs. 5.2.29-5.2.31 (risk-neutral expected discounted payoff formula); §§5.4.3-5.4.4, printed pp. 228-233 (existence, no arbitrage, and uniqueness only with completeness). Locators verified against the 2004 text; human review remains required.",
+  "licenseNotes": "Citation metadata only; paraphrase and do not copy licensed text.",
+  "editorialStatus": "draft"
+}

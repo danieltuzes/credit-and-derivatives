@@ -1,0 +1,18 @@
+{
+  "id": "probability.conditional-probability.calculate",
+  "title": "Calculate conditional probability",
+  "domain": "probability",
+  "facet": "calculation",
+  "outcome": "Calculate the probability of one event conditional on another positive-probability event.",
+  "prerequisites": ["probability.events.interpret"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Conditioning changes the event being measured but not the set of possible conditioning outcomes.",
+    "The denominator in a conditional probability is the unconditional probability of the event being predicted."
+  ],
+  "editorialStatus": "draft"
+}

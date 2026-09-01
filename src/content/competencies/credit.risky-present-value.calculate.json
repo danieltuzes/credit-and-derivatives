@@ -1,0 +1,23 @@
+{
+  "id": "credit.risky-present-value.calculate",
+  "title": "Calculate one-period risky present value",
+  "domain": "credit",
+  "facet": "calculation",
+  "outcome": "Calculate the time-zero present value of a one-period recovery-of-par claim by probability-weighting its survival and default payoffs at maturity and applying the stated discount factor.",
+  "prerequisites": [
+    "probability.expectation-by-partition.calculate",
+    "finance.present-value.calculate",
+    "finance.risk-neutral-value.calculate",
+    "credit.default-probability-from-survival.calculate",
+    "credit.loss-given-default.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Recovery paid after default should be added to the full survival payoff instead of replacing the par payoff in the default state."
+  ],
+  "editorialStatus": "draft"
+}

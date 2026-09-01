@@ -1,0 +1,27 @@
+{
+  "id": "cds.protection-leg.calculate",
+  "title": "Calculate the CDS protection leg",
+  "domain": "cds",
+  "facet": "calculation",
+  "outcome": "Calculate the positive protection-leg present-value magnitude by integrating discounted loss-given-default over exact modeled default time under the stated constant risk-neutral hazard.",
+  "prerequisites": [
+    "cds.cash-flow-legs.interpret",
+    "credit.default-probability-from-survival.calculate",
+    "credit.hazard-rate.interpret",
+    "credit.survival-from-constant-hazard.calculate",
+    "credit.loss-given-default.calculate",
+    "probability.expectation-by-partition.calculate",
+    "finance.present-value.calculate",
+    "finance.risk-neutral-value.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The protection leg uses survival probability where the model requires default probability density.",
+    "A default anywhere in a period must be discounted from the period end."
+  ],
+  "editorialStatus": "draft"
+}

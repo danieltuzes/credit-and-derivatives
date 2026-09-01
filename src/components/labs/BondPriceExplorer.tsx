@@ -83,8 +83,18 @@ export default function BondPriceExplorer() {
     return () => chart.remove();
   }, [result, yieldPercent]);
 
-  const setBoundedYield = (value: number) =>
+  const setBoundedCoupon = (value: number) => {
+    if (!Number.isFinite(value)) return;
+    setCouponPercent(Math.min(20, Math.max(0, value)));
+  };
+  const setBoundedYield = (value: number) => {
+    if (!Number.isFinite(value)) return;
     setYieldPercent(Math.min(15, Math.max(0, value)));
+  };
+  const setBoundedYears = (value: number) => {
+    if (!Number.isFinite(value)) return;
+    setYears(Math.round(Math.min(30, Math.max(1, value))));
+  };
 
   return (
     <section className="lab-shell" aria-labelledby="bond-lab-title">
@@ -100,7 +110,7 @@ export default function BondPriceExplorer() {
             step="0.25"
             value={couponPercent}
             onChange={(event) =>
-              setCouponPercent(Number(event.currentTarget.value))
+              setBoundedCoupon(event.currentTarget.valueAsNumber)
             }
           />
         </label>
@@ -114,7 +124,7 @@ export default function BondPriceExplorer() {
             step="0.1"
             value={yieldPercent}
             onChange={(event) =>
-              setBoundedYield(Number(event.currentTarget.value))
+              setBoundedYield(event.currentTarget.valueAsNumber)
             }
           />
           <label className="sr-only" htmlFor={yieldNumberId}>
@@ -129,7 +139,7 @@ export default function BondPriceExplorer() {
             step="0.1"
             value={yieldPercent}
             onChange={(event) =>
-              setBoundedYield(Number(event.currentTarget.value))
+              setBoundedYield(event.currentTarget.valueAsNumber)
             }
           />
         </div>
@@ -142,7 +152,9 @@ export default function BondPriceExplorer() {
             max="30"
             step="1"
             value={years}
-            onChange={(event) => setYears(Number(event.currentTarget.value))}
+            onChange={(event) =>
+              setBoundedYears(event.currentTarget.valueAsNumber)
+            }
           />
         </label>
         <label className="lab-control" htmlFor={frequencyId}>

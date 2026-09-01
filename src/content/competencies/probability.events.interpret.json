@@ -1,0 +1,18 @@
+{
+  "id": "probability.events.interpret",
+  "title": "Interpret events and partitions",
+  "domain": "probability",
+  "facet": "interpretation",
+  "outcome": "Identify events and a disjoint exhaustive partition in a stated probability model.",
+  "prerequisites": [],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Events in a probability sum may overlap without double-counting outcomes.",
+    "A list of disjoint events is automatically exhaustive."
+  ],
+  "editorialStatus": "draft"
+}

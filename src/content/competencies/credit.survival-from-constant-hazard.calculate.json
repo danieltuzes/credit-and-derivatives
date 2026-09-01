@@ -1,0 +1,17 @@
+{
+  "id": "credit.survival-from-constant-hazard.calculate",
+  "title": "Calculate survival from constant hazard",
+  "domain": "credit",
+  "facet": "calculation",
+  "outcome": "Calculate survival probability as S(0,t) = exp(-lambda t) under a stated non-negative constant hazard rate and consistent time units.",
+  "prerequisites": ["credit.hazard-rate.interpret"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Survival under constant hazard is one minus hazard rate times time for every horizon."
+  ],
+  "editorialStatus": "draft"
+}

@@ -1,0 +1,22 @@
+{
+  "id": "finance.risk-neutral-measure.interpret",
+  "title": "Interpret a risk-neutral measure",
+  "domain": "finance",
+  "facet": "interpretation",
+  "outcome": "Interpret risk-neutral probabilities as no-arbitrage pricing weights rather than real-world forecasts.",
+  "prerequisites": [
+    "finance.present-value.interpret",
+    "probability.expectation-by-partition.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Risk-neutral probabilities are forecasts of real-world event frequencies.",
+    "Changing to a risk-neutral measure removes uncertainty or volatility.",
+    "Risk-neutral valuation assumes every investor is indifferent to risk."
+  ],
+  "editorialStatus": "draft"
+}

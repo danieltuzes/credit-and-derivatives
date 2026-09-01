@@ -1,0 +1,17 @@
+{
+  "id": "cds.market-standard-quote.interpret",
+  "title": "Interpret a CDS market-standard quote",
+  "domain": "cds",
+  "facet": "interpretation",
+  "outcome": "Distinguish the lesson's market-standard quote from the fixed running coupon and explain the quote's role in a simplified CDS conversion.",
+  "prerequisites": ["cds.par-spread.calculate"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The quoted spread and the standardized running coupon must be the same rate."
+  ],
+  "editorialStatus": "draft"
+}

@@ -1,0 +1,628 @@
+---
+title: CDS premium and protection legs
+description: Build exact default-time expectations for the two CDS legs and solve the zero-upfront par spread.
+lessonId: cds.premium-protection-legs-and-par-spread
+editorialStatus: draft
+riskTier: 3
+estimatedMinutes: 55
+requires:
+  - probability.events.interpret
+  - probability.expectation-by-partition.calculate
+  - finance.cash-flow-perspective.apply
+  - finance.present-value.calculate
+  - finance.risk-neutral-measure.interpret
+  - finance.risk-neutral-value.calculate
+  - rates.basis-points.convert
+  - credit.survival-probability.interpret
+  - credit.default-probability-from-survival.calculate
+  - credit.hazard-rate.interpret
+  - credit.survival-from-constant-hazard.calculate
+  - credit.recovery-rate.interpret
+  - credit.loss-given-default.calculate
+  - credit.risky-present-value.calculate
+teaches:
+  - cds.cash-flow-legs.interpret
+  - cds.premium-leg.calculate
+  - cds.protection-leg.calculate
+  - cds.par-spread.calculate
+assessments:
+  - cds-legs-par-spread-check
+sources:
+  - tuckman-serrat-fixed-income
+  - hull-options-futures
+  - shreve-stochastic-calculus-finance-ii
+assumptions:
+  - The named perspective is a protection buyer that pays running premium and receives protection
+  - Premium-leg and protection-leg present values are displayed as positive magnitudes
+  - The reference entity has at most one modeled default time
+  - The reference entity is alive at valuation time and modeled default occurs strictly after time zero
+  - Default follows a constant non-negative risk-neutral hazard rate per model-year
+  - The continuously compounded risk-free rate and recovery fraction are deterministic
+  - Premium dates are equally spaced annual, semiannual, or quarterly model-year dates with year fraction equal to elapsed model time
+  - Scheduled premium is paid only after survival to its date
+  - Default triggers protection and premium accrued since the preceding premium date at the modeled default time
+  - The model has no calendar dates, day-count engine, business-day adjustments, settlement delay, calibration, counterparty risk, collateral, or funding
+  - Par spread means the zero-upfront running spread in this model; standard coupon and upfront quotation follow in the next lesson
+notation:
+  uses:
+    - valuation-time
+    - payment-time
+    - maturity-time
+    - discount-factor
+    - basis-point
+    - risk-neutral-probability-measure
+    - risk-neutral-expectation
+    - survival-probability
+    - interval-default-probability
+    - hazard-rate
+    - recovery-rate
+    - loss-given-default
+    - cds-notional
+    - cds-contract-spread
+    - cds-par-spread
+    - cds-accrual-year-fraction
+    - cds-premium-annuity
+    - cds-premium-leg-present-value
+    - cds-protection-leg-present-value
+    - cds-protection-buyer-net-present-value
+  local:
+    - key: cds-period-index
+      notation: 'i'
+      title: CDS period index
+      summary: Selects one default interval and its following scheduled premium date.
+      details: The index is bookkeeping and is not itself a time, probability, or currency amount.
+      formula: 'i \in \{1,\ldots,n\}'
+      sources:
+        - tuckman-serrat-fixed-income
+        - hull-options-futures
+      seeAlso:
+        - payment-time
+        - cds-accrual-year-fraction
+      alignment:
+        kind: competency
+        introducedByCompetency: cds.cash-flow-legs.interpret
+        introducedInLesson: cds.premium-protection-legs-and-par-spread
+    - key: number-of-cds-periods
+      notation: 'n'
+      title: Number of CDS periods
+      summary: Counts the finite premium and default intervals in the simplified CDS schedule.
+      details: It is a positive integer determined by model term and payment frequency.
+      formula: 'n \in \{1,2,\ldots\}'
+      sources: []
+      seeAlso:
+        - cds-period-index
+      alignment:
+        kind: general
+        rationale: Finite schedule indexing is bookkeeping used by the lesson.
+    - key: cds-default-time
+      notation: '\tau'
+      title: Modeled default time
+      summary: Random model time at which the reference entity first defaults.
+      details: It is measured in model-years from valuation time under the stated risk-neutral model.
+      formula: '\tau > 0'
+      units: model-years after valuation time
+      sources:
+        - tuckman-serrat-fixed-income
+        - hull-options-futures
+      seeAlso:
+        - valuation-time
+        - hazard-rate
+      alignment:
+        kind: competency
+        introducedByCompetency: cds.cash-flow-legs.interpret
+        introducedInLesson: cds.premium-protection-legs-and-par-spread
+    - key: cds-default-event
+      notation: 'G_i'
+      title: CDS default-interval event
+      summary: Event that modeled default occurs after one premium date and no later than the next.
+      details: Together with survival through maturity, these events are disjoint and exhaustive in the one-default model.
+      formula: 'G_i=\{t_{i-1}<\tau\leq t_i\}'
+      sources:
+        - tuckman-serrat-fixed-income
+        - hull-options-futures
+      seeAlso:
+        - cds-default-time
+        - payment-time
+      alignment:
+        kind: competency
+        introducedByCompetency: cds.cash-flow-legs.interpret
+        introducedInLesson: cds.premium-protection-legs-and-par-spread
+    - key: cds-event-payoff
+      notation: 'Y'
+      title: Generic CDS scenario payoff
+      summary: Random discounted payoff used to connect event partitions to a CDS-leg expectation.
+      details: Its currency sign and perspective must be stated before taking an expectation.
+      sources:
+        - shreve-stochastic-calculus-finance-ii
+      seeAlso:
+        - risk-neutral-expectation
+      alignment:
+        kind: general
+        rationale: The symbol specializes the prerequisite expectation rule to this lesson.
+    - key: cds-event-payoff-value
+      notation: 'y_i'
+      title: Payoff value on one CDS event
+      summary: Constant value taken by the generic payoff on one event in a finite partition.
+      details: If the payoff varies inside an event, conditional expectation replaces this constant.
+      sources:
+        - shreve-stochastic-calculus-finance-ii
+      seeAlso:
+        - cds-event-payoff
+        - cds-default-event
+      alignment:
+        kind: general
+        rationale: The symbol specializes the prerequisite finite-event expectation rule.
+    - key: cds-default-integration-time
+      notation: 'u'
+      title: Possible default time in an integral
+      summary: Integration variable ranging over every possible default time inside one CDS period.
+      details: It is a deterministic dummy variable; the random default time is a different symbol.
+      units: model-years after valuation time
+      sources: []
+      seeAlso:
+        - cds-default-time
+      alignment:
+        kind: general
+        rationale: A continuous integral needs a dummy time variable distinct from the random default time.
+    - key: cds-accrued-year-fraction-at-default
+      notation: 'a_i(u)'
+      title: Premium accrual at default
+      summary: Year fraction accrued from the preceding premium date to a possible default time in period i.
+      details: In the regular model-year schedule it equals elapsed model time since the period start.
+      formula: 'a_i(u)=u-t_{i-1}'
+      units: model-years of premium accrual
+      sources:
+        - tuckman-serrat-fixed-income
+        - hull-options-futures
+      seeAlso:
+        - cds-accrual-year-fraction
+        - cds-default-integration-time
+      alignment:
+        kind: competency
+        introducedByCompetency: cds.premium-leg.calculate
+        introducedInLesson: cds.premium-protection-legs-and-par-spread
+    - key: continuously-compounded-risk-free-rate
+      notation: 'r'
+      title: Continuously compounded risk-free rate
+      summary: Deterministic annual decimal rate used to discount this lesson's model cash flows.
+      details: It is a pricing input and is separate from the hazard rate.
+      formula: 'D(0,u)=\exp(-ru)'
+      units: decimal rate per model-year
+      sources:
+        - shreve-stochastic-calculus-finance-ii
+      seeAlso:
+        - discount-factor
+        - hazard-rate
+      alignment:
+        kind: general
+        rationale: This is a stated specialization of the previously taught discount-factor input.
+    - key: cds-combined-decay-rate
+      notation: '\kappa'
+      title: Discount-plus-hazard rate
+      summary: Abbreviation for the sum of the deterministic risk-free rate and constant hazard rate.
+      details: It shortens the closed forms and has no separate market interpretation.
+      formula: '\kappa=r+\lambda'
+      units: decimal rate per model-year
+      sources: []
+      seeAlso:
+        - continuously-compounded-risk-free-rate
+        - hazard-rate
+      alignment:
+        kind: general
+        rationale: The abbreviation is algebraic bookkeeping for the closed-form example.
+    - key: cds-scheduled-premium-annuity
+      notation: 'A_0^{\mathrm{sched}}'
+      title: Scheduled premium annuity
+      summary: Present-value factor for scheduled premiums per unit notional and unit annual running rate.
+      details: It includes a scheduled payment only when the name survives to that payment date.
+      units: model-years
+      sources:
+        - tuckman-serrat-fixed-income
+        - hull-options-futures
+      seeAlso:
+        - cds-premium-annuity
+      alignment:
+        kind: competency
+        introducedByCompetency: cds.premium-leg.calculate
+        introducedInLesson: cds.premium-protection-legs-and-par-spread
+    - key: cds-accrued-premium-annuity
+      notation: 'A_0^{\mathrm{accr}}'
+      title: Accrued-on-default premium annuity
+      summary: Present-value factor for exact premium accrual paid at modeled default.
+      details: It integrates accrued year fraction, discounting, and risk-neutral default density over every possible default time.
+      units: model-years
+      sources:
+        - tuckman-serrat-fixed-income
+        - hull-options-futures
+      seeAlso:
+        - cds-premium-annuity
+        - cds-accrued-year-fraction-at-default
+      alignment:
+        kind: competency
+        introducedByCompetency: cds.premium-leg.calculate
+        introducedInLesson: cds.premium-protection-legs-and-par-spread
+    - key: cds-protection-factor
+      notation: 'B_0^{\mathrm{prot}}'
+      title: CDS protection factor
+      summary: Present value of protection per unit CDS notional in the simplified model.
+      details: It includes loss given default, discounting, and the risk-neutral default-time density.
+      units: present currency-units per notional currency-unit
+      sources:
+        - tuckman-serrat-fixed-income
+        - hull-options-futures
+      seeAlso:
+        - cds-protection-leg-present-value
+        - loss-given-default
+      alignment:
+        kind: competency
+        introducedByCompetency: cds.protection-leg.calculate
+        introducedInLesson: cds.premium-protection-legs-and-par-spread
+aiAssisted: true
+sidebar:
+  order: 1
+---
+
+import CompactExample from '../../../components/examples/CompactExample.astro';
+import CompactExamples from '../../../components/examples/CompactExamples.astro';
+import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
+import CdsLegExplorer from '../../../components/labs/CdsLegExplorer';
+
+## What a CDS is
+
+A credit default swap (CDS) is a bilateral derivative on a named reference
+entity. The protection buyer pays a running premium to the protection seller.
+If a covered credit event occurs before maturity, the seller makes a
+loss-related protection payment. Unlike buying the entity's bond, entering a
+CDS does not itself lend principal to the reference entity. Tuckman and Serrat
+describe the fee and contingent legs in Chapter 14\cite\{tuckman-serrat-fixed-income\}\{§14.5,
+printed pp. 361–362\}; Hull describes the same buyer/seller cash-flow directions
+and quarterly premium convention\cite\{hull-options-futures\}\{§24.1, printed pp.
+548–550\}.
+
+This lesson reports both leg present values as positive magnitudes. From the
+protection buyer's perspective,
+
+$$
+\explain{cds-protection-buyer-net-present-value}{PV_0^{\mathrm{buyer}}}
+=\explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}
+-\explain{cds-premium-leg-present-value}{PV_0^{\mathrm{prem}}}.
+$$
+
+The seller has the opposite signed value in this two-party model.
+
+## Start from disjoint events
+
+Let the random \term\{cds-default-time\} be $\tau$. Use the local
+\term\{cds-period-index\} $i$ across the
+\term\{number-of-cds-periods\} $n$. The schedule has dates
+$0=t_0<t_1<\cdots<t_n=T$. Define the disjoint interval events
+
+$$
+\explain{cds-default-event}{G_i}
+=\{\explain{payment-time}{t_{i-1}}<
+\explain{cds-default-time}{\tau}\leq
+\explain{payment-time}{t_i}\},
+\qquad i=1,\ldots,n,
+$$
+
+and add $\explain{cds-default-event}{G_0}=\{\tau>T\}$ for survival through
+maturity. These events are
+disjoint and exhaustive under the one-default assumption.
+
+For a local \term\{cds-event-payoff\} $Y$ that is constant at $y_i$ on each
+event,
+
+$$
+\explain{risk-neutral-expectation}{\mathbb{E}^{\mathbb{Q}}[Y]}
+=\sum_{i=0}^{n}
+\explain{cds-event-payoff-value}{y_i}\,
+\explain{risk-neutral-probability-measure}{\mathbb{Q}}
+(\explain{cds-default-event}{G_i}).
+$$
+
+This is the finite expectation rule from the probability lesson, now using
+risk-neutral pricing weights. If $Y$ is not constant within an interval, the
+correct identity is
+
+$$
+\explain{risk-neutral-expectation}{\mathbb{E}^{\mathbb{Q}}[Y]}
+=\sum_{i=0}^{n}
+\explain{risk-neutral-probability-measure}{\mathbb{Q}}
+(\explain{cds-default-event}{G_i})
+\explain{risk-neutral-expectation}{\mathbb{E}^{\mathbb{Q}}[Y\mid G_i]}.
+$$
+
+That distinction is exactly why a single period-end payment is not an exact
+treatment of a mid-period default. Refining every interval into smaller
+default-time buckets turns the sum into an integral. Shreve gives the finite
+disjoint-event expectation rule used here\cite\{shreve-stochastic-calculus-finance-ii\}\{Ch.
+1 §1.3, printed pp. 13–18\}. Tuckman and Serrat's CDS table likewise weights
+cash flows by survival/default events\cite\{tuckman-serrat-fixed-income\}\{§14.6,
+printed pp. 368–370, Table 14.10 and eqs. 14.6–14.7\}.
+
+## Hazard supplies the probabilities in the formulas
+
+The lesson's \term\{hazard-rate\} $\lambda$ is constant, non-negative, and
+measured per model-year under the \term\{risk-neutral-probability-measure\}
+$\mathbb{Q}$. It gives
+
+$$
+\explain{survival-probability}{S^{\mathbb{Q}}(0,t)}
+=\exp(-\explain{hazard-rate}{\lambda}
+\explain{payment-time}{t}),
+$$
+
+and therefore
+
+$$
+\explain{risk-neutral-probability-measure}{\mathbb{Q}}
+(\explain{cds-default-time}{\tau}\in d
+\explain{cds-default-integration-time}{u})
+=\explain{hazard-rate}{\lambda}
+\explain{survival-probability}{S^{\mathbb{Q}}(0,u)}\,d
+\explain{cds-default-integration-time}{u}.
+$$
+
+For an interval, integrating that density gives the familiar survival drop:
+
+$$
+\explain{interval-default-probability}{\Delta q_i^{\mathbb{Q}}}
+=\exp(-\lambda t_{i-1})-\exp(-\lambda t_i).
+$$
+
+These are pricing probabilities, not forecasts. A CDS-implied hazard rate can
+be risk-neutral rather than a prediction of realized defaults\cite\{tuckman-serrat-fixed-income\}\{§14.7,
+printed p. 371\}. The constant-hazard survival relation is given in §14.6 and
+Appendix A14.1\cite\{tuckman-serrat-fixed-income\}\{printed pp. 367–368 and 505,
+eqs. 14.4–14.5 and A14.1–A14.2\}.
+
+## What happens when default is mid-period
+
+Suppose default occurs at $u$ in $(t_{i-1},t_i]$. The supplied
+\term\{recovery-rate\} is $R$.
+
+- The scheduled premium at $t_i$ is not paid, because the reference entity did
+  not survive to that date.
+- The buyer pays premium accrued from $t_{i-1}$ to $u$. In this model its year
+  fraction is
+  $\explain{cds-accrued-year-fraction-at-default}{a_i(u)}=u-t_{i-1}$.
+- The seller pays protection of
+  $\explain{loss-given-default}{\mathrm{LGD}}N=(1-R)N$.
+- Both default-triggered amounts are discounted from the actual modeled time
+  $u$, not automatically from $t_i$.
+
+Hull explicitly notes that a final accrued premium is paid when default occurs
+between scheduled dates\cite\{hull-options-futures\}\{§24.1, printed pp. 548–550\}.
+The half-period and midpoint calculations in Hull and Tuckman are useful
+discrete approximations\cite\{hull-options-futures\}\{§24.2, printed pp. 551–554,
+Tables 24.1–24.4\}\cite\{tuckman-serrat-fixed-income\}\{§14.6, printed pp. 368–370,
+Table 14.10\}. Here, because the toy hazard and discount rate are constant, we
+can integrate the modeled default time exactly instead.
+
+## Exact premium-leg expectation in this model
+
+Let the \term\{continuously-compounded-risk-free-rate\} be $r$, so
+$D(0,u)=\exp(-ru)$. The positive scheduled-premium factor is
+
+$$
+\explain{cds-scheduled-premium-annuity}{A_0^{\mathrm{sched}}}
+=\sum_{i=1}^{n}
+\explain{cds-accrual-year-fraction}{\alpha_i}
+\explain{discount-factor}{D(0,t_i)}
+\explain{survival-probability}{S^{\mathbb{Q}}(0,t_i)}.
+$$
+
+The exact accrued-on-default factor is
+
+$$
+\explain{cds-accrued-premium-annuity}{A_0^{\mathrm{accr}}}
+=\sum_{i=1}^{n}
+\int_{t_{i-1}}^{t_i}
+\explain{cds-accrued-year-fraction-at-default}{a_i(u)}
+\explain{discount-factor}{D(0,u)}
+\explain{hazard-rate}{\lambda}
+\explain{survival-probability}{S^{\mathbb{Q}}(0,u)}\,du.
+$$
+
+Add the factors and multiply by annual decimal spread and positive notional:
+
+$$
+\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}
+=\explain{cds-scheduled-premium-annuity}{A_0^{\mathrm{sched}}}
++\explain{cds-accrued-premium-annuity}{A_0^{\mathrm{accr}}},
+\qquad
+\explain{cds-premium-leg-present-value}{PV_0^{\mathrm{prem}}}
+=\explain{cds-contract-spread}{s}
+\explain{cds-notional}{N}
+\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}.
+$$
+
+A spread quoted in \term\{basis-point\} units per year is divided by 10,000
+before entering the formula.
+
+## Exact protection-leg expectation in this model
+
+The positive protection magnitude is
+
+$$
+\explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}
+=\explain{cds-notional}{N}
+\explain{loss-given-default}{\mathrm{LGD}}
+\sum_{i=1}^{n}\int_{t_{i-1}}^{t_i}
+\explain{discount-factor}{D(0,u)}
+\explain{hazard-rate}{\lambda}
+\explain{survival-probability}{S^{\mathbb{Q}}(0,u)}\,du.
+$$
+
+The expression is an expectation: each possible default-time payoff is
+multiplied by its risk-neutral probability density and discounted, then the
+disjoint time buckets are added.
+
+## Closed forms and the zero-upfront par spread
+
+For the regular model-year schedule, $\alpha_i=t_i-t_{i-1}$ and the
+\term\{maturity-time\} is $T=t_n$. Define the
+algebraic abbreviation
+$\explain{cds-combined-decay-rate}{\kappa}=r+\lambda$. Then
+
+$$
+\explain{cds-scheduled-premium-annuity}{A_0^{\mathrm{sched}}}
+=\sum_{i=1}^{n}\alpha_i\exp(-\kappa t_i),
+$$
+
+$$
+\explain{cds-accrued-premium-annuity}{A_0^{\mathrm{accr}}}
+=\sum_{i=1}^{n}
+\lambda\exp(-\kappa t_{i-1})
+\frac{1-\exp(-\kappa\alpha_i)(1+\kappa\alpha_i)}{\kappa^2},
+$$
+
+and the per-unit-notional protection factor is
+
+$$
+\explain{cds-protection-factor}{B_0^{\mathrm{prot}}}
+=\mathrm{LGD}\,\lambda
+\frac{1-\exp(-\kappa T)}{\kappa}.
+$$
+
+At $\kappa=0$, the continuous limits replace the two fractions by
+$\alpha_i^2/2$ and $T$, respectively. The implementation uses stable versions
+of those limits.
+
+The \term\{cds-par-spread\} $s^\star$ is the running spread that makes the legs
+equal with no upfront amount:
+
+$$
+\explain{cds-par-spread}{s^\star}
+=\frac{\explain{cds-protection-factor}{B_0^{\mathrm{prot}}}}
+{\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}},
+\qquad
+PV_0^{\mathrm{prem}}(s^\star)=PV_0^{\mathrm{prot}}.
+$$
+
+Tuckman and Serrat state the equal-leg fair-spread condition and its
+spread/upfront relationship\cite\{tuckman-serrat-fixed-income\}\{§14.6, printed
+pp. 370–371, and Appendix A14.2, printed pp. 506–507\}. The next lesson separates
+this model par spread from a standard running coupon and a signed upfront fee.
+
+<CompactExamples
+  summary="Worked examples"
+  hint="Open the set, then follow the event partition into the exact leg calculation."
+  tabsLabel="Exact default-time CDS examples"
+>
+  <CompactExample label="A finite event partition">
+
+Suppose a deliberately coarse two-period protection payoff is USD 6,000 on
+$\explain{cds-default-event}{G_1}$, USD 5,800 on
+$\explain{cds-default-event}{G_2}$, and zero on survival event
+$\explain{cds-default-event}{G_0}$. If the risk-neutral event probabilities
+are 0.02, 0.03, and 0.95, its expected payoff before discounting is
+
+$$
+0(0.95)+6{,}000(0.02)+5{,}800(0.03)=\text{USD }294.
+$$
+
+This finite example works because the assigned payoff is constant on each
+event. Exact CDS discounting varies with default time inside an event, so the
+integral uses all possible values instead.
+
+  </CompactExample>
+
+  <CompactExample label="One-year exact legs">
+
+Take synthetic notional $N=\text{USD }1{,}000{,}000$, running spread
+$s=0.01$ per year (100 bp/year), recovery $R=0.40$, constant risk-neutral
+hazard $\lambda=0.02$ per model-year, continuously compounded risk-free rate
+$r=0.04$ per model-year, two equal periods, and maturity $T=1$ model-year.
+
+The tested exact model gives
+
+| Factor                     |                         Value |
+| -------------------------- | ----------------------------: |
+| Scheduled premium annuity  |       0.956105034 model-years |
+| Accrued-on-default annuity |       0.004828691 model-years |
+| Total premium annuity      |       0.960933725 model-years |
+| Protection factor          | 0.011647093 per unit notional |
+
+Therefore,
+
+$$
+PV_0^{\mathrm{prem}}
+=0.01(1{,}000{,}000)(0.960933725)
+\approx\text{USD }9{,}609.34,
+$$
+
+and
+
+$$
+PV_0^{\mathrm{prot}}
+=1{,}000{,}000(0.011647093)
+\approx\text{USD }11{,}647.09.
+$$
+
+The exact accrued amount is USD 48.29. It is small here, but it is modeled at
+every possible default time rather than inserted as one half of a period.
+
+  </CompactExample>
+
+  <CompactExample label="Solve the exact par spread">
+
+Using the same inputs,
+
+$$
+s^\star
+=\frac{0.011647093}{0.960933725}
+\approx0.012120600
+=121.206\text{ bp/year}.
+$$
+
+At the unrounded spread, both leg magnitudes are approximately USD 11,647.09.
+Notional cancels because both legs scale linearly with the same positive
+notional.
+
+  </CompactExample>
+</CompactExamples>
+
+## Why there is no volatility input here
+
+Risk-neutral valuation does not make volatility disappear. A change from the
+real-world measure to $\mathbb{Q}$ changes pricing probabilities (and, in common
+diffusion models, drift), not the size of random fluctuations; Shreve shows the
+Brownian volatility term remains after the risk-neutral change of
+measure\cite\{shreve-stochastic-calculus-finance-ii\}\{Ch. 5 §5.2.2, printed pp.
+214–217\}.
+
+This particular CDS model needs no separate volatility parameter because its
+risk-free rate, hazard rate, and recovery are deterministic, and both legs are
+linear expectations of cash flows. If rates, hazard, or recovery were
+stochastic—or if the product were a CDS option, had wrong-way risk, or had
+nonlinear exposure—their distributions, dependence, and volatility could
+matter. The risk-neutral measure supplies the pricing weights; the restrictive
+model assumptions are what remove a separate volatility input here.
+
+## Try it
+
+Change the synthetic running spread, constant risk-neutral hazard, recovery,
+risk-free rate, and term. The explorer integrates the accrued-premium and
+protection payments at exact modeled default time and exposes every period's
+contribution.
+
+<CdsLegExplorer client:load />
+
+## Check your understanding
+
+The assessment provides direct and transfer evidence for leg perspective,
+premium-leg magnitude, protection-leg magnitude, and par spread.
+
+<AssessmentSet id="cds-legs-par-spread-check" />
+
+## Model boundary and review note
+
+This is an exact valuation only inside its deliberately simplified model. It
+uses model-year dates, one constant risk-neutral hazard, one deterministic
+continuously compounded risk-free rate, deterministic recovery, and immediate
+default-time settlement. It omits calendar schedules, day counts, business-day
+rules, payment delays, term-structure calibration, auctions, deliverables,
+credit-event legal definitions, counterparty risk, collateral, funding,
+restructuring, and transaction costs. All materially changed content remains
+\`draft\` pending independent human review.

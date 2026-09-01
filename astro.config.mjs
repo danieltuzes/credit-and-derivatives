@@ -17,22 +17,22 @@ import remarkNotation from './src/notation/remark-notation.mjs';
 const notationDirectory = fileURLToPath(
   new URL('./src/content/notation/', import.meta.url),
 );
-const notationDefinitions = markdownFilesBelow(notationDirectory).map(
-  (filename) => {
+const loadNotationDefinitions = () =>
+  markdownFilesBelow(notationDirectory).map((filename) => {
     const parsed = matter(readFileSync(filename, 'utf8'));
     return parsed.data;
-  },
-);
+  });
 
 const sourcesDirectory = fileURLToPath(
   new URL('./src/content/sources/', import.meta.url),
 );
-const sourceRecords = readdirSync(sourcesDirectory)
-  .filter((name) => name.endsWith('.json'))
-  .sort()
-  .map((name) =>
-    JSON.parse(readFileSync(join(sourcesDirectory, name), 'utf8')),
-  );
+const loadSourceRecords = () =>
+  readdirSync(sourcesDirectory)
+    .filter((name) => name.endsWith('.json'))
+    .sort()
+    .map((name) =>
+      JSON.parse(readFileSync(join(sourcesDirectory, name), 'utf8')),
+    );
 
 export default defineConfig({
   output: 'static',
@@ -58,6 +58,14 @@ export default defineConfig({
           items: [{ autogenerate: { directory: 'bonds' } }],
         },
         {
+          label: 'Credit risk',
+          items: [{ autogenerate: { directory: 'credit' } }],
+        },
+        {
+          label: 'CDS',
+          items: [{ autogenerate: { directory: 'cds' } }],
+        },
+        {
           label: 'Reference',
           items: [
             { label: 'Curriculum map', link: '/curriculum-map/' },
@@ -72,8 +80,8 @@ export default defineConfig({
     processor: unified({
       remarkPlugins: [
         remarkMath,
-        [remarkNotation, { definitions: notationDefinitions }],
-        [remarkCitation, { sources: sourceRecords }],
+        [remarkNotation, { definitions: loadNotationDefinitions }],
+        [remarkCitation, { sources: loadSourceRecords }],
       ],
       rehypePlugins: [
         [rehypeKatex, createNotationKatexOptions()],

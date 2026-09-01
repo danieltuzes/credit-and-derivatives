@@ -188,6 +188,32 @@ par, settlement on a coupon date, and a flat nominal yield compounded at coupon
 frequency. It does not silently pretend to support schedules, accrued interest,
 credit, liquidity, tax, or embedded options.
 
+The credit modules add a constant-hazard survival curve and a deliberately
+narrow one-period recovery-of-par-at-maturity value. The latter keeps survival
+and recovery payments at the same maturity date; its name and return components
+make that timing assumption visible rather than presenting it as a general
+risky-bond model.
+
+The original generic CDS module values caller-supplied contiguous model-year
+periods with an explicit representative default time and either no accrued
+premium or a half-period approximation. It remains a tested approximation
+boundary and is not the model used by the current CDS lab.
+
+The flat-hazard CDS module instead assumes a deterministic continuously
+compounded risk-free rate, deterministic recovery, and one constant
+risk-neutral hazard. It integrates protection and accrued premium over exact
+modeled default time, returns scheduled and accrued premium components,
+positive leg magnitudes, signed protection-buyer value, par running spread, and
+the per-period breakdown used by the lab. Its simplified quote converter
+root-solves the flat hazard implied by a conventional spread and converts
+between that quote and a signed time-zero upfront for a fixed running coupon.
+
+Neither CDS module generates calendar schedules or stubs, applies actual day
+counts or business-day rules, bootstraps discount or survival curves, models
+recovery uncertainty or counterparty risk, or reproduces the ISDA Standard CDS
+Model. The quote/upfront converter is a teaching model, not a trade cash-
+settlement calculator. Those omissions remain visible in the lessons and lab.
+
 ## Interaction boundary
 
 A lab consists of validated inputs, a pure model call, a stateful React view, a
@@ -245,11 +271,10 @@ and usually add an architecture decision record.
 
 ## Future seams
 
-The design leaves room for an assessment renderer, local progress repository,
-server-backed accounts, controlled data adapters, Web Workers, and additional
-assessment engines. The notation subsystem can later add a virtual or
-generated registry module, automatic per-equation tables, round-trips to tested
-domain examples, an
+The design leaves room for a local progress repository, server-backed accounts,
+controlled data adapters, Web Workers, and additional assessment engines. The
+notation subsystem can later add a virtual or generated registry module,
+automatic per-equation tables, round-trips to tested domain examples, an
 AI-assisted binding-suggestion pass with a `notation:fix` codemod, and
 account-backed sync of the reader mute list. These are extension points, not
 current commitments.

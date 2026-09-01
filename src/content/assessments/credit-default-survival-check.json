@@ -1,0 +1,135 @@
+{
+  "id": "credit-default-survival-check",
+  "title": "Default, hazard, and survival check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "survival-probability-direct",
+      "type": "single-choice",
+      "competencyId": "credit.survival-probability.interpret",
+      "evidenceKind": "direct",
+      "prompt": "A model gives S(0,3) = 0.92 for a name that has survived to valuation time 0. Which interpretation is correct?",
+      "options": [
+        {
+          "id": "survival-through-three",
+          "label": "The modeled probability of no default through year 3 is 92%"
+        },
+        {
+          "id": "default-through-three",
+          "label": "The modeled probability of default by year 3 is 92%"
+        },
+        {
+          "id": "three-year-discount",
+          "label": "The three-year discount factor is necessarily 0.92"
+        }
+      ],
+      "correctOptionId": "survival-through-three",
+      "explanation": "S(0,3) is the model's probability, conditional on survival at valuation time, that no default occurs through year 3."
+    },
+    {
+      "id": "survival-probability-transfer",
+      "type": "single-choice",
+      "competencyId": "credit.survival-probability.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "Under the same model and valuation time, name A has five-year survival probability 0.84 and name B has five-year survival probability 0.93. Which conclusion is supported?",
+      "options": [
+        {
+          "id": "name-a-more-default",
+          "label": "Name A has the larger modeled probability of default by year 5"
+        },
+        {
+          "id": "name-b-more-default",
+          "label": "Name B has the larger modeled probability of default by year 5"
+        },
+        {
+          "id": "same-default-probability",
+          "label": "The two names have the same modeled probability of default by year 5"
+        }
+      ],
+      "correctOptionId": "name-a-more-default",
+      "explanation": "Lower survival to the same horizon implies higher cumulative default probability to that horizon: 1 - 0.84 exceeds 1 - 0.93."
+    },
+    {
+      "id": "default-from-survival-direct",
+      "type": "numeric",
+      "competencyId": "credit.default-probability-from-survival.calculate",
+      "evidenceKind": "direct",
+      "prompt": "A model gives two-year survival probability S(0,2) = 0.93. Enter the cumulative probability of default by year 2 as a decimal.",
+      "answer": { "value": 0.07, "tolerance": 0.000000000001 },
+      "explanation": "Cumulative default probability is 1 - S(0,2) = 1 - 0.93 = 0.07."
+    },
+    {
+      "id": "default-from-survival-transfer",
+      "type": "numeric",
+      "competencyId": "credit.default-probability-from-survival.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "Viewed from valuation time 0, survival probabilities are S(0,1) = 0.97 and S(0,2) = 0.91. Enter the unconditional probability of default during the interval from year 1 to year 2 as a decimal.",
+      "answer": { "value": 0.06, "tolerance": 0.000000000001 },
+      "explanation": "The interval default probability is S(0,1) - S(0,2) = 0.97 - 0.91 = 0.06."
+    },
+    {
+      "id": "hazard-rate-direct",
+      "type": "single-choice",
+      "competencyId": "credit.hazard-rate.interpret",
+      "evidenceKind": "direct",
+      "prompt": "In the lesson model, what does a hazard rate at time t describe?",
+      "options": [
+        {
+          "id": "conditional-intensity",
+          "label": "Instantaneous default intensity conditional on survival to time t"
+        },
+        {
+          "id": "cumulative-default",
+          "label": "Cumulative default probability from time 0 through time t"
+        },
+        {
+          "id": "discount-rate",
+          "label": "The interest rate used to discount every cash flow"
+        }
+      ],
+      "correctOptionId": "conditional-intensity",
+      "explanation": "Hazard is an instantaneous conditional intensity with inverse-time units, not a cumulative probability or discount rate."
+    },
+    {
+      "id": "hazard-rate-transfer",
+      "type": "single-choice",
+      "competencyId": "credit.hazard-rate.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "Two names have survived to the same instant. Name A's current hazard rate is 2% per year and name B's is 5% per year. Over the next very short interval, which statement matches the hazard interpretation?",
+      "options": [
+        {
+          "id": "name-b-higher-short-risk",
+          "label": "Name B has the higher modeled conditional default likelihood"
+        },
+        {
+          "id": "name-a-higher-short-risk",
+          "label": "Name A has the higher modeled conditional default likelihood"
+        },
+        {
+          "id": "hazard-is-cumulative",
+          "label": "The rates alone prove both names have already defaulted"
+        }
+      ],
+      "correctOptionId": "name-b-higher-short-risk",
+      "explanation": "Conditional on both names having survived to the instant, the higher current hazard corresponds to greater modeled default likelihood over a sufficiently short next interval."
+    },
+    {
+      "id": "constant-hazard-survival-direct",
+      "type": "numeric",
+      "competencyId": "credit.survival-from-constant-hazard.calculate",
+      "evidenceKind": "direct",
+      "prompt": "Under the constant-hazard exponential model, calculate the dimensionless three-year survival probability for an annual hazard rate of 2% (0.02 per year).",
+      "answer": { "value": 0.941764533584249, "tolerance": 0.000001 },
+      "explanation": "S(0,3) = exp(-0.02 × 3) = exp(-0.06) = 0.9417645336."
+    },
+    {
+      "id": "constant-hazard-survival-transfer",
+      "type": "numeric",
+      "competencyId": "credit.survival-from-constant-hazard.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "Under the constant-hazard exponential model, calculate the dimensionless survival probability over 18 months for an annual hazard rate of 3.2% (0.032 per year).",
+      "answer": { "value": 0.953133787077505, "tolerance": 0.000001 },
+      "explanation": "Eighteen months is 1.5 years, so survival is exp(-0.032 × 1.5) = exp(-0.048) = 0.9531337871."
+    }
+  ]
+}

@@ -11,8 +11,11 @@
  * page-local definitions and explicit shared imports, then the adapter injects
  * the narrowly trusted `\\explain` marker before build-time KaTeX rendering.
  *
- * Definitions can be supplied as a Map, an array, or an object keyed by the
- * semantic key. A resolver can provide page-local lexical scoping:
+ * Definitions can be supplied as a Map, an array, an object keyed by the
+ * semantic key, or a loader returning one of those forms. Loaders are
+ * evaluated for every document transform so a long-running development
+ * server can discover definitions created after startup. A resolver can
+ * provide page-local lexical scoping:
  *
  *   remarkNotation({
  *     definitions: sharedDefinitions,
@@ -389,20 +392,23 @@ function inspectExplainCalls(value, resolve, file, node, references) {
 
 /**
  * @param {{
- *   definitions?: Map<string, object> | readonly object[] | Record<string, object>,
+ *   definitions?: Map<string, object> | readonly object[] | Record<string, object> | (() => Map<string, object> | readonly object[] | Record<string, object>),
  *   resolve?: (key: string, context: object) => object | undefined,
  *   unknown?: 'error' | 'warn' | 'ignore',
  * }} [options]
  */
 export default function remarkNotation(options = {}) {
-  const sharedDefinitions = definitionsMap(options.definitions);
   const unknown = options.unknown ?? 'error';
 
-  const registryMathDefinitions = [...sharedDefinitions.values()].map(
-    (definition) => ({ key: definition.key, notation: definition.notation }),
-  );
-
   return function transform(tree, file) {
+    const suppliedDefinitions =
+      typeof options.definitions === 'function'
+        ? options.definitions()
+        : options.definitions;
+    const sharedDefinitions = definitionsMap(suppliedDefinitions);
+    const registryMathDefinitions = [...sharedDefinitions.values()].map(
+      (definition) => ({ key: definition.key, notation: definition.notation }),
+    );
     const localDefinitions = localDefinitionsFromFile(file);
     const lessonNotation = lessonNotationFromFile(file);
     const registryFile = isNotationRegistryFile(file);

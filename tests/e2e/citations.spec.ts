@@ -2,13 +2,19 @@ import { expect, test } from '@playwright/test';
 
 const lessonPaths = [
   '/foundations/cash-flow-timelines/',
+  '/foundations/probability-events-and-expectation/',
   '/foundations/rates-compounding-and-basis-points/',
   '/foundations/discount-factors/',
   '/foundations/present-value/',
+  '/foundations/risk-neutral-pricing/',
   '/bonds/fixed-rate-contract-and-cash-flows/',
   '/bonds/price-from-discount-factors/',
   '/bonds/yield-to-maturity/',
   '/bonds/price-yield-relationship/',
+  '/credit/default-hazard-and-survival/',
+  '/credit/recovery-and-risky-present-value/',
+  '/cds/premium-protection-legs-and-par-spread/',
+  '/cds/market-standard-quote-and-upfront/',
 ] as const;
 
 for (const path of lessonPaths) {

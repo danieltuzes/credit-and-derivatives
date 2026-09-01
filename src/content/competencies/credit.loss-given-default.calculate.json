@@ -1,0 +1,17 @@
+{
+  "id": "credit.loss-given-default.calculate",
+  "title": "Calculate loss given default",
+  "domain": "credit",
+  "facet": "calculation",
+  "outcome": "Calculate loss given default as one minus the recovery rate in the lesson's fractional recovery-of-par model.",
+  "prerequisites": ["credit.recovery-rate.interpret"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Recovery rate and loss given default add to more than one or use unrelated bases."
+  ],
+  "editorialStatus": "draft"
+}

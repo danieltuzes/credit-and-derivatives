@@ -1,0 +1,21 @@
+{
+  "id": "cds.quote-upfront-conversion.calculate",
+  "title": "Calculate a CDS quote from upfront",
+  "domain": "cds",
+  "facet": "calculation",
+  "outcome": "Calculate the market-standard quote implied by a signed upfront amount under the lesson's simplified flat-hazard conversion.",
+  "prerequisites": [
+    "cds.upfront-amount.calculate",
+    "credit.hazard-rate.interpret",
+    "credit.survival-from-constant-hazard.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The quote can always be recovered with one division while leaving a quote-dependent premium annuity fixed."
+  ],
+  "editorialStatus": "draft"
+}

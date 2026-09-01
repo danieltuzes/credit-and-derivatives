@@ -4,6 +4,7 @@ import {
   type CashFlow,
 } from '../present-value';
 import {
+  finiteNumber,
   nonNegativeNumber,
   paymentFrequency,
   positiveNumber,
@@ -95,8 +96,9 @@ export function macaulayDuration(
   );
   const cashFlows = fixedCouponCashFlows(bond);
   const price = presentValue(cashFlows, discountFactor);
+  positiveNumber(price, 'bond price for Macaulay duration');
 
-  return (
+  const weightedPresentValue = finiteNumber(
     cashFlows.reduce(
       (weightedValue, cashFlow) =>
         weightedValue +
@@ -104,6 +106,9 @@ export function macaulayDuration(
           cashFlow.amount *
           discountFactor(cashFlow.timeYears),
       0,
-    ) / price
+    ),
+    'time-weighted present value',
   );
+
+  return finiteNumber(weightedPresentValue / price, 'Macaulay duration');
 }

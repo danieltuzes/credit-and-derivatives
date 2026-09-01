@@ -1,0 +1,17 @@
+{
+  "id": "credit.default-probability-from-survival.calculate",
+  "title": "Calculate default probability from survival",
+  "domain": "credit",
+  "facet": "calculation",
+  "outcome": "Calculate time-zero cumulative or interval default probability from survival probabilities at stated times.",
+  "prerequisites": ["credit.survival-probability.interpret"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The default probability during an interval equals the survival probability at the interval end."
+  ],
+  "editorialStatus": "draft"
+}

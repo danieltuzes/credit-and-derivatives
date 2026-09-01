@@ -1,0 +1,21 @@
+{
+  "id": "credit.survival-probability.interpret",
+  "title": "Interpret a survival probability",
+  "domain": "credit",
+  "facet": "interpretation",
+  "outcome": "Interpret survival probability as the modeled probability, conditional on survival at valuation time, of no default through a stated future time.",
+  "prerequisites": [
+    "probability.events.interpret",
+    "finance.cash-flow-timeline.interpret",
+    "finance.risk-neutral-measure.interpret"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A survival probability is a discount factor or the probability of default by the same time."
+  ],
+  "editorialStatus": "draft"
+}

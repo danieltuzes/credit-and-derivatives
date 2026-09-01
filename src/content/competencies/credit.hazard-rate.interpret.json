@@ -1,0 +1,20 @@
+{
+  "id": "credit.hazard-rate.interpret",
+  "title": "Interpret a hazard rate",
+  "domain": "credit",
+  "facet": "interpretation",
+  "outcome": "Interpret a hazard rate as an instantaneous conditional default intensity, measured per unit of time, among names that have survived to that time.",
+  "prerequisites": [
+    "probability.conditional-probability.calculate",
+    "credit.survival-probability.interpret"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "An annual hazard rate is the same quantity as cumulative default probability over one or more years."
+  ],
+  "editorialStatus": "draft"
+}

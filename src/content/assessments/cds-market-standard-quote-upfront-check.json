@@ -1,0 +1,89 @@
+{
+  "id": "cds-market-standard-quote-upfront-check",
+  "title": "CDS market-standard quote and upfront check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "cds-msq-meaning-direct",
+      "type": "single-choice",
+      "competencyId": "cds.market-standard-quote.interpret",
+      "evidenceKind": "direct",
+      "prompt": "This lesson uses MSQ as a local abbreviation for market-standard quote. Which statement matches its simplified conversion model?",
+      "options": [
+        {
+          "id": "msq-par-calibration-rate",
+          "label": "MSQ is the conventional quoted spread treated as a zero-upfront par spread for calibrating the flat hazard rate"
+        },
+        {
+          "id": "msq-fixed-cash-coupon",
+          "label": "MSQ is always the fixed running coupon paid on the contract"
+        },
+        {
+          "id": "msq-upfront-fraction",
+          "label": "MSQ is the signed upfront cash amount divided by notional"
+        }
+      ],
+      "correctOptionId": "msq-par-calibration-rate",
+      "explanation": "MSQ is a lesson-local label for the conventional quoted spread. The toy converter treats it as a zero-upfront par spread to infer one flat risk-neutral hazard rate; the contract can have a different fixed running coupon."
+    },
+    {
+      "id": "cds-msq-meaning-transfer",
+      "type": "single-choice",
+      "competencyId": "cds.market-standard-quote.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "A simplified converter is given an MSQ of 180 basis points per year and a standard coupon of 100 basis points per year. Which rate determines the scheduled running premium cash flows?",
+      "options": [
+        {
+          "id": "running-standard-coupon",
+          "label": "The 100-basis-point standard coupon"
+        },
+        {
+          "id": "running-msq",
+          "label": "The 180-basis-point MSQ"
+        },
+        {
+          "id": "running-difference",
+          "label": "The 80-basis-point difference"
+        }
+      ],
+      "correctOptionId": "running-standard-coupon",
+      "explanation": "The fixed standard coupon determines running premiums. The MSQ calibrates the pricing model, and the upfront amount bridges the resulting protection value and fixed-coupon premium value."
+    },
+    {
+      "id": "cds-upfront-direct",
+      "type": "numeric",
+      "competencyId": "cds.upfront-amount.calculate",
+      "evidenceKind": "direct",
+      "prompt": "Calculate the signed upfront amount in USD when notional is USD 10,000,000, the quote-implied premium annuity is 4.0 model-years, MSQ is 150 basis points per year, and the fixed coupon is 100 basis points per year. Positive means paid by the protection buyer.",
+      "answer": { "value": 200000, "tolerance": 0.01 },
+      "explanation": "Convert the rates to 0.015 and 0.010. Then U0 = N A (sMSQ - cstd) = 10,000,000 × 4.0 × 0.005 = USD 200,000. It is positive, so the protection buyer pays it."
+    },
+    {
+      "id": "cds-upfront-transfer",
+      "type": "numeric",
+      "competencyId": "cds.upfront-amount.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "Calculate the signed upfront amount in USD when notional is USD 5,000,000, the quote-implied premium annuity is 2.5 model-years, MSQ is 300 basis points per year, and the fixed coupon is 500 basis points per year. Positive means paid by the protection buyer; enter a negative number if the buyer receives cash.",
+      "answer": { "value": -250000, "tolerance": 0.01 },
+      "explanation": "U0 = 5,000,000 × 2.5 × (0.03 - 0.05) = -USD 250,000. The high fixed coupon makes the running premium leg exceed protection value, so the protection buyer receives the negative signed upfront."
+    },
+    {
+      "id": "cds-upfront-to-quote-direct",
+      "type": "numeric",
+      "competencyId": "cds.quote-upfront-conversion.calculate",
+      "evidenceKind": "direct",
+      "prompt": "For a curve that is already calibrated and held fixed, calculate the market-standard quote in basis points per year from notional USD 8,000,000, premium annuity 4.0 model-years, fixed coupon 100 basis points per year, and signed upfront USD 160,000 paid by the protection buyer.",
+      "answer": { "value": 150, "tolerance": 0.001 },
+      "explanation": "With the calibrated annuity held fixed, sMSQ = cstd + U0/(N A) = 0.01 + 160,000/(8,000,000 × 4.0) = 0.015, or 150 basis points per year. A full upfront-to-quote conversion cannot hold A fixed while the quote-implied hazard rate changes."
+    },
+    {
+      "id": "cds-upfront-to-quote-transfer",
+      "type": "numeric",
+      "competencyId": "cds.quote-upfront-conversion.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "Use the lesson's one-year flat-hazard model with one annual period, zero continuously compounded risk-free rate, recovery 40%, notional USD 10,000,000, and fixed coupon 1% per year. For hazard rate lambda, A(lambda) = (1 - exp(-lambda))/lambda and the par quote is (1 - 0.40)lambda. A signed upfront of USD 195,082.302 is paid by the protection buyer. Root solve U0/N = A(lambda)[(1 - 0.40)lambda - 0.01], then report the quote in basis points per year.",
+      "answer": { "value": 300, "tolerance": 0.001 },
+      "explanation": "The root is lambda = 0.05 per year: A = (1 - exp(-0.05))/0.05 = 0.97541151 and A × (0.60 × 0.05 - 0.01) = 0.0195082302, matching U0/N. The quote is 0.60 × 0.05 = 0.03, or 300 basis points per year."
+    }
+  ]
+}

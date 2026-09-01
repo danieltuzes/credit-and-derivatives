@@ -74,8 +74,9 @@ universal constants and operators without any binding.
 - Time zero is the valuation date. A payment time $t_k$ is measured from that
   date and is not itself a calendar date or payment index.
 - Time is expressed in years only when the model states what makes that
-  meaningful. The current eight-lesson slice uses exact model-year times and
-  explicitly defers day counts and business-day adjustments.
+  meaningful. The foundations and bond lessons use exact model-year times. The
+  CDS teaching schedule also uses exact model periods and explicitly defers
+  calendar dates, day counts, stubs, and business-day adjustments.
 - Cash-flow signs state the holder or counterparty perspective. Current lesson
   examples use positive for received and negative for paid by the named holder.
 - Currency amounts name their currency or are explicitly synthetic.
@@ -88,27 +89,42 @@ universal constants and operators without any binding.
 - The current $P_0$ is the positive present value of promised bond cash flows
   under settlement-on-coupon-date assumptions. Clean price, accrued interest,
   default adjustment, and quoted price are not yet represented by that key.
+- Credit survival $S(0,t)$ and discounting $D(0,t)$ are separate inputs. A
+  probability must not be used as a discount factor, or vice versa.
+- CDS premium- and protection-leg present values are displayed as positive
+  magnitudes. Protection-buyer net present value is signed as protection less
+  premium.
+- CDS spreads use decimal-per-year units in code and are converted explicitly
+  to basis points per year at the UI boundary.
 
 ## Current canonical families
 
-| Meaning                | Semantic key             | Current notation |
-| ---------------------- | ------------------------ | ---------------- |
-| Valuation origin       | `valuation-time`         | $0$              |
-| Payment time           | `payment-time`           | $t_k$            |
-| Signed cash flow       | `signed-cash-flow`       | $CF_k$           |
-| Nominal annual rate    | `nominal-annual-rate`    | $j^{(m)}$        |
-| Compounding frequency  | `compounding-frequency`  | $m$              |
-| Periodic rate          | `periodic-rate`          | $r_m$            |
-| Accumulation factor    | `accumulation-factor`    | $A(0,t)$         |
-| Discount factor        | `discount-factor`        | $D(0,t)$         |
-| Present value          | `present-value`          | $PV_0$           |
-| Face value             | `face-value`             | $F$              |
-| Annual coupon rate     | `annual-coupon-rate`     | $c$              |
-| Bond payment frequency | `bond-payment-frequency` | $m_B$            |
-| Coupon payment         | `coupon-payment`         | $C$              |
-| Maturity time          | `maturity-time`          | $T$              |
-| Bond price             | `bond-price`             | $P_0$            |
-| Yield to maturity      | `yield-to-maturity`      | $y^{(m_B)}$      |
+| Meaning                | Semantic key                   | Current notation |
+| ---------------------- | ------------------------------ | ---------------- |
+| Valuation origin       | `valuation-time`               | $0$              |
+| Payment time           | `payment-time`                 | $t_k$            |
+| Signed cash flow       | `signed-cash-flow`             | $CF_k$           |
+| Nominal annual rate    | `nominal-annual-rate`          | $j^{(m)}$        |
+| Compounding frequency  | `compounding-frequency`        | $m$              |
+| Periodic rate          | `periodic-rate`                | $r_m$            |
+| Accumulation factor    | `accumulation-factor`          | $A(0,t)$         |
+| Discount factor        | `discount-factor`              | $D(0,t)$         |
+| Present value          | `present-value`                | $PV_0$           |
+| Face value             | `face-value`                   | $F$              |
+| Annual coupon rate     | `annual-coupon-rate`           | $c$              |
+| Bond payment frequency | `bond-payment-frequency`       | $m_B$            |
+| Coupon payment         | `coupon-payment`               | $C$              |
+| Maturity time          | `maturity-time`                | $T$              |
+| Bond price             | `bond-price`                   | $P_0$            |
+| Yield to maturity      | `yield-to-maturity`            | $y^{(m_B)}$      |
+| Survival probability   | `survival-probability`         | $S(0,t)$         |
+| Constant hazard rate   | `hazard-rate`                  | $\lambda$        |
+| Interval default prob. | `interval-default-probability` | $\Delta q_i$     |
+| Recovery rate          | `recovery-rate`                | $R$              |
+| Loss given default     | `loss-given-default`           | $\mathrm{LGD}$   |
+| CDS notional           | `cds-notional`                 | $N$              |
+| CDS contractual spread | `cds-contract-spread`          | $s$              |
+| CDS par spread         | `cds-par-spread`               | $s^{\star}$      |
 
 This table is an orientation aid, not a second database. Change the collection
 entry first, validate all references, and then update this table if the

@@ -2,6 +2,7 @@ import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
 import {
   createFixedCouponBond,
+  fixedCouponCashFlows,
   macaulayDuration,
   priceFixedCouponBond,
 } from '../../src/domain/bonds/fixed-coupon-bond';
@@ -17,6 +18,21 @@ function expectRelativeClose(
 }
 
 describe('fixed coupon bond', () => {
+  it('builds the exact coupon schedule and adds redemption only at maturity', () => {
+    const bond = createFixedCouponBond({
+      faceValue: 1_000,
+      annualCouponRate: 0.06,
+      termYears: 1.5,
+      paymentFrequency: 2,
+    });
+
+    expect(fixedCouponCashFlows(bond)).toEqual([
+      { timeYears: 0.5, amount: 30 },
+      { timeYears: 1, amount: 30 },
+      { timeYears: 1.5, amount: 1_030 },
+    ]);
+  });
+
   it('matches a worked example', () => {
     const bond = createFixedCouponBond({
       faceValue: 100,
@@ -96,6 +112,19 @@ describe('fixed coupon bond', () => {
     expectRelativeClose(macaulayDuration(bond, 0.04), 7);
   });
 
+  it('keeps coupon-bond duration positive and no later than maturity', () => {
+    const bond = createFixedCouponBond({
+      faceValue: 100,
+      annualCouponRate: 0.08,
+      termYears: 10,
+      paymentFrequency: 2,
+    });
+    const duration = macaulayDuration(bond, 0.05);
+
+    expect(duration).toBeGreaterThan(0);
+    expect(duration).toBeLessThanOrEqual(bond.termYears);
+  });
+
   it('scales linearly with face value', () => {
     const unit = createFixedCouponBond({
       faceValue: 1,
@@ -149,6 +178,15 @@ describe('fixed coupon bond', () => {
     });
     expect(() => priceFixedCouponBond(bond, -2)).toThrow(
       /greater than -periodsPerYear/,
+    );
+    const zeroCouponBond = createFixedCouponBond({
+      faceValue: 100,
+      annualCouponRate: 0,
+      termYears: 5,
+      paymentFrequency: 2,
+    });
+    expect(() => macaulayDuration(zeroCouponBond, Number.MAX_VALUE)).toThrow(
+      /bond price for Macaulay duration/,
     );
   });
 });
