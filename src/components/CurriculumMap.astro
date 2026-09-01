@@ -42,7 +42,10 @@ const competencyById = new Map(
               <article>
                 <p class="step">Lesson {index + 1}</p>
                 <h3>
-                  <a href={`/${lesson.id}/`}>{lesson.data.title}</a>
+                  <a
+                    href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/${lesson.id}/`}
+                    >{lesson.data.title}</a
+                  >
                 </h3>
                 <code>{lessonId}</code>
                 <p>{lesson.data.description}</p>

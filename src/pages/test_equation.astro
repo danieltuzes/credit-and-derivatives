@@ -2,5 +2,8 @@
 // This route used to host a standalone MathJax prototype whose CDS formulas
 // lived in browser JavaScript. Keep old bookmarks useful while directing
 // readers to the curriculum-backed, tested lesson.
-return Astro.redirect('/cds/premium-protection-legs-and-par-spread/', 301);
+return Astro.redirect(
+  `${import.meta.env.BASE_URL.replace(/\/$/, '')}/cds/premium-protection-legs-and-par-spread/`,
+  301,
+);
 ---

@@ -47,7 +47,7 @@ if (routeData.lessonId) {
         seeAlso: definition.seeAlso,
         editorialStatus: definition.status,
         scope: 'shared',
-        href: `/glossary/#notation-${definition.key}`,
+        href: `${import.meta.env.BASE_URL.replace(/\/$/, '')}/glossary/#notation-${definition.key}`,
       });
       continue;
     }

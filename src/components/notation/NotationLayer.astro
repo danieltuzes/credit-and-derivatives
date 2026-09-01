@@ -43,7 +43,7 @@ const {
   definitions,
   id = 'page-notation',
   label = 'Notation used on this page',
-  glossaryHref = '/glossary/',
+  glossaryHref = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/glossary/`,
   presentation = 'full',
 } = Astro.props;
 

@@ -34,11 +34,13 @@ const loadSourceRecords = () =>
       JSON.parse(readFileSync(join(sourcesDirectory, name), 'utf8')),
     );
 
+// Project GitHub Pages site: https://danieltuzes.github.io/equations
+const base = '/equations';
+
 export default defineConfig({
   output: 'static',
-  // Project GitHub Pages site: https://danieltuzes.github.io/equations
   site: 'https://danieltuzes.github.io',
-  base: '/equations',
+  base,
   integrations: [
     starlight({
       title: 'Credit Products Playground',
@@ -95,7 +97,7 @@ export default defineConfig({
     processor: unified({
       remarkPlugins: [
         remarkMath,
-        [remarkNotation, { definitions: loadNotationDefinitions }],
+        [remarkNotation, { definitions: loadNotationDefinitions, base }],
         [remarkCitation, { sources: loadSourceRecords }],
       ],
       rehypePlugins: [

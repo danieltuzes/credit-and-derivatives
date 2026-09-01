@@ -233,13 +233,13 @@ function firstUnescaped(value, marker, from = 0) {
   return index;
 }
 
-function defaultHref(definition, key) {
+function defaultHref(definition, key, base = '') {
   if (typeof definition?.href === 'string') return definition.href;
   if (definition?.scope === 'local') return `#notation-${key}`;
-  return `/glossary/#notation-${key}`;
+  return `${base.replace(/\/$/, '')}/glossary/#notation-${key}`;
 }
 
-function proseNodes(value, resolve, file, node, references) {
+function proseNodes(value, resolve, file, node, references, base = '') {
   const strayExplain = firstUnescaped(value, EXPLAIN);
   if (strayExplain !== -1) {
     fail(
@@ -269,7 +269,7 @@ function proseNodes(value, resolve, file, node, references) {
     const definition = resolve(key, 'prose', node);
     const title = definition?.title ?? key;
     const summary = definition?.summary;
-    const href = defaultHref(definition, key);
+    const href = defaultHref(definition, key, base);
 
     const properties = {
       className: ['notation-term'],
@@ -533,6 +533,7 @@ export default function remarkNotation(options = {}) {
             file,
             child,
             references,
+            options.base ?? '',
           );
           if (replacement) {
             node.children.splice(index, 1, ...replacement);
