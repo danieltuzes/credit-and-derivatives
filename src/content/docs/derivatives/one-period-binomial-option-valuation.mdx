@@ -38,7 +38,8 @@ notation:
       meaning: One of the two possible underlying values at the one-period expiry.
       units: stated currency per unit of underlying at expiry
       sources:
-        - hull-options-futures
+        - id: hull-options-futures
+          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
       seeAlso:
         - derivative-underlying-value
       alignment:
@@ -51,7 +52,8 @@ notation:
       meaning: The lower of the two possible underlying values at the one-period expiry.
       units: stated currency per unit of underlying at expiry
       sources:
-        - hull-options-futures
+        - id: hull-options-futures
+          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
       seeAlso:
         - derivative-underlying-value
       alignment:
@@ -64,7 +66,8 @@ notation:
       meaning: Signed expiry payoff of the claim when the underlying takes its up-state value.
       units: stated currency at expiry
       sources:
-        - hull-options-futures
+        - id: hull-options-futures
+          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
       alignment:
         kind: competency
         introducedByCompetency: options.binomial-hedge.calculate
@@ -75,7 +78,8 @@ notation:
       meaning: Signed expiry payoff of the claim when the underlying takes its down-state value.
       units: stated currency at expiry
       sources:
-        - hull-options-futures
+        - id: hull-options-futures
+          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
       alignment:
         kind: competency
         introducedByCompetency: options.binomial-hedge.calculate
@@ -86,7 +90,8 @@ notation:
       meaning: Signed units of underlying in the portfolio that replicates the two claim payoffs.
       units: units of underlying per claim
       sources:
-        - hull-options-futures
+        - id: hull-options-futures
+          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
       seeAlso:
         - derivative-underlying-value
       alignment:
@@ -99,7 +104,8 @@ notation:
       meaning: Signed expiry cash amount held with the underlying units to reproduce both claim payoffs.
       units: stated currency at expiry
       sources:
-        - hull-options-futures
+        - id: hull-options-futures
+          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
       seeAlso:
         - discount-factor
       alignment:
@@ -109,11 +115,11 @@ notation:
     - key: binomial-risk-neutral-up-weight
       latex: q
       title: Risk-neutral up-state weight
-      meaning: Model-implied pricing probability assigned to the up state by the no-arbitrage tree.
-      details: It is dimensionless and lies between zero and one when the tree is arbitrage-consistent.
+      meaning: 'Model-implied pricing probability assigned to the up state by the no-arbitrage tree. It is dimensionless and lies between zero and one when the tree is arbitrage-consistent.'
       units: probability between zero and one
       sources:
-        - hull-options-futures
+        - id: hull-options-futures
+          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
       seeAlso:
         - risk-neutral-probability-measure
       alignment:
@@ -126,7 +132,8 @@ notation:
       meaning: Time-zero value obtained identically from the replicating portfolio and risk-neutral expected payoff.
       units: stated currency at valuation time
       sources:
-        - hull-options-futures
+        - id: hull-options-futures
+          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
       seeAlso:
         - valuation-time
       alignment:

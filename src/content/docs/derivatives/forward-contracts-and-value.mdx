@@ -37,11 +37,11 @@ notation:
     - key: deterministic-income-present-value
       latex: 'I_0'
       title: Present value of deterministic pre-delivery income
-      meaning: Valuation-time value of cash income paid by the underlying after valuation and before forward delivery.
-      details: It is subtracted from spot value because the forward long does not own the asset early enough to receive that income.
+      meaning: 'Valuation-time value of cash income paid by the underlying after valuation and before forward delivery. It is subtracted from spot value because the forward long does not own the asset early enough to receive that income.'
       units: stated currency at valuation time per unit of underlying
       sources:
-        - hull-options-futures
+        - id: hull-options-futures
+          locator: 'Ch. 5 §§5.3-5.5, printed pp. 103-108 (known-income adjustment: present value of income the forward long does not receive), and §5.7, printed pp. 109-111.'
       seeAlso:
         - discount-factor
       alignment:
@@ -51,8 +51,7 @@ notation:
     - key: forward-contract-quantity
       latex: N
       title: Forward contract quantity
-      meaning: Positive number of underlying units delivered under the forward contract.
-      details: Contract value and payoff scale linearly with this quantity.
+      meaning: 'Positive number of underlying units delivered under the forward contract. Contract value and payoff scale linearly with this quantity.'
       formula: 'N>0'
       alignment:
         kind: general
@@ -60,11 +59,11 @@ notation:
     - key: long-forward-expiry-payoff
       latex: '\Pi_{T_{\mathrm{fwd}}}^{\mathrm{long}}'
       title: Long forward payoff at delivery
-      meaning: Signed delivery-time value received by the long after exchanging the fixed delivery payment for the underlying.
-      details: Per unit it equals underlying value at delivery minus the contractual delivery price.
+      meaning: 'Signed delivery-time value received by the long after exchanging the fixed delivery payment for the underlying. Per unit it equals underlying value at delivery minus the contractual delivery price.'
       units: stated currency at forward delivery time
       sources:
-        - hull-options-futures
+        - id: hull-options-futures
+          locator: 'Ch. 1 §1.3, printed pp. 5-7 (long forward payoff as underlying value at delivery minus the delivery price).'
       seeAlso:
         - forward-delivery-price
         - derivative-underlying-value

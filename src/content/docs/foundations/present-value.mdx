@@ -31,8 +31,7 @@ notation:
     - key: present-value-payment-index
       latex: k
       title: Present-value payment index
-      meaning: Selects one dated cash flow in the finite schedule.
-      details: This page-local index keeps sequence bookkeeping separate from the associated time measured in years.
+      meaning: 'Selects one dated cash flow in the finite schedule. This page-local index keeps sequence bookkeeping separate from the associated time measured in years.'
       formula: 'k \in \{1,\ldots,n\}'
       seeAlso:
         - payment-time
@@ -43,8 +42,7 @@ notation:
     - key: number-of-future-payments
       latex: n
       title: Number of future payments
-      meaning: The final index in the finite present-value sum.
-      details: It counts included future rows and does not itself specify maturity in years.
+      meaning: 'The final index in the finite present-value sum. It counts included future rows and does not itself specify maturity in years.'
       formula: 'n \in \mathbb{N}'
       seeAlso:
         - payment-time
@@ -54,8 +52,7 @@ notation:
     - key: discounting-lab-rate
       latex: y
       title: Discounting-lab rate
-      meaning: The one annual rate the discounting lab compounds to build each discount factor.
-      details: It is page-local to the lab's toy model; elsewhere this lesson takes every discount factor as given rather than deriving it from a rate.
+      meaning: "The one annual rate the discounting lab compounds to build each discount factor. It is page-local to the lab's toy model; elsewhere this lesson takes every discount factor as given rather than deriving it from a rate."
       formula: 'D(0,t) = (1 + y)^{-t}'
       seeAlso:
         - discount-factor
@@ -66,8 +63,7 @@ notation:
     - key: discounting-lab-cash-flow
       latex: C
       title: Discounting-lab cash flow
-      meaning: The one dated amount the discounting lab discounts.
-      details: It is page-local to the lab's one-payment model; the lesson's schedule notation writes an indexed amount instead.
+      meaning: "The one dated amount the discounting lab discounts. It is page-local to the lab's one-payment model; the lesson's schedule notation writes an indexed amount instead."
       formula: 'PV_0 = C \cdot D(0,t)'
       seeAlso:
         - signed-cash-flow

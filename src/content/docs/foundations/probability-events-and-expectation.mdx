@@ -26,11 +26,11 @@ notation:
     - key: probability-event
       latex: A
       title: Event
-      meaning: A specified set of possible outcomes in this lesson's probability model.
-      details: An indexed form selects one event in a finite disjoint and exhaustive partition.
+      meaning: "A specified set of possible outcomes in this lesson's probability model. An indexed form selects one event in a finite disjoint and exhaustive partition."
       formula: 'A_j'
       sources:
-        - shreve-stochastic-calculus-finance-ii
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.1, printed pp. 1-3, Def. 1.1.2 (events in a finite partition and a probability measure on them).'
       seeAlso:
         - probability-measure
       alignment:
@@ -40,11 +40,11 @@ notation:
     - key: probability-event-index
       latex: j
       title: Event index
-      meaning: Selects one event in the lesson's finite partition.
-      details: The index is bookkeeping and has no probability or monetary unit.
+      meaning: "Selects one event in the lesson's finite partition. The index is bookkeeping and has no probability or monetary unit."
       formula: 'j \in \{1,\ldots,m\}'
       sources:
-        - shreve-stochastic-calculus-finance-ii
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.1, printed pp. 1-3, Def. 1.1.2 (events in a finite partition and a probability measure on them).'
       seeAlso:
         - probability-event
         - probability-partition-size
@@ -55,11 +55,11 @@ notation:
     - key: probability-partition-size
       latex: m
       title: Number of partition events
-      meaning: Counts the events in the lesson's finite partition.
-      details: The count is a positive integer and does not represent time.
+      meaning: "Counts the events in the lesson's finite partition. The count is a positive integer and does not represent time."
       formula: 'm \in \mathbb{N}'
       sources:
-        - shreve-stochastic-calculus-finance-ii
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.1, printed pp. 1-3, Def. 1.1.2 (events in a finite partition and a probability measure on them).'
       seeAlso:
         - probability-event-index
       alignment:
@@ -69,11 +69,11 @@ notation:
     - key: probability-measure
       latex: '\mathbb{P}'
       title: Probability measure
-      meaning: Assigns each modeled event a number between zero and one.
-      details: The symbol is page-local and generic; it does not yet select a real-world or risk-neutral interpretation.
+      meaning: 'Assigns each modeled event a number between zero and one. The symbol is page-local and generic; it does not yet select a real-world or risk-neutral interpretation.'
       units: probability between zero and one
       sources:
-        - shreve-stochastic-calculus-finance-ii
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.1, printed pp. 1-3, Def. 1.1.2 (events in a finite partition and a probability measure on them).'
       seeAlso:
         - probability-event
       alignment:
@@ -83,10 +83,10 @@ notation:
     - key: probability-random-value
       latex: X
       title: Random value
-      meaning: A numerical value determined by which modeled outcome occurs.
-      details: Its unit is stated by the example, such as USD for a random payment.
+      meaning: 'A numerical value determined by which modeled outcome occurs. Its unit is stated by the example, such as USD for a random payment.'
       sources:
-        - shreve-stochastic-calculus-finance-ii
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.3, printed pp. 13-18, Thms. 1.3.1 and 1.3.4 (a random variable, its value on a partition event, and its expectation).'
       seeAlso:
         - probability-expectation
       alignment:
@@ -96,10 +96,10 @@ notation:
     - key: probability-event-value
       latex: 'x_j'
       title: Value on one event
-      meaning: The constant value taken by the random value on one partition event.
-      details: This quantity can replace a conditional mean only when every outcome in the event gives the same value.
+      meaning: 'The constant value taken by the random value on one partition event. This quantity can replace a conditional mean only when every outcome in the event gives the same value.'
       sources:
-        - shreve-stochastic-calculus-finance-ii
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.3, printed pp. 13-18, Thms. 1.3.1 and 1.3.4 (a random variable, its value on a partition event, and its expectation).'
       seeAlso:
         - probability-event
         - probability-random-value
@@ -110,10 +110,10 @@ notation:
     - key: probability-expectation
       latex: '\mathbb{E}'
       title: Expectation operator
-      meaning: Forms a probability-weighted average of a finite random value.
-      details: Its output has the same unit as the random value being averaged.
+      meaning: 'Forms a probability-weighted average of a finite random value. Its output has the same unit as the random value being averaged.'
       sources:
-        - shreve-stochastic-calculus-finance-ii
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.3, printed pp. 13-18, Thms. 1.3.1 and 1.3.4 (a random variable, its value on a partition event, and its expectation).'
       seeAlso:
         - probability-measure
         - probability-random-value

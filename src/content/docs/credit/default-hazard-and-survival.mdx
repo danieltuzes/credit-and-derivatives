@@ -38,8 +38,7 @@ notation:
     - key: credit-period-index
       latex: 'i'
       title: Credit interval index
-      meaning: Selects one interval in the lesson's ordered survival schedule.
-      details: The index is bookkeeping and is not itself a time or probability.
+      meaning: "Selects one interval in the lesson's ordered survival schedule. The index is bookkeeping and is not itself a time or probability."
       formula: 'i \in \{1,\ldots,n\}'
       sources: []
       seeAlso:
@@ -52,8 +51,7 @@ notation:
     - key: number-of-credit-periods
       latex: 'n'
       title: Number of credit intervals
-      meaning: Counts the intervals in the supplied survival schedule.
-      details: It is a positive integer count for this finite toy model.
+      meaning: 'Counts the intervals in the supplied survival schedule. It is a positive integer count for this finite toy model.'
       formula: 'n \in \{1,2,\ldots\}'
       sources: []
       seeAlso:
@@ -64,13 +62,14 @@ notation:
     - key: credit-default-time
       latex: '\tau'
       title: Credit default time
-      meaning: Random model time at which the reference entity first defaults.
-      details: It is measured in model-years from valuation time under the stated risk-neutral model.
+      meaning: 'Random model time at which the reference entity first defaults. It is measured in model-years from valuation time under the stated risk-neutral model.'
       formula: '\tau \geq 0'
       units: model-years after valuation time
       sources:
-        - tuckman-serrat-fixed-income
-        - hull-options-futures
+        - id: tuckman-serrat-fixed-income
+          locator: 'Appendix A14.1-A14.2, printed pp. 505-507, eqs. A14.1-A14.7 (constant-hazard default-time density and CDS leg formulas).'
+        - id: hull-options-futures
+          locator: 'Ch. 24 §24.1, printed pp. 548-550 (CDS timeline: default time relative to premium dates).'
       seeAlso:
         - valuation-time
         - hazard-rate
@@ -81,13 +80,14 @@ notation:
     - key: credit-small-time-increment
       latex: '\Delta t'
       title: Small hazard time increment
-      meaning: Positive model-time interval used in the conditional definition of hazard.
-      details: The hazard definition takes this increment down toward zero while holding the starting time fixed.
+      meaning: 'Positive model-time interval used in the conditional definition of hazard. The hazard definition takes this increment down toward zero while holding the starting time fixed.'
       formula: '\Delta t>0'
       units: model-years
       sources:
-        - tuckman-serrat-fixed-income
-        - hull-options-futures
+        - id: tuckman-serrat-fixed-income
+          locator: 'Ch. 14 §14.7, printed p. 371, and Appendix A14.1, printed pp. 505-506 (constant hazard in the conditional definition of the exponential survival model).'
+        - id: hull-options-futures
+          locator: 'Ch. 23 §23.2, printed pp. 522-523 (short-interval conditional default probability in the definition of the hazard rate).'
       seeAlso:
         - hazard-rate
       alignment:

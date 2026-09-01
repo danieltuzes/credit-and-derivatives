@@ -43,7 +43,8 @@ notation:
       meaning: One-period discount factor from the current alive node to the next lattice time.
       units: current-node currency per next-time currency
       sources:
-        - hull-options-futures
+        - id: hull-options-futures
+          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
       alignment:
         kind: competency
         introducedByCompetency: bond-options.default-knockout-value.calculate
@@ -54,7 +55,8 @@ notation:
       meaning: Conditional pricing probability assigned to the next up rate state if the issuer survives.
       units: probability between zero and one
       sources:
-        - hull-options-futures
+        - id: hull-options-futures
+          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
       alignment:
         kind: competency
         introducedByCompetency: bond-options.default-knockout-value.calculate
@@ -65,7 +67,8 @@ notation:
       meaning: Coupon or coupon-plus-redemption paid at the next lattice time only if the issuer survives the period.
       units: stated currency per bond at the next time
       sources:
-        - tuckman-serrat-fixed-income
+        - id: tuckman-serrat-fixed-income
+          locator: 'Ch. 1 §§1.1-1.2, printed pp. 50-52 (scheduled coupon and principal cash flows of a coupon bond).'
       alignment:
         kind: competency
         introducedByCompetency: bond-options.default-knockout-value.calculate
@@ -76,7 +79,8 @@ notation:
       meaning: Non-negative recovery paid on the underlying bond at the next lattice date after default in the period.
       units: stated currency per bond at the next time
       sources:
-        - tuckman-serrat-fixed-income
+        - id: tuckman-serrat-fixed-income
+          locator: 'Ch. 14 §14.5, printed pp. 361-366 (recovery fraction of notional after default).'
       seeAlso:
         - recovery-rate
       alignment:
@@ -89,8 +93,10 @@ notation:
       meaning: Next-time scheduled bond cash plus risk-neutral expected ex-cash-flow bond value, conditional on period survival.
       units: stated currency per bond at the next time
       sources:
-        - hull-options-futures
-        - tuckman-serrat-fixed-income
+        - id: hull-options-futures
+          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+        - id: tuckman-serrat-fixed-income
+          locator: 'Ch. 7 §7.3, printed pp. 182-184, eqs. 7.7-7.8 (risk-neutral valuation on a binomial tree by expected discounted value).'
       alignment:
         kind: competency
         introducedByCompetency: bond-options.default-knockout-value.calculate
