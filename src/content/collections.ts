@@ -33,6 +33,7 @@ import type {
   SharedNotationDefinitionInput,
   SourceSpan,
 } from '../notation/types';
+import { isSubstantiveMeaning } from '../notation/prose';
 
 // Every invocation — the CLI, `astro build`/`check`, and vitest — runs with the
 // repository root as the working directory, matching the deleted file loaders.
@@ -98,12 +99,41 @@ function optionalString(value: unknown, label: string): string | undefined {
   return value === undefined ? undefined : string(value, label);
 }
 
+/** A notation `meaning`: a non-empty string that clears the C1b safeguard. */
+function meaningText(value: unknown, label: string): string {
+  const text = string(value, label);
+  if (!isSubstantiveMeaning(text)) {
+    throw new TypeError(
+      `${label} must be substantive prose (at least four words, not a placeholder)`,
+    );
+  }
+  return text;
+}
+
 function strings(value: unknown, label: string): string[] {
   if (value === undefined) return [];
   if (!Array.isArray(value) || value.some((item) => typeof item !== 'string')) {
     throw new TypeError(`${label} must be an array of strings`);
   }
   return [...value] as string[];
+}
+
+/**
+ * Notation `sources`: a bare id (legacy) or `{id, locator}` (Phase C1b). The
+ * locator is not yet carried into the registry input — see D6/D13.
+ */
+function sourceIds(value: unknown, label: string): string[] {
+  if (value === undefined) return [];
+  if (!Array.isArray(value)) {
+    throw new TypeError(`${label} must be an array`);
+  }
+  return value.map((item, index) => {
+    if (typeof item === 'string') return item;
+    if (item !== null && typeof item === 'object' && 'id' in item) {
+      return string((item as { id: unknown }).id, `${label}[${index}].id`);
+    }
+    throw new TypeError(`${label}[${index}] must be an id or { id, locator }`);
+  });
 }
 
 function boolean(value: unknown, label: string): boolean {
@@ -262,10 +292,10 @@ function localDefinition(
 ): LocalNotationDefinitionInput {
   const label = `${file} notation.local[${index}]`;
   const data = record(raw, label);
-  // Reduced shape (Phase C1): `latex`/`meaning`; the pre-C1 names
-  // `notation`/`summary`/`title` are still read until the C2 codemod.
+  // One notation shape (Phase C1b): `latex`/`meaning`; the pre-C1b names
+  // `notation`/`summary`/`title` are still read until the codemod.
   const latex = string(data.latex ?? data.notation, `${label}.latex`);
-  const meaning = string(data.meaning ?? data.summary, `${label}.meaning`);
+  const meaning = meaningText(data.meaning ?? data.summary, `${label}.meaning`);
   const details = optionalString(data.details, `${label}.details`);
   const formula = optionalString(data.formula, `${label}.formula`);
   const units = optionalString(data.units, `${label}.units`);
@@ -278,7 +308,7 @@ function localDefinition(
     notation: latex,
     title: string(data.title ?? meaning, `${label}.title`),
     summary: meaning,
-    sources: strings(data.sources, `${label}.sources`),
+    sources: sourceIds(data.sources, `${label}.sources`),
     seeAlso: strings(data.seeAlso, `${label}.seeAlso`),
     alignment:
       data.alignment === undefined
@@ -303,14 +333,19 @@ function sharedNotationEntries(): SharedNotationDefinitionInput[] {
     }
     const units = optionalString(data.units, `${file} units`);
     const perspective = optionalString(data.perspective, `${file} perspective`);
+    // One notation shape (Phase C1b): `latex`/`meaning`; pre-C1b names still read.
+    const meaning = meaningText(
+      data.meaning ?? data.summary,
+      `${file} meaning`,
+    );
     return {
       key,
-      notation: string(data.notation, `${file} notation`),
-      title: string(data.title, `${file} title`),
-      summary: string(data.summary, `${file} summary`),
+      notation: string(data.latex ?? data.notation, `${file} latex`),
+      title: string(data.title ?? meaning, `${file} title`),
+      summary: meaning,
       aliases: strings(data.aliases, `${file} aliases`),
       domain: string(data.domain, `${file} domain`),
-      sources: strings(data.sources, `${file} sources`),
+      sources: sourceIds(data.sources, `${file} sources`),
       seeAlso: strings(data.seeAlso, `${file} seeAlso`),
       alignment: alignment(data.alignment, `${file} alignment`),
       status: status(data.editorialStatus, `${file} editorialStatus`),

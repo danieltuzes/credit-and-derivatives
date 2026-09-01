@@ -3,18 +3,30 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
+import { isSubstantiveMeaning } from './notation/prose';
 
 const editorialStatus = z.enum(['draft', 'in-review', 'reviewed']);
 const id = z.string().regex(/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/);
+
+/**
+ * Notation `meaning` / `summary`: plain prose (no `$`, `\`, backticks), and —
+ * the C1b safeguard — substantive, not a placeholder. A short or blocklisted
+ * phrase fails the build so a local symbol cannot get a glossary-style panel
+ * for a throwaway definition.
+ */
 const notationProse = z
   .string()
   .min(1)
   .refine((value) => !/[\\$`]/.test(value), {
     message:
       'Notation meaning/summary must be plain prose; render the symbol or formula in its dedicated field.',
+  })
+  .refine(isSubstantiveMeaning, {
+    message:
+      'Notation meaning must be substantive prose (at least four words, not a placeholder).',
   });
-// Legacy alias while lesson files still say `summary`/`details` (renamed to
-// `meaning` by the Phase C2 codemod).
+// Legacy alias while files still say `summary`/`details` (renamed to `meaning`
+// by the Phase C2 codemod).
 const notationSummary = notationProse;
 
 const notationAlignment = z.discriminatedUnion('kind', [
@@ -28,53 +40,81 @@ const notationAlignment = z.discriminatedUnion('kind', [
     rationale: z.string().min(1),
   }),
 ]);
+const notationAlignmentDefault = notationAlignment.default({
+  kind: 'general',
+  rationale: 'General notation.',
+});
+
+/** A citation on a notation definition: a bare id (legacy) or `{id, locator}`. */
+const notationSource = z.union([
+  id,
+  z.object({ id, locator: z.string().min(1) }),
+]);
 
 /**
- * Page-local notation entry — reduced shape (Phase C1).
- *
- * Authored: `key`, `latex`, `meaning`, optional `formula`, optional `units`,
- * optional `alignment` (defaults to `general`).
- *
- * The pre-C1 field names (`notation` → `latex`, `summary` → `meaning`) and the
- * fields the codemod removes (`title`, `details`, `sources`, `seeAlso`) stay
- * accepted as optional so existing lesson files validate until the Phase C2
- * codemod rewrites them. The `superRefine` requires one name from each pair.
+ * `notation` → `latex`, `summary` → `meaning` (Phase C1b). Both new names are
+ * optional in the schema and the pre-C1b names stay accepted so files validate
+ * until the codemod renames them; this refinement requires one from each pair.
  */
-const localNotationDefinition = z
-  .object({
-    key: id,
-    latex: z.string().min(1).optional(),
-    meaning: notationProse.optional(),
-    formula: z.string().min(1).optional(),
-    units: z.string().min(1).optional(),
-    alignment: notationAlignment.default({
-      kind: 'general',
-      rationale: 'Lesson-local symbol.',
-    }),
-    // Legacy — removed by the Phase C2 codemod.
-    notation: z.string().min(1).optional(),
-    title: z.string().min(1).optional(),
-    summary: notationSummary.optional(),
-    details: notationSummary.optional(),
-    sources: z.array(id).default([]),
-    seeAlso: z.array(id).default([]),
-  })
-  .superRefine((entry, ctx) => {
-    if (!entry.latex && !entry.notation) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['latex'],
-        message: 'notation.local entry needs `latex` (the rendered symbol).',
-      });
-    }
-    if (!entry.meaning && !entry.summary) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['meaning'],
-        message: 'notation.local entry needs `meaning` (one-line prose).',
-      });
-    }
-  });
+function requireLatexAndMeaning(
+  entry: {
+    latex?: string;
+    notation?: string;
+    meaning?: string;
+    summary?: string;
+  },
+  ctx: z.RefinementCtx,
+): void {
+  if (!entry.latex && !entry.notation) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['latex'],
+      message: 'notation entry needs `latex` (the rendered symbol).',
+    });
+  }
+  if (!entry.meaning && !entry.summary) {
+    ctx.addIssue({
+      code: 'custom',
+      path: ['meaning'],
+      message: 'notation entry needs `meaning` (one-line prose).',
+    });
+  }
+}
+
+/**
+ * One notation entry shape (Phase C1b), shared by page-local `notation.local`
+ * and the standalone `notation` collection.
+ *
+ * Authored: `key`, `latex`, `meaning`, optional `formula`, optional `units`
+ * (or `dimensionless: true`), optional `seeAlso`, optional `sources`
+ * (`{id, locator}`), optional `alignment` (defaults to `general`).
+ *
+ * Pre-C1b names (`notation` → `latex`, `summary` → `meaning`) and fields the
+ * codemod removes (`title`, `details`) stay accepted as optional so existing
+ * files validate until the codemod rewrites them; `requireLatexAndMeaning`
+ * requires one name from each pair. The `notationProse` refinement rejects an
+ * under-specified `meaning`.
+ */
+const notationEntryShape = z.object({
+  key: id,
+  latex: z.string().min(1).optional(),
+  meaning: notationProse.optional(),
+  formula: z.string().min(1).optional(),
+  units: z.string().min(1).optional(),
+  dimensionless: z.literal(true).optional(),
+  seeAlso: z.array(id).default([]),
+  sources: z.array(notationSource).default([]),
+  alignment: notationAlignmentDefault,
+  // Legacy — removed by the Phase C2 codemod.
+  notation: z.string().min(1).optional(),
+  title: z.string().min(1).optional(),
+  summary: notationSummary.optional(),
+  details: notationSummary.optional(),
+});
+
+const localNotationDefinition = notationEntryShape.superRefine(
+  requireLatexAndMeaning,
+);
 
 const lessonNotation = z
   .object({
@@ -228,23 +268,31 @@ const sources = defineCollection({
   }),
 });
 
+/**
+ * Standalone notation collection — the one `notationEntry` shape plus the
+ * shared-only extras: `domain`, `aliases`, its own `editorialStatus`, and a
+ * Markdown body.
+ *
+ * The pre-C1b legacy trio (`notation`, `title`, `summary`) is still *required*
+ * here so components that read `entry.data.*` keep their non-optional types
+ * until the codemod renames the fields and updates those components together.
+ * `perspective` stays accepted (deprecated) until the codemod folds each real
+ * disambiguation / sign convention into `meaning` and drops the rest.
+ */
 const notation = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/notation' }),
-  schema: z.object({
-    key: id,
-    notation: z.string().min(1),
-    title: z.string().min(1),
-    summary: notationSummary,
-    aliases: z.array(z.string().min(1)).default([]),
-    domain: id,
-    units: z.string().min(1).optional(),
-    perspective: z.string().min(1).optional(),
-    sources: z.array(id).default([]),
-    seeAlso: z.array(id).default([]),
-    alignment: notationAlignment,
-    editorialStatus,
-    aiAssisted: z.boolean().default(false),
-  }),
+  schema: notationEntryShape
+    .extend({
+      notation: z.string().min(1),
+      title: z.string().min(1),
+      summary: notationSummary,
+      domain: id,
+      aliases: z.array(z.string().min(1)).default([]),
+      editorialStatus,
+      aiAssisted: z.boolean().default(false),
+      perspective: z.string().min(1).optional(),
+    })
+    .superRefine(requireLatexAndMeaning),
 });
 
 export const collections = {
