@@ -33,9 +33,9 @@ notation:
     - risk-neutral-probability-measure
   local:
     - key: binomial-up-underlying-value
-      notation: 'S^{\mathrm{up}}'
+      latex: 'S^{\mathrm{up}}'
       title: Underlying value in the up state
-      summary: One of the two possible underlying values at the one-period expiry.
+      meaning: One of the two possible underlying values at the one-period expiry.
       units: stated currency per unit of underlying at expiry
       sources:
         - hull-options-futures
@@ -46,9 +46,9 @@ notation:
         introducedByCompetency: options.one-period-binomial-value.calculate
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-down-underlying-value
-      notation: 'S^{\mathrm{down}}'
+      latex: 'S^{\mathrm{down}}'
       title: Underlying value in the down state
-      summary: The lower of the two possible underlying values at the one-period expiry.
+      meaning: The lower of the two possible underlying values at the one-period expiry.
       units: stated currency per unit of underlying at expiry
       sources:
         - hull-options-futures
@@ -59,9 +59,9 @@ notation:
         introducedByCompetency: options.one-period-binomial-value.calculate
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-up-claim-payoff
-      notation: 'X^{\mathrm{up}}'
+      latex: 'X^{\mathrm{up}}'
       title: Claim payoff in the up state
-      summary: Signed expiry payoff of the claim when the underlying takes its up-state value.
+      meaning: Signed expiry payoff of the claim when the underlying takes its up-state value.
       units: stated currency at expiry
       sources:
         - hull-options-futures
@@ -70,9 +70,9 @@ notation:
         introducedByCompetency: options.binomial-hedge.calculate
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-down-claim-payoff
-      notation: 'X^{\mathrm{down}}'
+      latex: 'X^{\mathrm{down}}'
       title: Claim payoff in the down state
-      summary: Signed expiry payoff of the claim when the underlying takes its down-state value.
+      meaning: Signed expiry payoff of the claim when the underlying takes its down-state value.
       units: stated currency at expiry
       sources:
         - hull-options-futures
@@ -81,9 +81,9 @@ notation:
         introducedByCompetency: options.binomial-hedge.calculate
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-hedge-units
-      notation: '\Delta'
+      latex: '\Delta'
       title: One-period hedge units
-      summary: Signed units of underlying in the portfolio that replicates the two claim payoffs.
+      meaning: Signed units of underlying in the portfolio that replicates the two claim payoffs.
       units: units of underlying per claim
       sources:
         - hull-options-futures
@@ -94,9 +94,9 @@ notation:
         introducedByCompetency: options.binomial-hedge.calculate
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-risk-free-expiry-cash
-      notation: 'M_{T_{\mathrm{opt}}}'
+      latex: 'M_{T_{\mathrm{opt}}}'
       title: Risk-free cash position at expiry
-      summary: Signed expiry cash amount held with the underlying units to reproduce both claim payoffs.
+      meaning: Signed expiry cash amount held with the underlying units to reproduce both claim payoffs.
       units: stated currency at expiry
       sources:
         - hull-options-futures
@@ -107,9 +107,9 @@ notation:
         introducedByCompetency: options.binomial-hedge.calculate
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-risk-neutral-up-weight
-      notation: q
+      latex: q
       title: Risk-neutral up-state weight
-      summary: Model-implied pricing probability assigned to the up state by the no-arbitrage tree.
+      meaning: Model-implied pricing probability assigned to the up state by the no-arbitrage tree.
       details: It is dimensionless and lies between zero and one when the tree is arbitrage-consistent.
       units: probability between zero and one
       sources:
@@ -121,9 +121,9 @@ notation:
         introducedByCompetency: options.one-period-binomial-value.calculate
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-claim-value
-      notation: V_0
+      latex: V_0
       title: One-period claim value
-      summary: Time-zero value obtained identically from the replicating portfolio and risk-neutral expected payoff.
+      meaning: Time-zero value obtained identically from the replicating portfolio and risk-neutral expected payoff.
       units: stated currency at valuation time
       sources:
         - hull-options-futures

@@ -294,8 +294,8 @@ function localDefinition(
   const data = record(raw, label);
   // One notation shape (Phase C1b): `latex`/`meaning`; the pre-C1b names
   // `notation`/`summary`/`title` are still read until the codemod.
-  const latex = string(data.latex ?? data.notation, `${label}.latex`);
-  const meaning = meaningText(data.meaning ?? data.summary, `${label}.meaning`);
+  const latex = string(data.latex, `${label}.latex`);
+  const meaning = meaningText(data.meaning, `${label}.meaning`);
   const details = optionalString(data.details, `${label}.details`);
   const formula = optionalString(data.formula, `${label}.formula`);
   const units = optionalString(data.units, `${label}.units`);
@@ -334,13 +334,10 @@ function sharedNotationEntries(): SharedNotationDefinitionInput[] {
     const units = optionalString(data.units, `${file} units`);
     const perspective = optionalString(data.perspective, `${file} perspective`);
     // One notation shape (Phase C1b): `latex`/`meaning`; pre-C1b names still read.
-    const meaning = meaningText(
-      data.meaning ?? data.summary,
-      `${file} meaning`,
-    );
+    const meaning = meaningText(data.meaning, `${file} meaning`);
     return {
       key,
-      notation: string(data.latex ?? data.notation, `${file} latex`),
+      notation: string(data.latex, `${file} latex`),
       title: string(data.title ?? meaning, `${file} title`),
       summary: meaning,
       aliases: strings(data.aliases, `${file} aliases`),
@@ -405,4 +402,36 @@ export function loadSourceRecords(): Record<string, unknown>[] {
   return jsonEntries<SourceDefinition & { readonly id: string }>(
     join(CONTENT_ROOT, 'sources'),
   ) as unknown as Record<string, unknown>[];
+}
+
+/**
+ * Notation `sources` entries still written as a bare id rather than
+ * `{ id, locator }` (Phase C1b shape). A locator is a per-claim citation that
+ * must be verified against the text, so filling these is a separate reviewed
+ * pass (D6 item g) — reported here as a warning, not an error.
+ */
+export function notationSourceLocatorGaps(): { bare: number; total: number } {
+  let bare = 0;
+  let total = 0;
+  const count = (sources: unknown) => {
+    if (!Array.isArray(sources)) return;
+    for (const entry of sources) {
+      total += 1;
+      if (typeof entry === 'string') bare += 1;
+    }
+  };
+  for (const path of filesBelow(join(CONTENT_ROOT, 'notation'), ['.md'])) {
+    count(parseDocument(path).data.sources);
+  }
+  for (const path of filesBelow(join(CONTENT_ROOT, 'docs'), ['.md', '.mdx'])) {
+    const local = (
+      parseDocument(path).data as { notation?: { local?: unknown } }
+    ).notation?.local;
+    if (Array.isArray(local)) {
+      for (const entry of local) {
+        count((entry as { sources?: unknown }).sources);
+      }
+    }
+  }
+  return { bare, total };
 }

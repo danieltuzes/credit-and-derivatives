@@ -1,8 +1,8 @@
 ---
 key: cds-protection-buyer-net-present-value
-notation: 'PV_0^{\mathrm{buyer}}'
+latex: 'PV_0^{\mathrm{buyer}}'
 title: CDS protection-buyer net present value
-summary: Signed protection-buyer value equal to protection-leg magnitude minus premium-leg magnitude.
+meaning: Signed protection-buyer value equal to protection-leg magnitude minus premium-leg magnitude.
 aliases:
   - protection-buyer net PV
 domain: cds

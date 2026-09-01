@@ -1,8 +1,8 @@
 ---
 key: survival-probability
-notation: 'S(0,t)'
+latex: 'S(0,t)'
 title: Survival probability
-summary: Probability, under the explicitly stated model measure, that no modeled default has occurred by a future time.
+meaning: Probability, under the explicitly stated model measure, that no modeled default has occurred by a future time.
 aliases:
   - default survival probability
 domain: credit

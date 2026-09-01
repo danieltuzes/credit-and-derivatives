@@ -1,8 +1,8 @@
 ---
 key: call-option-value
-notation: 'c_t'
+latex: 'c_t'
 title: European call value
-summary: Current non-negative value to the holder of a European call under the stated model.
+meaning: Current non-negative value to the holder of a European call under the stated model.
 domain: options
 units: stated currency at model time t
 perspective: Holder value before subtracting any financing or transaction costs.

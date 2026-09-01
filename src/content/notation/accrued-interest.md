@@ -1,8 +1,8 @@
 ---
 key: accrued-interest
-notation: 'AI'
+latex: 'AI'
 title: Accrued interest
-summary: Coupon amount attributed to the interval from the previous coupon date through settlement under the stated day-count convention.
+meaning: Coupon amount attributed to the interval from the previous coupon date through settlement under the stated day-count convention.
 domain: bonds
 units: stated currency at settlement
 perspective: Positive amount added to clean price to obtain the dirty invoice price in this settlement slice.

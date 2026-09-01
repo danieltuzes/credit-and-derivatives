@@ -1,8 +1,8 @@
 ---
 key: recovery-of-par-present-value
-notation: 'PV_0^{\mathrm{RoP}}'
+latex: 'PV_0^{\mathrm{RoP}}'
 title: One-period recovery-of-par present value
-summary: Present value of one maturity payment that is par after survival and a fixed fraction of par after earlier default.
+meaning: Present value of one maturity payment that is par after survival and a fixed fraction of par after earlier default.
 aliases:
   - recovery-of-par PV
 domain: credit

@@ -36,9 +36,9 @@ notation:
     - terminal-random-payoff
   local:
     - key: risk-neutral-pricing-horizon
-      notation: T
+      latex: T
       title: Risk-neutral pricing horizon
-      summary: Future model time at which the one terminal payoff is delivered.
+      meaning: Future model time at which the one terminal payoff is delivered.
       details: It is measured in exact model-years from valuation time zero and is not a calendar date.
       formula: 'T>0'
       units: years from valuation time
@@ -50,9 +50,9 @@ notation:
         kind: general
         rationale: A one-horizon finite-state model is the worked-example convention for this lesson.
     - key: risk-neutral-scenario-index
-      notation: j
+      latex: j
       title: Risk-neutral scenario index
-      summary: Selects one scenario in the finite pricing partition.
+      meaning: Selects one scenario in the finite pricing partition.
       details: It is a bookkeeping label rather than a probability or time.
       formula: 'j \in \{1,\ldots,m\}'
       sources: []
@@ -62,9 +62,9 @@ notation:
         kind: general
         rationale: Finite indexing is part of the probability prerequisite and this lesson's stated assumptions.
     - key: risk-neutral-scenario-count
-      notation: m
+      latex: m
       title: Number of risk-neutral scenarios
-      summary: Counts the disjoint and exhaustive scenarios in the finite pricing partition.
+      meaning: Counts the disjoint and exhaustive scenarios in the finite pricing partition.
       details: It is a positive integer and does not measure time or money.
       formula: 'm \in \mathbb{N}'
       sources: []
@@ -74,9 +74,9 @@ notation:
         kind: general
         rationale: Counting a finite partition is part of the probability prerequisite.
     - key: risk-neutral-scenario-payoff
-      notation: 'x_j'
+      latex: 'x_j'
       title: Payoff in scenario j
-      summary: Realized signed terminal amount in one scenario.
+      meaning: Realized signed terminal amount in one scenario.
       details: Positive means received and negative means paid by the claim holder at the horizon.
       units: USD at the pricing horizon in this lesson
       sources: []
@@ -87,9 +87,9 @@ notation:
         introducedByCompetency: finance.risk-neutral-value.calculate
         introducedInLesson: foundations.risk-neutral-pricing
     - key: risk-neutral-scenario-probability
-      notation: 'q_j'
+      latex: 'q_j'
       title: Risk-neutral scenario probability
-      summary: Pricing weight assigned by the risk-neutral measure to one scenario.
+      meaning: Pricing weight assigned by the risk-neutral measure to one scenario.
       details: The weights are dimensionless, non-negative, and sum to one over the finite partition.
       formula: 'q_j \ge 0,\quad \sum_{j=1}^{m}q_j=1'
       units: dimensionless probability

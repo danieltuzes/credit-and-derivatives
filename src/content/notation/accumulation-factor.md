@@ -1,8 +1,8 @@
 ---
 key: accumulation-factor
-notation: 'A(0,t)'
+latex: 'A(0,t)'
 title: Accumulation factor
-summary: Grows one current unit over a stated future horizon under the selected rate model.
+meaning: Grows one current unit over a stated future horizon under the selected rate model.
 aliases:
   - compounding factor
   - growth factor

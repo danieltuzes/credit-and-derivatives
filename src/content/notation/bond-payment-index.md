@@ -1,8 +1,8 @@
 ---
 key: bond-payment-index
-notation: 'k'
+latex: 'k'
 title: Bond payment index
-summary: Labels one remaining scheduled bond payment in increasing time order.
+meaning: Labels one remaining scheduled bond payment in increasing time order.
 aliases:
   - coupon payment index
 domain: bonds

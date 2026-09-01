@@ -1,8 +1,8 @@
 ---
 key: payment-time
-notation: 't_k'
+latex: 't_k'
 title: Payment time
-summary: Time from the valuation date to one scheduled cash-flow event.
+meaning: Time from the valuation date to one scheduled cash-flow event.
 aliases:
   - cash-flow time
   - time in years

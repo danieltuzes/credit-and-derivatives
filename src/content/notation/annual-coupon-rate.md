@@ -1,8 +1,8 @@
 ---
 key: annual-coupon-rate
-notation: 'c'
+latex: 'c'
 title: Annual coupon rate
-summary: Contractual annual rate used to determine a fixed-rate bond's coupon payments.
+meaning: Contractual annual rate used to determine a fixed-rate bond's coupon payments.
 aliases:
   - coupon rate
 domain: bonds

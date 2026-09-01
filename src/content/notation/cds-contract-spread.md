@@ -1,8 +1,8 @@
 ---
 key: cds-contract-spread
-notation: 's'
+latex: 's'
 title: CDS contractual spread
-summary: Annualized premium rate applied to notional and each stated accrual year fraction.
+meaning: Annualized premium rate applied to notional and each stated accrual year fraction.
 aliases:
   - CDS premium rate
 domain: cds

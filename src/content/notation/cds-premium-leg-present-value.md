@@ -1,8 +1,8 @@
 ---
 key: cds-premium-leg-present-value
-notation: 'PV_0^{\mathrm{prem}}'
+latex: 'PV_0^{\mathrm{prem}}'
 title: CDS premium-leg present-value magnitude
-summary: Positive valuation-time magnitude of the simplified protection buyer's premium payments.
+meaning: Positive valuation-time magnitude of the simplified protection buyer's premium payments.
 aliases:
   - premium-leg PV magnitude
 domain: cds

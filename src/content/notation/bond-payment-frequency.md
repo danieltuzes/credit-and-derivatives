@@ -1,8 +1,8 @@
 ---
 key: bond-payment-frequency
-notation: 'm_{\mathrm B}'
+latex: 'm_{\mathrm B}'
 title: Bond payment frequency
-summary: Number of scheduled coupon payments per year in the simplified regular bond.
+meaning: Number of scheduled coupon payments per year in the simplified regular bond.
 aliases:
   - coupon frequency
   - coupon payments per year

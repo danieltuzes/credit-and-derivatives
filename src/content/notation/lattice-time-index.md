@@ -1,8 +1,8 @@
 ---
 key: lattice-time-index
-notation: i
+latex: i
 title: Lattice time-row index
-summary: Integer label for one time row in a finite recombining valuation lattice.
+meaning: Integer label for one time row in a finite recombining valuation lattice.
 domain: finance
 units: dimensionless integer index
 perspective: Bookkeeping label, not a model-year time or currency amount.

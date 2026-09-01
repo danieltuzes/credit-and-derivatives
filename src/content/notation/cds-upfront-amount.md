@@ -1,8 +1,8 @@
 ---
 key: cds-upfront-amount
-notation: 'U_0'
+latex: 'U_0'
 title: Signed CDS upfront amount
-summary: Time-zero cash amount that balances protection and fixed-coupon premium value under the lesson's pricing convention.
+meaning: Time-zero cash amount that balances protection and fixed-coupon premium value under the lesson's pricing convention.
 aliases:
   - upfront fee
   - upfront payment

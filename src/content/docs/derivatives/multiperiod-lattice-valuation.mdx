@@ -28,9 +28,9 @@ notation:
     - risk-neutral-probability-measure
   local:
     - key: lattice-node-discount-factor
-      notation: 'd_{i,j}'
+      latex: 'd_{i,j}'
       title: One-period node discount factor
-      summary: Currency at node i,j per one unit of currency at either successor node one step later.
+      meaning: Currency at node i,j per one unit of currency at either successor node one step later.
       units: current-node currency per next-time currency
       sources:
         - hull-options-futures
@@ -39,9 +39,9 @@ notation:
         introducedByCompetency: finance.backward-induction.calculate
         introducedInLesson: derivatives.multiperiod-lattice-valuation
     - key: lattice-node-up-weight
-      notation: 'q_{i,j}'
+      latex: 'q_{i,j}'
       title: Risk-neutral node up weight
-      summary: Pricing probability assigned to the up successor conditional on the current node.
+      meaning: Pricing probability assigned to the up successor conditional on the current node.
       units: probability between zero and one
       sources:
         - hull-options-futures
@@ -52,9 +52,9 @@ notation:
         introducedByCompetency: finance.backward-induction.calculate
         introducedInLesson: derivatives.multiperiod-lattice-valuation
     - key: lattice-next-cash-flow
-      notation: 'CF_{i+1,j}'
+      latex: 'CF_{i+1,j}'
       title: Next-date node cash flow
-      summary: Signed cash paid at a successor node immediately before its continuation value is measured.
+      meaning: Signed cash paid at a successor node immediately before its continuation value is measured.
       units: stated currency at the successor time
       sources:
         - hull-options-futures

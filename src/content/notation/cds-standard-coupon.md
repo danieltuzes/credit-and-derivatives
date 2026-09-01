@@ -1,8 +1,8 @@
 ---
 key: cds-standard-coupon
-notation: 'c_{\mathrm{std}}'
+latex: 'c_{\mathrm{std}}'
 title: CDS standard running coupon
-summary: Fixed annualized rate used to determine the contract's running premium cash flows in the lesson's standard-coupon model.
+meaning: Fixed annualized rate used to determine the contract's running premium cash flows in the lesson's standard-coupon model.
 aliases:
   - standard coupon
   - fixed running coupon

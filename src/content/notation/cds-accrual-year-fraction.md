@@ -1,8 +1,8 @@
 ---
 key: cds-accrual-year-fraction
-notation: '\alpha_i'
+latex: '\alpha_i'
 title: CDS premium accrual year fraction
-summary: Supplied year fraction that converts an annualized spread into the premium amount for one scheduled period.
+meaning: Supplied year fraction that converts an annualized spread into the premium amount for one scheduled period.
 aliases:
   - premium accrual fraction
 domain: cds

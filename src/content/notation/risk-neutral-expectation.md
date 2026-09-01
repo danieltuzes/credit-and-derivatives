@@ -1,8 +1,8 @@
 ---
 key: risk-neutral-expectation
-notation: '\mathbb{E}^{\mathbb{Q}}'
+latex: '\mathbb{E}^{\mathbb{Q}}'
 title: Risk-neutral expectation
-summary: Averages a random quantity using probabilities supplied by the risk-neutral measure.
+meaning: Averages a random quantity using probabilities supplied by the risk-neutral measure.
 aliases:
   - Q-expectation
 domain: finance

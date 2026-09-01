@@ -1,8 +1,8 @@
 ---
 key: hazard-rate
-notation: '\lambda'
+latex: '\lambda'
 title: Constant hazard rate
-summary: Constant conditional default intensity used by the lesson's simplified exponential survival model.
+meaning: Constant conditional default intensity used by the lesson's simplified exponential survival model.
 aliases:
   - constant default intensity
 domain: credit

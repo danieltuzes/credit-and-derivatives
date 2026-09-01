@@ -1,8 +1,8 @@
 ---
 key: dirty-bond-price
-notation: 'P^{\mathrm{dirty}}'
+latex: 'P^{\mathrm{dirty}}'
 title: Dirty bond price
-summary: Full cash or invoice price paid for the bond, equal to clean price plus accrued interest.
+meaning: Full cash or invoice price paid for the bond, equal to clean price plus accrued interest.
 aliases:
   - full price
   - cash bond price

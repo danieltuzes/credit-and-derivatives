@@ -1,8 +1,8 @@
 ---
 key: nominal-annual-rate
-notation: 'j^{(m)}'
+latex: 'j^{(m)}'
 title: Nominal annual rate
-summary: Annualized rate quote that must be paired with its compounding frequency.
+meaning: Annualized rate quote that must be paired with its compounding frequency.
 aliases:
   - nominal rate
   - annualized rate

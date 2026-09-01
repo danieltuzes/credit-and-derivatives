@@ -1,8 +1,8 @@
 ---
 key: bond-forward-price
-notation: 'F^{B}_{0,T_{\mathrm{fwd}}}'
+latex: 'F^{B}_{0,T_{\mathrm{fwd}}}'
 title: Bond forward price
-summary: Fair dirty delivery price fixed at valuation time for delivery of the named bond at the forward date.
+meaning: Fair dirty delivery price fixed at valuation time for delivery of the named bond at the forward date.
 domain: bonds
 units: stated currency at forward delivery per bond
 perspective: Positive delivery cash paid by the long under the lesson's no-arbitrage assumptions.

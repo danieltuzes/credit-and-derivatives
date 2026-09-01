@@ -1,8 +1,8 @@
 ---
 key: clean-bond-price
-notation: 'P^{\mathrm{clean}}'
+latex: 'P^{\mathrm{clean}}'
 title: Clean bond price
-summary: Bond price quoted without accrued interest under the stated settlement convention.
+meaning: Bond price quoted without accrued interest under the stated settlement convention.
 aliases:
   - flat price
   - quoted bond price

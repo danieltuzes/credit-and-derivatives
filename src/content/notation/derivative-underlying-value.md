@@ -1,8 +1,8 @@
 ---
 key: derivative-underlying-value
-notation: 'S_t'
+latex: 'S_t'
 title: Derivative underlying value
-summary: Value at model time t of one unit of the asset or claim named as the derivative's underlying.
+meaning: Value at model time t of one unit of the asset or claim named as the derivative's underlying.
 aliases:
   - underlying price
 domain: derivatives

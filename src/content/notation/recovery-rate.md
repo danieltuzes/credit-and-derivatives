@@ -1,8 +1,8 @@
 ---
 key: recovery-rate
-notation: 'R'
+latex: 'R'
 title: Recovery rate
-summary: Fraction of a stated reference amount recovered after a modeled default under an explicitly stated recovery convention.
+meaning: Fraction of a stated reference amount recovered after a modeled default under an explicitly stated recovery convention.
 aliases:
   - recovery fraction
 domain: credit

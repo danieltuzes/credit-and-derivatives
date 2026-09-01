@@ -1,8 +1,8 @@
 ---
 key: forward-delivery-price
-notation: 'K_{\mathrm{fwd}}'
+latex: 'K_{\mathrm{fwd}}'
 title: Forward delivery price
-summary: Contractual currency amount per unit of underlying paid by the long at delivery.
+meaning: Contractual currency amount per unit of underlying paid by the long at delivery.
 aliases:
   - forward contract delivery price
 domain: derivatives

@@ -1,8 +1,8 @@
 ---
 key: forward-contract-value
-notation: 'V_t^{\mathrm{fwd}}'
+latex: 'V_t^{\mathrm{fwd}}'
 title: Forward contract value
-summary: Signed current value of an existing forward from the named counterparty's perspective.
+meaning: Signed current value of an existing forward from the named counterparty's perspective.
 domain: derivatives
 units: stated currency at model time t
 perspective: Positive to the long when the current forward price exceeds the contract's fixed delivery price under the lesson model.

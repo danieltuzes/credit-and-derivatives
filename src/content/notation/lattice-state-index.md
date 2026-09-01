@@ -1,8 +1,8 @@
 ---
 key: lattice-state-index
-notation: j
+latex: j
 title: Lattice state-node index
-summary: Integer label for one state node within a time row of a finite recombining lattice.
+meaning: Integer label for one state node within a time row of a finite recombining lattice.
 domain: finance
 units: dimensionless integer index
 perspective: Bookkeeping label under the module's stated successor ordering, not a probability or state value.

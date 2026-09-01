@@ -1,8 +1,8 @@
 ---
 key: knockout-bond-option-value
-notation: 'O^{\mathrm{KO}}_{i,j}'
+latex: 'O^{\mathrm{KO}}_{i,j}'
 title: Issuer-default knockout bond option value
-summary: Alive-node value of a European bond option that is extinguished with zero option rebate by issuer default before exercise.
+meaning: Alive-node value of a European bond option that is extinguished with zero option rebate by issuer default before exercise.
 domain: bond-options
 units: stated currency per option at the node time
 perspective: Non-negative holder value conditional on the issuer being alive at the node.

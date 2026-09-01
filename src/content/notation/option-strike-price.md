@@ -1,8 +1,8 @@
 ---
 key: option-strike-price
-notation: 'K'
+latex: 'K'
 title: Option strike price
-summary: Contractual price per unit of underlying used to determine the option's exercise payoff.
+meaning: Contractual price per unit of underlying used to determine the option's exercise payoff.
 aliases:
   - exercise price
 domain: options

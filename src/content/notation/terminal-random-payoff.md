@@ -1,8 +1,8 @@
 ---
 key: terminal-random-payoff
-notation: 'X_T'
+latex: 'X_T'
 title: Terminal random payoff
-summary: Signed amount delivered by a claim at the stated future horizon, before its outcome is known.
+meaning: Signed amount delivered by a claim at the stated future horizon, before its outcome is known.
 aliases:
   - contingent terminal payoff
 domain: finance

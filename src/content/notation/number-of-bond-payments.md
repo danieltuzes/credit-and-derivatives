@@ -1,8 +1,8 @@
 ---
 key: number-of-bond-payments
-notation: 'n'
+latex: 'n'
 title: Number of bond payments
-summary: Counts the remaining regular coupon dates including maturity.
+meaning: Counts the remaining regular coupon dates including maturity.
 aliases:
   - remaining coupon-date count
 domain: bonds

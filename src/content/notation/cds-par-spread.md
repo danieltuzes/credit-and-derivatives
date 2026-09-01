@@ -1,8 +1,8 @@
 ---
 key: cds-par-spread
-notation: 's^{\star}'
+latex: 's^{\star}'
 title: CDS par spread in the zero-upfront toy model
-summary: Contractual spread that makes the two positive leg magnitudes equal at valuation time with zero upfront amount.
+meaning: Contractual spread that makes the two positive leg magnitudes equal at valuation time with zero upfront amount.
 aliases:
   - zero-upfront par spread
 domain: cds

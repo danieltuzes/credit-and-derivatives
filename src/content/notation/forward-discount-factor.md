@@ -1,8 +1,8 @@
 ---
 key: forward-discount-factor
-notation: 'Z(t,T)'
+latex: 'Z(t,T)'
 title: Forward discount factor
-summary: Value at future model time t of one currency unit paid at later model time T under the stated deterministic curve.
+meaning: Value at future model time t of one currency unit paid at later model time T under the stated deterministic curve.
 aliases:
   - future-to-future discount factor
 domain: rates

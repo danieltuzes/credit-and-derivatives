@@ -1,8 +1,8 @@
 ---
 key: loss-given-default
-notation: '\mathrm{LGD}'
+latex: '\mathrm{LGD}'
 title: Loss given default fraction
-summary: Fraction of an explicitly stated reference amount not recovered under a deterministic recovery convention.
+meaning: Fraction of an explicitly stated reference amount not recovered under a deterministic recovery convention.
 aliases:
   - LGD
 domain: credit

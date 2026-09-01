@@ -40,9 +40,9 @@ const renderedEntries = await Promise.all(
 const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
   (entry) => ({
     key: entry.data.key,
-    notation: entry.data.notation,
+    notation: entry.data.latex,
     title: entry.data.title,
-    summary: entry.data.summary,
+    summary: entry.data.meaning,
     details: entry.data.perspective,
     units: entry.data.units,
     seeAlso: entry.data.seeAlso,
@@ -84,10 +84,7 @@ const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
               class="glossary-symbol-trigger"
               data-notation-key={entry.data.key}
             >
-              <NotationMath
-                class="glossary-symbol"
-                latex={entry.data.notation}
-              />
+              <NotationMath class="glossary-symbol" latex={entry.data.latex} />
             </span>
             <div>
               <h2>{entry.data.title}</h2>

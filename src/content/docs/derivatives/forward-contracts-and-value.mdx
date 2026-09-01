@@ -35,9 +35,9 @@ notation:
     - forward-contract-value
   local:
     - key: deterministic-income-present-value
-      notation: 'I_0'
+      latex: 'I_0'
       title: Present value of deterministic pre-delivery income
-      summary: Valuation-time value of cash income paid by the underlying after valuation and before forward delivery.
+      meaning: Valuation-time value of cash income paid by the underlying after valuation and before forward delivery.
       details: It is subtracted from spot value because the forward long does not own the asset early enough to receive that income.
       units: stated currency at valuation time per unit of underlying
       sources:
@@ -49,18 +49,18 @@ notation:
         introducedByCompetency: derivatives.forward-delivery-price.calculate
         introducedInLesson: derivatives.forward-contracts-and-value
     - key: forward-contract-quantity
-      notation: N
+      latex: N
       title: Forward contract quantity
-      summary: Positive number of underlying units delivered under the forward contract.
+      meaning: Positive number of underlying units delivered under the forward contract.
       details: Contract value and payoff scale linearly with this quantity.
       formula: 'N>0'
       alignment:
         kind: general
         rationale: Position scaling is part of the lesson's elementary arithmetic assumptions.
     - key: long-forward-expiry-payoff
-      notation: '\Pi_{T_{\mathrm{fwd}}}^{\mathrm{long}}'
+      latex: '\Pi_{T_{\mathrm{fwd}}}^{\mathrm{long}}'
       title: Long forward payoff at delivery
-      summary: Signed delivery-time value received by the long after exchanging the fixed delivery payment for the underlying.
+      meaning: Signed delivery-time value received by the long after exchanging the fixed delivery payment for the underlying.
       details: Per unit it equals underlying value at delivery minus the contractual delivery price.
       units: stated currency at forward delivery time
       sources:

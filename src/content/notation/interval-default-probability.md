@@ -1,8 +1,8 @@
 ---
 key: interval-default-probability
-notation: '\Delta q_i'
+latex: '\Delta q_i'
 title: Interval default probability
-summary: Probability assigned by the model to first default during one stated time interval.
+meaning: Probability assigned by the model to first default during one stated time interval.
 aliases:
   - marginal default probability
 domain: credit

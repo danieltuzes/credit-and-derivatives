@@ -45,76 +45,44 @@ const notationAlignmentDefault = notationAlignment.default({
   rationale: 'General notation.',
 });
 
-/** A citation on a notation definition: a bare id (legacy) or `{id, locator}`. */
+/**
+ * A citation on a notation definition: a bare id (locator pending, see D6/g) or
+ * `{id, locator}` — a per-claim locator verified against the cited text.
+ */
 const notationSource = z.union([
   id,
   z.object({ id, locator: z.string().min(1) }),
 ]);
 
 /**
- * `notation` → `latex`, `summary` → `meaning` (Phase C1b). Both new names are
- * optional in the schema and the pre-C1b names stay accepted so files validate
- * until the codemod renames them; this refinement requires one from each pair.
- */
-function requireLatexAndMeaning(
-  entry: {
-    latex?: string;
-    notation?: string;
-    meaning?: string;
-    summary?: string;
-  },
-  ctx: z.RefinementCtx,
-): void {
-  if (!entry.latex && !entry.notation) {
-    ctx.addIssue({
-      code: 'custom',
-      path: ['latex'],
-      message: 'notation entry needs `latex` (the rendered symbol).',
-    });
-  }
-  if (!entry.meaning && !entry.summary) {
-    ctx.addIssue({
-      code: 'custom',
-      path: ['meaning'],
-      message: 'notation entry needs `meaning` (one-line prose).',
-    });
-  }
-}
-
-/**
  * One notation entry shape (Phase C1b), shared by page-local `notation.local`
  * and the standalone `notation` collection.
  *
  * Authored: `key`, `latex`, `meaning`, optional `formula`, optional `units`
- * (or `dimensionless: true`), optional `seeAlso`, optional `sources`
- * (`{id, locator}`), optional `alignment` (defaults to `general`).
+ * (or `dimensionless: true`), `seeAlso`, `sources` (`{id, locator}`),
+ * optional `alignment` (defaults to `general`).
  *
- * Pre-C1b names (`notation` → `latex`, `summary` → `meaning`) and fields the
- * codemod removes (`title`, `details`) stay accepted as optional so existing
- * files validate until the codemod rewrites them; `requireLatexAndMeaning`
- * requires one name from each pair. The `notationProse` refinement rejects an
- * under-specified `meaning`.
+ * `title` and `details` remain accepted (deprecated): the C1b codemod renamed
+ * `notation`→`latex` and `summary`→`meaning`, but dropping `title` and folding
+ * `details` / `perspective` into `meaning` is a separate reviewed content pass.
+ * The `notationProse` refinement rejects an under-specified `meaning`.
  */
 const notationEntryShape = z.object({
   key: id,
-  latex: z.string().min(1).optional(),
-  meaning: notationProse.optional(),
+  latex: z.string().min(1),
+  meaning: notationProse,
   formula: z.string().min(1).optional(),
   units: z.string().min(1).optional(),
   dimensionless: z.literal(true).optional(),
   seeAlso: z.array(id).default([]),
   sources: z.array(notationSource).default([]),
   alignment: notationAlignmentDefault,
-  // Legacy — removed by the Phase C2 codemod.
-  notation: z.string().min(1).optional(),
+  // Deprecated — dropped / folded into `meaning` by a later content pass.
   title: z.string().min(1).optional(),
-  summary: notationSummary.optional(),
   details: notationSummary.optional(),
 });
 
-const localNotationDefinition = notationEntryShape.superRefine(
-  requireLatexAndMeaning,
-);
+const localNotationDefinition = notationEntryShape;
 
 const lessonNotation = z
   .object({
@@ -273,26 +241,21 @@ const sources = defineCollection({
  * shared-only extras: `domain`, `aliases`, its own `editorialStatus`, and a
  * Markdown body.
  *
- * The pre-C1b legacy trio (`notation`, `title`, `summary`) is still *required*
- * here so components that read `entry.data.*` keep their non-optional types
- * until the codemod renames the fields and updates those components together.
- * `perspective` stays accepted (deprecated) until the codemod folds each real
- * disambiguation / sign convention into `meaning` and drops the rest.
+ * `title`, `details`, and `perspective` are still accepted (deprecated): the
+ * C1b codemod renamed `notation`→`latex` and `summary`→`meaning`, but folding
+ * each real `perspective` / `details` into `meaning` and dropping `title` is a
+ * separate reviewed content pass.
  */
 const notation = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/notation' }),
-  schema: notationEntryShape
-    .extend({
-      notation: z.string().min(1),
-      title: z.string().min(1),
-      summary: notationSummary,
-      domain: id,
-      aliases: z.array(z.string().min(1)).default([]),
-      editorialStatus,
-      aiAssisted: z.boolean().default(false),
-      perspective: z.string().min(1).optional(),
-    })
-    .superRefine(requireLatexAndMeaning),
+  schema: notationEntryShape.extend({
+    title: z.string().min(1),
+    domain: id,
+    aliases: z.array(z.string().min(1)).default([]),
+    editorialStatus,
+    aiAssisted: z.boolean().default(false),
+    perspective: z.string().min(1).optional(),
+  }),
 });
 
 export const collections = {

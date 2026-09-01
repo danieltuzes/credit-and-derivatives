@@ -61,7 +61,8 @@ function definitionData(value, fallbackKey) {
   const key = data.key ?? fallbackKey;
   if (typeof key !== 'string') return undefined;
 
-  return { ...data, key };
+  // `latex` is the Phase C1b field name; older callers pass `notation`.
+  return { ...data, key, notation: data.notation ?? data.latex };
 }
 
 function definitionsMap(input) {

@@ -38,9 +38,9 @@ notation:
     - recovery-rate
   local:
     - key: knockout-node-discount-factor
-      notation: 'd_{i,j}'
+      latex: 'd_{i,j}'
       title: Knockout-lattice node discount factor
-      summary: One-period discount factor from the current alive node to the next lattice time.
+      meaning: One-period discount factor from the current alive node to the next lattice time.
       units: current-node currency per next-time currency
       sources:
         - hull-options-futures
@@ -49,9 +49,9 @@ notation:
         introducedByCompetency: bond-options.default-knockout-value.calculate
         introducedInLesson: bond-options.issuer-default-knockout
     - key: knockout-node-up-weight
-      notation: 'q_{i,j}'
+      latex: 'q_{i,j}'
       title: Knockout-lattice risk-neutral up weight
-      summary: Conditional pricing probability assigned to the next up rate state if the issuer survives.
+      meaning: Conditional pricing probability assigned to the next up rate state if the issuer survives.
       units: probability between zero and one
       sources:
         - hull-options-futures
@@ -60,9 +60,9 @@ notation:
         introducedByCompetency: bond-options.default-knockout-value.calculate
         introducedInLesson: bond-options.issuer-default-knockout
     - key: surviving-bond-next-cash-flow
-      notation: 'CF^{B}_{i+1}'
+      latex: 'CF^{B}_{i+1}'
       title: Next surviving bond cash flow
-      summary: Coupon or coupon-plus-redemption paid at the next lattice time only if the issuer survives the period.
+      meaning: Coupon or coupon-plus-redemption paid at the next lattice time only if the issuer survives the period.
       units: stated currency per bond at the next time
       sources:
         - tuckman-serrat-fixed-income
@@ -71,9 +71,9 @@ notation:
         introducedByCompetency: bond-options.default-knockout-value.calculate
         introducedInLesson: bond-options.issuer-default-knockout
     - key: bond-default-recovery-cash
-      notation: 'R_{i,j}^{B}'
+      latex: 'R_{i,j}^{B}'
       title: Bond recovery cash after period default
-      summary: Non-negative recovery paid on the underlying bond at the next lattice date after default in the period.
+      meaning: Non-negative recovery paid on the underlying bond at the next lattice date after default in the period.
       units: stated currency per bond at the next time
       sources:
         - tuckman-serrat-fixed-income
@@ -84,9 +84,9 @@ notation:
         introducedByCompetency: bond-options.default-knockout-value.calculate
         introducedInLesson: bond-options.issuer-default-knockout
     - key: surviving-bond-continuation-value
-      notation: 'H^B_{i,j}'
+      latex: 'H^B_{i,j}'
       title: Surviving bond continuation value
-      summary: Next-time scheduled bond cash plus risk-neutral expected ex-cash-flow bond value, conditional on period survival.
+      meaning: Next-time scheduled bond cash plus risk-neutral expected ex-cash-flow bond value, conditional on period survival.
       units: stated currency per bond at the next time
       sources:
         - hull-options-futures

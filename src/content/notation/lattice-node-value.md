@@ -1,8 +1,8 @@
 ---
 key: lattice-node-value
-notation: 'V_{i,j}'
+latex: 'V_{i,j}'
 title: Lattice node value
-summary: Claim value at time row i and state node j obtained by one-period backward induction from its successor nodes.
+meaning: Claim value at time row i and state node j obtained by one-period backward induction from its successor nodes.
 domain: finance
 units: stated currency at the node time
 perspective: Holder value conditional on reaching the named node under the supplied pricing lattice.

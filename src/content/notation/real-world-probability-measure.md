@@ -1,8 +1,8 @@
 ---
 key: real-world-probability-measure
-notation: '\mathbb{P}'
+latex: '\mathbb{P}'
 title: Real-world probability measure
-summary: Assigns modeled probabilities intended to describe actual-world event likelihoods.
+meaning: Assigns modeled probabilities intended to describe actual-world event likelihoods.
 aliases:
   - physical probability measure
   - actual probability measure

@@ -30,9 +30,9 @@ notation:
     - put-option-value
   local:
     - key: long-call-expiry-payoff
-      notation: '\Pi_{T_{\mathrm{opt}}}^{\mathrm{call}}'
+      latex: '\Pi_{T_{\mathrm{opt}}}^{\mathrm{call}}'
       title: Long call payoff at expiry
-      summary: Non-negative amount received by the holder of a European call at expiry.
+      meaning: Non-negative amount received by the holder of a European call at expiry.
       details: Per unit it is the positive part of underlying expiry value minus strike.
       units: stated currency at option expiry
       sources:
@@ -45,9 +45,9 @@ notation:
         introducedByCompetency: options.payoff.calculate
         introducedInLesson: derivatives.european-option-contracts-and-payoffs
     - key: long-put-expiry-payoff
-      notation: '\Pi_{T_{\mathrm{opt}}}^{\mathrm{put}}'
+      latex: '\Pi_{T_{\mathrm{opt}}}^{\mathrm{put}}'
       title: Long put payoff at expiry
-      summary: Non-negative amount received by the holder of a European put at expiry.
+      meaning: Non-negative amount received by the holder of a European put at expiry.
       details: Per unit it is the positive part of strike minus underlying expiry value.
       units: stated currency at option expiry
       sources:
@@ -60,9 +60,9 @@ notation:
         introducedByCompetency: options.payoff.calculate
         introducedInLesson: derivatives.european-option-contracts-and-payoffs
     - key: option-premium-paid
-      notation: '\pi_0'
+      latex: '\pi_0'
       title: Option premium paid
-      summary: Positive valuation-time amount paid by the option holder to acquire the contractual right.
+      meaning: Positive valuation-time amount paid by the option holder to acquire the contractual right.
       details: Its financing convention must be stated before converting an expiry payoff into profit.
       units: stated currency at premium payment time
       sources:
@@ -75,9 +75,9 @@ notation:
         introducedByCompetency: options.value-payoff-profit.distinguish
         introducedInLesson: derivatives.european-option-contracts-and-payoffs
     - key: option-holder-expiry-profit
-      notation: 'G_{T_{\mathrm{opt}}}'
+      latex: 'G_{T_{\mathrm{opt}}}'
       title: Option holder profit at expiry
-      summary: Expiry payoff less the premium carried to expiry under the explicitly stated financing convention.
+      meaning: Expiry payoff less the premium carried to expiry under the explicitly stated financing convention.
       details: In the simplest examples financing is ignored, so the initially paid premium is subtracted directly.
       units: stated currency at option expiry
       sources:

@@ -1,8 +1,8 @@
 ---
 key: forward-price
-notation: 'F_{t,T_{\mathrm{fwd}}}'
+latex: 'F_{t,T_{\mathrm{fwd}}}'
 title: Current forward price
-summary: Delivery price that would give a newly struck forward for the stated delivery time zero current value.
+meaning: Delivery price that would give a newly struck forward for the stated delivery time zero current value.
 aliases:
   - fair forward delivery price
 domain: derivatives

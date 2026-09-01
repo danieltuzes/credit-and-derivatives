@@ -10,6 +10,7 @@ import {
 import {
   loadCurriculumCatalog,
   loadNotationRegistryInput,
+  notationSourceLocatorGaps,
 } from '../src/content/collections';
 
 const [catalog, notationInput] = await Promise.all([
@@ -29,6 +30,13 @@ for (const warning of notationRegistry.diagnostics.filter(
   (diagnostic) => diagnostic.severity === 'warning',
 )) {
   console.warn(`[${warning.code}] ${warning.message}`);
+}
+
+const locatorGaps = notationSourceLocatorGaps();
+if (locatorGaps.bare > 0) {
+  console.warn(
+    `[notation-source-locator] ${locatorGaps.bare} of ${locatorGaps.total} notation source citations are bare ids without a { id, locator } (pending D6/g).`,
+  );
 }
 
 const itemCount = catalog.assessments.reduce(

@@ -1,8 +1,8 @@
 ---
 key: alive-bond-value
-notation: 'B^{\mathrm{alive}}_{i,j}'
+latex: 'B^{\mathrm{alive}}_{i,j}'
 title: Alive-state bond value
-summary: Ex-cash-flow value of the defaultable bond at a lattice node conditional on the issuer still being alive.
+meaning: Ex-cash-flow value of the defaultable bond at a lattice node conditional on the issuer still being alive.
 domain: bond-options
 units: stated currency per bond at the node time
 perspective: Positive holder value before subsequent survival/default branches; scheduled cash at the node has already been paid.

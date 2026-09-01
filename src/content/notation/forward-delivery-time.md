@@ -1,8 +1,8 @@
 ---
 key: forward-delivery-time
-notation: 'T_{\mathrm{fwd}}'
+latex: 'T_{\mathrm{fwd}}'
 title: Forward delivery time
-summary: Future model time when the forward counterparties exchange the underlying and delivery payment.
+meaning: Future model time when the forward counterparties exchange the underlying and delivery payment.
 domain: derivatives
 units: model-years from the stated valuation time
 perspective: Contract date shared by the long and short; it is not the underlying asset's maturity.

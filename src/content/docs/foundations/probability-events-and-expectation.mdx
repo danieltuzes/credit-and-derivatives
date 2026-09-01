@@ -24,9 +24,9 @@ notation:
   uses: []
   local:
     - key: probability-event
-      notation: A
+      latex: A
       title: Event
-      summary: A specified set of possible outcomes in this lesson's probability model.
+      meaning: A specified set of possible outcomes in this lesson's probability model.
       details: An indexed form selects one event in a finite disjoint and exhaustive partition.
       formula: 'A_j'
       sources:
@@ -38,9 +38,9 @@ notation:
         introducedByCompetency: probability.events.interpret
         introducedInLesson: foundations.probability-events-and-expectation
     - key: probability-event-index
-      notation: j
+      latex: j
       title: Event index
-      summary: Selects one event in the lesson's finite partition.
+      meaning: Selects one event in the lesson's finite partition.
       details: The index is bookkeeping and has no probability or monetary unit.
       formula: 'j \in \{1,\ldots,m\}'
       sources:
@@ -53,9 +53,9 @@ notation:
         introducedByCompetency: probability.events.interpret
         introducedInLesson: foundations.probability-events-and-expectation
     - key: probability-partition-size
-      notation: m
+      latex: m
       title: Number of partition events
-      summary: Counts the events in the lesson's finite partition.
+      meaning: Counts the events in the lesson's finite partition.
       details: The count is a positive integer and does not represent time.
       formula: 'm \in \mathbb{N}'
       sources:
@@ -67,9 +67,9 @@ notation:
         introducedByCompetency: probability.events.interpret
         introducedInLesson: foundations.probability-events-and-expectation
     - key: probability-measure
-      notation: '\mathbb{P}'
+      latex: '\mathbb{P}'
       title: Probability measure
-      summary: Assigns each modeled event a number between zero and one.
+      meaning: Assigns each modeled event a number between zero and one.
       details: The symbol is page-local and generic; it does not yet select a real-world or risk-neutral interpretation.
       units: probability between zero and one
       sources:
@@ -81,9 +81,9 @@ notation:
         introducedByCompetency: probability.events.interpret
         introducedInLesson: foundations.probability-events-and-expectation
     - key: probability-random-value
-      notation: X
+      latex: X
       title: Random value
-      summary: A numerical value determined by which modeled outcome occurs.
+      meaning: A numerical value determined by which modeled outcome occurs.
       details: Its unit is stated by the example, such as USD for a random payment.
       sources:
         - shreve-stochastic-calculus-finance-ii
@@ -94,9 +94,9 @@ notation:
         introducedByCompetency: probability.expectation-by-partition.calculate
         introducedInLesson: foundations.probability-events-and-expectation
     - key: probability-event-value
-      notation: 'x_j'
+      latex: 'x_j'
       title: Value on one event
-      summary: The constant value taken by the random value on one partition event.
+      meaning: The constant value taken by the random value on one partition event.
       details: This quantity can replace a conditional mean only when every outcome in the event gives the same value.
       sources:
         - shreve-stochastic-calculus-finance-ii
@@ -108,9 +108,9 @@ notation:
         introducedByCompetency: probability.expectation-by-partition.calculate
         introducedInLesson: foundations.probability-events-and-expectation
     - key: probability-expectation
-      notation: '\mathbb{E}'
+      latex: '\mathbb{E}'
       title: Expectation operator
-      summary: Forms a probability-weighted average of a finite random value.
+      meaning: Forms a probability-weighted average of a finite random value.
       details: Its output has the same unit as the random value being averaged.
       sources:
         - shreve-stochastic-calculus-finance-ii

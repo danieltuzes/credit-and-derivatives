@@ -33,9 +33,9 @@ notation:
     - number-of-bond-payments
   local:
     - key: yield-shock
-      notation: '\Delta y'
+      latex: '\Delta y'
       title: Yield shock
-      summary: A page-local finite change in the supplied yield input.
+      meaning: A page-local finite change in the supplied yield input.
       details: The sign is new yield minus old yield; the unit must be decimal, percentage points, or basis points as explicitly labeled.
       formula: '\Delta y=y_{\mathrm{new}}-y_{\mathrm{old}}'
       seeAlso:
@@ -45,9 +45,9 @@ notation:
         introducedByCompetency: bonds.price-yield-direction.explain
         introducedInLesson: bonds.price-yield-relationship
     - key: price-change
-      notation: '\Delta P'
+      latex: '\Delta P'
       title: Bond price change
-      summary: New toy-model price minus old toy-model price for a stated yield shock.
+      meaning: New toy-model price minus old toy-model price for a stated yield shock.
       details: This finite change is not yet a duration or convexity approximation.
       formula: '\Delta P=P(y+\Delta y)-P(y)'
       seeAlso:

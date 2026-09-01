@@ -13,7 +13,7 @@ type TemplateId = keyof typeof DISCOUNTING_LAB_MATH;
 const routeData = Astro.locals.starlightRoute.entry.data as {
   notation?: {
     uses?: string[];
-    local?: Array<{ key: string; notation: string }>;
+    local?: Array<{ key: string; latex: string }>;
   };
 };
 

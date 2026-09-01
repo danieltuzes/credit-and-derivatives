@@ -1,8 +1,8 @@
 ---
 key: coupon-payment
-notation: 'C'
+latex: 'C'
 title: Coupon payment
-summary: Level periodic cash amount promised by the simplified fixed-rate bond.
+meaning: Level periodic cash amount promised by the simplified fixed-rate bond.
 aliases:
   - periodic coupon
 domain: bonds

@@ -1,8 +1,8 @@
 ---
 key: cds-notional
-notation: 'N'
+latex: 'N'
 title: CDS notional
-summary: Reference currency amount that scales the simplified premium and protection legs.
+meaning: Reference currency amount that scales the simplified premium and protection legs.
 aliases:
   - CDS reference notional
 domain: cds

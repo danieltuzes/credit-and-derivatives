@@ -1,8 +1,8 @@
 ---
 key: signed-cash-flow
-notation: 'CF_k'
+latex: 'CF_k'
 title: Signed cash-flow amount
-summary: Amount received or paid at one event from the stated holder perspective.
+meaning: Amount received or paid at one event from the stated holder perspective.
 aliases:
   - cash flow
   - payment amount

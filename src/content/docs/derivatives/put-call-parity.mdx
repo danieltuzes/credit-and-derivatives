@@ -34,9 +34,9 @@ notation:
     - put-option-value
   local:
     - key: parity-income-present-value
-      notation: 'I_0'
+      latex: 'I_0'
       title: Present value of income before option expiry
-      summary: Valuation-time value of deterministic income paid by the underlying before the matched option expiry.
+      meaning: Valuation-time value of deterministic income paid by the underlying before the matched option expiry.
       details: Subtracting it from spot gives the prepaid forward value used in parity.
       units: stated currency at valuation time per unit of underlying
       sources:
@@ -48,9 +48,9 @@ notation:
         introducedByCompetency: options.put-call-parity.calculate
         introducedInLesson: derivatives.put-call-parity
     - key: prepaid-forward-value
-      notation: '\widetilde{F}_{0,T_{\mathrm{opt}}}'
+      latex: '\widetilde{F}_{0,T_{\mathrm{opt}}}'
       title: Prepaid forward value
-      summary: Current value of receiving the underlying at expiry with no delivery payment then.
+      meaning: Current value of receiving the underlying at expiry with no delivery payment then.
       details: Under the known-income model it equals spot value less the present value of income paid before expiry.
       units: stated currency at valuation time per unit of underlying
       sources:

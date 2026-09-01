@@ -1,8 +1,8 @@
 ---
 key: present-value
-notation: 'PV_0'
+latex: 'PV_0'
 title: Present value
-summary: Combines dated signed cash flows into one value at valuation time.
+meaning: Combines dated signed cash flows into one value at valuation time.
 aliases:
   - PV
 domain: finance

@@ -36,9 +36,9 @@ notation:
     - hazard-rate
   local:
     - key: credit-period-index
-      notation: 'i'
+      latex: 'i'
       title: Credit interval index
-      summary: Selects one interval in the lesson's ordered survival schedule.
+      meaning: Selects one interval in the lesson's ordered survival schedule.
       details: The index is bookkeeping and is not itself a time or probability.
       formula: 'i \in \{1,\ldots,n\}'
       sources: []
@@ -50,9 +50,9 @@ notation:
         introducedByCompetency: credit.default-probability-from-survival.calculate
         introducedInLesson: credit.default-hazard-and-survival
     - key: number-of-credit-periods
-      notation: 'n'
+      latex: 'n'
       title: Number of credit intervals
-      summary: Counts the intervals in the supplied survival schedule.
+      meaning: Counts the intervals in the supplied survival schedule.
       details: It is a positive integer count for this finite toy model.
       formula: 'n \in \{1,2,\ldots\}'
       sources: []
@@ -62,9 +62,9 @@ notation:
         kind: general
         rationale: Finite schedule indexing is a bookkeeping assumption of this lesson.
     - key: credit-default-time
-      notation: '\tau'
+      latex: '\tau'
       title: Credit default time
-      summary: Random model time at which the reference entity first defaults.
+      meaning: Random model time at which the reference entity first defaults.
       details: It is measured in model-years from valuation time under the stated risk-neutral model.
       formula: '\tau \geq 0'
       units: model-years after valuation time
@@ -79,9 +79,9 @@ notation:
         introducedByCompetency: credit.hazard-rate.interpret
         introducedInLesson: credit.default-hazard-and-survival
     - key: credit-small-time-increment
-      notation: '\Delta t'
+      latex: '\Delta t'
       title: Small hazard time increment
-      summary: Positive model-time interval used in the conditional definition of hazard.
+      meaning: Positive model-time interval used in the conditional definition of hazard.
       details: The hazard definition takes this increment down toward zero while holding the starting time fixed.
       formula: '\Delta t>0'
       units: model-years

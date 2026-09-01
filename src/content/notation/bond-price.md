@@ -1,8 +1,8 @@
 ---
 key: bond-price
-notation: 'P_0'
+latex: 'P_0'
 title: Bond price at valuation time
-summary: Present value of the simplified bond's promised payments at valuation time.
+meaning: Present value of the simplified bond's promised payments at valuation time.
 aliases:
   - dirty price in the settlement-on-coupon-date toy model
   - present value of promised bond cash flows

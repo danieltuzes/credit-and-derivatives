@@ -1,8 +1,8 @@
 ---
 key: put-option-value
-notation: 'p_t'
+latex: 'p_t'
 title: European put value
-summary: Current non-negative value to the holder of a European put under the stated model.
+meaning: Current non-negative value to the holder of a European put under the stated model.
 domain: options
 units: stated currency at model time t
 perspective: Holder value before subtracting any financing or transaction costs.

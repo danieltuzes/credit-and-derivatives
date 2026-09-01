@@ -67,9 +67,9 @@ notation:
     - cds-protection-buyer-net-present-value
   local:
     - key: cds-period-index
-      notation: 'i'
+      latex: 'i'
       title: CDS period index
-      summary: Selects one default interval and its following scheduled premium date.
+      meaning: Selects one default interval and its following scheduled premium date.
       details: The index is bookkeeping and is not itself a time, probability, or currency amount.
       formula: 'i \in \{1,\ldots,n\}'
       sources:
@@ -83,9 +83,9 @@ notation:
         introducedByCompetency: cds.cash-flow-legs.interpret
         introducedInLesson: cds.premium-protection-legs-and-par-spread
     - key: number-of-cds-periods
-      notation: 'n'
+      latex: 'n'
       title: Number of CDS periods
-      summary: Counts the finite premium and default intervals in the simplified CDS schedule.
+      meaning: Counts the finite premium and default intervals in the simplified CDS schedule.
       details: It is a positive integer determined by model term and payment frequency.
       formula: 'n \in \{1,2,\ldots\}'
       sources: []
@@ -95,9 +95,9 @@ notation:
         kind: general
         rationale: Finite schedule indexing is bookkeeping used by the lesson.
     - key: cds-default-time
-      notation: '\tau'
+      latex: '\tau'
       title: Modeled default time
-      summary: Random model time at which the reference entity first defaults.
+      meaning: Random model time at which the reference entity first defaults.
       details: It is measured in model-years from valuation time under the stated risk-neutral model.
       formula: '\tau > 0'
       units: model-years after valuation time
@@ -112,9 +112,9 @@ notation:
         introducedByCompetency: cds.cash-flow-legs.interpret
         introducedInLesson: cds.premium-protection-legs-and-par-spread
     - key: cds-default-event
-      notation: 'G_i'
+      latex: 'G_i'
       title: CDS default-interval event
-      summary: Event that modeled default occurs after one premium date and no later than the next.
+      meaning: Event that modeled default occurs after one premium date and no later than the next.
       details: Together with survival through maturity, these events are disjoint and exhaustive in the one-default model.
       formula: 'G_i=\{t_{i-1}<\tau\leq t_i\}'
       sources:
@@ -128,9 +128,9 @@ notation:
         introducedByCompetency: cds.cash-flow-legs.interpret
         introducedInLesson: cds.premium-protection-legs-and-par-spread
     - key: cds-event-payoff
-      notation: 'Y'
+      latex: 'Y'
       title: Generic CDS scenario payoff
-      summary: Random discounted payoff used to connect event partitions to a CDS-leg expectation.
+      meaning: Random discounted payoff used to connect event partitions to a CDS-leg expectation.
       details: Its currency sign and perspective must be stated before taking an expectation.
       sources:
         - shreve-stochastic-calculus-finance-ii
@@ -140,9 +140,9 @@ notation:
         kind: general
         rationale: The symbol specializes the prerequisite expectation rule to this lesson.
     - key: cds-event-payoff-value
-      notation: 'y_i'
+      latex: 'y_i'
       title: Payoff value on one CDS event
-      summary: Constant value taken by the generic payoff on one event in a finite partition.
+      meaning: Constant value taken by the generic payoff on one event in a finite partition.
       details: If the payoff varies inside an event, conditional expectation replaces this constant.
       sources:
         - shreve-stochastic-calculus-finance-ii
@@ -153,9 +153,9 @@ notation:
         kind: general
         rationale: The symbol specializes the prerequisite finite-event expectation rule.
     - key: cds-default-integration-time
-      notation: 'u'
+      latex: 'u'
       title: Possible default time in an integral
-      summary: Integration variable ranging over every possible default time inside one CDS period.
+      meaning: Integration variable ranging over every possible default time inside one CDS period.
       details: It is a deterministic dummy variable; the random default time is a different symbol.
       units: model-years after valuation time
       sources: []
@@ -165,9 +165,9 @@ notation:
         kind: general
         rationale: A continuous integral needs a dummy time variable distinct from the random default time.
     - key: cds-accrued-year-fraction-at-default
-      notation: 'a_i(u)'
+      latex: 'a_i(u)'
       title: Premium accrual at default
-      summary: Year fraction accrued from the preceding premium date to a possible default time in period i.
+      meaning: Year fraction accrued from the preceding premium date to a possible default time in period i.
       details: In the regular model-year schedule it equals elapsed model time since the period start.
       formula: 'a_i(u)=u-t_{i-1}'
       units: model-years of premium accrual
@@ -182,9 +182,9 @@ notation:
         introducedByCompetency: cds.premium-leg.calculate
         introducedInLesson: cds.premium-protection-legs-and-par-spread
     - key: continuously-compounded-risk-free-rate
-      notation: 'r'
+      latex: 'r'
       title: Continuously compounded risk-free rate
-      summary: Deterministic annual decimal rate used to discount this lesson's model cash flows.
+      meaning: Deterministic annual decimal rate used to discount this lesson's model cash flows.
       details: It is a pricing input and is separate from the hazard rate.
       formula: 'D(0,u)=\exp(-ru)'
       units: decimal rate per model-year
@@ -197,9 +197,9 @@ notation:
         kind: general
         rationale: This is a stated specialization of the previously taught discount-factor input.
     - key: cds-combined-decay-rate
-      notation: '\kappa'
+      latex: '\kappa'
       title: Discount-plus-hazard rate
-      summary: Abbreviation for the sum of the deterministic risk-free rate and constant hazard rate.
+      meaning: Abbreviation for the sum of the deterministic risk-free rate and constant hazard rate.
       details: It shortens the closed forms and has no separate market interpretation.
       formula: '\kappa=r+\lambda'
       units: decimal rate per model-year
@@ -211,9 +211,9 @@ notation:
         kind: general
         rationale: The abbreviation is algebraic bookkeeping for the closed-form example.
     - key: cds-scheduled-premium-annuity
-      notation: 'A_0^{\mathrm{sched}}'
+      latex: 'A_0^{\mathrm{sched}}'
       title: Scheduled premium annuity
-      summary: Present-value factor for scheduled premiums per unit notional and unit annual running rate.
+      meaning: Present-value factor for scheduled premiums per unit notional and unit annual running rate.
       details: It includes a scheduled payment only when the name survives to that payment date.
       units: model-years
       sources:
@@ -226,9 +226,9 @@ notation:
         introducedByCompetency: cds.premium-leg.calculate
         introducedInLesson: cds.premium-protection-legs-and-par-spread
     - key: cds-accrued-premium-annuity
-      notation: 'A_0^{\mathrm{accr}}'
+      latex: 'A_0^{\mathrm{accr}}'
       title: Accrued-on-default premium annuity
-      summary: Present-value factor for exact premium accrual paid at modeled default.
+      meaning: Present-value factor for exact premium accrual paid at modeled default.
       details: It integrates accrued year fraction, discounting, and risk-neutral default density over every possible default time.
       units: model-years
       sources:
@@ -242,9 +242,9 @@ notation:
         introducedByCompetency: cds.premium-leg.calculate
         introducedInLesson: cds.premium-protection-legs-and-par-spread
     - key: cds-protection-factor
-      notation: 'B_0^{\mathrm{prot}}'
+      latex: 'B_0^{\mathrm{prot}}'
       title: CDS protection factor
-      summary: Present value of protection per unit CDS notional in the simplified model.
+      meaning: Present value of protection per unit CDS notional in the simplified model.
       details: It includes loss given default, discounting, and the risk-neutral default-time density.
       units: present currency-units per notional currency-unit
       sources:

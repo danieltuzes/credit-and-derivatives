@@ -1,8 +1,8 @@
 ---
 key: compounding-frequency
-notation: 'm'
+latex: 'm'
 title: Compounding frequency
-summary: Number of equal compounding periods per year under the stated rate convention.
+meaning: Number of equal compounding periods per year under the stated rate convention.
 aliases:
   - periods per year
 domain: rates

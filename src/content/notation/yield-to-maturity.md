@@ -1,8 +1,8 @@
 ---
 key: yield-to-maturity
-notation: 'y^{(m_{\mathrm B})}'
+latex: 'y^{(m_{\mathrm B})}'
 title: Yield to maturity
-summary: Single nominal annual rate that reproduces the simplified bond price.
+meaning: Single nominal annual rate that reproduces the simplified bond price.
 aliases:
   - YTM
   - bond yield

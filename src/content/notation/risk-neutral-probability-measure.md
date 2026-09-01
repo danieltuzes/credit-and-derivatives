@@ -1,8 +1,8 @@
 ---
 key: risk-neutral-probability-measure
-notation: '\mathbb{Q}'
+latex: '\mathbb{Q}'
 title: Risk-neutral probability measure
-summary: Supplies model pricing weights under which discounted traded prices satisfy the martingale condition.
+meaning: Supplies model pricing weights under which discounted traded prices satisfy the martingale condition.
 aliases:
   - equivalent martingale measure
   - pricing measure

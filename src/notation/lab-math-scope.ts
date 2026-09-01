@@ -5,7 +5,7 @@ interface LessonNotationFrontmatter {
   readonly uses?: readonly string[];
   readonly local?: ReadonlyArray<{
     readonly key: string;
-    readonly notation: string;
+    readonly latex: string;
   }>;
 }
 
@@ -29,7 +29,7 @@ export async function labMathScope(
 
   const scope: LabMathScopeDefinition[] = local.map((definition) => ({
     key: definition.key,
-    notation: definition.notation,
+    notation: definition.latex,
   }));
 
   for (const key of uses) {

@@ -1,8 +1,8 @@
 ---
 key: cds-protection-leg-present-value
-notation: 'PV_0^{\mathrm{prot}}'
+latex: 'PV_0^{\mathrm{prot}}'
 title: CDS protection-leg present-value magnitude
-summary: Positive valuation-time magnitude of the simplified loss-given-default payment received by the protection buyer.
+meaning: Positive valuation-time magnitude of the simplified loss-given-default payment received by the protection buyer.
 aliases:
   - protection-leg PV magnitude
 domain: cds

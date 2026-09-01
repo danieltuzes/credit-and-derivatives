@@ -1,8 +1,8 @@
 ---
 key: cds-market-standard-quote
-notation: 's_{\mathrm{MSQ}}'
+latex: 's_{\mathrm{MSQ}}'
 title: CDS market-standard quote
-summary: Conventional quoted spread treated as a zero-upfront par spread by the lesson's simplified converter.
+meaning: Conventional quoted spread treated as a zero-upfront par spread by the lesson's simplified converter.
 aliases:
   - MSQ
   - conventional spread

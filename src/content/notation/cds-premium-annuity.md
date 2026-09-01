@@ -1,8 +1,8 @@
 ---
 key: cds-premium-annuity
-notation: 'A_0^{\mathrm{prem}}'
+latex: 'A_0^{\mathrm{prem}}'
 title: CDS premium annuity per unit notional
-summary: Present-value coefficient that multiplies contractual spread and notional in the simplified premium leg.
+meaning: Present-value coefficient that multiplies contractual spread and notional in the simplified premium leg.
 aliases:
   - risky premium annuity
 domain: cds

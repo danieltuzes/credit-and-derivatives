@@ -1,8 +1,8 @@
 ---
 key: basis-point
-notation: '1\,\mathrm{bp}'
+latex: '1\,\mathrm{bp}'
 title: Basis point
-summary: Rate-change unit equal to one hundredth of one percentage point.
+meaning: Rate-change unit equal to one hundredth of one percentage point.
 aliases:
   - bp
   - bps

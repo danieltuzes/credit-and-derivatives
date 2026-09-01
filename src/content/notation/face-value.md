@@ -1,8 +1,8 @@
 ---
 key: face-value
-notation: 'F'
+latex: 'F'
 title: Face value
-summary: Contractual reference amount used to determine coupons and principal redemption.
+meaning: Contractual reference amount used to determine coupons and principal redemption.
 aliases:
   - par amount
   - principal amount

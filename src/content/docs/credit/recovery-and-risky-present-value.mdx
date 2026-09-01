@@ -42,9 +42,9 @@ notation:
     - recovery-of-par-present-value
   local:
     - key: recovery-par-amount
-      notation: 'F'
+      latex: 'F'
       title: Par amount in the one-period recovery model
-      summary: Positive currency amount promised after survival and used as the recovery base after default.
+      meaning: Positive currency amount promised after survival and used as the recovery base after default.
       details: It is a synthetic model input and not a market price.
       formula: 'F>0'
       units: stated currency at the scheduled payment time
@@ -56,9 +56,9 @@ notation:
         introducedByCompetency: credit.recovery-rate.interpret
         introducedInLesson: credit.recovery-and-risky-present-value
     - key: recovery-payment-time
-      notation: 'T'
+      latex: 'T'
       title: Payment time in the one-period recovery model
-      summary: Single future time when either the survival-state or recovered-par amount is paid.
+      meaning: Single future time when either the survival-state or recovered-par amount is paid.
       details: Default may occur earlier, but this toy convention delays the recovered-par payment to this time.
       formula: 'T>0'
       units: model-years from valuation time
