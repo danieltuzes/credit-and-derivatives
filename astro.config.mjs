@@ -36,6 +36,9 @@ const loadSourceRecords = () =>
 
 export default defineConfig({
   output: 'static',
+  // Project GitHub Pages site: https://danieltuzes.github.io/equations
+  site: 'https://danieltuzes.github.io',
+  base: '/equations',
   integrations: [
     starlight({
       title: 'Credit Products Playground',
