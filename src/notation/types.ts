@@ -35,7 +35,6 @@ export interface SharedNotationDefinitionInput {
   readonly aliases: readonly string[];
   readonly domain: string;
   readonly units?: string;
-  readonly perspective?: string;
   readonly sources: readonly string[];
   readonly seeAlso: readonly string[];
   readonly alignment: NotationAlignment;
@@ -52,13 +51,12 @@ export interface LocalNotationDefinitionInput {
   readonly notation: string;
   readonly title: string;
   readonly summary: string;
-  readonly details?: string;
   readonly formula?: string;
   readonly units?: string;
   readonly sources: readonly string[];
   readonly seeAlso: readonly string[];
   readonly alignment: NotationAlignment;
-  /** References harvested from summary/details content. */
+  /** References harvested from summary content. */
   readonly references: readonly NotationReferenceInput[];
   readonly source: SourceSpan;
 }
@@ -142,7 +140,6 @@ export interface SharedNotationDefinitionRecord extends NotationDefinitionRecord
   readonly aliases: readonly string[];
   readonly domain: string;
   readonly units?: string;
-  readonly perspective?: string;
   readonly sources: readonly string[];
   readonly aiAssisted: boolean;
   readonly body: string;
@@ -152,7 +149,6 @@ export interface LocalNotationDefinitionRecord extends NotationDefinitionRecordB
   readonly kind: 'local';
   readonly lessonId: string;
   readonly summary: string;
-  readonly details?: string;
   readonly formula?: string;
   readonly units?: string;
   readonly sources: readonly string[];

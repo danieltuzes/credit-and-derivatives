@@ -645,9 +645,6 @@ function toDefinitionRecord(
       source: input.source,
       resolvedReferences: candidate.resolvedReferences,
       ...(input.units === undefined ? {} : { units: input.units }),
-      ...(input.perspective === undefined
-        ? {}
-        : { perspective: input.perspective }),
     };
     return record;
   }
@@ -668,7 +665,6 @@ function toDefinitionRecord(
     status: candidate.lesson.status,
     source: input.source,
     resolvedReferences: candidate.resolvedReferences,
-    ...(input.details === undefined ? {} : { details: input.details }),
     ...(input.formula === undefined ? {} : { formula: input.formula }),
     ...(input.units === undefined ? {} : { units: input.units }),
   };
@@ -706,7 +702,6 @@ function definitionFingerprint(candidate: DefinitionCandidate): string {
       aliases: [...input.aliases].sort(),
       domain: input.domain,
       units: input.units,
-      perspective: input.perspective,
       sources: [...input.sources].sort(),
       seeAlso: [...input.seeAlso].sort(),
       alignment,
@@ -724,8 +719,6 @@ function definitionFingerprint(candidate: DefinitionCandidate): string {
     notation: input.notation,
     title: normalizeText(input.title),
     summary: normalizeText(input.summary),
-    details:
-      input.details === undefined ? undefined : normalizeText(input.details),
     formula: input.formula,
     units: input.units,
     sources: [...input.sources].sort(),

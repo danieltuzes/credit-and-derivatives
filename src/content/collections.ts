@@ -296,10 +296,9 @@ function localDefinition(
   // `notation`/`summary`/`title` are still read until the codemod.
   const latex = string(data.latex, `${label}.latex`);
   const meaning = meaningText(data.meaning, `${label}.meaning`);
-  const details = optionalString(data.details, `${label}.details`);
   const formula = optionalString(data.formula, `${label}.formula`);
   const units = optionalString(data.units, `${label}.units`);
-  const definitionText = [meaning, details, formula]
+  const definitionText = [meaning, formula]
     .filter((value): value is string => value !== undefined)
     .join('\n');
 
@@ -316,7 +315,6 @@ function localDefinition(
         : alignment(data.alignment, `${label}.alignment`),
     references: extractNotationReferences(definitionText, file, 'definition'),
     source: { file },
-    ...(details === undefined ? {} : { details }),
     ...(formula === undefined ? {} : { formula }),
     ...(units === undefined ? {} : { units }),
   };
@@ -332,8 +330,6 @@ function sharedNotationEntries(): SharedNotationDefinitionInput[] {
       throw new Error(`${file} declares key ${key}; expected ${filenameKey}`);
     }
     const units = optionalString(data.units, `${file} units`);
-    const perspective = optionalString(data.perspective, `${file} perspective`);
-    // One notation shape (Phase C1b): `latex`/`meaning`; pre-C1b names still read.
     const meaning = meaningText(data.meaning, `${file} meaning`);
     return {
       key,
@@ -351,7 +347,6 @@ function sharedNotationEntries(): SharedNotationDefinitionInput[] {
       references: extractNotationReferences(body, file, undefined),
       source: { file },
       ...(units === undefined ? {} : { units }),
-      ...(perspective === undefined ? {} : { perspective }),
     };
   });
 }

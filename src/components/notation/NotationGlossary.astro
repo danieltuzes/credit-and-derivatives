@@ -43,7 +43,6 @@ const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
     notation: entry.data.latex,
     title: entry.data.title,
     summary: entry.data.meaning,
-    details: entry.data.perspective,
     units: entry.data.units,
     seeAlso: entry.data.seeAlso,
     editorialStatus: entry.data.editorialStatus,
@@ -111,12 +110,6 @@ const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
               <div>
                 <dt>Units</dt>
                 <dd>{entry.data.units}</dd>
-              </div>
-            )}
-            {entry.data.perspective && (
-              <div>
-                <dt>Perspective</dt>
-                <dd>{entry.data.perspective}</dd>
               </div>
             )}
             {entry.data.aliases.length > 0 && (

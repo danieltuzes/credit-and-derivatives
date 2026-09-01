@@ -25,9 +25,6 @@ const notationProse = z
     message:
       'Notation meaning must be substantive prose (at least four words, not a placeholder).',
   });
-// Legacy alias while files still say `summary`/`details` (renamed to `meaning`
-// by the Phase C2 codemod).
-const notationSummary = notationProse;
 
 const notationAlignment = z.discriminatedUnion('kind', [
   z.object({
@@ -62,10 +59,9 @@ const notationSource = z.union([
  * (or `dimensionless: true`), `seeAlso`, `sources` (`{id, locator}`),
  * optional `alignment` (defaults to `general`).
  *
- * `title` and `details` remain accepted (deprecated): the C1b codemod renamed
- * `notation`→`latex` and `summary`→`meaning`, but dropping `title` and folding
- * `details` / `perspective` into `meaning` is a separate reviewed content pass.
- * The `notationProse` refinement rejects an under-specified `meaning`.
+ * `title` remains accepted (deprecated): `perspective` and `details` were
+ * folded into `meaning` and removed; dropping `title` is a further content
+ * pass. The `notationProse` refinement rejects an under-specified `meaning`.
  */
 const notationEntryShape = z.object({
   key: id,
@@ -77,9 +73,8 @@ const notationEntryShape = z.object({
   seeAlso: z.array(id).default([]),
   sources: z.array(notationSource).default([]),
   alignment: notationAlignmentDefault,
-  // Deprecated — dropped / folded into `meaning` by a later content pass.
+  // Deprecated — a later content pass drops `title`.
   title: z.string().min(1).optional(),
-  details: notationSummary.optional(),
 });
 
 const localNotationDefinition = notationEntryShape;
@@ -239,12 +234,7 @@ const sources = defineCollection({
 /**
  * Standalone notation collection — the one `notationEntry` shape plus the
  * shared-only extras: `domain`, `aliases`, its own `editorialStatus`, and a
- * Markdown body.
- *
- * `title`, `details`, and `perspective` are still accepted (deprecated): the
- * C1b codemod renamed `notation`→`latex` and `summary`→`meaning`, but folding
- * each real `perspective` / `details` into `meaning` and dropping `title` is a
- * separate reviewed content pass.
+ * Markdown body. `title` is still authored (a later content pass drops it).
  */
 const notation = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/notation' }),
@@ -254,7 +244,6 @@ const notation = defineCollection({
     aliases: z.array(z.string().min(1)).default([]),
     editorialStatus,
     aiAssisted: z.boolean().default(false),
-    perspective: z.string().min(1).optional(),
   }),
 });
 
