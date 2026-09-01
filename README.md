@@ -41,33 +41,33 @@ on `PATH`) is the simplest fix.
 
 ## Commands
 
-| Command | Purpose |
-|---------|---------|
-| `pnpm dev` | Editor preview with hot reload |
-| `pnpm validate:content` | Curriculum + notation semantic validation |
-| `pnpm check` | Astro + TypeScript checks |
-| `pnpm test` / `pnpm test:watch` | Numerical, curriculum, notation tests |
-| `pnpm test:e2e` | Astro server + browser + accessibility |
-| `pnpm build` / `pnpm preview` | Static production build / preview it |
-| `pnpm format` / `pnpm format:check` | Prettier write / check |
-| `pnpm verify` | Every required pre-review check, in order |
+| Command                             | Purpose                                   |
+| ----------------------------------- | ----------------------------------------- |
+| `pnpm dev`                          | Editor preview with hot reload            |
+| `pnpm validate:content`             | Curriculum + notation semantic validation |
+| `pnpm check`                        | Astro + TypeScript checks                 |
+| `pnpm test` / `pnpm test:watch`     | Numerical, curriculum, notation tests     |
+| `pnpm test:e2e`                     | Astro server + browser + accessibility    |
+| `pnpm build` / `pnpm preview`       | Static production build / preview it      |
+| `pnpm format` / `pnpm format:check` | Prettier write / check                    |
+| `pnpm verify`                       | Every required pre-review check, in order |
 
 ## Repository map
 
-| Path | Purpose |
-|------|---------|
-| `src/content/docs/` | MDX lessons and site pages |
-| `src/content/{competencies,assessments,tracks,sources}/` | Curriculum data (JSON) |
-| `src/content/notation/` | Shared define-once notation entries (Markdown) |
-| `src/content.config.ts` | Authoritative Zod schemas for all content |
-| `src/domain/` | Pure financial and mathematical calculations |
-| `src/curriculum/` | Curriculum graph and semantic validation |
-| `src/notation/` | Notation parsing, registry, scoping, KaTeX adapters |
-| `src/components/` | Astro/React UI (labs, notation layer, glossary, examples) |
-| `scripts/` | Repository-level validation commands |
-| `tests/` | Unit, property, curriculum, browser, accessibility tests |
-| `docs/` | Architecture reference and ADRs |
-| `reference-library/` | Local (git-ignored) cache of source texts for verification |
+| Path                                                     | Purpose                                                    |
+| -------------------------------------------------------- | ---------------------------------------------------------- |
+| `src/content/docs/`                                      | MDX lessons and site pages                                 |
+| `src/content/{competencies,assessments,tracks,sources}/` | Curriculum data (JSON)                                     |
+| `src/content/notation/`                                  | Shared define-once notation entries (Markdown)             |
+| `src/content.config.ts`                                  | Authoritative Zod schemas for all content                  |
+| `src/domain/`                                            | Pure financial and mathematical calculations               |
+| `src/curriculum/`                                        | Curriculum graph and semantic validation                   |
+| `src/notation/`                                          | Notation parsing, registry, scoping, KaTeX adapters        |
+| `src/components/`                                        | Astro/React UI (labs, notation layer, glossary, examples)  |
+| `scripts/`                                               | Repository-level validation commands                       |
+| `tests/`                                                 | Unit, property, curriculum, browser, accessibility tests   |
+| `docs/`                                                  | Architecture reference and ADRs                            |
+| `reference-library/`                                     | Local (git-ignored) cache of source texts for verification |
 
 ## Where things are documented
 
