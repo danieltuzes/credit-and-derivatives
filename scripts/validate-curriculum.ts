@@ -4,8 +4,10 @@ import {
   assertValidNotation,
   buildNotationRegistry,
 } from '../src/notation/registry';
-import { loadCurriculumCatalog } from './curriculum-files';
-import { loadNotationRegistryInput } from './notation-files';
+import {
+  loadCurriculumCatalog,
+  loadNotationRegistryInput,
+} from '../src/content/collections';
 
 const [catalog, notationInput] = await Promise.all([
   loadCurriculumCatalog(),

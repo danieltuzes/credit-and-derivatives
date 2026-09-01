@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { loadCurriculumCatalog } from '../../scripts/curriculum-files';
-import { loadNotationRegistryInput } from '../../scripts/notation-files';
+import {
+  loadCurriculumCatalog,
+  loadNotationRegistryInput,
+} from '../../src/content/collections';
 import type {
   CompetencyDefinition,
   CurriculumCatalog,

@@ -1,4 +1,4 @@
-import { loadNotationRegistryInput } from '../../scripts/notation-files';
+import { loadNotationRegistryInput } from '../content/collections';
 import type { LabMathScopeDefinition } from './render-lab-math';
 
 interface LessonNotationFrontmatter {

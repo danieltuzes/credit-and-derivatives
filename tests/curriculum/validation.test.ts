@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { loadCurriculumCatalog } from '../../scripts/curriculum-files';
+import { loadCurriculumCatalog } from '../../src/content/collections';
 import {
   validateCurriculum,
   type CompetencyDefinition,
