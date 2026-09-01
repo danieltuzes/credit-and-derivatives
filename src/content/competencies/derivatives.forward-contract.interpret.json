@@ -1,0 +1,21 @@
+{
+  "id": "derivatives.forward-contract.interpret",
+  "title": "Interpret a forward contract",
+  "domain": "derivatives",
+  "facet": "interpretation",
+  "outcome": "Interpret the long and short obligations, delivery time, delivery price, and signed expiry payoff of a forward contract.",
+  "prerequisites": [
+    "finance.cash-flow-perspective.apply",
+    "finance.law-of-one-price.explain"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A forward gives the long a right with no obligation to buy.",
+    "The delivery price is a premium paid when the forward is initiated."
+  ],
+  "editorialStatus": "draft"
+}

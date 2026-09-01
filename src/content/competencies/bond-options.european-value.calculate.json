@@ -1,0 +1,22 @@
+{
+  "id": "bond-options.european-value.calculate",
+  "title": "Calculate a European bond option value",
+  "domain": "bond-options",
+  "facet": "calculation",
+  "outcome": "Calculate a European bond option payoff at expiry and value it by backward induction on a supplied default-free bond-value lattice.",
+  "prerequisites": [
+    "bond-options.contract.interpret",
+    "finance.backward-induction.calculate",
+    "options.payoff.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The current bond price can be inserted directly into the expiry payoff formula.",
+    "Coupons paid before expiry should remain inside an ex-coupon expiry bond value."
+  ],
+  "editorialStatus": "draft"
+}

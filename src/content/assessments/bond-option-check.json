@@ -1,0 +1,53 @@
+{
+  "id": "bond-option-check",
+  "title": "European bond option check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "bond-option-contract-direct",
+      "type": "single-choice",
+      "competencyId": "bond-options.contract.interpret",
+      "evidenceKind": "direct",
+      "prompt": "A standalone European call on a bond gives its holder which right?",
+      "options": [
+        { "id": "buy-bond", "label": "The right, but not obligation, to buy the named bond at the stated strike and exercise time" },
+        { "id": "issuer-call", "label": "The issuer's right to redeem every outstanding bond" },
+        { "id": "coupon-right", "label": "Automatic ownership of every coupon paid before option exercise" }
+      ],
+      "correctOptionId": "buy-bond",
+      "explanation": "This lesson models a standalone holder option, not an embedded issuer call feature."
+    },
+    {
+      "id": "bond-option-contract-transfer",
+      "type": "single-choice",
+      "competencyId": "bond-options.contract.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "An option strike is quoted as a clean bond price and exercise occurs between coupon dates. What is needed before comparing it with a dirty bond value?",
+      "options": [
+        { "id": "add-accrued", "label": "Add the exercise-date accrued interest under the stated convention" },
+        { "id": "subtract-coupons", "label": "Subtract every coupon paid over the bond's entire life" },
+        { "id": "no-adjustment", "label": "No adjustment; clean and dirty prices are identical between coupon dates" }
+      ],
+      "correctOptionId": "add-accrued",
+      "explanation": "Payoff inputs must share one price basis. A clean strike becomes a dirty cash strike after adding applicable accrued interest."
+    },
+    {
+      "id": "bond-option-value-direct",
+      "type": "numeric",
+      "competencyId": "bond-options.european-value.calculate",
+      "evidenceKind": "direct",
+      "prompt": "At expiry a bond has dirty ex-coupon values of USD 78, USD 84, and USD 89 across three nodes. Calculate call payoffs for strike USD 82 and report their sum in USD.",
+      "answer": { "value": 9, "tolerance": 0.000001 },
+      "explanation": "The node payoffs are 0, 2, and 7, whose sum is USD 9. The sum is requested only as a compact payoff check, not as a probability-weighted value."
+    },
+    {
+      "id": "bond-option-value-transfer",
+      "type": "numeric",
+      "competencyId": "bond-options.european-value.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "One period before expiry, a default-free bond call is worth USD 0 in the down node and USD 6 in the up node. The risk-neutral up weight is 0.4 and the node discount factor is 0.95. Calculate the current option value in USD.",
+      "answer": { "value": 2.28, "tolerance": 0.000001 },
+      "explanation": "Backward induction gives 0.95 × (0.6 × 0 + 0.4 × 6) = USD 2.28."
+    }
+  ]
+}

@@ -9,6 +9,7 @@ requires:
   - finance.present-value.interpret
   - finance.present-value.calculate
   - probability.expectation-by-partition.calculate
+  - finance.law-of-one-price.explain
 teaches:
   - finance.risk-neutral-measure.interpret
   - finance.risk-neutral-value.calculate
@@ -102,7 +103,7 @@ notation:
         introducedInLesson: foundations.risk-neutral-pricing
 aiAssisted: true
 sidebar:
-  order: 6
+  order: 7
 ---
 
 import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
@@ -219,40 +220,24 @@ No $\mathbb{P}$ probabilities enter this price because the example explicitly
 supplies $\mathbb{Q}$ pricing weights. Estimating a real-world expected payoff
 would be a different calculation.
 
-## What happens to volatility?
+## Uncertainty remains
 
-Changing from $\mathbb{P}$ to $\mathbb{Q}$ reweights paths; it does not erase
-randomness. In the standard diffusion change-of-measure result, the drift is
-changed while the diffusion coefficient—the model's volatility—is unchanged
+Changing from $\mathbb{P}$ to $\mathbb{Q}$ reweights modeled outcomes; it does
+not erase randomness. In the standard diffusion change-of-measure result, the
+drift changes while the diffusion coefficient remains
 \cite\{shreve-stochastic-calculus-finance-ii\}\{Ch. 5 §5.2.2, printed pp.
-214-217, especially eqs. 5.2.22-5.2.24\}. Saying that “the measure handles
-volatility” would therefore be misleading.
+214-217, especially eqs. 5.2.22-5.2.24\}. Volatility therefore remains a model
+input for nonlinear claims such as options. Product-specific reasons why a
+restricted linear model may omit a separate volatility input belong beside that
+product model rather than in this foundation.
 
-A later simplified vanilla CDS calculation can still have no separate
-volatility input. With a deterministic $\mathbb{Q}$ survival/default curve,
-deterministic discount factors, fixed recovery, fixed notional, and linear leg
-cash flows, the expected discounted payments are determined by those inputs.
-This is a consequence of that deliberately narrow model, not of volatility
-being absorbed into $\mathbb{Q}$. The CDS leg constructions in Tuckman and
-Serrat and in Hull use default-event probabilities, discounting, recovery, and
-scheduled or accrued premiums in this way
-\cite\{tuckman-serrat-fixed-income\}\{Ch. 14 §§14.5-14.7, printed pp. 361-371,
-Tables 14.9-14.10 and eqs. 14.4-14.7\}
-\cite\{hull-options-futures\}\{Ch. 24 §§24.1-24.2, printed pp. 548-554, Tables
-24.1-24.4\}.
+## Advanced boundary: uniqueness
 
-Volatility and joint dynamics can matter when discounting, recovery, or another
-state variable co-moves with default, and they matter for nonlinear claims such
-as options on future CDS value. Those models are outside this lesson.
-
-## Is the pricing measure unique?
-
-Not automatically. Under the usual technical conditions, absence of arbitrage
-is tied to the existence of a suitable martingale measure. Uniqueness requires
-the stronger condition that the model be complete. If modeled traded assets do
-not span every modeled risk, several admissible pricing measures can remain,
-so no-arbitrage alone does not select one price for every claim. Shreve develops
-the existence and uniqueness distinction
+The supplied pricing measure need not be unique. Under the usual technical
+conditions, absence of arbitrage is tied to existence of a suitable martingale
+measure, while uniqueness requires the stronger condition that the modeled
+market be complete. This is a boundary note rather than a competency assessed
+on this page. Shreve develops the existence and uniqueness distinction
 \cite\{shreve-stochastic-calculus-finance-ii\}\{Ch. 5 §§5.4.3-5.4.4, printed
 pp. 228-233\}.
 

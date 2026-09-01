@@ -1,0 +1,22 @@
+{
+  "id": "derivatives.forward-delivery-price.calculate",
+  "title": "Calculate a fair forward delivery price",
+  "domain": "derivatives",
+  "facet": "calculation",
+  "outcome": "Calculate the fair delivery price of a newly struck forward from spot value, present value of deterministic income before delivery, and the delivery-date discount factor.",
+  "prerequisites": [
+    "derivatives.forward-contract.interpret",
+    "finance.present-value.calculate",
+    "rates.discount-factor.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The forward price equals the spot price regardless of funding and income.",
+    "Known income paid before delivery should be added to the prepaid forward value."
+  ],
+  "editorialStatus": "draft"
+}

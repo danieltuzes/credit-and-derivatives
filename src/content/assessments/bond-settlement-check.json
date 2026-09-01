@@ -1,0 +1,25 @@
+{
+  "id": "bond-settlement-check",
+  "title": "Bond settlement check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "clean-dirty-direct",
+      "type": "numeric",
+      "competencyId": "bonds.clean-dirty-price.calculate",
+      "evidenceKind": "direct",
+      "prompt": "A coupon payment is USD 31.25. Settlement is 91 actual days into an actual 181-day coupon period. Calculate accrued interest in USD.",
+      "answer": { "value": 15.71132596685083, "tolerance": 0.000001 },
+      "explanation": "Accrued interest is 31.25 × 91 / 181 = USD 15.71132597."
+    },
+    {
+      "id": "clean-dirty-transfer",
+      "type": "numeric",
+      "competencyId": "bonds.clean-dirty-price.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A bond has a clean cash price of USD 9,178.125 and accrued interest of USD 15.711. Calculate its dirty invoice price in USD.",
+      "answer": { "value": 9193.836, "tolerance": 0.000001 },
+      "explanation": "Dirty price = clean price + accrued interest = USD 9,193.836."
+    }
+  ]
+}

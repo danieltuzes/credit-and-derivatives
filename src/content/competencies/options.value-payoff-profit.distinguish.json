@@ -1,0 +1,21 @@
+{
+  "id": "options.value-payoff-profit.distinguish",
+  "title": "Distinguish option value, payoff, premium, and profit",
+  "domain": "options",
+  "facet": "interpretation",
+  "outcome": "Distinguish an option's current value or premium from its expiry payoff and from profit after accounting for the premium under a stated financing convention.",
+  "prerequisites": [
+    "options.european-contract.interpret",
+    "finance.present-value.interpret"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Option payoff and option profit are identical even when a premium was paid.",
+    "The strike price is the option premium."
+  ],
+  "editorialStatus": "draft"
+}

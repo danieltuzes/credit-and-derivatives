@@ -1,0 +1,21 @@
+{
+  "id": "options.put-call-parity.calculate",
+  "title": "Calculate a value from put-call parity",
+  "domain": "options",
+  "facet": "calculation",
+  "outcome": "Calculate a missing European call or put value from the other option value, prepaid forward value, strike, and expiry discount factor.",
+  "prerequisites": [
+    "options.put-call-parity.explain",
+    "derivatives.forward-delivery-price.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The undiscounted strike should be subtracted from a time-zero option value.",
+    "Known income before expiry has no effect on parity."
+  ],
+  "editorialStatus": "draft"
+}

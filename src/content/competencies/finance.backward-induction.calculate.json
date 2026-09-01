@@ -1,0 +1,21 @@
+{
+  "id": "finance.backward-induction.calculate",
+  "title": "Calculate value by backward induction",
+  "domain": "finance",
+  "facet": "calculation",
+  "outcome": "Calculate node values on a supplied multi-period recombining pricing lattice by risk-neutral expectation and one-period node discounting.",
+  "prerequisites": [
+    "options.one-period-binomial-value.calculate",
+    "finance.risk-neutral-value.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Terminal values can be averaged directly to time zero without valuing intermediate nodes.",
+    "One valuation-time discount factor must be reused at every node even when the supplied lattice has node-specific factors."
+  ],
+  "editorialStatus": "draft"
+}

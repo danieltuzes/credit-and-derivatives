@@ -1,0 +1,98 @@
+---
+title: Bond forwards
+description: Apply cash-and-carry to a coupon bond while keeping coupon ownership and dirty-price units explicit.
+lessonId: bonds.bond-forwards
+editorialStatus: draft
+riskTier: 3
+estimatedMinutes: 30
+requires:
+  - derivatives.forward-delivery-price.calculate
+  - bonds.clean-dirty-price.calculate
+  - bonds.price-from-discount-factors.calculate
+teaches:
+  - bonds.forward-delivery-price.calculate
+assessments:
+  - bond-forward-check
+sources:
+  - hull-options-futures
+assumptions:
+  - Long forward obligates purchase of one named bond at one delivery time
+  - Current bond price and delivery price are both dirty cash prices in the same currency per bond
+  - Coupon amounts and payment dates before delivery are known and their present value uses the stated deterministic curve
+  - No default, financing spread, repo specialness, delivery option, tax, transaction cost, or settlement failure
+notation:
+  uses:
+    - valuation-time
+    - forward-delivery-time
+    - forward-delivery-price
+    - dirty-bond-price
+    - bond-forward-price
+    - discount-factor
+  local:
+    - key: predelivery-coupon-present-value
+      notation: 'I_0^{\mathrm{pre}}'
+      title: Present value of pre-delivery coupons
+      summary: Valuation-time present value of coupons paid to the current bond owner before forward delivery.
+      units: stated currency at valuation time per bond
+      sources:
+        - hull-options-futures
+      alignment:
+        kind: competency
+        introducedByCompetency: bonds.forward-delivery-price.calculate
+        introducedInLesson: bonds.bond-forwards
+aiAssisted: true
+sidebar:
+  order: 6
+---
+
+import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
+
+## Contract first
+
+The long bond forward is obligated to pay the 	erm{forward-delivery-price}
+and receive the named bond at 	erm{forward-delivery-time}. It does not own the
+bond before delivery. Coupons paid before delivery therefore belong to the
+current holder.
+
+## Cash-and-carry price
+
+Start with the current 	erm{dirty-bond-price}
+$P^{\mathrm{dirty}}$. Subtract the local
+	erm{predelivery-coupon-present-value} $I_0^{\mathrm{pre}}$. The remainder is
+the prepaid forward value of receiving the bond at delivery. Converting that
+prepaid amount into delivery-date currency gives the fair
+	erm{bond-forward-price}:
+
+$$
+\explain{bond-forward-price}{F^B_{0,T_{\mathrm{fwd}}}}
+=\frac{
+\explain{dirty-bond-price}{P^{\mathrm{dirty}}}
+-\explain{predelivery-coupon-present-value}{I_0^{\mathrm{pre}}}
+}{
+\explain{discount-factor}{D(0,T_{\mathrm{fwd}})}
+}.
+$$
+
+For dirty spot USD 960, pre-delivery coupon PV USD 95.45, and delivery factor
+0.92, the fair dirty delivery price is USD 939.72826087.
+
+An already-existing contract need not have that delivery price. Its value is
+handled by the earlier forward-value lesson; here the output is the fair price
+for a new contract.
+
+## Basis consistency
+
+A clean spot quote must first be converted to dirty cash price. Likewise, a
+clean delivery quote or strike needs the delivery-date accrued amount. Mixing
+clean and dirty values can look like a pricing discrepancy while being only a
+unit/convention mismatch.
+
+## Check your understanding
+
+<AssessmentSet id="bond-forward-check" />
+
+## Sources
+
+The known-income cash-and-carry formula and its coupon-bond application follow
+Hull, Chapter 5 §§5.3–5.5; the dirty bond forward and strike basis is reinforced
+in Chapter 28 §28.1 \cite{hull-options-futures}.

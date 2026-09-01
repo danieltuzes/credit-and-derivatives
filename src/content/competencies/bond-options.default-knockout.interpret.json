@@ -1,0 +1,22 @@
+{
+  "id": "bond-options.default-knockout.interpret",
+  "title": "Interpret an issuer-default knockout",
+  "domain": "bond-options",
+  "facet": "interpretation",
+  "outcome": "Interpret an issuer-default knockout bond option as a contract extinguished with zero option rebate if the bond issuer defaults before exercise, separately from any recovery on the bond.",
+  "prerequisites": [
+    "bond-options.contract.interpret",
+    "credit.survival-probability.interpret",
+    "credit.recovery-rate.interpret"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Bond recovery after issuer default is also an option rebate.",
+    "Default knockout means the option is knocked out when the bond price crosses a market-price barrier."
+  ],
+  "editorialStatus": "draft"
+}

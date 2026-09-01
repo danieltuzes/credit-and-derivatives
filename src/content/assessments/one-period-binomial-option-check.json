@@ -1,0 +1,43 @@
+{
+  "id": "one-period-binomial-option-check",
+  "title": "One-period binomial option valuation check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "binomial-option-value-direct",
+      "type": "numeric",
+      "competencyId": "options.one-period-binomial-value.calculate",
+      "evidenceKind": "direct",
+      "prompt": "A no-income underlying is worth USD 100 now and will be USD 120 or USD 80 at expiry. D(0,T) = 1/1.05. A call with strike USD 100 pays USD 20 or USD 0. The model-implied Q up-weight is 0.625. What is the call value in USD?",
+      "answer": { "value": 11.9047619048, "tolerance": 0.000001 },
+      "explanation": "Discount the Q-weighted payoff: (1/1.05) × [0.625 × 20 + 0.375 × 0] = USD 11.9047619048."
+    },
+    {
+      "id": "binomial-option-value-transfer",
+      "type": "numeric",
+      "competencyId": "options.one-period-binomial-value.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "In the same tree, a put with strike USD 100 pays USD 0 in the up state and USD 20 in the down state. The Q up-weight is 0.625 and D(0,T) = 1/1.05. What is the put value in USD?",
+      "answer": { "value": 7.1428571429, "tolerance": 0.000001 },
+      "explanation": "The Q down-weight is 0.375. Discounting gives (1/1.05) × [0.625 × 0 + 0.375 × 20] = USD 7.1428571429."
+    },
+    {
+      "id": "binomial-hedge-direct",
+      "type": "numeric",
+      "competencyId": "options.binomial-hedge.calculate",
+      "evidenceKind": "direct",
+      "prompt": "A claim pays USD 20 when the underlying is USD 120 and USD 0 when it is USD 80. How many underlying units are required in its one-period replicating portfolio?",
+      "answer": { "value": 0.5, "tolerance": 0.000001 },
+      "explanation": "The hedge quantity is the payoff difference divided by the underlying-value difference: (20 - 0) / (120 - 80) = 0.5."
+    },
+    {
+      "id": "binomial-hedge-transfer",
+      "type": "numeric",
+      "competencyId": "options.binomial-hedge.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A claim pays USD 10 when the underlying is USD 130 and USD -2 when it is USD 90. Its hedge quantity is 0.3 underlying units. What risk-free cash amount is required at expiry to reproduce the down-state payoff, in USD?",
+      "answer": { "value": -29, "tolerance": 0.000001 },
+      "explanation": "Cash at expiry is payoff_down - delta × underlying_down = -2 - 0.3 × 90 = USD -29. A negative amount is borrowing."
+    }
+  ]
+}

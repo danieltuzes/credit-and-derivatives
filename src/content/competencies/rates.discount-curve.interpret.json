@@ -1,0 +1,18 @@
+{
+  "id": "rates.discount-curve.interpret",
+  "title": "Interpret a deterministic discount curve",
+  "domain": "rates",
+  "facet": "interpretation",
+  "outcome": "Interpret a dated set of positive valuation-time discount factors as a deterministic curve, including its interpolation and no-extrapolation conventions.",
+  "prerequisites": ["rates.discount-factor.interpret"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A single yield is interchangeable with an entire dated discount curve.",
+    "Discount factors must be below one even when rates can be negative."
+  ],
+  "editorialStatus": "draft"
+}

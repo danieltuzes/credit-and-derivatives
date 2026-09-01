@@ -1,0 +1,53 @@
+{
+  "id": "put-call-parity-check",
+  "title": "Put-call parity check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "put-call-parity-direct",
+      "type": "single-choice",
+      "competencyId": "options.put-call-parity.explain",
+      "evidenceKind": "direct",
+      "prompt": "Which matching conditions are required for the European call and put in the lesson's put-call parity?",
+      "options": [
+        { "id": "same-contract-terms", "label": "Same underlying, strike, expiry, exercise style, and settlement basis" },
+        { "id": "same-premium", "label": "Only the same current premium" },
+        { "id": "same-direction", "label": "Only the same call-or-put direction" }
+      ],
+      "correctOptionId": "same-contract-terms",
+      "explanation": "Parity compares portfolios whose state-by-state expiry cash flows match. Different underlying, strike, expiry, style, or settlement basis breaks that match."
+    },
+    {
+      "id": "put-call-parity-transfer",
+      "type": "single-choice",
+      "competencyId": "options.put-call-parity.explain",
+      "evidenceKind": "transfer",
+      "prompt": "Does vanilla European put-call parity automatically apply to an option that is extinguished by issuer default?",
+      "options": [
+        { "id": "no-default-state", "label": "No, the default state changes the matched cash flows and needs an explicit survival-contingent parity" },
+        { "id": "yes-any-option", "label": "Yes, the same formula applies to every contract called an option" },
+        { "id": "yes-ignore-default", "label": "Yes, because default can be ignored after a strike is fixed" }
+      ],
+      "correctOptionId": "no-default-state",
+      "explanation": "If both options terminate on default, call-minus-put is also zero in that state. The corresponding synthetic forward must carry the same default contingency."
+    },
+    {
+      "id": "put-call-parity-calc-direct",
+      "type": "numeric",
+      "competencyId": "options.put-call-parity.calculate",
+      "evidenceKind": "direct",
+      "prompt": "A European call is worth USD 8, the prepaid forward value is USD 97, the strike is USD 100, and D(0,T) = 0.95. What put value satisfies parity, in USD?",
+      "answer": { "value": 6, "tolerance": 0.000001 },
+      "explanation": "From c - p = prepaid forward - K D(0,T), p = 8 - 97 + 100 × 0.95 = USD 6."
+    },
+    {
+      "id": "put-call-parity-calc-transfer",
+      "type": "numeric",
+      "competencyId": "options.put-call-parity.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A European put is worth USD 7, the prepaid forward value after known income is USD 92, the strike is USD 100, and D(0,T) = 0.96. What call value satisfies parity, in USD?",
+      "answer": { "value": 3, "tolerance": 0.000001 },
+      "explanation": "Rearrange parity: c = p + prepaid forward - K D(0,T) = 7 + 92 - 96 = USD 3."
+    }
+  ]
+}

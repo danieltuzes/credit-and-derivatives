@@ -1,0 +1,22 @@
+{
+  "id": "options.put-call-parity.explain",
+  "title": "Explain European put-call parity",
+  "domain": "options",
+  "facet": "knowledge",
+  "outcome": "Explain European put-call parity by matching the expiry cash flows of a call-minus-put portfolio and a forward-style position under stated income and discounting assumptions.",
+  "prerequisites": [
+    "finance.law-of-one-price.explain",
+    "derivatives.forward-contract.interpret",
+    "options.payoff.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Put-call parity applies to any call and put even when strike, expiry, exercise style, or underlying differs.",
+    "Put-call parity is a forecast of the underlying's expiry price."
+  ],
+  "editorialStatus": "draft"
+}

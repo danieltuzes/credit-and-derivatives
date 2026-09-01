@@ -1,0 +1,53 @@
+{
+  "id": "default-knockout-bond-option-check",
+  "title": "Issuer-default knockout bond option check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "default-knockout-direct",
+      "type": "single-choice",
+      "competencyId": "bond-options.default-knockout.interpret",
+      "evidenceKind": "direct",
+      "prompt": "In this lesson's contract, what happens if the issuer defaults before option exercise?",
+      "options": [
+        { "id": "zero-option", "label": "The option is extinguished with zero option rebate" },
+        { "id": "bond-recovery", "label": "The option holder automatically receives the bond's recovery amount" },
+        { "id": "price-barrier", "label": "The option survives unless the bond price also crosses a barrier" }
+      ],
+      "correctOptionId": "zero-option",
+      "explanation": "Issuer default is the knockout event. Recovery on the underlying bond is modeled separately and is not an option rebate."
+    },
+    {
+      "id": "default-knockout-transfer",
+      "type": "single-choice",
+      "competencyId": "bond-options.default-knockout.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "The bond pays USD 40 recovery after default, but an otherwise identical call is extinguished on that default. What enters the option's default branch?",
+      "options": [
+        { "id": "zero", "label": "USD 0; the USD 40 belongs only in the bond valuation" },
+        { "id": "forty", "label": "USD 40 because every bond cash flow passes through to the option" },
+        { "id": "strike", "label": "The option strike because exercise is forced" }
+      ],
+      "correctOptionId": "zero",
+      "explanation": "The contract separates underlying recovery from option termination."
+    },
+    {
+      "id": "default-knockout-value-direct",
+      "type": "numeric",
+      "competencyId": "bond-options.default-knockout-value.calculate",
+      "evidenceKind": "direct",
+      "prompt": "At an alive node, the risk-neutral expected next option value conditional on survival is USD 10, conditional survival over the period is 0.90, and the node discount factor is 0.95. Default gives zero option rebate. Calculate the current option value in USD.",
+      "answer": { "value": 8.55, "tolerance": 0.000001 },
+      "explanation": "The value is 0.95 × [0.90 × 10 + 0.10 × 0] = USD 8.55."
+    },
+    {
+      "id": "default-knockout-value-transfer",
+      "type": "numeric",
+      "competencyId": "bond-options.default-knockout-value.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "At an alive node, next option values conditional on survival are USD 2 down and USD 8 up. The risk-neutral up weight is 0.25, conditional survival is 0.80, and the discount factor is 0.96. Calculate the current knockout option value in USD.",
+      "answer": { "value": 2.688, "tolerance": 0.000001 },
+      "explanation": "The survival-state expectation is 0.75 × 2 + 0.25 × 8 = 3.5. Multiply by survival and discounting: 0.96 × 0.80 × 3.5 = USD 2.688."
+    }
+  ]
+}

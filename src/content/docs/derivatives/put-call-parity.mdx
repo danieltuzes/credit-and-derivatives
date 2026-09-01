@@ -1,0 +1,158 @@
+---
+title: Put-call parity and synthetic forwards
+description: Match European call and put portfolios state by state before solving a missing value.
+lessonId: derivatives.put-call-parity
+editorialStatus: draft
+riskTier: 2
+estimatedMinutes: 35
+requires:
+  - finance.law-of-one-price.explain
+  - derivatives.forward-contract.interpret
+  - derivatives.forward-delivery-price.calculate
+  - options.payoff.calculate
+  - options.value-payoff-profit.distinguish
+teaches:
+  - options.put-call-parity.explain
+  - options.put-call-parity.calculate
+assessments:
+  - put-call-parity-check
+sources:
+  - hull-options-futures
+assumptions:
+  - European call and put on the same underlying with the same strike, expiry, quantity, and settlement basis
+  - Deterministic income before expiry is known and represented by present value
+  - A strictly positive deterministic discount factor applies to the strike payment
+  - The underlying and required financing positions can be traded under the lesson's frictionless no-arbitrage assumptions
+notation:
+  uses:
+    - discount-factor
+    - derivative-underlying-value
+    - forward-price
+    - option-expiry-time
+    - option-strike-price
+    - call-option-value
+    - put-option-value
+  local:
+    - key: parity-income-present-value
+      notation: 'I_0'
+      title: Present value of income before option expiry
+      summary: Valuation-time value of deterministic income paid by the underlying before the matched option expiry.
+      details: Subtracting it from spot gives the prepaid forward value used in parity.
+      units: stated currency at valuation time per unit of underlying
+      sources:
+        - hull-options-futures
+      seeAlso:
+        - discount-factor
+      alignment:
+        kind: competency
+        introducedByCompetency: options.put-call-parity.calculate
+        introducedInLesson: derivatives.put-call-parity
+    - key: prepaid-forward-value
+      notation: '\widetilde{F}_{0,T_{\mathrm{opt}}}'
+      title: Prepaid forward value
+      summary: Current value of receiving the underlying at expiry with no delivery payment then.
+      details: Under the known-income model it equals spot value less the present value of income paid before expiry.
+      units: stated currency at valuation time per unit of underlying
+      sources:
+        - hull-options-futures
+      seeAlso:
+        - derivative-underlying-value
+      alignment:
+        kind: competency
+        introducedByCompetency: options.put-call-parity.calculate
+        introducedInLesson: derivatives.put-call-parity
+aiAssisted: true
+sidebar:
+  order: 3
+---
+
+import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- show that long call plus short put has a forward-style expiry payoff;
+- state the exact contract terms that must match;
+- solve a missing European call or put value using discounted strike and known income.
+
+## Match the expiry cash flows
+
+For the same \term\{derivative-underlying-value\},
+\term\{option-strike-price\} $K$, and \term\{option-expiry-time\}
+$T_{\mathrm{opt}}$, the holder payoffs satisfy the state-by-state identity
+
+$$
+\max\!\left(S_{T_{\mathrm{opt}}}-K,0\right)
+-\max\!\left(K-S_{T_{\mathrm{opt}}},0\right)
+=S_{T_{\mathrm{opt}}}-K.
+$$
+
+The left side is long call plus short put. The right side is the payoff of a
+long forward-style exchange at strike $K$. This is an identity in every expiry
+state, not a forecast or an average.
+
+## Present-value parity
+
+Let local \term\{parity-income-present-value\} be $I_0$. The local
+\term\{prepaid-forward-value\} is
+$\widetilde{F}_{0,T_{\mathrm{opt}}}=S_0-I_0$. Applying the law of one price to
+the matched portfolios, with \term\{call-option-value\} $c_0$ and
+\term\{put-option-value\} $p_0$, gives
+
+$$
+c_0-p_0
+=\widetilde{F}_{0,T_{\mathrm{opt}}}
+-K D(0,T_{\mathrm{opt}}).
+$$
+
+Because
+
+$$
+\widetilde{F}_{0,T_{\mathrm{opt}}}
+=D(0,T_{\mathrm{opt}})F_{0,T_{\mathrm{opt}}},
+$$
+
+the same relation can be written in forward form:
+
+Here $F_{0,T_{\mathrm{opt}}}$ is the matching \term\{forward-price\} for option
+expiry, not the fixed delivery price of an older forward.
+
+$$
+c_0-p_0
+=D(0,T_{\mathrm{opt}})
+\left(F_{0,T_{\mathrm{opt}}}-K\right).
+$$
+
+Hull derives put-call parity by comparing the expiry values of two portfolios
+and invoking no arbitrage\cite\{hull-options-futures\}\{Ch. 10 §10.4, printed
+pp. 221-225, European put-call parity and arbitrage portfolios\}.
+
+For $c_0=8$, $\widetilde{F}_{0,T_{\mathrm{opt}}}=97$, $K=100$, and
+$D(0,T_{\mathrm{opt}})=0.95$,
+
+$$
+p_0=8-97+100(0.95)=6.
+$$
+
+## Where parity stops
+
+The equality needs the same underlying, strike, expiry, exercise style,
+quantity, income treatment, and settlement basis. American exercise changes
+the timing choices. A default-triggered knock-out changes the default-state
+cash flows: if both options terminate on issuer default, call-minus-put is also
+zero in that state. Its matching forward-style claim must therefore terminate
+on the same event; the vanilla formula cannot be copied unchanged.
+
+## Check your understanding
+
+<AssessmentSet id="put-call-parity-check" />
+
+## Model boundary and review note
+
+This model-independent relation still relies on the stated trading, funding,
+income, and contract-matching assumptions. It does not itself supply an option
+price or volatility model.
+
+The parity functions live in a pure tested domain module. Sources, notation,
+examples, code, and answer keys remain `draft` pending independent human review.

@@ -1,0 +1,22 @@
+{
+  "id": "bonds.forward-delivery-price.calculate",
+  "title": "Calculate a bond forward delivery price",
+  "domain": "bonds",
+  "facet": "calculation",
+  "outcome": "Calculate a no-arbitrage bond forward delivery price from the current dirty bond price, the present value of pre-delivery coupons, and the delivery-date discount factor.",
+  "prerequisites": [
+    "derivatives.forward-delivery-price.calculate",
+    "bonds.clean-dirty-price.calculate",
+    "bonds.price-from-discount-factors.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Coupons paid before forward delivery belong to the forward buyer.",
+    "Clean spot price can be combined with a dirty delivery strike without an accrued-interest adjustment."
+  ],
+  "editorialStatus": "draft"
+}

@@ -1,0 +1,22 @@
+{
+  "id": "options.one-period-binomial-value.calculate",
+  "title": "Calculate a one-period binomial option value",
+  "domain": "options",
+  "facet": "calculation",
+  "outcome": "Calculate a European option's one-period binomial value using model-implied risk-neutral weights and deterministic discounting.",
+  "prerequisites": [
+    "finance.risk-neutral-value.calculate",
+    "options.payoff.calculate",
+    "finance.replicating-portfolio-value.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The real-world probability of an up move is required when the arbitrage-consistent risk-neutral weight is supplied by the model.",
+    "The expected expiry payoff is already a time-zero value and should not be discounted."
+  ],
+  "editorialStatus": "draft"
+}

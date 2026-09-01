@@ -1,0 +1,25 @@
+{
+  "id": "multiperiod-lattice-check",
+  "title": "Multi-period lattice check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "backward-induction-direct",
+      "type": "numeric",
+      "competencyId": "finance.backward-induction.calculate",
+      "evidenceKind": "direct",
+      "prompt": "At a node, next-period claim values are 10 in the down state and 30 in the up state. The risk-neutral up weight is 0.4 and the one-period discount factor is 0.95. Calculate the current node value.",
+      "answer": { "value": 17.1, "tolerance": 0.000001 },
+      "explanation": "The node value is 0.95 × (0.6 × 10 + 0.4 × 30) = 17.1."
+    },
+    {
+      "id": "backward-induction-transfer",
+      "type": "numeric",
+      "competencyId": "finance.backward-induction.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "At a bond-tree node, next-period ex-coupon values are 90 and 110, both states also pay a coupon of 5, the risk-neutral up weight is 0.25, and the node discount factor is 0.96. Calculate the current node value.",
+      "answer": { "value": 96, "tolerance": 0.000001 },
+      "explanation": "Add the coupon before averaging: 0.96 × [0.75 × 95 + 0.25 × 115] = 96."
+    }
+  ]
+}

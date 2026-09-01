@@ -1,0 +1,71 @@
+{
+  "id": "forward-contracts-value-check",
+  "title": "Forward contracts and value check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "forward-contract-direct",
+      "type": "single-choice",
+      "competencyId": "derivatives.forward-contract.interpret",
+      "evidenceKind": "direct",
+      "prompt": "What does the long side of a physically settled forward contract agree to do at delivery?",
+      "options": [
+        { "id": "buy-at-delivery", "label": "Buy the underlying for the fixed delivery price" },
+        { "id": "choose-buy", "label": "Choose whether to buy, with no obligation" },
+        { "id": "receive-premium", "label": "Receive the delivery price as an inception premium" }
+      ],
+      "correctOptionId": "buy-at-delivery",
+      "explanation": "A forward is a bilateral obligation. At delivery the long pays the fixed delivery price and receives the underlying under the stated physical-settlement convention."
+    },
+    {
+      "id": "forward-contract-transfer",
+      "type": "single-choice",
+      "competencyId": "derivatives.forward-contract.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "A long forward has delivery price USD 80 and the underlying is worth USD 74 at delivery. What is the long's payoff per unit?",
+      "options": [
+        { "id": "minus-six", "label": "USD -6" },
+        { "id": "plus-six", "label": "USD +6" },
+        { "id": "zero-choice", "label": "USD 0 because the long can decline delivery" }
+      ],
+      "correctOptionId": "minus-six",
+      "explanation": "The long payoff is underlying value minus delivery price: 74 - 80 = USD -6. Unlike an option holder, the forward long cannot simply decline delivery in this model."
+    },
+    {
+      "id": "forward-delivery-price-direct",
+      "type": "numeric",
+      "competencyId": "derivatives.forward-delivery-price.calculate",
+      "evidenceKind": "direct",
+      "prompt": "An investment asset is worth USD 100, pays no income before delivery, and D(0,T) = 0.95. What fair delivery price gives a new forward zero value, in USD per unit?",
+      "answer": { "value": 105.2631578947, "tolerance": 0.000001 },
+      "explanation": "The prepaid forward is USD 100. Divide by the delivery-date discount factor: 100 / 0.95 = USD 105.2631578947."
+    },
+    {
+      "id": "forward-delivery-price-transfer",
+      "type": "numeric",
+      "competencyId": "derivatives.forward-delivery-price.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A bond's current full price is USD 900. A known coupon before delivery has present value USD 40, and D(0,T) = 0.96. What is the fair full forward delivery price in USD?",
+      "answer": { "value": 895.8333333333, "tolerance": 0.000001 },
+      "explanation": "Subtract income received before delivery, then carry the prepaid value to delivery: (900 - 40) / 0.96 = USD 895.8333333333."
+    },
+    {
+      "id": "forward-value-direct",
+      "type": "numeric",
+      "competencyId": "derivatives.forward-value.calculate",
+      "evidenceKind": "direct",
+      "prompt": "The current forward price is USD 110, an existing long forward's delivery price is USD 105, and D(0,T) = 0.97. What is the contract value to the long per unit, in USD?",
+      "answer": { "value": 4.85, "tolerance": 0.000001 },
+      "explanation": "Discount the delivery-date advantage: 0.97 × (110 - 105) = USD 4.85."
+    },
+    {
+      "id": "forward-value-transfer",
+      "type": "numeric",
+      "competencyId": "derivatives.forward-value.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A long forward covers 10 units. The current forward price is USD 98 per unit, its fixed delivery price is USD 102, and D(0,T) = 0.94. What is its signed value to the long in USD?",
+      "answer": { "value": -37.6, "tolerance": 0.000001 },
+      "explanation": "The signed value is 10 × 0.94 × (98 - 102) = USD -37.60."
+    }
+  ]
+}

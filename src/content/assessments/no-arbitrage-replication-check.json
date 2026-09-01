@@ -1,0 +1,71 @@
+{
+  "id": "no-arbitrage-replication-check",
+  "title": "No-arbitrage and replication check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "law-one-price-direct",
+      "type": "single-choice",
+      "competencyId": "finance.law-of-one-price.explain",
+      "evidenceKind": "direct",
+      "prompt": "Portfolio A and claim B have identical signed cash flows at every future date in every modeled state. Under the lesson's frictionless no-arbitrage assumptions, what must be true?",
+      "options": [
+        {
+          "id": "same-value",
+          "label": "They must have the same current value"
+        },
+        {
+          "id": "same-label",
+          "label": "They need the same contract name but may have unrelated values"
+        },
+        {
+          "id": "same-average-only",
+          "label": "Only their average future cash flow needs the same value"
+        }
+      ],
+      "correctOptionId": "same-value",
+      "explanation": "If identical future cash flows had different current values, buying the cheaper package and selling the dearer one would create an initial receipt with offsetting future obligations under the stated assumptions."
+    },
+    {
+      "id": "law-one-price-transfer",
+      "type": "single-choice",
+      "competencyId": "finance.law-of-one-price.explain",
+      "evidenceKind": "transfer",
+      "prompt": "Two portfolios have the same expected maturity cash flow, but one pays only in an up state and the other only in a down state. Does the law of one price force their current values to be equal?",
+      "options": [
+        {
+          "id": "no-state-mismatch",
+          "label": "No, matching an expectation does not replicate state-by-state cash flows"
+        },
+        {
+          "id": "yes-average",
+          "label": "Yes, the same expected cash flow always implies the same value"
+        },
+        {
+          "id": "yes-maturity",
+          "label": "Yes, sharing a maturity date is sufficient"
+        }
+      ],
+      "correctOptionId": "no-state-mismatch",
+      "explanation": "Replication requires the same dated cash flow in every modeled state. Equal averages alone leave different state exposure."
+    },
+    {
+      "id": "replicating-value-direct",
+      "type": "numeric",
+      "competencyId": "finance.replicating-portfolio-value.calculate",
+      "evidenceKind": "direct",
+      "prompt": "A claim is exactly replicated by two units of security A worth USD 12 each and one unit of security B worth USD 7. What is the claim's no-arbitrage value in USD?",
+      "answer": { "value": 31, "tolerance": 0.000001 },
+      "explanation": "The replicating portfolio costs 2 × 12 + 1 × 7 = USD 31, so the law of one price gives the claim the same value."
+    },
+    {
+      "id": "replicating-value-transfer",
+      "type": "numeric",
+      "competencyId": "finance.replicating-portfolio-value.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A claim is exactly replicated by buying three units of security A worth USD 18 each and shorting two units of security B worth USD 11 each. What is the claim's no-arbitrage value in USD?",
+      "answer": { "value": 32, "tolerance": 0.000001 },
+      "explanation": "The signed portfolio value is 3 × 18 - 2 × 11 = USD 32. The short position enters with a negative quantity."
+    }
+  ]
+}

@@ -6,7 +6,8 @@
   "outcome": "Interpret risk-neutral probabilities as no-arbitrage pricing weights rather than real-world forecasts.",
   "prerequisites": [
     "finance.present-value.interpret",
-    "probability.expectation-by-partition.calculate"
+    "probability.expectation-by-partition.calculate",
+    "finance.law-of-one-price.explain"
   ],
   "evidence": {
     "minimumIndependentItems": 2,

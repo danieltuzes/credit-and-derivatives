@@ -1,0 +1,21 @@
+{
+  "id": "bond-options.contract.interpret",
+  "title": "Interpret a European bond option",
+  "domain": "bond-options",
+  "facet": "interpretation",
+  "outcome": "Interpret a standalone European call or put on a named bond, including exercise time, dirty-versus-clean strike basis, coupon timing, and holder rights.",
+  "prerequisites": [
+    "options.european-contract.interpret",
+    "bonds.clean-dirty-price.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A call on a bond is the same contract as an issuer call feature embedded in a callable bond.",
+    "A clean strike and dirty strike are interchangeable away from a coupon date."
+  ],
+  "editorialStatus": "draft"
+}

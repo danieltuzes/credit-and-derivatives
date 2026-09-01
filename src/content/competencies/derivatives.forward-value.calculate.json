@@ -1,0 +1,18 @@
+{
+  "id": "derivatives.forward-value.calculate",
+  "title": "Calculate an existing forward's value",
+  "domain": "derivatives",
+  "facet": "calculation",
+  "outcome": "Calculate the signed value to the long of an existing forward from the current forward price, its fixed delivery price, quantity, and the delivery-date discount factor.",
+  "prerequisites": ["derivatives.forward-delivery-price.calculate"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A forward with zero inception value has zero value throughout its life.",
+    "Forward price and forward contract value are interchangeable currency amounts."
+  ],
+  "editorialStatus": "draft"
+}

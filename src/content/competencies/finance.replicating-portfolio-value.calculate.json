@@ -1,0 +1,18 @@
+{
+  "id": "finance.replicating-portfolio-value.calculate",
+  "title": "Calculate value from a replicating portfolio",
+  "domain": "finance",
+  "facet": "calculation",
+  "outcome": "Calculate a claim's no-arbitrage value from the current values and signed quantities of a portfolio that exactly replicates its future cash flows.",
+  "prerequisites": ["finance.law-of-one-price.explain"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A replicating portfolio needs to match only the average future cash flow.",
+    "Short positions can be added to portfolio value without their negative sign."
+  ],
+  "editorialStatus": "draft"
+}

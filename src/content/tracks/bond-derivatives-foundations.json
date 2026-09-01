@@ -1,0 +1,36 @@
+{
+  "id": "bond-derivatives-foundations",
+  "title": "Bond derivatives foundations",
+  "description": "A path from deterministic present value and no-arbitrage through forwards, vanilla options, bond settlement, lattice valuation, European bond options, and issuer-default knockout.",
+  "audience": "Learners comfortable with basic algebra, percentages, and exponents; probability, risk-neutral pricing, and credit survival are introduced in the track.",
+  "entryAssumptions": [
+    "Basic algebra",
+    "Percentages and decimal notation",
+    "Integer exponents"
+  ],
+  "lessons": [
+    "foundations.cash-flow-timelines",
+    "foundations.probability-events-and-expectation",
+    "foundations.rates-compounding-and-basis-points",
+    "foundations.discount-factors",
+    "foundations.present-value",
+    "foundations.no-arbitrage-and-replication",
+    "foundations.risk-neutral-pricing",
+    "rates.discount-curve-and-forward-discounting",
+    "bonds.fixed-rate-contract-and-cash-flows",
+    "bonds.price-from-discount-factors",
+    "bonds.yield-to-maturity",
+    "bonds.settlement-clean-and-dirty-price",
+    "derivatives.forward-contracts-and-value",
+    "bonds.bond-forwards",
+    "derivatives.european-option-contracts-and-payoffs",
+    "derivatives.put-call-parity",
+    "derivatives.one-period-binomial-option-valuation",
+    "derivatives.multiperiod-lattice-valuation",
+    "bond-options.european-bond-options",
+    "credit.default-hazard-and-survival",
+    "credit.recovery-and-risky-present-value",
+    "bond-options.issuer-default-knockout"
+  ],
+  "editorialStatus": "draft"
+}

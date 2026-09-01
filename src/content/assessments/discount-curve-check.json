@@ -1,0 +1,53 @@
+{
+  "id": "discount-curve-check",
+  "title": "Discount curve and forward discounting check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "discount-curve-direct",
+      "type": "single-choice",
+      "competencyId": "rates.discount-curve.interpret",
+      "evidenceKind": "direct",
+      "prompt": "What does a deterministic curve node D(0,3) = 0.94 mean?",
+      "options": [
+        { "id": "pv-one", "label": "At time zero, 0.94 currency units buy one currency unit paid at model-year 3" },
+        { "id": "three-cash", "label": "At model-year 3, 0.94 currency units are paid at time zero" },
+        { "id": "annual-rate", "label": "The annual rate is 94% under every compounding convention" }
+      ],
+      "correctOptionId": "pv-one",
+      "explanation": "A discount factor is a dated price ratio. It is not itself an annualized rate quotation."
+    },
+    {
+      "id": "discount-curve-transfer",
+      "type": "single-choice",
+      "competencyId": "rates.discount-curve.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "Can a valid supplied curve contain D(0,1) = 1.01 in this lesson?",
+      "options": [
+        { "id": "yes-negative", "label": "Yes; a positive factor above one corresponds to a negative continuously compounded zero rate" },
+        { "id": "no-factor", "label": "No; every discount factor is mathematically restricted below one" },
+        { "id": "only-default", "label": "Only if issuer default is certain" }
+      ],
+      "correctOptionId": "yes-negative",
+      "explanation": "The domain requires positive factors, not factors below one. Negative rates can produce factors above one."
+    },
+    {
+      "id": "forward-discount-direct",
+      "type": "numeric",
+      "competencyId": "rates.forward-discount-factor.calculate",
+      "evidenceKind": "direct",
+      "prompt": "Given D(0,1) = 0.98 and D(0,3) = 0.94, calculate D(1,3).",
+      "answer": { "value": 0.9591836734693877, "tolerance": 0.000000001 },
+      "explanation": "D(1,3) = D(0,3) / D(0,1) = 0.94 / 0.98."
+    },
+    {
+      "id": "forward-discount-transfer",
+      "type": "numeric",
+      "competencyId": "rates.forward-discount-factor.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "Given D(0,2) = 0.95 and D(0,5) = 0.88, calculate D(2,5).",
+      "answer": { "value": 0.9263157894736842, "tolerance": 0.000000001 },
+      "explanation": "D(2,5) = 0.88 / 0.95. The result is time-2 currency per one unit paid at time 5."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "id": "bonds.clean-dirty-price.calculate",
+  "title": "Calculate clean and dirty bond prices",
+  "domain": "bonds",
+  "facet": "calculation",
+  "outcome": "Calculate actual/actual coupon-period accrued interest and convert consistently between clean quoted price and dirty invoice price.",
+  "prerequisites": [
+    "bonds.fixed-cashflows.identify",
+    "finance.cash-flow-timeline.interpret"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The clean quoted price is always the cash amount exchanged at settlement.",
+    "Actual/actual coupon-period accrual counts an assumed 180 days regardless of the calendar dates."
+  ],
+  "editorialStatus": "draft"
+}

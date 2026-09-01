@@ -1,0 +1,18 @@
+{
+  "id": "options.european-contract.interpret",
+  "title": "Interpret a European option contract",
+  "domain": "options",
+  "facet": "interpretation",
+  "outcome": "Identify the underlying, call or put right, holder and writer, strike, expiry, and settlement perspective of a European option.",
+  "prerequisites": ["finance.cash-flow-perspective.apply"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A European option may be exercised on any date before expiry.",
+    "An option holder and writer have the same rights and obligations."
+  ],
+  "editorialStatus": "draft"
+}

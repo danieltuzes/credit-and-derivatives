@@ -1,0 +1,22 @@
+{
+  "id": "bond-options.default-knockout-value.calculate",
+  "title": "Calculate an issuer-default knockout option value",
+  "domain": "bond-options",
+  "facet": "calculation",
+  "outcome": "Calculate an issuer-default knockout bond option value on a supplied joint rate-credit lattice by applying survival to option continuation and zero option payoff on pre-expiry default.",
+  "prerequisites": [
+    "bond-options.default-knockout.interpret",
+    "bond-options.european-value.calculate",
+    "finance.backward-induction.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The option continuation value should include the bond's recovery cash flow in the default branch.",
+    "Unconditional survival to expiry can always replace node-by-node conditional survival in a state-dependent lattice."
+  ],
+  "editorialStatus": "draft"
+}

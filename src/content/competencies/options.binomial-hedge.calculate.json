@@ -1,0 +1,21 @@
+{
+  "id": "options.binomial-hedge.calculate",
+  "title": "Calculate a one-period replicating hedge",
+  "domain": "options",
+  "facet": "calculation",
+  "outcome": "Calculate the underlying units and risk-free cash position that replicate a claim's two one-period state payoffs.",
+  "prerequisites": [
+    "finance.replicating-portfolio-value.calculate",
+    "options.payoff.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The hedge ratio is the option payoff divided by the current underlying value.",
+    "The risk-free cash position must be positive."
+  ],
+  "editorialStatus": "draft"
+}

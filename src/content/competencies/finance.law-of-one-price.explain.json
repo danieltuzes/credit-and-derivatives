@@ -1,0 +1,21 @@
+{
+  "id": "finance.law-of-one-price.explain",
+  "title": "Explain the law of one price",
+  "domain": "finance",
+  "facet": "knowledge",
+  "outcome": "Explain why two portfolios with identical dated state-contingent cash flows must have the same value under the lesson's no-arbitrage assumptions.",
+  "prerequisites": [
+    "finance.cash-flow-perspective.apply",
+    "finance.present-value.interpret"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Two portfolios with identical future cash flows may have persistently different prices without creating a trade opportunity.",
+    "The law of one price says that all securities with the same current price have the same future cash flows."
+  ],
+  "editorialStatus": "draft"
+}

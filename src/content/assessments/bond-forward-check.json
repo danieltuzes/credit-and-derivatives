@@ -1,0 +1,25 @@
+{
+  "id": "bond-forward-check",
+  "title": "Bond forward check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "bond-forward-direct",
+      "type": "numeric",
+      "competencyId": "bonds.forward-delivery-price.calculate",
+      "evidenceKind": "direct",
+      "prompt": "A bond's current dirty price is USD 960. The present value of coupons paid before delivery is USD 95.45, and D(0,T) = 0.92. Calculate the fair dirty bond forward delivery price in USD.",
+      "answer": { "value": 939.7282608695652, "tolerance": 0.000001 },
+      "explanation": "The prepaid forward is 960 - 95.45 = 864.55. Divide by 0.92 to obtain USD 939.72826087."
+    },
+    {
+      "id": "bond-forward-transfer",
+      "type": "numeric",
+      "competencyId": "bonds.forward-delivery-price.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A bond's dirty spot price is USD 1,025, pre-delivery coupons have present value USD 24, and D(0,T) = 0.97. Calculate the fair dirty delivery price in USD.",
+      "answer": { "value": 1031.958762886598, "tolerance": 0.000001 },
+      "explanation": "The fair delivery price is (1,025 - 24) / 0.97 = USD 1,031.95876289."
+    }
+  ]
+}

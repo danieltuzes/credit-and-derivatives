@@ -58,6 +58,18 @@ export default defineConfig({
           items: [{ autogenerate: { directory: 'bonds' } }],
         },
         {
+          label: 'Rates and curves',
+          items: [{ autogenerate: { directory: 'rates' } }],
+        },
+        {
+          label: 'Derivative foundations',
+          items: [{ autogenerate: { directory: 'derivatives' } }],
+        },
+        {
+          label: 'Bond options',
+          items: [{ autogenerate: { directory: 'bond-options' } }],
+        },
+        {
           label: 'Credit risk',
           items: [{ autogenerate: { directory: 'credit' } }],
         },

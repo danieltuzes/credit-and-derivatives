@@ -1,0 +1,18 @@
+{
+  "id": "options.payoff.calculate",
+  "title": "Calculate a European option payoff",
+  "domain": "options",
+  "facet": "calculation",
+  "outcome": "Calculate the expiry payoff of a long or short European call or put from the underlying expiry value, strike, and quantity.",
+  "prerequisites": ["options.european-contract.interpret"],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The holder payoff can be negative when the option finishes out of the money.",
+    "Call and put payoff formulas have the same subtraction order."
+  ],
+  "editorialStatus": "draft"
+}

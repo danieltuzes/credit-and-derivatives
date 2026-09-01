@@ -1,0 +1,20 @@
+{
+  "id": "rates.forward-discount-factor.calculate",
+  "title": "Calculate a forward discount factor",
+  "domain": "rates",
+  "facet": "calculation",
+  "outcome": "Calculate the deterministic discount factor between two future model times from their valuation-time discount factors.",
+  "prerequisites": [
+    "rates.discount-curve.interpret",
+    "rates.discount-factor.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The forward discount factor is the product of the two valuation-time discount factors rather than their ratio."
+  ],
+  "editorialStatus": "draft"
+}
