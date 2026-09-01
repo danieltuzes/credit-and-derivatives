@@ -8,9 +8,9 @@ aliases:
   - growth factor
 domain: rates
 units: dimensionless currency-units per current currency-unit
-perspective: Grows a current unit to a future time under the stated rate model.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 2 §2.1 (compounding of an annualized rate); the accumulation factor is the reciprocal of the discount factor d(t) of Ch. 1 §1.2.'
 seeAlso:
   - periodic-rate
   - compounding-frequency

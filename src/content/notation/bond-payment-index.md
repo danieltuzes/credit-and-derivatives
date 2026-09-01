@@ -2,12 +2,11 @@
 key: bond-payment-index
 latex: 'k'
 title: Bond payment index
-meaning: Labels one remaining scheduled bond payment in increasing time order.
+meaning: 'Labels one remaining scheduled bond payment in increasing time order; it selects a payment and is not itself a time or currency amount.'
 aliases:
   - coupon payment index
 domain: bonds
 units: dimensionless schedule index
-perspective: Selects one promised payment without representing a time or currency amount.
 sources: []
 seeAlso:
   - number-of-bond-payments

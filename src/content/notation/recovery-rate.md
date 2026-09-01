@@ -2,14 +2,14 @@
 key: recovery-rate
 latex: 'R'
 title: Recovery rate
-meaning: Fraction of a stated reference amount recovered after a modeled default under an explicitly stated recovery convention.
+meaning: 'Fraction of a stated reference amount recovered after a modeled default under an explicitly stated recovery convention; a non-negative fraction whose reference amount, payment timing, and settlement convention are set by the model that uses it.'
 aliases:
   - recovery fraction
 domain: credit
 units: decimal fraction between zero and one
-perspective: A non-negative recovery fraction; the reference amount, payment timing, and settlement convention must be stated by the model that uses it.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 14 §14.5, printed pp. 361-366 (recovery fraction of notional after default).'
 seeAlso: []
 alignment:
   kind: competency

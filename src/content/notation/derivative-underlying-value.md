@@ -2,14 +2,14 @@
 key: derivative-underlying-value
 latex: 'S_t'
 title: Derivative underlying value
-meaning: Value at model time t of one unit of the asset or claim named as the derivative's underlying.
+meaning: "Value at model time t of one unit of the asset or claim named as the derivative's underlying; a positive quoted value, while a position in the underlying carries its own signed quantity."
 aliases:
   - underlying price
 domain: derivatives
 units: stated currency per unit of underlying at model time t
-perspective: Positive quoted value; a position in the underlying carries its own signed quantity.
 sources:
-  - hull-options-futures
+  - id: hull-options-futures
+    locator: 'Ch. 1 §§1.3 and 1.5, printed pp. 5-9 (the underlying asset price in forward and option contracts).'
 seeAlso:
   - valuation-time
 alignment:

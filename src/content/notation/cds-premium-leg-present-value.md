@@ -2,15 +2,16 @@
 key: cds-premium-leg-present-value
 latex: 'PV_0^{\mathrm{prem}}'
 title: CDS premium-leg present-value magnitude
-meaning: Positive valuation-time magnitude of the simplified protection buyer's premium payments.
+meaning: "Positive valuation-time magnitude of the simplified protection buyer's premium payments; its signed contribution to protection-buyer net value is negative."
 aliases:
   - premium-leg PV magnitude
 domain: cds
 units: stated currency at valuation time
-perspective: Positive leg magnitude; its signed contribution to protection-buyer net value is negative.
 sources:
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 14 §14.5, printed pp. 361-366 (CDS contract, fee and contingent legs, quarterly premium, and default accrual).'
+  - id: hull-options-futures
+    locator: 'Ch. 24 §24.2, printed pp. 551-554, Tables 24.1-24.4 (survival/default weighting, scheduled premium, half-period default and accrual approximation, protection present value, and equal-leg spread).'
 seeAlso:
   - cds-contract-spread
   - cds-notional

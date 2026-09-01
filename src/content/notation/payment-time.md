@@ -2,15 +2,15 @@
 key: payment-time
 latex: 't_k'
 title: Payment time
-meaning: Time from the valuation date to one scheduled cash-flow event.
+meaning: 'Time from the valuation date to one scheduled cash-flow event; a time coordinate, not a calendar date or payment index.'
 aliases:
   - cash-flow time
   - time in years
 domain: finance
 units: years from the valuation date
-perspective: Time coordinate, not a calendar date or payment index.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 1 §1.2 (time t to a scheduled cash flow, measured in years from the pricing date).'
 seeAlso:
   - valuation-time
   - signed-cash-flow

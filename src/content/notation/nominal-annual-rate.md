@@ -8,9 +8,9 @@ aliases:
   - annualized rate
 domain: rates
 units: decimal per year in code; percent per year in labeled prose and UI
-perspective: A quote that must be paired with its compounding frequency.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 2 §2.1 (annualized rate quotations and compounding conventions).'
 seeAlso:
   - compounding-frequency
   - periodic-rate

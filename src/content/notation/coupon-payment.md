@@ -2,14 +2,14 @@
 key: coupon-payment
 latex: 'C'
 title: Coupon payment
-meaning: Level periodic cash amount promised by the simplified fixed-rate bond.
+meaning: 'Level periodic cash amount promised by the simplified fixed-rate bond; a positive receipt for the bondholder in these lessons.'
 aliases:
   - periodic coupon
 domain: bonds
 units: stated currency per coupon date
-perspective: Positive receipt for the bondholder in these lessons.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 1 §1.1 and Table 1.1, printed p. 50 (coupon rate, maturity, and face/par/principal amount of a government coupon bond).'
 seeAlso:
   - face-value
   - annual-coupon-rate

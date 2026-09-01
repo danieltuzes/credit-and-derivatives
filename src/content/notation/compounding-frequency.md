@@ -2,14 +2,14 @@
 key: compounding-frequency
 latex: 'm'
 title: Compounding frequency
-meaning: Number of equal compounding periods per year under the stated rate convention.
+meaning: 'Number of equal compounding periods per year under the stated rate convention, a positive integer fixed by the model convention.'
 aliases:
   - periods per year
 domain: rates
 units: compounding periods per year
-perspective: Positive integer fixed by the stated model convention.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 2 §2.1 (annualized rate quotations and compounding conventions).'
 seeAlso:
   - nominal-annual-rate
   - periodic-rate

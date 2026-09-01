@@ -2,15 +2,15 @@
 key: bond-price
 latex: 'P_0'
 title: Bond price at valuation time
-meaning: Present value of the simplified bond's promised payments at valuation time.
+meaning: "Present value of the simplified bond's promised payments at valuation time; the amount paid by the buyer, shown as a positive value in this slice."
 aliases:
   - dirty price in the settlement-on-coupon-date toy model
   - present value of promised bond cash flows
 domain: bonds
 units: stated currency at valuation time
-perspective: Amount paid by the buyer; displayed as a positive value in this slice.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 1 §1.2, eqs. 1.1-1.3 (discount factor d(t) as the value today of one unit paid at t; price equals the sum of cash flows times discount factors).'
 seeAlso:
   - bond-cash-flow
   - discount-factor

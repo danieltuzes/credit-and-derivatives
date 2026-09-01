@@ -2,15 +2,16 @@
 key: cds-accrual-year-fraction
 latex: '\alpha_i'
 title: CDS premium accrual year fraction
-meaning: Supplied year fraction that converts an annualized spread into the premium amount for one scheduled period.
+meaning: 'Supplied year fraction that converts an annualized spread into the premium amount for one scheduled period; a positive model input.'
 aliases:
   - premium accrual fraction
 domain: cds
 units: years under the explicitly stated synthetic schedule convention
-perspective: Positive supplied model input for one premium period.
 sources:
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 14 §14.5, printed pp. 361-366 (CDS contract, fee and contingent legs, quarterly premium, and default accrual).'
+  - id: hull-options-futures
+    locator: 'Ch. 24 §24.2, printed pp. 551-554, Tables 24.1-24.4 (survival/default weighting, scheduled premium, half-period default and accrual approximation, protection present value, and equal-leg spread).'
 seeAlso:
   - cds-contract-spread
   - payment-time

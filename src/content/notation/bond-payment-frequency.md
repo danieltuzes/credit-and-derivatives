@@ -2,15 +2,15 @@
 key: bond-payment-frequency
 latex: 'm_{\mathrm B}'
 title: Bond payment frequency
-meaning: Number of scheduled coupon payments per year in the simplified regular bond.
+meaning: 'Number of scheduled coupon payments per year in the simplified regular bond, a positive integer.'
 aliases:
   - coupon frequency
   - coupon payments per year
 domain: bonds
 units: scheduled coupon payments per year
-perspective: Positive integer in the simplified regular schedule.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 1 §1.1 and Ch. 2 §2.1 (semiannual coupon schedule and compounding frequency).'
 seeAlso:
   - coupon-payment
   - maturity-time

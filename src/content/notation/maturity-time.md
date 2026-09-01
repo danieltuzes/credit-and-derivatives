@@ -7,9 +7,9 @@ aliases:
   - term to maturity
 domain: bonds
 units: years from the valuation date in the simplified model
-perspective: Final scheduled time at which principal is redeemed.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 1 §1.1 and Table 1.1, printed p. 50 (coupon rate, maturity, and face/par/principal amount of a government coupon bond).'
 seeAlso:
   - payment-time
   - bond-payment-frequency

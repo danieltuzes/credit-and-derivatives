@@ -8,9 +8,9 @@ aliases:
   - bps
 domain: rates
 units: one ten-thousandth in decimal-rate units
-perspective: A unit for quoting differences between rates.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 0 (market overview; a basis point defined as 0.01%).'
 seeAlso:
   - nominal-annual-rate
 alignment:

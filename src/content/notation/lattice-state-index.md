@@ -2,12 +2,12 @@
 key: lattice-state-index
 latex: j
 title: Lattice state-node index
-meaning: Integer label for one state node within a time row of a finite recombining lattice.
+meaning: 'Integer label for one state node within a time row of a finite recombining lattice; a bookkeeping label under the stated successor ordering, not a probability or state value.'
 domain: finance
 units: dimensionless integer index
-perspective: Bookkeeping label under the module's stated successor ordering, not a probability or state value.
 sources:
-  - hull-options-futures
+  - id: hull-options-futures
+    locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (up/down state labeling in a recombining binomial tree).'
 seeAlso:
   - lattice-node-value
 alignment:

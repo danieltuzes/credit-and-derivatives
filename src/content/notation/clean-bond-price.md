@@ -2,15 +2,15 @@
 key: clean-bond-price
 latex: 'P^{\mathrm{clean}}'
 title: Clean bond price
-meaning: Bond price quoted without accrued interest under the stated settlement convention.
+meaning: 'Bond price quoted without accrued interest under the stated settlement convention; a positive quoted price to the buyer before accrued interest is added.'
 aliases:
   - flat price
   - quoted bond price
 domain: bonds
 units: stated currency at settlement
-perspective: Positive quoted price to the buyer before adding accrued interest.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 1 §1.6, printed pp. 60-62 (actual/actual accrued interest; flat/clean price plus accrued equals the full/dirty invoice price).'
 seeAlso:
   - dirty-bond-price
   - accrued-interest

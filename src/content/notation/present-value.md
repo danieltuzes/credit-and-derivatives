@@ -2,14 +2,14 @@
 key: present-value
 latex: 'PV_0'
 title: Present value
-meaning: Combines dated signed cash flows into one value at valuation time.
+meaning: 'Combines dated signed cash flows into one value at valuation time, using the same holder perspective as the signed cash flows.'
 aliases:
   - PV
 domain: finance
 units: stated currency at the valuation time
-perspective: Uses the same holder perspective as the signed cash flows.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 1 §1.2, eqs. 1.1-1.3 (present value as the sum of cash flows times discount factors).'
 seeAlso:
   - signed-cash-flow
   - discount-factor

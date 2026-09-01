@@ -2,14 +2,14 @@
 key: forward-discount-factor
 latex: 'Z(t,T)'
 title: Forward discount factor
-meaning: Value at future model time t of one currency unit paid at later model time T under the stated deterministic curve.
+meaning: 'Value at future model time t of one currency unit paid at later model time T under the stated deterministic curve, with t strictly before T.'
 aliases:
   - future-to-future discount factor
 domain: rates
 units: currency at time t per one unit of the same currency at time T
-perspective: Positive deterministic factor implied by one stated valuation-time curve, with t strictly before T.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 2 §§2.1 and 2.4 (annualized rate quotations and spot-rate discount factors).'
 seeAlso:
   - discount-factor
   - payment-time

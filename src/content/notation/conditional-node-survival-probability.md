@@ -2,12 +2,12 @@
 key: conditional-node-survival-probability
 latex: 's_{i,j}'
 title: Conditional node survival probability
-meaning: Pricing-model probability that the issuer survives the next lattice period, conditional on being alive at the current node.
+meaning: 'Pricing-model probability that the issuer survives the next lattice period, conditional on being alive at the current node; a risk-neutral input, not an unconditional real-world forecast.'
 domain: bond-options
 units: probability between zero and one
-perspective: Risk-neutral pricing input conditional on the current alive node, not an unconditional real-world forecast.
 sources:
-  - hull-options-futures
+  - id: hull-options-futures
+    locator: 'Ch. 23 §23.2, printed pp. 522-523 (default intensity and conditional survival over a short interval).'
 seeAlso:
   - survival-probability
   - risk-neutral-probability-measure

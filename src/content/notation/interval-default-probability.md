@@ -2,15 +2,16 @@
 key: interval-default-probability
 latex: '\Delta q_i'
 title: Interval default probability
-meaning: Probability assigned by the model to first default during one stated time interval.
+meaning: 'Probability assigned by the model to first default during one stated time interval, conditional only through the supplied survival curve construction.'
 aliases:
   - marginal default probability
 domain: credit
 units: probability between zero and one
-perspective: Applies to one interval conditional only through the supplied survival curve construction.
 sources:
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
+  - id: tuckman-serrat-fixed-income
+    locator: 'Appendix A14.1-A14.2, printed pp. 505-507, eqs. A14.1-A14.7 (constant-hazard survival and algebraic CDS leg and upfront formulas).'
+  - id: hull-options-futures
+    locator: 'Ch. 24 §24.2, printed pp. 551-554, Tables 24.1-24.4 (survival/default weighting, scheduled premium, half-period default and accrual approximation, protection present value, and equal-leg spread).'
 seeAlso:
   - survival-probability
   - payment-time

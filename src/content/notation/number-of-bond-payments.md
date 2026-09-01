@@ -2,12 +2,11 @@
 key: number-of-bond-payments
 latex: 'n'
 title: Number of bond payments
-meaning: Counts the remaining regular coupon dates including maturity.
+meaning: 'Counts the remaining regular coupon dates including maturity; a positive integer for the simplified regular bond schedule.'
 aliases:
   - remaining coupon-date count
 domain: bonds
 units: scheduled payment dates
-perspective: Positive integer count for the simplified regular bond schedule.
 sources: []
 seeAlso:
   - bond-payment-index

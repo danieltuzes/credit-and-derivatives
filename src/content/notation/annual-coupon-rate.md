@@ -2,14 +2,14 @@
 key: annual-coupon-rate
 latex: 'c'
 title: Annual coupon rate
-meaning: Contractual annual rate used to determine a fixed-rate bond's coupon payments.
+meaning: "Contractual annual rate used to determine a fixed-rate bond's coupon payments; applied to face value, not to market price."
 aliases:
   - coupon rate
 domain: bonds
 units: decimal per year in code; percent per year in labeled prose and UI
-perspective: Contractual rate applied to face value, not market price.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 1 §1.1 and Table 1.1, printed p. 50 (coupon rate, maturity, and face/par/principal amount of a government coupon bond).'
 seeAlso:
   - face-value
   - bond-payment-frequency

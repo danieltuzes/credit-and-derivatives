@@ -2,17 +2,19 @@
 key: risk-neutral-probability-measure
 latex: '\mathbb{Q}'
 title: Risk-neutral probability measure
-meaning: Supplies model pricing weights under which discounted traded prices satisfy the martingale condition.
+meaning: 'Supplies model pricing weights under which discounted traded prices satisfy the martingale condition; it prices payoffs relative to a stated numeraire and is not a forecast of actual event frequencies.'
 aliases:
   - equivalent martingale measure
   - pricing measure
 domain: finance
 units: dimensionless probability weights between zero and one
-perspective: Prices payoffs relative to a stated numeraire; it is not a forecast of actual event frequencies.
 sources:
-  - shreve-stochastic-calculus-finance-ii
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
+  - id: shreve-stochastic-calculus-finance-ii
+    locator: 'Ch. 5 §5.2.2, printed pp. 214-217, eqs. 5.2.22-5.2.24 (the risk-neutral measure makes discounted traded prices martingales).'
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 7 §7.3, printed pp. 182-184, eqs. 7.7-7.8 (risk-neutral probabilities that recover market prices by expected discounted value).'
+  - id: hull-options-futures
+    locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (one- and two-step binomial replication, risk-neutral weights, discounted expected payoff, and backward induction).'
 seeAlso:
   - real-world-probability-measure
   - risk-neutral-expectation

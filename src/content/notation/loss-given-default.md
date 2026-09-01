@@ -2,14 +2,14 @@
 key: loss-given-default
 latex: '\mathrm{LGD}'
 title: Loss given default fraction
-meaning: Fraction of an explicitly stated reference amount not recovered under a deterministic recovery convention.
+meaning: 'Fraction of an explicitly stated reference amount not recovered under a deterministic recovery convention, relative to the same reference amount used by the recovery rate.'
 aliases:
   - LGD
 domain: credit
 units: decimal fraction between zero and one
-perspective: Loss fraction relative to the same explicitly stated reference amount used by the recovery rate.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 14 §14.5, printed pp. 361-366 (loss fraction applied to notional in the contingent leg).'
 seeAlso:
   - recovery-rate
 alignment:

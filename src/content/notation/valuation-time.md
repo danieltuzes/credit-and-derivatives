@@ -8,9 +8,9 @@ aliases:
   - time zero
 domain: finance
 units: years from the valuation date
-perspective: The date from which all later times and values are measured.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 1 §1.2 (the pricing date, time 0, from which all cash-flow times are measured).'
 seeAlso:
   - payment-time
 alignment:

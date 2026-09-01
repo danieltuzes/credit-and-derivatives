@@ -2,12 +2,12 @@
 key: accrued-interest
 latex: 'AI'
 title: Accrued interest
-meaning: Coupon amount attributed to the interval from the previous coupon date through settlement under the stated day-count convention.
+meaning: 'Coupon amount attributed to the interval from the previous coupon date through settlement under the stated day-count convention; a positive amount added to the clean price to obtain the dirty invoice price.'
 domain: bonds
 units: stated currency at settlement
-perspective: Positive amount added to clean price to obtain the dirty invoice price in this settlement slice.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 1 §1.6, printed pp. 60-62 (actual/actual accrued interest; flat/clean price plus accrued equals the full/dirty invoice price).'
 seeAlso:
   - coupon-payment
   - clean-bond-price

@@ -7,9 +7,9 @@ aliases:
   - present-value factor
 domain: rates
 units: current currency-units per future currency-unit
-perspective: Converts a deterministic future unit into value at the valuation time.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 1 §1.2, eqs. 1.1-1.3 (discount factor d(t) as the value today of one unit paid at t; price equals the sum of cash flows times discount factors).'
 seeAlso:
   - accumulation-factor
   - valuation-time

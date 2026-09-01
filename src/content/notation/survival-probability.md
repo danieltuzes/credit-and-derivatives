@@ -2,15 +2,16 @@
 key: survival-probability
 latex: 'S(0,t)'
 title: Survival probability
-meaning: Probability, under the explicitly stated model measure, that no modeled default has occurred by a future time.
+meaning: 'Probability, under the explicitly stated model measure, that no modeled default has occurred between valuation time and a stated future time.'
 aliases:
   - default survival probability
 domain: credit
 units: probability between zero and one
-perspective: Measured from valuation time through the stated future time under the named model measure.
 sources:
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 14 §14.5 and Appendix A14.1, printed pp. 361-366 and 505-506 (constant-hazard survival probability).'
+  - id: hull-options-futures
+    locator: 'Ch. 23 §23.2, printed pp. 522-523 (default intensity/hazard rate and survival probability).'
 seeAlso:
   - valuation-time
   - payment-time

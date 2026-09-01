@@ -8,9 +8,9 @@ aliases:
   - principal amount
 domain: bonds
 units: stated currency
-perspective: Contractual reference amount used to determine coupons and redemption.
 sources:
-  - tuckman-serrat-fixed-income
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 1 §1.1 and Table 1.1, printed p. 50 (coupon rate, maturity, and face/par/principal amount of a government coupon bond).'
 seeAlso:
   - annual-coupon-rate
   - coupon-payment

@@ -2,14 +2,14 @@
 key: forward-delivery-price
 latex: 'K_{\mathrm{fwd}}'
 title: Forward delivery price
-meaning: Contractual currency amount per unit of underlying paid by the long at delivery.
+meaning: 'Contractual currency amount per unit of underlying paid by the long at delivery and received by the short.'
 aliases:
   - forward contract delivery price
 domain: derivatives
 units: delivery-time currency per unit of underlying
-perspective: Positive contractual payment by the long and receipt by the short at delivery.
 sources:
-  - hull-options-futures
+  - id: hull-options-futures
+    locator: 'Ch. 5 §§5.3-5.5, printed pp. 103-108 (cash-and-carry assumptions, the no-income forward price, and the known-income adjustment including a coupon-bond example).'
 seeAlso:
   - forward-delivery-time
   - derivative-underlying-value

@@ -2,15 +2,16 @@
 key: cds-protection-leg-present-value
 latex: 'PV_0^{\mathrm{prot}}'
 title: CDS protection-leg present-value magnitude
-meaning: Positive valuation-time magnitude of the simplified loss-given-default payment received by the protection buyer.
+meaning: 'Positive valuation-time magnitude of the simplified loss-given-default payment received by the protection buyer after a modeled default.'
 aliases:
   - protection-leg PV magnitude
 domain: cds
 units: stated currency at valuation time
-perspective: Positive leg magnitude received by the protection buyer after a modeled default.
 sources:
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
+  - id: tuckman-serrat-fixed-income
+    locator: 'Ch. 14 §14.5, printed pp. 361-366, eqs. 14.4-14.7 (contingent/protection leg present value).'
+  - id: hull-options-futures
+    locator: 'Ch. 24 §24.2, printed pp. 551-554, Tables 24.1-24.4 (survival/default weighting, scheduled premium, half-period default and accrual approximation, protection present value, and equal-leg spread).'
 seeAlso:
   - cds-notional
   - loss-given-default
