@@ -17,8 +17,8 @@ whatever sits in this folder is a disposable local copy.
 - Use them to fill a `locator` (chapter / section / page) when registering a
   source.
 - Quote at most a short phrase when unavoidable, always attributed. Paraphrase by
-  default (`CONTENT_STANDARD.md`: "Contractual language must be paraphrased and
-  cited unless its license explicitly permits copying").
+  default (`docs/architecture.md` §9: contractual language is paraphrased and
+  cited, never copied, unless its licence explicitly permits copying).
 
 **Not allowed**
 

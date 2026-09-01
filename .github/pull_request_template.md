@@ -11,8 +11,8 @@ Describe the learning problem this change addresses.
 
 ## AI assistance
 
-- [ ] No material AI assistance
-- [ ] Material AI assistance recorded under `ai/provenance/`
+- [ ] Material AI-assisted entries carry `aiAssisted: true` and `editorialStatus: draft`
+- [ ] Unsupported claims are marked `NEEDS_SOURCE`
 
 ## Verification
 

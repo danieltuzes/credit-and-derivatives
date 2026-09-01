@@ -1,6 +1,6 @@
 # ADR 0001: Content-first static architecture
 
-- Status: accepted for the playground
+- Status: accepted
 - Date: 2026-08-27
 
 ## Decision
