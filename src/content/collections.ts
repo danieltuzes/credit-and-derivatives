@@ -262,22 +262,28 @@ function localDefinition(
 ): LocalNotationDefinitionInput {
   const label = `${file} notation.local[${index}]`;
   const data = record(raw, label);
-  const summary = string(data.summary, `${label}.summary`);
+  // Reduced shape (Phase C1): `latex`/`meaning`; the pre-C1 names
+  // `notation`/`summary`/`title` are still read until the C2 codemod.
+  const latex = string(data.latex ?? data.notation, `${label}.latex`);
+  const meaning = string(data.meaning ?? data.summary, `${label}.meaning`);
   const details = optionalString(data.details, `${label}.details`);
   const formula = optionalString(data.formula, `${label}.formula`);
   const units = optionalString(data.units, `${label}.units`);
-  const definitionText = [summary, details, formula]
+  const definitionText = [meaning, details, formula]
     .filter((value): value is string => value !== undefined)
     .join('\n');
 
   return {
     key: string(data.key, `${label}.key`),
-    notation: string(data.notation, `${label}.notation`),
-    title: string(data.title, `${label}.title`),
-    summary,
+    notation: latex,
+    title: string(data.title ?? meaning, `${label}.title`),
+    summary: meaning,
     sources: strings(data.sources, `${label}.sources`),
     seeAlso: strings(data.seeAlso, `${label}.seeAlso`),
-    alignment: alignment(data.alignment, `${label}.alignment`),
+    alignment:
+      data.alignment === undefined
+        ? { kind: 'general', rationale: 'Lesson-local symbol.' }
+        : alignment(data.alignment, `${label}.alignment`),
     references: extractNotationReferences(definitionText, file, 'definition'),
     source: { file },
     ...(details === undefined ? {} : { details }),

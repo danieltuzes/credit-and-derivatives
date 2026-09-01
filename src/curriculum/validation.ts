@@ -73,8 +73,15 @@ export interface CurriculumIssue {
     | 'track-order'
     | 'assessment-coverage'
     | 'invalid-assessment'
-    | 'review-state';
+    | 'review-state'
+    | 'teaches-support';
   readonly message: string;
+  /**
+   * `error` (default) blocks the build; `warning` is reported but non-blocking.
+   * New checks enter as warnings and are promoted once they run clean on real
+   * content.
+   */
+  readonly severity?: 'error' | 'warning';
 }
 
 const VALID_ID = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
@@ -191,6 +198,53 @@ function validateCompetencyGraph(
 
   for (const id of competencies.keys()) {
     if (state.get(id) === undefined) visit(id);
+  }
+}
+
+/**
+ * Provisional signal that a lesson body instantiates its content with numbers:
+ * a worked-example component or section, or an equation that evaluates to a
+ * numeral (`… = 6.`). Deliberately broad — this gates a warning, and the
+ * heuristic is expected to tighten (or be replaced by `equation-instantiated`)
+ * as content is reviewed.
+ */
+const WORKED_INSTANCE =
+  /<CompactExample\b|^#{1,6}\s+.*\b(?:worked|example)\b|=\s*-?\d|\d\.\d{3,}/im;
+
+/**
+ * `teaches`-support lint (Phase C1, warning tier): every competency a lesson
+ * `teaches` needs both a worked instance in the body and at least one
+ * assessment item measuring it. Enters as a warning; promoted once real
+ * content runs clean. Owns nothing the stricter Tier-1 checks
+ * (`assessment-measures-taught`, `equation-instantiated`) will later cover.
+ */
+function validateTeachesSupport(
+  lessons: ReadonlyMap<string, LessonDefinition>,
+  evidenceByCompetency: ReadonlyMap<string, { count: number }>,
+  issues: CurriculumIssue[],
+): void {
+  for (const lesson of lessons.values()) {
+    if (lesson.teaches.length === 0) continue;
+
+    if (!WORKED_INSTANCE.test(lesson.body ?? '')) {
+      issues.push({
+        kind: 'teaches-support',
+        severity: 'warning',
+        message: `${lesson.id} teaches ${lesson.teaches.join(', ')} but the body has no worked instance (CompactExample or a worked-example section)`,
+      });
+    }
+
+    const unmeasured = lesson.teaches.filter(
+      (competencyId) =>
+        (evidenceByCompetency.get(competencyId)?.count ?? 0) === 0,
+    );
+    if (unmeasured.length > 0) {
+      issues.push({
+        kind: 'teaches-support',
+        severity: 'warning',
+        message: `${lesson.id} teaches ${unmeasured.join(', ')} with no assessment item measuring it`,
+      });
+    }
   }
 }
 
@@ -374,6 +428,8 @@ export function validateCurriculum(
     }
   }
 
+  validateTeachesSupport(lessons, evidenceByCompetency, issues);
+
   for (const track of tracks.values()) {
     const available = new Set<string>();
     for (const duplicate of findDuplicates(track.lessons)) {
@@ -406,11 +462,18 @@ export function validateCurriculum(
   return issues;
 }
 
+/** Issues that block the build (everything except `severity: 'warning'`). */
+export function curriculumErrors(
+  issues: readonly CurriculumIssue[],
+): readonly CurriculumIssue[] {
+  return issues.filter((issue) => issue.severity !== 'warning');
+}
+
 export function assertValidCurriculum(catalog: CurriculumCatalog): void {
-  const issues = validateCurriculum(catalog);
-  if (issues.length > 0) {
+  const errors = curriculumErrors(validateCurriculum(catalog));
+  if (errors.length > 0) {
     throw new Error(
-      `Invalid curriculum:\n${issues.map(({ message }) => `- ${message}`).join('\n')}`,
+      `Invalid curriculum:\n${errors.map(({ message }) => `- ${message}`).join('\n')}`,
     );
   }
 }
