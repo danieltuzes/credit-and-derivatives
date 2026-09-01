@@ -1,6 +1,6 @@
 ---
 key: forward-discount-factor
-notation: 'D(t,T)'
+notation: 'Z(t,T)'
 title: Forward discount factor
 summary: Value at future model time t of one currency unit paid at later model time T under the stated deterministic curve.
 aliases:
@@ -24,3 +24,6 @@ aiAssisted: true
 The forward discount factor compares the values of the same later payment at
 two different model times. This deterministic-curve definition does not claim
 that future discount factors are known in a stochastic-rate model.
+
+The glyph $Z$ keeps this future-to-future factor distinct from the shared
+valuation-time discount-factor glyph $D$; no existing glyph is rebound.

@@ -1,8 +1,4 @@
-import {
-  finiteNumber,
-  positiveNumber,
-  unitIntervalNumber,
-} from '../scalars';
+import { finiteNumber, positiveNumber, unitIntervalNumber } from '../scalars';
 
 export interface RiskNeutralState {
   readonly probability: number;

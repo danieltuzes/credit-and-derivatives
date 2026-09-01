@@ -46,7 +46,12 @@ describe('forward contracts', () => {
         fc.double({ min: 0, max: 1_000, noNaN: true, noDefaultInfinity: true }),
         fc.double({ min: 0, max: 1_000, noNaN: true, noDefaultInfinity: true }),
         fc.double({ min: 0.1, max: 2, noNaN: true, noDefaultInfinity: true }),
-        fc.double({ min: 0.01, max: 1_000, noNaN: true, noDefaultInfinity: true }),
+        fc.double({
+          min: 0.01,
+          max: 1_000,
+          noNaN: true,
+          noDefaultInfinity: true,
+        }),
         (currentForwardPrice, deliveryPrice, discountFactor, quantity) => {
           const input = {
             currentForwardPrice,
@@ -63,9 +68,9 @@ describe('forward contracts', () => {
   });
 
   it('rejects invalid carry and valuation inputs', () => {
-    expect(() => prepaidForwardPrice({ spotPrice: 10, incomePresentValue: 11 })).toThrow(
-      /must not exceed/,
-    );
+    expect(() =>
+      prepaidForwardPrice({ spotPrice: 10, incomePresentValue: 11 }),
+    ).toThrow(/must not exceed/);
     expect(() =>
       fairForwardDeliveryPrice({
         spotPrice: 10,

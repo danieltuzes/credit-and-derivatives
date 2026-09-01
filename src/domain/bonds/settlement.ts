@@ -70,8 +70,8 @@ export function dirtyPriceFromClean(
   cleanPrice: number,
   accruedInterest: number,
 ): number {
-  return finiteNumber(
-    finiteNumber(cleanPrice, 'cleanPrice') +
+  return nonNegativeNumber(
+    nonNegativeNumber(cleanPrice, 'cleanPrice') +
       nonNegativeNumber(accruedInterest, 'accruedInterest'),
     'dirty price',
   );
@@ -81,8 +81,8 @@ export function cleanPriceFromDirty(
   dirtyPrice: number,
   accruedInterest: number,
 ): number {
-  return finiteNumber(
-    finiteNumber(dirtyPrice, 'dirtyPrice') -
+  return nonNegativeNumber(
+    nonNegativeNumber(dirtyPrice, 'dirtyPrice') -
       nonNegativeNumber(accruedInterest, 'accruedInterest'),
     'clean price',
   );

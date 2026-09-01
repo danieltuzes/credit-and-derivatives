@@ -10,9 +10,18 @@
       "evidenceKind": "direct",
       "prompt": "A standalone European call on a bond gives its holder which right?",
       "options": [
-        { "id": "buy-bond", "label": "The right, but not obligation, to buy the named bond at the stated strike and exercise time" },
-        { "id": "issuer-call", "label": "The issuer's right to redeem every outstanding bond" },
-        { "id": "coupon-right", "label": "Automatic ownership of every coupon paid before option exercise" }
+        {
+          "id": "buy-bond",
+          "label": "The right, but not obligation, to buy the named bond at the stated strike and exercise time"
+        },
+        {
+          "id": "issuer-call",
+          "label": "The issuer's right to redeem every outstanding bond"
+        },
+        {
+          "id": "coupon-right",
+          "label": "Automatic ownership of every coupon paid before option exercise"
+        }
       ],
       "correctOptionId": "buy-bond",
       "explanation": "This lesson models a standalone holder option, not an embedded issuer call feature."
@@ -24,9 +33,18 @@
       "evidenceKind": "transfer",
       "prompt": "An option strike is quoted as a clean bond price and exercise occurs between coupon dates. What is needed before comparing it with a dirty bond value?",
       "options": [
-        { "id": "add-accrued", "label": "Add the exercise-date accrued interest under the stated convention" },
-        { "id": "subtract-coupons", "label": "Subtract every coupon paid over the bond's entire life" },
-        { "id": "no-adjustment", "label": "No adjustment; clean and dirty prices are identical between coupon dates" }
+        {
+          "id": "add-accrued",
+          "label": "Add the exercise-date accrued interest under the stated convention"
+        },
+        {
+          "id": "subtract-coupons",
+          "label": "Subtract every coupon paid over the bond's entire life"
+        },
+        {
+          "id": "no-adjustment",
+          "label": "No adjustment; clean and dirty prices are identical between coupon dates"
+        }
       ],
       "correctOptionId": "add-accrued",
       "explanation": "Payoff inputs must share one price basis. A clean strike becomes a dirty cash strike after adding applicable accrued interest."

@@ -4,7 +4,7 @@ Single source of truth for what this repository is, how the pipeline works, and
 which rule lives where. Written to be loaded whole in one pass.
 
 This document **subsumes** the files listed in §12. Where this document and an
-older file disagree, this document is correct for *what is built*; the older
+older file disagree, this document is correct for _what is built_; the older
 files often describe planned (ADR 0003) behavior as if it exists.
 
 ---
@@ -39,31 +39,31 @@ items), ~20 shared notation entries, 3 sources.
 Status: ✅ built · 🟡 partial · 🔵 seam only (interface exists, no
 implementation).
 
-| # | Area | What it does | Key files | Status |
-|---|------|--------------|-----------|--------|
-| 1 | Static site shell | Routing, sidebar, search, page layout | `astro.config.mjs`, `src/components/starlight/*` | ✅ |
-| 2 | Content collections | Zod schemas for 6 collections (docs, competencies, assessments, tracks, sources, notation) | `src/content.config.ts` | ✅ |
-| 3 | Curriculum validation | ID/reference integrity, prerequisite graph + cycle detection, lesson & track ordering, assessment coverage, review-state consistency, `\cite`↔`sources:` sync | `src/curriculum/validation.ts`, `scripts/validate-curriculum.ts` | ✅ |
-| 4 | Shared notation | Define-once `.md` entries: semantic key, LaTeX, units, perspective, sources, `seeAlso`, curriculum alignment, review state | `src/content/notation/*.md` | ✅ |
-| 5 | Notation registry | In-memory build product: lexical resolution (local→shared), ~15 diagnostic codes, transitive page bundles, backlinks | `src/notation/registry.ts`, `references.ts`, `types.ts` | ✅ |
-| 6 | Completeness gate | Every identifier in lesson math must auto-resolve to a scoped key; unresolved → build fails with `file:line` + token | `src/notation/math-bindings.mjs`, `remark-notation.mjs` | 🟡 |
-| 7 | KaTeX trust boundary | Build-time HTML+MathML; trust callback accepts exactly one validated `data-notation-key`; recovered `.katex-error` markup is a fatal gate | `src/notation/katex-options.mjs`, `rehype-fail-katex-errors.mjs` | ✅ |
-| 8 | Notation page layer | Static `<details>` disclosure of resolved definitions (no-JS baseline) + optional browser highlight/hover/focus/pin | `src/components/notation/NotationLayer.astro` | ✅ |
-| 9 | Glossary | Generated `/glossary/` from the shared collection + lesson backlinks | `src/components/notation/NotationGlossary.astro` | ✅ |
-| 10 | Notation ↔ curriculum alignment | Checks `introducedByCompetency` / `introducedInLesson`, introduction order, availability, review state | `src/notation/curriculum-alignment.ts` | ✅ |
-| 11 | Lab math | Render KaTeX inside React labs against a notation scope | `src/notation/render-lab-math.ts`, `lab-math-scope.ts`, `src/components/labs/DiscountingExplorerMath.astro` | ✅ |
-| 12 | Source citations | `\cite\{id\}` / `\cite\{id\}\{locator\}` → numbered `[n]` marker + generated `## References` list + optional hover panel | `src/notation/remark-citation.mjs`, `citation-format.mjs`, `src/components/citation/CitationLayer.astro` | ✅ (uncommitted) |
-| 13 | Domain calculations | Pure functions: `presentValue` (compensated sum), `periodicDiscountFactor`, fixed-coupon bond price; numeric guards | `src/domain/*` | ✅ |
-| 14 | Interactive labs | Validated inputs → pure domain call → React view + text interpretation + data table | `src/components/labs/*.tsx` | ✅ |
-| 15 | Compact examples | Collapsed native `<details>` → keyboard tabs with JS; all examples visible in print / no-JS | `src/components/examples/CompactExample*.astro` | ✅ |
-| 16 | Assessment renderer | Render assessment JSON in a lesson; check numeric/single-choice answers | `src/components/assessments/AssessmentRunner.tsx`, `AssessmentSet.astro` | 🟡 (uncommitted) |
-| 17 | Progress model | `unseen→exposed→practicing→demonstrated→refresh_due`; `ProgressRepository` + versioned local-storage adapter; components never touch `localStorage` directly | — | 🔵 |
-| 18 | Curriculum map | Generated `/curriculum-map/` page | `src/components/CurriculumMap.astro` | ✅ |
-| 19 | Layout overrides | Header, both sidebars, footer; desktop edge controls with hover preview and persisted collapsed rails | `src/components/starlight/*` | ✅ |
-| 20 | Reference library | Local, git-ignored cache of copyrighted source PDFs/DjVu + `.txt` extractions for verifying claims; only README tracked | `reference-library/README.md` | ✅ |
-| 21 | AI governance | Review lifecycle, provenance records, prompt templates, untrusted-input rules | `AI_POLICY.md`, `AGENTS.md`, `ai/prompts/*`, `ai/provenance/*` | ✅ |
-| 22 | Test suite | Unit/property (domain), curriculum, notation compiler/registry, e2e + axe | `tests/**` | ✅ |
-| 23 | CI | One job runs `pnpm verify` on PR and push to `main`; minimal permissions | `.github/workflows/ci.yml` | ✅ |
+| #   | Area                            | What it does                                                                                                                                                  | Key files                                                                                                   | Status           |
+| --- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ---------------- |
+| 1   | Static site shell               | Routing, sidebar, search, page layout                                                                                                                         | `astro.config.mjs`, `src/components/starlight/*`                                                            | ✅               |
+| 2   | Content collections             | Zod schemas for 6 collections (docs, competencies, assessments, tracks, sources, notation)                                                                    | `src/content.config.ts`                                                                                     | ✅               |
+| 3   | Curriculum validation           | ID/reference integrity, prerequisite graph + cycle detection, lesson & track ordering, assessment coverage, review-state consistency, `\cite`↔`sources:` sync | `src/curriculum/validation.ts`, `scripts/validate-curriculum.ts`                                            | ✅               |
+| 4   | Shared notation                 | Define-once `.md` entries: semantic key, LaTeX, units, perspective, sources, `seeAlso`, curriculum alignment, review state                                    | `src/content/notation/*.md`                                                                                 | ✅               |
+| 5   | Notation registry               | In-memory build product: lexical resolution (local→shared), ~15 diagnostic codes, transitive page bundles, backlinks                                          | `src/notation/registry.ts`, `references.ts`, `types.ts`                                                     | ✅               |
+| 6   | Completeness gate               | Every identifier in lesson math must auto-resolve to a scoped key; unresolved → build fails with `file:line` + token                                          | `src/notation/math-bindings.mjs`, `remark-notation.mjs`                                                     | 🟡               |
+| 7   | KaTeX trust boundary            | Build-time HTML+MathML; trust callback accepts exactly one validated `data-notation-key`; recovered `.katex-error` markup is a fatal gate                     | `src/notation/katex-options.mjs`, `rehype-fail-katex-errors.mjs`                                            | ✅               |
+| 8   | Notation page layer             | Static `<details>` disclosure of resolved definitions (no-JS baseline) + optional browser highlight/hover/focus/pin                                           | `src/components/notation/NotationLayer.astro`                                                               | ✅               |
+| 9   | Glossary                        | Generated `/glossary/` from the shared collection + lesson backlinks                                                                                          | `src/components/notation/NotationGlossary.astro`                                                            | ✅               |
+| 10  | Notation ↔ curriculum alignment | Checks `introducedByCompetency` / `introducedInLesson`, introduction order, availability, review state                                                        | `src/notation/curriculum-alignment.ts`                                                                      | ✅               |
+| 11  | Lab math                        | Render KaTeX inside React labs against a notation scope                                                                                                       | `src/notation/render-lab-math.ts`, `lab-math-scope.ts`, `src/components/labs/DiscountingExplorerMath.astro` | ✅               |
+| 12  | Source citations                | `\cite\{id\}` / `\cite\{id\}\{locator\}` → numbered `[n]` marker + generated `## References` list + optional hover panel                                      | `src/notation/remark-citation.mjs`, `citation-format.mjs`, `src/components/citation/CitationLayer.astro`    | ✅ (uncommitted) |
+| 13  | Domain calculations             | Pure functions: `presentValue` (compensated sum), `periodicDiscountFactor`, fixed-coupon bond price; numeric guards                                           | `src/domain/*`                                                                                              | ✅               |
+| 14  | Interactive labs                | Validated inputs → pure domain call → React view + text interpretation + data table                                                                           | `src/components/labs/*.tsx`                                                                                 | ✅               |
+| 15  | Compact examples                | Collapsed native `<details>` → keyboard tabs with JS; all examples visible in print / no-JS                                                                   | `src/components/examples/CompactExample*.astro`                                                             | ✅               |
+| 16  | Assessment renderer             | Render assessment JSON in a lesson; check numeric/single-choice answers                                                                                       | `src/components/assessments/AssessmentRunner.tsx`, `AssessmentSet.astro`                                    | 🟡 (uncommitted) |
+| 17  | Progress model                  | `unseen→exposed→practicing→demonstrated→refresh_due`; `ProgressRepository` + versioned local-storage adapter; components never touch `localStorage` directly  | —                                                                                                           | 🔵               |
+| 18  | Curriculum map                  | Generated `/curriculum-map/` page                                                                                                                             | `src/components/CurriculumMap.astro`                                                                        | ✅               |
+| 19  | Layout overrides                | Header, both sidebars, footer; desktop edge controls with hover preview and persisted collapsed rails                                                         | `src/components/starlight/*`                                                                                | ✅               |
+| 20  | Reference library               | Local, git-ignored cache of copyrighted source PDFs/DjVu + `.txt` extractions for verifying claims; only README tracked                                       | `reference-library/README.md`                                                                               | ✅               |
+| 21  | AI governance                   | Review lifecycle, provenance records, prompt templates, untrusted-input rules                                                                                 | `AI_POLICY.md`, `AGENTS.md`, `ai/prompts/*`, `ai/provenance/*`                                              | ✅               |
+| 22  | Test suite                      | Unit/property (domain), curriculum, notation compiler/registry, e2e + axe                                                                                     | `tests/**`                                                                                                  | ✅               |
+| 23  | CI                              | One job runs `pnpm verify` on PR and push to `main`; minimal permissions                                                                                      | `.github/workflows/ci.yml`                                                                                  | ✅               |
 
 **Not built, but described as if built across the old docs** (ADR 0003): inline
 `\def` / `\let` / `\group` / `\underbrace` binding macros, `:::equation{explains}`
@@ -122,14 +122,14 @@ progress UI    → ProgressRepository interface → storage adapter
 
 ### Boundaries
 
-| Boundary | Rule |
-|----------|------|
-| **Domain** | All numerical models are pure, typed, unit-explicit functions in `src/domain/`. Tests cover reference cases, identities, bounds, monotonicity, scaling, invalid inputs. The bond model deliberately supports only level coupons, par redemption, coupon-date settlement, flat nominal yield — and says so. |
-| **Notation** | Educational content, not calculation. Meaning ≠ displayed LaTeX. Shared meanings are `.md` entries; page-local meanings are schema-checked frontmatter. The notation layer never evaluates a financial formula. |
-| **Citation** | Same shape as notation: a small escaped author token, build-time resolution against a schema-checked collection, an accessible static baseline (real anchor links to an on-page list), an optional browser convenience layer. |
-| **Interaction** | A lab = validated inputs + one pure model call + a stateful React view + a textual interpretation + a data-table alternative + focused tests. A default worked result is legible before hydration. |
-| **Progress** | Not implemented. First implementation is a `ProgressRepository` interface + versioned local-storage adapter. Lesson/assessment components must not call `localStorage` directly. |
-| **Trust** | AI output, pasted docs, third-party data, URLs, browser state, dependencies, and out-of-repo submissions are untrusted. Controls: schemas, semantic validation, allowlisted components, escaped output, exact dependency versions, minimal workflow permissions, human review, no runtime execution of generated prose/code. |
+| Boundary        | Rule                                                                                                                                                                                                                                                                                                                         |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Domain**      | All numerical models are pure, typed, unit-explicit functions in `src/domain/`. Tests cover reference cases, identities, bounds, monotonicity, scaling, invalid inputs. The bond model deliberately supports only level coupons, par redemption, coupon-date settlement, flat nominal yield — and says so.                   |
+| **Notation**    | Educational content, not calculation. Meaning ≠ displayed LaTeX. Shared meanings are `.md` entries; page-local meanings are schema-checked frontmatter. The notation layer never evaluates a financial formula.                                                                                                              |
+| **Citation**    | Same shape as notation: a small escaped author token, build-time resolution against a schema-checked collection, an accessible static baseline (real anchor links to an on-page list), an optional browser convenience layer.                                                                                                |
+| **Interaction** | A lab = validated inputs + one pure model call + a stateful React view + a textual interpretation + a data-table alternative + focused tests. A default worked result is legible before hydration.                                                                                                                           |
+| **Progress**    | Not implemented. First implementation is a `ProgressRepository` interface + versioned local-storage adapter. Lesson/assessment components must not call `localStorage` directly.                                                                                                                                             |
+| **Trust**       | AI output, pasted docs, third-party data, URLs, browser state, dependencies, and out-of-repo submissions are untrusted. Controls: schemas, semantic validation, allowlisted components, escaped output, exact dependency versions, minimal workflow permissions, human review, no runtime execution of generated prose/code. |
 
 ---
 
@@ -139,14 +139,14 @@ Six collections. Filename must equal `id` (or `key`) for every JSON/Markdown
 entry. IDs are lowercase, dot/dash-namespaced, case-sensitive:
 `rates.discount-factor.calculate`.
 
-| Entity | Location | Schema owner | Notes |
-|--------|----------|--------------|-------|
-| **Competency** | `src/content/competencies/<id>.json` | `content.config.ts` → `competencies` | One atomic, observable outcome. `prerequisites` form a DAG. `evidence` declares `minimumIndependentItems`, `requiresTransfer`, `requiresUnassistedPass`. |
-| **Assessment** | `src/content/assessments/<id>.json` | `content.config.ts` → `assessments` | `items[]` of `numeric` (`answer.value` + `tolerance`) or `single-choice` (`options` + `correctOptionId`). Each item: one `competencyId`, `evidenceKind` `direct`\|`transfer`. Numeric answers come from reviewed domain code or an independent calc. |
-| **Source** | `src/content/sources/<id>.json` | `content.config.ts` → `sources` | Metadata only (`type`, `title`, `authors`/`organization`, `edition`, `year`, `isbn`/`url`, `locator`, `accessed`, `licenseNotes`). Never licensed body text. |
-| **Track** | `src/content/tracks/<id>.json` | `content.config.ts` → `tracks` | Ordered `lessons[]`. Validator walks it and fails if a lesson precedes a taught prerequisite. |
-| **Notation (shared)** | `src/content/notation/<key>.md` | `content.config.ts` → `notation` | Frontmatter: `key`, `notation` (LaTeX), `title`, `summary`, `aliases`, `domain`, `units`\|`perspective`, `sources`, `seeAlso`, `alignment`, `editorialStatus`, `aiAssisted`. Body: prose + math; may `\term{key}` other shared entries. First paragraph doubles as the compact explanation. |
-| **Lesson** | `src/content/docs/<area>/<slug>.mdx` | `content.config.ts` → `docs` (extends Starlight `docsSchema`) | Frontmatter: `lessonId`, `editorialStatus`, `riskTier`, `estimatedMinutes`, `requires[]`, `teaches[]` (ordered), `assessments[]`, `sources[]`, `assumptions[]`, `notation.uses[]` + `notation.local[]`, `aiAssisted`, `lastReviewed`. |
+| Entity                | Location                             | Schema owner                                                  | Notes                                                                                                                                                                                                                                                                                       |
+| --------------------- | ------------------------------------ | ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Competency**        | `src/content/competencies/<id>.json` | `content.config.ts` → `competencies`                          | One atomic, observable outcome. `prerequisites` form a DAG. `evidence` declares `minimumIndependentItems`, `requiresTransfer`, `requiresUnassistedPass`.                                                                                                                                    |
+| **Assessment**        | `src/content/assessments/<id>.json`  | `content.config.ts` → `assessments`                           | `items[]` of `numeric` (`answer.value` + `tolerance`) or `single-choice` (`options` + `correctOptionId`). Each item: one `competencyId`, `evidenceKind` `direct`\|`transfer`. Numeric answers come from reviewed domain code or an independent calc.                                        |
+| **Source**            | `src/content/sources/<id>.json`      | `content.config.ts` → `sources`                               | Metadata only (`type`, `title`, `authors`/`organization`, `edition`, `year`, `isbn`/`url`, `locator`, `accessed`, `licenseNotes`). Never licensed body text.                                                                                                                                |
+| **Track**             | `src/content/tracks/<id>.json`       | `content.config.ts` → `tracks`                                | Ordered `lessons[]`. Validator walks it and fails if a lesson precedes a taught prerequisite.                                                                                                                                                                                               |
+| **Notation (shared)** | `src/content/notation/<key>.md`      | `content.config.ts` → `notation`                              | Frontmatter: `key`, `notation` (LaTeX), `title`, `summary`, `aliases`, `domain`, `units`\|`perspective`, `sources`, `seeAlso`, `alignment`, `editorialStatus`, `aiAssisted`. Body: prose + math; may `\term{key}` other shared entries. First paragraph doubles as the compact explanation. |
+| **Lesson**            | `src/content/docs/<area>/<slug>.mdx` | `content.config.ts` → `docs` (extends Starlight `docsSchema`) | Frontmatter: `lessonId`, `editorialStatus`, `riskTier`, `estimatedMinutes`, `requires[]`, `teaches[]` (ordered), `assessments[]`, `sources[]`, `assumptions[]`, `notation.uses[]` + `notation.local[]`, `aiAssisted`, `lastReviewed`.                                                       |
 
 `notation.local[]` entry shape: `key`, `notation`, `title`, `summary`,
 `details?`, `formula?`, `units?`, `sources[]`, `seeAlso[]`, `alignment`.
@@ -162,12 +162,12 @@ introducedInLesson}` or `{kind: 'general', rationale}`.
 
 ### Author syntax that works today
 
-| Context | Syntax | Becomes |
-|---------|--------|---------|
-| MDX lesson prose | `\term\{key\}` (braces escaped for MDX) | A titled link to the glossary / page anchor |
-| Shared `.md` body | `\term{key}` (no escape) | same |
-| Lesson math `$…$` / `$$…$$` | ordinary LaTeX — `D(0,t)` | Each identifier auto-resolves to the unique in-scope key; the trusted marker is injected |
-| Lesson math, disambiguation only | `\explain{key}{latex}` | Same marker, explicit key; use only when scope is ambiguous or the glyph is non-canonical |
+| Context                          | Syntax                                  | Becomes                                                                                   |
+| -------------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------- |
+| MDX lesson prose                 | `\term\{key\}` (braces escaped for MDX) | A titled link to the glossary / page anchor                                               |
+| Shared `.md` body                | `\term{key}` (no escape)                | same                                                                                      |
+| Lesson math `$…$` / `$$…$$`      | ordinary LaTeX — `D(0,t)`               | Each identifier auto-resolves to the unique in-scope key; the trusted marker is injected  |
+| Lesson math, disambiguation only | `\explain{key}{latex}`                  | Same marker, explicit key; use only when scope is ambiguous or the glyph is non-canonical |
 
 Do **not** use `\(…\)` / `\[…\]` delimiters. Do not hand-author `\htmlData`,
 inline JS explanation dictionaries, MathJax, or a remote math script — all are
@@ -211,7 +211,7 @@ from the docs (see `claude_rebuild_plan.md`, Phase 0 and Phase 6).
 ### KaTeX trust boundary
 
 `\explain` expands to `\htmlData{notation-key=<validated-key>}{<latex>}`. The
-trust callback accepts *only* `\htmlData` carrying exactly one
+trust callback accepts _only_ `\htmlData` carrying exactly one
 `data-notation-key` matching the key pattern — no classes, IDs, styles, links,
 protocols, or extra data attributes. Output is `htmlAndMathml`; MathML remains
 the accessible representation. No financial formula is evaluated here.
@@ -255,14 +255,14 @@ has effectively appeared.)
 `pnpm verify` = `format:check` → `validate:content` → `check` → `test` →
 `test:e2e` → `astro build`. What each catches and who owns it:
 
-| Gate | Command | Owner | Catches |
-|------|---------|-------|---------|
-| Formatting | `prettier --check .` | `prettier.config.mjs` | Style drift |
+| Gate              | Command                              | Owner                                                                                   | Catches                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ----------------- | ------------------------------------ | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Formatting        | `prettier --check .`                 | `prettier.config.mjs`                                                                   | Style drift                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | Content semantics | `tsx scripts/validate-curriculum.ts` | `src/curriculum/validation.ts` + `src/notation/registry.ts` + `curriculum-alignment.ts` | Invalid/duplicate IDs; unknown/duplicate references; self-prerequisite; prerequisite cycles; lesson teaches before prereq available; lesson both requires+teaches X; track reaches a lesson early; assessment coverage (min items, transfer); reviewed lesson citing a non-reviewed source; `\cite`↔`sources:` mismatch; teaches-without-assumptions; notation invalid/duplicate/conflicting keys; undeclared/undefined/unused references; unused imports; notation reference cycles; alignment (unknown competency/lesson, introduction order, availability, review state); **unresolved lesson-math identifier** |
-| Types | `astro check` | `tsconfig.json` | TS + Astro diagnostics |
-| Unit / property | `vitest run` | `tests/unit`, `tests/curriculum`, `tests/notation` | Domain reference cases + invariants (fast-check); registry / compiler / remark / katex-options behavior |
-| Browser + a11y | `playwright test` | `tests/e2e/*` | Every lesson route renders; KaTeX errors; notation keyboard/pin/no-JS; citation markers + panel + no-JS; compact-example tabs/keyboard/print; layout edge controls; **axe** accessibility on every lesson + pinned states |
-| Production build | `astro build` | `astro.config.mjs` | Full static render; `rehypeFailKatexErrors` |
+| Types             | `astro check`                        | `tsconfig.json`                                                                         | TS + Astro diagnostics                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| Unit / property   | `vitest run`                         | `tests/unit`, `tests/curriculum`, `tests/notation`                                      | Domain reference cases + invariants (fast-check); registry / compiler / remark / katex-options behavior                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| Browser + a11y    | `playwright test`                    | `tests/e2e/*`                                                                           | Every lesson route renders; KaTeX errors; notation keyboard/pin/no-JS; citation markers + panel + no-JS; compact-example tabs/keyboard/print; layout edge controls; **axe** accessibility on every lesson + pinned states                                                                                                                                                                                                                                                                                                                                                                                          |
+| Production build  | `astro build`                        | `astro.config.mjs`                                                                      | Full static render; `rehypeFailKatexErrors`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 
 CI runs exactly this via one job.
 
@@ -287,9 +287,9 @@ Per content type:
 
 - **Competency** — one JSON, `id` = filename. One outcome; split anything with "and".
 - **Source** — metadata only. Prefer contractual/regulatory > original papers/official docs > textbooks > secondary. AI output and search snippets are not sources.
-- **Assessment** — one JSON. Assess the *outcome*, not lesson trivia. Numeric answers from reviewed code or an independent calculation — never a prose answer copied into a test.
+- **Assessment** — one JSON. Assess the _outcome_, not lesson trivia. Numeric answers from reviewed code or an independent calculation — never a prose answer copied into a test.
 - **Lesson** — sections: What you will be able to do · Intuition · Model and notation (every symbol, unit, clock, sign, convention) · Worked example (intermediate values + rounding) · Try it · Check your understanding · Model boundary. Introduce every `\term` in prose before its first equation.
-- **Notation** — search `src/content/notation/` first. Key names the *meaning*; `notation` stores the LaTeX. Never key on a bare glyph. Promote a local entry to shared when a second lesson needs it.
+- **Notation** — search `src/content/notation/` first. Key names the _meaning_; `notation` stores the LaTeX. Never key on a bare glyph. Promote a local entry to shared when a second lesson needs it.
 - **Compact examples** — keep the rule/definition visible above a single collapsed set; label by what changes ("Semiannual compounding", not "Example 2"); keep labs outside the disclosure.
 - **Lab** — learning question; labeled inputs with units, ranges, deterministic defaults; pure `src/domain/` calc; React view that doesn't reimplement the formula; text + data-table alternative; keyboard-operable; tests for reference/invariant/boundary/invalid.
 
@@ -337,12 +337,12 @@ and stop.
 
 ## 10. Testing map
 
-| Suite | Path | Runner | Covers |
-|-------|------|--------|--------|
-| Domain | `tests/unit/*` | Vitest + fast-check | `presentValue`, `periodicDiscountFactor`, fixed-coupon bond — reference values, identities, bounds, monotonicity, invalid inputs |
-| Curriculum | `tests/curriculum/validation.test.ts` | Vitest | `validateCurriculum` issue detection |
-| Notation | `tests/notation/*` (11 files) | Vitest | registry, compiler, `remark-notation`, `remark-citation`, `math-bindings`, `katex-options`, `curriculum-alignment`, file loaders, lab-math / notation-math rendering |
-| E2E + a11y | `tests/e2e/*` (6 specs) | Playwright + `@axe-core/playwright` | bond lesson, content pages, layout edge controls, notation interaction, citations, compact examples — each with axe checks and no-JS fallbacks |
+| Suite      | Path                                  | Runner                              | Covers                                                                                                                                                               |
+| ---------- | ------------------------------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain     | `tests/unit/*`                        | Vitest + fast-check                 | `presentValue`, `periodicDiscountFactor`, fixed-coupon bond — reference values, identities, bounds, monotonicity, invalid inputs                                     |
+| Curriculum | `tests/curriculum/validation.test.ts` | Vitest                              | `validateCurriculum` issue detection                                                                                                                                 |
+| Notation   | `tests/notation/*` (11 files)         | Vitest                              | registry, compiler, `remark-notation`, `remark-citation`, `math-bindings`, `katex-options`, `curriculum-alignment`, file loaders, lab-math / notation-math rendering |
+| E2E + a11y | `tests/e2e/*` (6 specs)               | Playwright + `@axe-core/playwright` | bond lesson, content pages, layout edge controls, notation interaction, citations, compact examples — each with axe checks and no-JS fallbacks                       |
 
 Rule: **every feature, including UI, ships with a test.** New model behavior
 ships with reference + invariant + invalid-input tests. Never change an
@@ -354,16 +354,16 @@ implementation and its "independent" golden value in the same unreviewed step.
 
 Feeds directly into `claude_rebuild_plan.md`.
 
-| # | Problem | Evidence |
-|---|---------|----------|
-| D1 | **Doc overlap.** ~14 files restate the same notation/citation/review rules; no single source of truth. | `README.md` (717 lines), `docs/architecture.md` (256), `NOTATION_ARCHITECTURE.md` (349), `docs/notation-and-units.md`, `CONTENT_STANDARD.md`, `AGENTS.md`, `AI_POLICY.md`, `docs/review-policy.md`, `docs/market-conventions.md`, 4 ADRs |
-| D2 | **Docs describe an unbuilt system.** ADR 0003 features written as spec across 5 files; absent from code. A reader cannot tell built from planned without grepping. | §5; `grep` for `\let` / `\def` / `reusedGlyphs` / resolution report = 0 hits |
-| D3 | **Three content-loading paths.** Astro content collections power the build; `scripts/curriculum-files.ts` + `scripts/notation-files.ts` re-parse frontmatter with `gray-matter` + regex for the CLI validator; `astro.config.mjs` independently loads notation + sources with `readdirSync`. Same data, three parsers, three shapes. | `scripts/*-files.ts` (268 + 88 lines); `astro.config.mjs` lines 17–35 |
-| D4 | **Oversized notation modules** for ~20 symbols across 8 lessons. `math-bindings.mjs` reaches into KaTeX's private `__parse` and is pinned to an exact version. | `registry.ts` 868, `math-bindings.mjs` 846, `remark-notation.mjs` 546, `NotationLayer.astro` 810, `NotationGlossary.astro` 371 |
-| D5 | **Duplicated hover-panel logic** in `NotationLayer.astro` and `CitationLayer.astro`. | ADR 0004 "Consequences" |
-| D6 | **Dead prototype routed.** `src/pages/test_equation.astro` (MathJax + CDN) contradicts the architecture and still builds a page. | file header; `NOTATION_ARCHITECTURE.md` §1 |
-| D7 | **Accretion order.** Citations retrofitted into 8 finished lessons' closing "review note" paragraphs, not at point-of-claim; assessment renderer built after labs; progress seam still empty after 2 UI layers depend on the idea of it. | provenance 2026-08-31; `README.md` "next slices" |
-| D8 | **Node version drift.** `package.json` / `.nvmrc` pin 24; provenance runs cite 24.20 and 26.5. | `ai/provenance/2026-08-31-*` |
+| #   | Problem                                                                                                                                                                                                                                                                                                                              | Evidence                                                                                                                                                                                                                                 |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D1  | **Doc overlap.** ~14 files restate the same notation/citation/review rules; no single source of truth.                                                                                                                                                                                                                               | `README.md` (717 lines), `docs/architecture.md` (256), `NOTATION_ARCHITECTURE.md` (349), `docs/notation-and-units.md`, `CONTENT_STANDARD.md`, `AGENTS.md`, `AI_POLICY.md`, `docs/review-policy.md`, `docs/market-conventions.md`, 4 ADRs |
+| D2  | **Docs describe an unbuilt system.** ADR 0003 features written as spec across 5 files; absent from code. A reader cannot tell built from planned without grepping.                                                                                                                                                                   | §5; `grep` for `\let` / `\def` / `reusedGlyphs` / resolution report = 0 hits                                                                                                                                                             |
+| D3  | **Three content-loading paths.** Astro content collections power the build; `scripts/curriculum-files.ts` + `scripts/notation-files.ts` re-parse frontmatter with `gray-matter` + regex for the CLI validator; `astro.config.mjs` independently loads notation + sources with `readdirSync`. Same data, three parsers, three shapes. | `scripts/*-files.ts` (268 + 88 lines); `astro.config.mjs` lines 17–35                                                                                                                                                                    |
+| D4  | **Oversized notation modules** for ~20 symbols across 8 lessons. `math-bindings.mjs` reaches into KaTeX's private `__parse` and is pinned to an exact version.                                                                                                                                                                       | `registry.ts` 868, `math-bindings.mjs` 846, `remark-notation.mjs` 546, `NotationLayer.astro` 810, `NotationGlossary.astro` 371                                                                                                           |
+| D5  | **Duplicated hover-panel logic** in `NotationLayer.astro` and `CitationLayer.astro`.                                                                                                                                                                                                                                                 | ADR 0004 "Consequences"                                                                                                                                                                                                                  |
+| D6  | **Dead prototype routed.** `src/pages/test_equation.astro` (MathJax + CDN) contradicts the architecture and still builds a page.                                                                                                                                                                                                     | file header; `NOTATION_ARCHITECTURE.md` §1                                                                                                                                                                                               |
+| D7  | **Accretion order.** Citations retrofitted into 8 finished lessons' closing "review note" paragraphs, not at point-of-claim; assessment renderer built after labs; progress seam still empty after 2 UI layers depend on the idea of it.                                                                                             | provenance 2026-08-31; `README.md` "next slices"                                                                                                                                                                                         |
+| D8  | **Node version drift.** `package.json` / `.nvmrc` pin 24; provenance runs cite 24.20 and 26.5.                                                                                                                                                                                                                                       | `ai/provenance/2026-08-31-*`                                                                                                                                                                                                             |
 
 ---
 
@@ -372,17 +372,17 @@ Feeds directly into `claude_rebuild_plan.md`.
 Fold the content of these into this file (plus a short `README.md` quickstart
 and per-decision ADRs). See `claude_rebuild_plan.md` Appendix B.
 
-| Current file | Disposition |
-|--------------|-------------|
-| `README.md` | Keep a ~40-line quickstart (install, `pnpm verify`, `pnpm dev`, repo map). Move the 600-line handbook here (§4, §8). |
-| `docs/architecture.md` | Merged into §1–§3, §11. |
-| `NOTATION_ARCHITECTURE.md` | Merged into §5, §7. Delete. |
-| `docs/notation-and-units.md` | Symbol table → keep as a generated artifact or a short appendix; rules → §5, §8. |
-| `CONTENT_STANDARD.md` | Merged into §4, §8, §9. Delete. |
-| `AGENTS.md` | Keep — short, agent-facing entry point; point it at this file. |
-| `AI_POLICY.md` | Keep — the enforceable policy. Trim duplication with §9. |
-| `docs/review-policy.md` | Merged into §9. Delete. |
-| `docs/market-conventions.md` | Merged into §8. Delete or keep as a 10-line appendix. |
-| `docs/adr/0001` | Keep (irreversible stack choice). |
-| `docs/adr/0002`, `0003` | Collapse into one ADR that states the **built** notation model and lists 0003 as explicitly deferred or scheduled. |
-| `docs/adr/0004` | Keep; update once the hover-panel helper is extracted. |
+| Current file                 | Disposition                                                                                                          |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `README.md`                  | Keep a ~40-line quickstart (install, `pnpm verify`, `pnpm dev`, repo map). Move the 600-line handbook here (§4, §8). |
+| `docs/architecture.md`       | Merged into §1–§3, §11.                                                                                              |
+| `NOTATION_ARCHITECTURE.md`   | Merged into §5, §7. Delete.                                                                                          |
+| `docs/notation-and-units.md` | Symbol table → keep as a generated artifact or a short appendix; rules → §5, §8.                                     |
+| `CONTENT_STANDARD.md`        | Merged into §4, §8, §9. Delete.                                                                                      |
+| `AGENTS.md`                  | Keep — short, agent-facing entry point; point it at this file.                                                       |
+| `AI_POLICY.md`               | Keep — the enforceable policy. Trim duplication with §9.                                                             |
+| `docs/review-policy.md`      | Merged into §9. Delete.                                                                                              |
+| `docs/market-conventions.md` | Merged into §8. Delete or keep as a 10-line appendix.                                                                |
+| `docs/adr/0001`              | Keep (irreversible stack choice).                                                                                    |
+| `docs/adr/0002`, `0003`      | Collapse into one ADR that states the **built** notation model and lists 0003 as explicitly deferred or scheduled.   |
+| `docs/adr/0004`              | Keep; update once the hover-panel helper is extracted.                                                               |

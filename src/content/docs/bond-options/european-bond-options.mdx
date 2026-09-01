@@ -27,6 +27,7 @@ notation:
     - option-expiry-time
     - option-strike-price
     - dirty-bond-price
+    - accrued-interest
     - lattice-node-value
   local:
     - key: bond-option-expiry-value
@@ -74,16 +75,16 @@ import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
 ## The standalone contract
 
 A European bond call gives the holder the right, but not the obligation, to
-buy a named bond at 	erm{option-expiry-time}. A put gives the right to sell.
+buy a named bond at \term\{option-expiry-time\}. A put gives the right to sell.
 This is not the issuer call feature inside a callable bond; the party holding
 the right and the surrounding instrument are different.
 
 ## Align cash-price units before payoff
 
-The local 	erm{bond-option-expiry-value}
-$B_{T_{\mathrm{opt}}}^{\mathrm{dirty}}$ and 	erm{option-strike-price} $K$
+The local \term\{bond-option-expiry-value\}
+$B_{T_{\mathrm{opt}}}^{\mathrm{dirty}}$ and \term\{option-strike-price\} $K$
 must use the same dirty cash basis. If a contract states a clean strike, add
-exercise-date 	erm{accrued-interest} before comparison.
+exercise-date \term\{accrued-interest\} before comparison.
 
 For the lesson's exercise immediately after any expiry-date coupon, the call
 and put payoffs are
@@ -102,9 +103,9 @@ $$
 -\explain{bond-option-expiry-value}{B_{T_{\mathrm{opt}}}^{\mathrm{dirty}}},0\right).
 $$
 
-Backward induction then values those node payoffs. The lattice must first
-produce bond values at option expiry; payoff arithmetic alone is not a bond
-option model.
+Backward induction then turns those payoffs into a
+\term\{lattice-node-value\}. The lattice must first produce bond values at option
+expiry; payoff arithmetic alone is not a bond option model.
 
 ## Coupon and exercise ordering
 
@@ -119,6 +120,6 @@ coupon entitlement would require different terminal inputs.
 ## Sources
 
 The bond-option definition and the need to distinguish cash/dirty from
-quoted/clean strikes follow Hull, Chapter 28 §28.1 \cite{hull-options-futures}.
+quoted/clean strikes follow Hull, Chapter 28 §28.1 \cite\{hull-options-futures\}.
 This lesson uses a supplied lattice rather than Black's market model so the
 subsequent issuer-default state can remain explicit.

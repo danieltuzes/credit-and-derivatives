@@ -65,9 +65,9 @@ future dates.
 
 ## A curve is a dated collection, not one yield
 
-The earlier 	erm{discount-factor} $D(0,t)$ valued a deterministic payment at
-one 	erm{payment-time}. A discount curve supplies that value across many
-times. Every node must keep the same currency, valuation date, and
+At \term\{valuation-time\}, the earlier \term\{discount-factor\} $D(0,t)$ valued a
+deterministic payment at one \term\{payment-time\}. A discount curve supplies
+that value across many times. Every node must keep the same currency, valuation date, and
 collateral/funding basis. Mixing bases does not create one coherent curve.
 
 This slice accepts positive nodes and sets $D(0,0)=1$. It interpolates the
@@ -81,11 +81,11 @@ below one is not.
 
 ## Discount between future times
 
-Let local 	erm{forward-discount-start-time} $t$ precede local
-	erm{forward-discount-end-time} $T$. The 	erm{forward-discount-factor} is
+Let local \term\{forward-discount-start-time\} $t$ precede local
+\term\{forward-discount-end-time\} $T$. The \term\{forward-discount-factor\} is
 
 $$
-\explain{forward-discount-factor}{D(t,T)}
+\explain{forward-discount-factor}{Z(t,T)}
 =\frac{\explain{discount-factor}{D(0,T)}}
 {\explain{discount-factor}{D(0,t)}}.
 $$
@@ -94,8 +94,11 @@ The units are time-$t$ currency per one unit of time-$T$ currency. If
 $D(0,1)=0.98$ and $D(0,3)=0.94$, then
 
 $$
-D(1,3)=\frac{0.94}{0.98}=0.9591836735.
+Z(1,3)=\frac{0.94}{0.98}=0.9591836735.
 $$
+
+The glyph $Z$ is deliberate: shared $D$ remains bound to a factor from
+valuation time, so the new meaning does not silently rebind it.
 
 This ratio is essential for multi-period valuation: each lattice node needs
 the factor over its next period, not an indiscriminate reuse of a time-zero
@@ -115,6 +118,6 @@ future-to-future factor will actually be observed in every future state.
 
 Discount-factor pricing and the law-of-one-price interpretation follow
 Tuckman and Serrat, Chapter 1 §§1.2–1.4 and Chapter 2 §§2.1 and 2.4
-\cite{tuckman-serrat-fixed-income}. The later derivatives use of dated factors is
+\cite\{tuckman-serrat-fixed-income\}. The later derivatives use of dated factors is
 consistent with Hull's interest-rate and forward-pricing chapters
-\cite{hull-options-futures}.
+\cite\{hull-options-futures\}.

@@ -151,7 +151,7 @@ test('sidebar and footer navigation connect bonds, credit risk, and CDS', async 
   await expect(page.getByText('CDS', { exact: true })).toBeVisible();
   await expect(page.locator('footer a[rel="next"]')).toHaveAttribute(
     'href',
-    '/credit/default-hazard-and-survival/',
+    '/bonds/settlement-clean-and-dirty-price/',
   );
 
   await page.goto('/credit/recovery-and-risky-present-value/');

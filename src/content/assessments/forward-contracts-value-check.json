@@ -10,9 +10,18 @@
       "evidenceKind": "direct",
       "prompt": "What does the long side of a physically settled forward contract agree to do at delivery?",
       "options": [
-        { "id": "buy-at-delivery", "label": "Buy the underlying for the fixed delivery price" },
-        { "id": "choose-buy", "label": "Choose whether to buy, with no obligation" },
-        { "id": "receive-premium", "label": "Receive the delivery price as an inception premium" }
+        {
+          "id": "buy-at-delivery",
+          "label": "Buy the underlying for the fixed delivery price"
+        },
+        {
+          "id": "choose-buy",
+          "label": "Choose whether to buy, with no obligation"
+        },
+        {
+          "id": "receive-premium",
+          "label": "Receive the delivery price as an inception premium"
+        }
       ],
       "correctOptionId": "buy-at-delivery",
       "explanation": "A forward is a bilateral obligation. At delivery the long pays the fixed delivery price and receives the underlying under the stated physical-settlement convention."
@@ -26,7 +35,10 @@
       "options": [
         { "id": "minus-six", "label": "USD -6" },
         { "id": "plus-six", "label": "USD +6" },
-        { "id": "zero-choice", "label": "USD 0 because the long can decline delivery" }
+        {
+          "id": "zero-choice",
+          "label": "USD 0 because the long can decline delivery"
+        }
       ],
       "correctOptionId": "minus-six",
       "explanation": "The long payoff is underlying value minus delivery price: 74 - 80 = USD -6. Unlike an option holder, the forward long cannot simply decline delivery in this model."

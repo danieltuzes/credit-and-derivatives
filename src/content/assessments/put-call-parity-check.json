@@ -10,9 +10,15 @@
       "evidenceKind": "direct",
       "prompt": "Which matching conditions are required for the European call and put in the lesson's put-call parity?",
       "options": [
-        { "id": "same-contract-terms", "label": "Same underlying, strike, expiry, exercise style, and settlement basis" },
+        {
+          "id": "same-contract-terms",
+          "label": "Same underlying, strike, expiry, exercise style, and settlement basis"
+        },
         { "id": "same-premium", "label": "Only the same current premium" },
-        { "id": "same-direction", "label": "Only the same call-or-put direction" }
+        {
+          "id": "same-direction",
+          "label": "Only the same call-or-put direction"
+        }
       ],
       "correctOptionId": "same-contract-terms",
       "explanation": "Parity compares portfolios whose state-by-state expiry cash flows match. Different underlying, strike, expiry, style, or settlement basis breaks that match."
@@ -24,9 +30,18 @@
       "evidenceKind": "transfer",
       "prompt": "Does vanilla European put-call parity automatically apply to an option that is extinguished by issuer default?",
       "options": [
-        { "id": "no-default-state", "label": "No, the default state changes the matched cash flows and needs an explicit survival-contingent parity" },
-        { "id": "yes-any-option", "label": "Yes, the same formula applies to every contract called an option" },
-        { "id": "yes-ignore-default", "label": "Yes, because default can be ignored after a strike is fixed" }
+        {
+          "id": "no-default-state",
+          "label": "No, the default state changes the matched cash flows and needs an explicit survival-contingent parity"
+        },
+        {
+          "id": "yes-any-option",
+          "label": "Yes, the same formula applies to every contract called an option"
+        },
+        {
+          "id": "yes-ignore-default",
+          "label": "Yes, because default can be ignored after a strike is fixed"
+        }
       ],
       "correctOptionId": "no-default-state",
       "explanation": "If both options terminate on default, call-minus-put is also zero in that state. The corresponding synthetic forward must carry the same default contingency."

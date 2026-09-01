@@ -1,8 +1,4 @@
-import {
-  finiteNumber,
-  nonNegativeNumber,
-  positiveNumber,
-} from '../scalars';
+import { finiteNumber, nonNegativeNumber, positiveNumber } from '../scalars';
 
 export interface FairForwardDeliveryPriceInput {
   /** Current full price of one unit of the underlying, in valuation-time currency. */
@@ -44,10 +40,7 @@ export function prepaidForwardPrice(
     throw new RangeError('incomePresentValue must not exceed spotPrice');
   }
 
-  return finiteNumber(
-    spotPrice - incomePresentValue,
-    'prepaid forward price',
-  );
+  return finiteNumber(spotPrice - incomePresentValue, 'prepaid forward price');
 }
 
 /** Fair delivery price for a newly struck forward, so inception value is zero. */
@@ -72,10 +65,7 @@ export function longForwardContractValue(
     input.currentForwardPrice,
     'currentForwardPrice',
   );
-  const deliveryPrice = nonNegativeNumber(
-    input.deliveryPrice,
-    'deliveryPrice',
-  );
+  const deliveryPrice = nonNegativeNumber(input.deliveryPrice, 'deliveryPrice');
   const discountFactor = positiveNumber(
     input.discountFactorToDelivery,
     'discountFactorToDelivery',

@@ -1,8 +1,4 @@
-import {
-  finiteNumber,
-  nonNegativeNumber,
-  positiveNumber,
-} from '../scalars';
+import { finiteNumber, nonNegativeNumber, positiveNumber } from '../scalars';
 
 export type EuropeanOptionKind = 'call' | 'put';
 
@@ -74,7 +70,9 @@ export function putCallParityResidual(input: PutCallParityInput): number {
 }
 
 /** Put value implied by European put-call parity. */
-export function putValueFromParity(input: Omit<PutCallParityInput, 'putValue'>) {
+export function putValueFromParity(
+  input: Omit<PutCallParityInput, 'putValue'>,
+) {
   const call = nonNegativeNumber(input.callValue, 'callValue');
   const prepaid = nonNegativeNumber(
     input.prepaidForwardPrice,

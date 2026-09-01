@@ -14,7 +14,7 @@ export interface BackwardInductionInput {
 }
 
 export interface BackwardInductionResult {
-  /** valuesByTime[timeIndex][downMoves] */
+  /** valuesByTime[timeIndex][upMoves] under this module's node ordering. */
   readonly valuesByTime: readonly (readonly number[])[];
   readonly valueNow: number;
 }

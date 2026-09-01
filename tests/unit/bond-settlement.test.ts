@@ -55,5 +55,7 @@ describe('bond settlement conventions', () => {
       }),
     ).toThrow(/dates must satisfy/);
     expect(() => dirtyPriceFromClean(100, -1)).toThrow(/accruedInterest/);
+    expect(() => dirtyPriceFromClean(-1, 0)).toThrow(/cleanPrice/);
+    expect(() => cleanPriceFromDirty(10, 11)).toThrow(/clean price/);
   });
 });

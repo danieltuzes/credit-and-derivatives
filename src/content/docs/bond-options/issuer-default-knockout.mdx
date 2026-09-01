@@ -3,7 +3,7 @@ title: Issuer-default knockout bond options
 description: Value a bond option that is extinguished by issuer default while keeping bond recovery separate.
 lessonId: bond-options.issuer-default-knockout
 editorialStatus: draft
-riskTier: 4
+riskTier: 3
 estimatedMinutes: 50
 requires:
   - bond-options.contract.interpret
@@ -29,6 +29,8 @@ assumptions:
   - No counterparty default, early exercise, option rebate, restructuring, settlement delay, correlation calibration, liquidity, tax, or funding adjustment
 notation:
   uses:
+    - lattice-time-index
+    - lattice-state-index
     - alive-bond-value
     - knockout-bond-option-value
     - conditional-node-survival-probability
@@ -81,6 +83,18 @@ notation:
         kind: competency
         introducedByCompetency: bond-options.default-knockout-value.calculate
         introducedInLesson: bond-options.issuer-default-knockout
+    - key: surviving-bond-continuation-value
+      notation: 'H^B_{i,j}'
+      title: Surviving bond continuation value
+      summary: Next-time scheduled bond cash plus risk-neutral expected ex-cash-flow bond value, conditional on period survival.
+      units: stated currency per bond at the next time
+      sources:
+        - hull-options-futures
+        - tuckman-serrat-fixed-income
+      alignment:
+        kind: competency
+        introducedByCompetency: bond-options.default-knockout-value.calculate
+        introducedInLesson: bond-options.issuer-default-knockout
 aiAssisted: true
 sidebar:
   order: 2
@@ -100,27 +114,33 @@ branch.
 
 ## Value the underlying bond first
 
-At an alive node $i,j$, use the local node discount factor $d_{i,j}$, local
-risk-neutral up weight $q_{i,j}$, 	erm{conditional-node-survival-probability}
+At an alive node \term\{lattice-time-index\} $i$,
+\term\{lattice-state-index\} $j$, use the local node discount factor $d_{i,j}$, local
+risk-neutral up weight $q_{i,j}$, \term\{conditional-node-survival-probability\}
 $s_{i,j}$, next surviving cash flow $CF^B_{i+1}$, and local bond recovery
-$R^B_{i,j}$. The 	erm{alive-bond-value} is
+$R^B_{i,j}$. First collect the next-time value conditional on survival in the
+local \term\{surviving-bond-continuation-value\}:
+
+$$
+\explain{surviving-bond-continuation-value}{H^B_{i,j}}
+=\explain{surviving-bond-next-cash-flow}{CF^B_{i+1}}
++(1-\explain{knockout-node-up-weight}{q_{i,j}})
+\explain{alive-bond-value}{B^{\mathrm{alive}}_{i+1,j}}
++\explain{knockout-node-up-weight}{q_{i,j}}
+\explain{alive-bond-value}{B^{\mathrm{alive}}_{i+1,j+1}}.
+$$
+
+The \term\{alive-bond-value\} then separates survival and default:
 
 $$
 \explain{alive-bond-value}{B^{\mathrm{alive}}_{i,j}}
 =\explain{knockout-node-discount-factor}{d_{i,j}}
-\Bigg\{
+\left[
 \explain{conditional-node-survival-probability}{s_{i,j}}
-\Big[
-(1-\explain{knockout-node-up-weight}{q_{i,j}})
-\big(\explain{surviving-bond-next-cash-flow}{CF^B_{i+1}}
-+\explain{alive-bond-value}{B^{\mathrm{alive}}_{i+1,j}}\big)
-+\explain{knockout-node-up-weight}{q_{i,j}}
-\big(\explain{surviving-bond-next-cash-flow}{CF^B_{i+1}}
-+\explain{alive-bond-value}{B^{\mathrm{alive}}_{i+1,j+1}}\big)
-\Big]
+\explain{surviving-bond-continuation-value}{H^B_{i,j}}
 +(1-\explain{conditional-node-survival-probability}{s_{i,j}})
 \explain{bond-default-recovery-cash}{R^B_{i,j}}
-\Bigg\}.
+\right].
 $$
 
 Values are ex-cash-flow at each node. Recovery is approximated as paid at the
@@ -179,5 +199,5 @@ rate-credit lattice is supplied rather than calibrated.
 Bond-option cash-price conventions follow Hull, Chapter 28 §28.1; the analogous
 default-extinguishment convention is described for CDS forwards and options in
 Chapter 24 §24.5; backward induction follows Chapter 12
-\cite{hull-options-futures}. Recovery conventions must state base and timing, as
-emphasized by the fixed-income treatment \cite{tuckman-serrat-fixed-income}.
+\cite\{hull-options-futures\}. Recovery conventions must state base and timing, as
+emphasized by the fixed-income treatment \cite\{tuckman-serrat-fixed-income\}.

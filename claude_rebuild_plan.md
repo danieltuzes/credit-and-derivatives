@@ -13,7 +13,7 @@ consolidated doc set, and a test gate on every feature.
 
 - **Mode A — fresh repo.** Run the steps as written in a new directory. Port
   content by copying files (they are already valid data).
-- **Mode B — in-place refactor** *(recommended)*. Same steps, same order, on the
+- **Mode B — in-place refactor** _(recommended)_. Same steps, same order, on the
   current repo. Each step's **In-place note** says what to delete/replace
   instead of create. Do it on a branch.
 
@@ -23,7 +23,7 @@ consolidated doc set, and a test gate on every feature.
    gate. Do **not** begin step N+1 until step N's gate passes.
 2. **Content is ported as data, never regenerated.** Competency graphs,
    assessment answer keys, notation entries, and reviewed lesson numbers are the
-   asset. Prose is *reviewed*, not rewritten. Any change to a golden value is a
+   asset. Prose is _reviewed_, not rewritten. Any change to a golden value is a
    flagged human-review item, never a silent edit.
 3. Every ported lesson re-enters at `editorialStatus: draft` until a human
    re-confirms it against this pipeline (per `AI_POLICY.md`).
@@ -34,15 +34,15 @@ consolidated doc set, and a test gate on every feature.
 
 ## Goals this rebuild locks in
 
-| Goal | Mechanism | Enforced in |
-|------|-----------|-------------|
-| Token-efficient context | One `claude_architecture.md` + short `README.md` + `AGENTS.md` + `AI_POLICY.md`; ADRs only for irreversible calls | Phase 8 |
-| One content pipeline | `getCollection()` is the *only* content reader; validator and build consume the same shapes | Phase 2, 4 |
-| One reference mechanism | `\term` / `\explain` / `\cite` share a resolver + a hover-panel primitive | Phase 5, 6 |
-| AI can prove "everything is defined" | Completeness gate returns `file:line` + token; resolution report is a checked artifact | Phase 6 |
-| End user sees "what is what" | Static disclosure + glossary + numbered references, all no-JS | Phase 5, 6 |
-| Human edits content easily | Frontmatter + Markdown only; schemas give one clear error each | Phase 2 |
-| Every feature (incl. UI) tested | Each phase gate includes the relevant unit/e2e/axe spec | all phases |
+| Goal                                 | Mechanism                                                                                                         | Enforced in |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | ----------- |
+| Token-efficient context              | One `claude_architecture.md` + short `README.md` + `AGENTS.md` + `AI_POLICY.md`; ADRs only for irreversible calls | Phase 8     |
+| One content pipeline                 | `getCollection()` is the _only_ content reader; validator and build consume the same shapes                       | Phase 2, 4  |
+| One reference mechanism              | `\term` / `\explain` / `\cite` share a resolver + a hover-panel primitive                                         | Phase 5, 6  |
+| AI can prove "everything is defined" | Completeness gate returns `file:line` + token; resolution report is a checked artifact                            | Phase 6     |
+| End user sees "what is what"         | Static disclosure + glossary + numbered references, all no-JS                                                     | Phase 5, 6  |
+| Human edits content easily           | Frontmatter + Markdown only; schemas give one clear error each                                                    | Phase 2     |
+| Every feature (incl. UI) tested      | Each phase gate includes the relevant unit/e2e/axe spec                                                           | all phases  |
 
 ---
 
@@ -50,13 +50,13 @@ consolidated doc set, and a test gate on every feature.
 
 These change what later phases build. Answer them first.
 
-| Decision | Options | Recommendation |
-|----------|---------|----------------|
-| **D-a Scope** | Fresh repo (Mode A) vs in-place refactor (Mode B) | **Mode B.** The content and domain code are sound; only the toolchain and docs are overweight. |
-| **D-b ADR 0003** | (i) Build the full inline-binding slice (`\def`/`\let`/`\group`/`:::equation`, base library, resolution report, overlay, mute list); (ii) Build only the parts with proven need (base library + resolution report); (iii) Cut it — delete all forward-references, keep today's frontmatter-only model | **(ii).** The base notation library and the resolution report earn their weight for AI review; inline macros, the overlay, and the mute list do not yet have a lesson that needs them. |
-| **D-c Notation + citation** | Two parallel subsystems vs one "resolved reference" core with two front-ends | **One core.** Shared loader, shared resolver, shared hover-panel primitive; `\term`/`\explain`/`\cite` are thin adapters. |
-| **D-d Progress** | Leave as a bare seam vs implement the local-storage adapter now | Implement the **interface + local adapter** in Phase 7 so the assessment renderer and any future mute list have a real seam, not a promise. |
-| **D-e Owner items** | — | Choose code + content licenses; real `CODEOWNERS` + branch protection; static host + its deploy permissions; how reviewer identity/date is stored. Blocks public contributions and deploy, not the rebuild. |
+| Decision                    | Options                                                                                                                                                                                                                                                                                               | Recommendation                                                                                                                                                                                              |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **D-a Scope**               | Fresh repo (Mode A) vs in-place refactor (Mode B)                                                                                                                                                                                                                                                     | **Mode B.** The content and domain code are sound; only the toolchain and docs are overweight.                                                                                                              |
+| **D-b ADR 0003**            | (i) Build the full inline-binding slice (`\def`/`\let`/`\group`/`:::equation`, base library, resolution report, overlay, mute list); (ii) Build only the parts with proven need (base library + resolution report); (iii) Cut it — delete all forward-references, keep today's frontmatter-only model | **(ii).** The base notation library and the resolution report earn their weight for AI review; inline macros, the overlay, and the mute list do not yet have a lesson that needs them.                      |
+| **D-c Notation + citation** | Two parallel subsystems vs one "resolved reference" core with two front-ends                                                                                                                                                                                                                          | **One core.** Shared loader, shared resolver, shared hover-panel primitive; `\term`/`\explain`/`\cite` are thin adapters.                                                                                   |
+| **D-d Progress**            | Leave as a bare seam vs implement the local-storage adapter now                                                                                                                                                                                                                                       | Implement the **interface + local adapter** in Phase 7 so the assessment renderer and any future mute list have a real seam, not a promise.                                                                 |
+| **D-e Owner items**         | —                                                                                                                                                                                                                                                                                                     | Choose code + content licenses; real `CODEOWNERS` + branch protection; static host + its deploy permissions; how reviewer identity/date is stored. Blocks public contributions and deploy, not the rebuild. |
 
 Record the answers at the top of `claude_architecture.md` before proceeding.
 
@@ -122,7 +122,7 @@ settlement, flat nominal yield."
 
 ## Phase 4 — curriculum validation on the collection
 
-**Goal.** One validator, reading the *same* collection entries the build reads —
+**Goal.** One validator, reading the _same_ collection entries the build reads —
 no second loader.
 
 **Prompt.** "Rewrite content loading so `validateCurriculum` consumes Astro
@@ -142,7 +142,7 @@ break one fixture and confirm the exact issue is reported.
 
 **In-place note.** The risk here is the Astro-context requirement for
 `getCollection`. Acceptable fallback: keep one small loader module
-(`src/content/load.ts`) used by *both* the validator and any script, replacing
+(`src/content/load.ts`) used by _both_ the validator and any script, replacing
 the current two. The non-negotiable is **one** loader, not two.
 
 ---
@@ -153,6 +153,7 @@ the current two. The non-negotiable is **one** loader, not two.
 0003 scope from Phase 0.
 
 **Prompt.** "Build `src/reference/` as the single resolution core:
+
 1. **Loader** — from the notation collection + lesson `notation.uses`/`local`
    (+ the base library if Phase 0 = D-b(ii)), produce the registry input. This
    replaces `scripts/notation-files.ts` and the ad-hoc loads in
@@ -172,7 +173,7 @@ the current two. The non-negotiable is **one** loader, not two.
    trusted marker; run the gate) reading from the core.
 6. **KaTeX** — port `katex-options.mjs` trust callback and
    `rehype-fail-katex-errors.mjs` verbatim.
-Delete `NOTATION_ARCHITECTURE.md` (content now in `claude_architecture.md`)."
+   Delete `NOTATION_ARCHITECTURE.md` (content now in `claude_architecture.md`)."
 
 **Gate.** `pnpm validate:content` + `pnpm test` (notation suites: registry,
 compiler, math-bindings, katex-options, alignment). Resolution-report snapshots
@@ -277,7 +278,7 @@ enforceable policy, duplication with the reference doc trimmed). Delete
 `NOTATION_ARCHITECTURE.md`, `docs/notation-and-units.md` (regenerate the symbol
 table from the notation collection if wanted), `CONTENT_STANDARD.md`,
 `docs/review-policy.md`, `docs/market-conventions.md` — their content is in the
-reference doc. Collapse ADR 0002 + 0003 into one ADR stating the *built*
+reference doc. Collapse ADR 0002 + 0003 into one ADR stating the _built_
 notation model with 0003 extras marked deferred/scheduled per Phase 0. Keep ADR
 0001 and 0004."
 
@@ -304,55 +305,55 @@ first-party use; `git grep -n mathjax` is empty.
 
 ## Appendix A — file-by-file disposition of the current repo
 
-| Current path | Disposition |
-|--------------|-------------|
-| `src/domain/**` | **Port verbatim** + tests. Already at target. |
-| `src/content.config.ts` | **Port verbatim.** Add base-library home if Phase 0 = D-b(ii). |
-| `src/content/{competencies,assessments,sources,tracks}/**` | **Port verbatim** (data). |
-| `src/content/notation/**` | **Port verbatim** (data). |
-| `src/content/docs/**` | **Port frontmatter verbatim; re-review bodies**; relocate `\cite` markers; re-enter `draft`. |
-| `src/curriculum/validation.ts` | **Keep logic, change input** to collection entries (Phase 4). |
-| `scripts/curriculum-files.ts` | **Delete** — replaced by one shared loader. |
-| `scripts/notation-files.ts` | **Delete** — merge into `src/reference/` loader. |
-| `scripts/validate-curriculum.ts` | **Keep** as the thin CLI entry. |
-| `src/notation/registry.ts` | **Port + trim** to one scope model; drop unbuilt-ladder branches. |
-| `src/notation/math-bindings.mjs` | **Port + trim.** Keep the KaTeX pin + guard test. Do not rewrite. |
-| `src/notation/remark-notation.mjs` | **Port + trim** onto the core. |
-| `src/notation/remark-citation.mjs`, `citation-format.mjs` | **Port** onto the core (Phase 6). |
-| `src/notation/{katex-options,rehype-fail-katex-errors}.mjs` | **Port verbatim.** |
-| `src/notation/{references,types,curriculum-alignment}.ts` | **Port**; fold `curriculum-alignment` into the registry or keep adjacent. |
-| `src/notation/{lab-math-scope,render-lab-math}.ts` | **Port**; reuse the core scope type. |
-| `src/components/notation/NotationLayer.astro` | **Rebuild** on `HoverPanel` (Phase 6). |
-| `src/components/citation/CitationLayer.astro` | **Rebuild** on `HoverPanel` (Phase 6). |
-| `src/components/notation/NotationGlossary.astro` | **Port.** |
-| `src/components/examples/**` | **Port** (Phase 8). |
-| `src/components/assessments/**` | **Rebase** onto `ProgressRepository` (Phase 7). |
-| `src/components/labs/**` | **Port** onto domain functions (Phase 8). |
-| `src/components/starlight/**`, `CurriculumMap.astro` | **Port** (Phase 8 / layout). |
-| `src/pages/test_equation.astro` | **Delete** (Phase 10). |
-| `astro.config.mjs` | **Port**; remove the inline notation/source loads (use the Phase 5 loader). |
-| `tests/**` | **Port**; add `assessments.spec.ts` and the progress-adapter unit test. |
-| `README.md` | **Shrink** to a quickstart (Phase 9). |
-| `docs/architecture.md` | **Becomes** the consolidated reference (or is replaced by `claude_architecture.md`). |
-| `NOTATION_ARCHITECTURE.md`, `docs/notation-and-units.md`, `CONTENT_STANDARD.md`, `docs/review-policy.md`, `docs/market-conventions.md` | **Delete** — merged. |
-| `docs/adr/0001`, `0004` | **Keep.** |
-| `docs/adr/0002`, `0003` | **Collapse into one.** |
-| `AGENTS.md`, `AI_POLICY.md`, `ai/prompts/**`, `ai/provenance/**` | **Keep.** Trim `AI_POLICY.md` duplication. |
-| `reference-library/README.md` | **Keep.** |
-| `SECURITY.md`, `DISCLAIMER.md`, `CONTRIBUTING.md` | **Keep** (short, load-bearing). |
+| Current path                                                                                                                           | Disposition                                                                                  |
+| -------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `src/domain/**`                                                                                                                        | **Port verbatim** + tests. Already at target.                                                |
+| `src/content.config.ts`                                                                                                                | **Port verbatim.** Add base-library home if Phase 0 = D-b(ii).                               |
+| `src/content/{competencies,assessments,sources,tracks}/**`                                                                             | **Port verbatim** (data).                                                                    |
+| `src/content/notation/**`                                                                                                              | **Port verbatim** (data).                                                                    |
+| `src/content/docs/**`                                                                                                                  | **Port frontmatter verbatim; re-review bodies**; relocate `\cite` markers; re-enter `draft`. |
+| `src/curriculum/validation.ts`                                                                                                         | **Keep logic, change input** to collection entries (Phase 4).                                |
+| `scripts/curriculum-files.ts`                                                                                                          | **Delete** — replaced by one shared loader.                                                  |
+| `scripts/notation-files.ts`                                                                                                            | **Delete** — merge into `src/reference/` loader.                                             |
+| `scripts/validate-curriculum.ts`                                                                                                       | **Keep** as the thin CLI entry.                                                              |
+| `src/notation/registry.ts`                                                                                                             | **Port + trim** to one scope model; drop unbuilt-ladder branches.                            |
+| `src/notation/math-bindings.mjs`                                                                                                       | **Port + trim.** Keep the KaTeX pin + guard test. Do not rewrite.                            |
+| `src/notation/remark-notation.mjs`                                                                                                     | **Port + trim** onto the core.                                                               |
+| `src/notation/remark-citation.mjs`, `citation-format.mjs`                                                                              | **Port** onto the core (Phase 6).                                                            |
+| `src/notation/{katex-options,rehype-fail-katex-errors}.mjs`                                                                            | **Port verbatim.**                                                                           |
+| `src/notation/{references,types,curriculum-alignment}.ts`                                                                              | **Port**; fold `curriculum-alignment` into the registry or keep adjacent.                    |
+| `src/notation/{lab-math-scope,render-lab-math}.ts`                                                                                     | **Port**; reuse the core scope type.                                                         |
+| `src/components/notation/NotationLayer.astro`                                                                                          | **Rebuild** on `HoverPanel` (Phase 6).                                                       |
+| `src/components/citation/CitationLayer.astro`                                                                                          | **Rebuild** on `HoverPanel` (Phase 6).                                                       |
+| `src/components/notation/NotationGlossary.astro`                                                                                       | **Port.**                                                                                    |
+| `src/components/examples/**`                                                                                                           | **Port** (Phase 8).                                                                          |
+| `src/components/assessments/**`                                                                                                        | **Rebase** onto `ProgressRepository` (Phase 7).                                              |
+| `src/components/labs/**`                                                                                                               | **Port** onto domain functions (Phase 8).                                                    |
+| `src/components/starlight/**`, `CurriculumMap.astro`                                                                                   | **Port** (Phase 8 / layout).                                                                 |
+| `src/pages/test_equation.astro`                                                                                                        | **Delete** (Phase 10).                                                                       |
+| `astro.config.mjs`                                                                                                                     | **Port**; remove the inline notation/source loads (use the Phase 5 loader).                  |
+| `tests/**`                                                                                                                             | **Port**; add `assessments.spec.ts` and the progress-adapter unit test.                      |
+| `README.md`                                                                                                                            | **Shrink** to a quickstart (Phase 9).                                                        |
+| `docs/architecture.md`                                                                                                                 | **Becomes** the consolidated reference (or is replaced by `claude_architecture.md`).         |
+| `NOTATION_ARCHITECTURE.md`, `docs/notation-and-units.md`, `CONTENT_STANDARD.md`, `docs/review-policy.md`, `docs/market-conventions.md` | **Delete** — merged.                                                                         |
+| `docs/adr/0001`, `0004`                                                                                                                | **Keep.**                                                                                    |
+| `docs/adr/0002`, `0003`                                                                                                                | **Collapse into one.**                                                                       |
+| `AGENTS.md`, `AI_POLICY.md`, `ai/prompts/**`, `ai/provenance/**`                                                                       | **Keep.** Trim `AI_POLICY.md` duplication.                                                   |
+| `reference-library/README.md`                                                                                                          | **Keep.**                                                                                    |
+| `SECURITY.md`, `DISCLAIMER.md`, `CONTRIBUTING.md`                                                                                      | **Keep** (short, load-bearing).                                                              |
 
 ---
 
 ## Appendix B — target doc set
 
-| File | Role | Length |
-|------|------|--------|
-| `README.md` | Quickstart + repo map + link to the reference | ~40 lines |
-| `docs/architecture.md` (= `claude_architecture.md`) | The single reference: features, pipeline, boundaries, content model, notation, citations, gates, authoring, governance, testing | ~450 lines |
-| `AGENTS.md` | Agent entry point: read the reference, preserve boundaries, keep AI work `draft`, run `pnpm verify` | ~25 lines |
-| `AI_POLICY.md` | Enforceable policy (the "must never" list) | ~35 lines |
-| `docs/adr/000N-*.md` | One per irreversible decision: stack (0001), notation model (0002+0003 merged), citations (0004), + any new Phase-0 call | short |
-| `reference-library/README.md`, `SECURITY.md`, `DISCLAIMER.md`, `CONTRIBUTING.md` | Unchanged | short |
+| File                                                                             | Role                                                                                                                            | Length     |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| `README.md`                                                                      | Quickstart + repo map + link to the reference                                                                                   | ~40 lines  |
+| `docs/architecture.md` (= `claude_architecture.md`)                              | The single reference: features, pipeline, boundaries, content model, notation, citations, gates, authoring, governance, testing | ~450 lines |
+| `AGENTS.md`                                                                      | Agent entry point: read the reference, preserve boundaries, keep AI work `draft`, run `pnpm verify`                             | ~25 lines  |
+| `AI_POLICY.md`                                                                   | Enforceable policy (the "must never" list)                                                                                      | ~35 lines  |
+| `docs/adr/000N-*.md`                                                             | One per irreversible decision: stack (0001), notation model (0002+0003 merged), citations (0004), + any new Phase-0 call        | short      |
+| `reference-library/README.md`, `SECURITY.md`, `DISCLAIMER.md`, `CONTRIBUTING.md` | Unchanged                                                                                                                       | short      |
 
 Everything else an agent needs is derivable from schemas, the validator's
 output, and the per-lesson resolution reports — not from prose.

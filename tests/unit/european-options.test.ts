@@ -28,8 +28,18 @@ describe('European option primitives', () => {
   it('satisfies the pathwise call-minus-put identity', () => {
     fc.assert(
       fc.property(
-        fc.double({ min: 0, max: 10_000, noNaN: true, noDefaultInfinity: true }),
-        fc.double({ min: 0, max: 10_000, noNaN: true, noDefaultInfinity: true }),
+        fc.double({
+          min: 0,
+          max: 10_000,
+          noNaN: true,
+          noDefaultInfinity: true,
+        }),
+        fc.double({
+          min: 0,
+          max: 10_000,
+          noNaN: true,
+          noDefaultInfinity: true,
+        }),
         (underlying, strike) => {
           const call = europeanOptionPayoff({
             kind: 'call',
@@ -54,7 +64,9 @@ describe('European option primitives', () => {
       strikePrice: 90,
       quantity: 3,
     };
-    expect(europeanOptionWriterPayoff(input)).toBe(-europeanOptionPayoff(input));
+    expect(europeanOptionWriterPayoff(input)).toBe(
+      -europeanOptionPayoff(input),
+    );
   });
 
   it('solves and verifies put-call parity', () => {

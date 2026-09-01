@@ -21,6 +21,9 @@ assumptions:
   - No claim that the supplied lattice has been calibrated or is complete outside its modeled states
 notation:
   uses:
+    - valuation-time
+    - lattice-time-index
+    - lattice-state-index
     - lattice-node-value
     - risk-neutral-probability-measure
   local:
@@ -70,12 +73,12 @@ import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
 
 The one-period binomial lesson valued two terminal payoffs. A multi-period
 lattice applies the same pricing step at every node, beginning with the last
-row and moving backward to 	erm{valuation-time}.
+row and moving backward to \term\{valuation-time\}.
 
-At node $i,j$, let local 	erm{lattice-node-up-weight} be $q_{i,j}$ and local
-	erm{lattice-node-discount-factor} be $d_{i,j}$. With local next-date cash
-flow $CF$ paid just before the successor continuation value, the
-	erm{lattice-node-value} recursion is
+At node \term\{lattice-time-index\} $i$, \term\{lattice-state-index\} $j$, let local \term\{lattice-node-up-weight\} be $q_{i,j}$ and local
+\term\{lattice-node-discount-factor\} be $d_{i,j}$. With local next-date cash
+flow $\explain{lattice-next-cash-flow}{CF_{i+1,j}}$ paid just before the successor continuation value, the
+\term\{lattice-node-value\} recursion is
 
 $$
 \explain{lattice-node-value}{V_{i,j}}
@@ -108,6 +111,6 @@ changes the contract and potentially its option payoff.
 ## Sources
 
 The replication, risk-neutral weighting, and backward-induction construction
-follow Hull, Chapter 12 §§12.1–12.3 \cite{hull-options-futures}. The supplied node
+follow Hull, Chapter 12 §§12.1–12.3 \cite\{hull-options-futures\}. The supplied node
 factors are model inputs here; calibration and short-rate dynamics are outside
 this slice.

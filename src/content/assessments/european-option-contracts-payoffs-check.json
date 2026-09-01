@@ -10,9 +10,18 @@
       "evidenceKind": "direct",
       "prompt": "What right does the holder of a European call have in this lesson?",
       "options": [
-        { "id": "buy-at-expiry", "label": "The right to buy the underlying at the strike at expiry" },
-        { "id": "sell-any-time", "label": "The right to sell the underlying at any time before expiry" },
-        { "id": "must-buy", "label": "An obligation to buy the underlying at expiry" }
+        {
+          "id": "buy-at-expiry",
+          "label": "The right to buy the underlying at the strike at expiry"
+        },
+        {
+          "id": "sell-any-time",
+          "label": "The right to sell the underlying at any time before expiry"
+        },
+        {
+          "id": "must-buy",
+          "label": "An obligation to buy the underlying at expiry"
+        }
       ],
       "correctOptionId": "buy-at-expiry",
       "explanation": "A European call holder has a right, not an obligation, to buy at the strike at the single expiry time."
@@ -24,9 +33,18 @@
       "evidenceKind": "transfer",
       "prompt": "Who has the exercise right and who must perform if a European put is exercised?",
       "options": [
-        { "id": "holder-writer", "label": "The holder chooses; the writer must perform" },
-        { "id": "writer-holder", "label": "The writer chooses; the holder must perform" },
-        { "id": "both-choose", "label": "Both sides independently choose whether to perform" }
+        {
+          "id": "holder-writer",
+          "label": "The holder chooses; the writer must perform"
+        },
+        {
+          "id": "writer-holder",
+          "label": "The writer chooses; the holder must perform"
+        },
+        {
+          "id": "both-choose",
+          "label": "Both sides independently choose whether to perform"
+        }
       ],
       "correctOptionId": "holder-writer",
       "explanation": "The option premium buys the holder the exercise right; the writer bears the corresponding obligation under the stated contract."
@@ -56,8 +74,14 @@
       "evidenceKind": "direct",
       "prompt": "A call is purchased today for a USD 6 premium and later pays USD 9 at expiry. Ignoring financing, which quantities are correctly labeled?",
       "options": [
-        { "id": "payoff-nine-profit-three", "label": "Expiry payoff USD 9; profit USD 3" },
-        { "id": "payoff-three-profit-nine", "label": "Expiry payoff USD 3; profit USD 9" },
+        {
+          "id": "payoff-nine-profit-three",
+          "label": "Expiry payoff USD 9; profit USD 3"
+        },
+        {
+          "id": "payoff-three-profit-nine",
+          "label": "Expiry payoff USD 3; profit USD 9"
+        },
         { "id": "both-nine", "label": "Both payoff and profit are USD 9" }
       ],
       "correctOptionId": "payoff-nine-profit-three",
@@ -70,9 +94,18 @@
       "evidenceKind": "transfer",
       "prompt": "An out-of-the-money option expires with zero payoff. Does that imply its value was zero on every earlier date?",
       "options": [
-        { "id": "no-earlier-uncertainty", "label": "No, earlier value reflected the remaining possible future payoffs" },
-        { "id": "yes-retrospective", "label": "Yes, a zero realized payoff makes every earlier value zero" },
-        { "id": "yes-strike", "label": "Yes, option value always equals expiry intrinsic value" }
+        {
+          "id": "no-earlier-uncertainty",
+          "label": "No, earlier value reflected the remaining possible future payoffs"
+        },
+        {
+          "id": "yes-retrospective",
+          "label": "Yes, a zero realized payoff makes every earlier value zero"
+        },
+        {
+          "id": "yes-strike",
+          "label": "Yes, option value always equals expiry intrinsic value"
+        }
       ],
       "correctOptionId": "no-earlier-uncertainty",
       "explanation": "Before expiry, more than one future state may remain possible. A realized zero payoff does not retrospectively erase the value of the contingent right."
