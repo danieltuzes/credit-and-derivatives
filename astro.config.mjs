@@ -14,8 +14,10 @@ import rehypeFailKatexErrors from './src/notation/rehype-fail-katex-errors.mjs';
 import remarkCitation from './src/notation/remark-citation.mjs';
 import remarkNotation from './src/notation/remark-notation.mjs';
 
-// Project GitHub Pages site: https://danieltuzes.github.io/equations
-const base = '/equations';
+// The deployment base path. Empty for local dev, `pnpm verify`, and e2e (the
+// site serves from `/`); the GitHub Pages workflow sets `SITE_BASE=/equations`.
+// This is a temporary hosting detail, not an architectural invariant.
+const base = process.env.SITE_BASE || undefined;
 
 export default defineConfig({
   output: 'static',

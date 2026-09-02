@@ -30,6 +30,10 @@ jobs:
           package-manager: pnpm@11.24.0
           # withastro/action runs the package.json "build" script when present,
           # i.e. `pnpm validate:content && astro check && astro build`.
+        env:
+          # Serve under danieltuzes.github.io/equations/. The only place the
+          # base path is set; local dev, `pnpm verify`, and e2e build at `/`.
+          SITE_BASE: /equations
 
   deploy:
     needs: build
