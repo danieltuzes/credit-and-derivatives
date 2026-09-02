@@ -11,14 +11,6 @@ assumptions:
   - A strictly positive deterministic discount factor applies to the strike payment
   - The underlying and required financing positions can be traded under the lesson's frictionless no-arbitrage assumptions
 notation:
-  uses:
-    - discount-factor
-    - derivative-underlying-value
-    - forward-price
-    - option-expiry-time
-    - option-strike-price
-    - call-option-value
-    - put-option-value
   local:
     - key: parity-income-present-value
       latex: 'I_0'
@@ -79,8 +71,9 @@ state, not a forecast or an average.
 Let local \term\{parity-income-present-value\} be $I_0$. The local
 \term\{prepaid-forward-value\} is
 $\widetilde{F}_{0,T_{\mathrm{opt}}}=S_0-I_0$. Applying the law of one price to
-the matched portfolios, with \term\{call-option-value\} $c_0$ and
-\term\{put-option-value\} $p_0$, gives
+the matched portfolios, with \term\{call-option-value\} $c_0$,
+\term\{put-option-value\} $p_0$, and the strike-payment \term\{discount-factor\}
+$D(0,T_{\mathrm{opt}})$, gives
 
 $$
 c_0-p_0

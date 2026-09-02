@@ -13,14 +13,6 @@ assumptions:
   - One strictly positive deterministic discount factor converts delivery-time currency to valuation-time currency
   - No initial margin, collateral, counterparty default, bid-ask spread, tax, short-sale constraint, or daily settlement
 notation:
-  uses:
-    - valuation-time
-    - discount-factor
-    - derivative-underlying-value
-    - forward-delivery-time
-    - forward-delivery-price
-    - forward-price
-    - forward-contract-value
   local:
     - key: deterministic-income-present-value
       latex: 'I_0'
@@ -97,7 +89,8 @@ the underlying is worth $S_0$ and the local
 The forward long does not own the asset before delivery, so the prepaid value of
 what will be delivered is $S_0-I_0$.
 
-Under the stated cash-and-carry assumptions, the law of one price gives
+Under the stated cash-and-carry assumptions, with the delivery-time
+\term\{discount-factor\} $D(0,T_{\mathrm{fwd}})$, the law of one price gives
 
 $$
 F_{0,T_{\mathrm{fwd}}}
