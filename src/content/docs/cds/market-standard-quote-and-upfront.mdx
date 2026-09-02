@@ -1,28 +1,11 @@
 ---
 title: CDS market-standard quote and upfront
 description: Distinguish a conventional CDS spread quote from a fixed running coupon, calculate the signed upfront amount, and reverse the simplified conversion.
-lessonId: cds.market-standard-quote-and-upfront
 editorialStatus: draft
-riskTier: 3
-estimatedMinutes: 35
-requires:
-  - rates.basis-points.convert
-  - finance.risk-neutral-measure.interpret
-  - credit.hazard-rate.interpret
-  - credit.survival-from-constant-hazard.calculate
-  - cds.premium-leg.calculate
-  - cds.protection-leg.calculate
-  - cds.par-spread.calculate
 teaches:
   - cds.market-standard-quote.interpret
   - cds.upfront-amount.calculate
   - cds.quote-upfront-conversion.calculate
-assessments:
-  - cds-market-standard-quote-upfront-check
-sources:
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
-  - isda-cds-standard-model
 assumptions:
   - The named perspective is a protection buyer that pays running premium, receives protection, and pays a positive signed upfront amount
   - MSQ is a lesson-local abbreviation for market-standard quote, meaning the conventional quoted spread supplied to this simplified converter
@@ -45,9 +28,6 @@ notation:
     - cds-premium-annuity
     - cds-premium-leg-present-value
     - cds-protection-leg-present-value
-aiAssisted: true
-sidebar:
-  order: 2
 ---
 
 import CompactExample from '../../../components/examples/CompactExample.astro';
@@ -350,7 +330,7 @@ The assessment separates quote interpretation, signed upfront arithmetic, and
 the reverse flat-hazard solve. Each competency has direct and transfer
 evidence.
 
-<AssessmentSet id="cds-market-standard-quote-upfront-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

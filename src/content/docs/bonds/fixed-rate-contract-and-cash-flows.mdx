@@ -1,21 +1,11 @@
 ---
 title: Fixed-rate bond contract and cash flows
 description: Translate face value, coupon rate, frequency, and maturity into promised payments.
-lessonId: bonds.fixed-rate-contract-and-cash-flows
 editorialStatus: draft
-riskTier: 2
-estimatedMinutes: 30
-requires:
-  - finance.cash-flow-perspective.apply
-  - rates.nominal-rate-quote.interpret
 teaches:
   - bonds.fixed-rate-contract.interpret
   - bonds.coupon-amount.calculate
   - bonds.fixed-cashflows.identify
-assessments:
-  - bond-contract-cash-flows-check
-sources:
-  - tuckman-serrat-fixed-income
 assumptions:
   - Level fixed coupons on a regular schedule
   - Payment frequency times maturity in years is a positive integer, so no stub period occurs
@@ -36,9 +26,6 @@ notation:
     - bond-cash-flow
     - bond-payment-index
     - number-of-bond-payments
-aiAssisted: true
-sidebar:
-  order: 1
 ---
 
 import CompactExample from '../../../components/examples/CompactExample.astro';
@@ -175,7 +162,7 @@ These items cover term interpretation, coupon arithmetic, and schedule
 construction. Each question stays collapsed until you open it; answers and
 explanations appear once you check.
 
-<AssessmentSet id="bond-contract-cash-flows-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

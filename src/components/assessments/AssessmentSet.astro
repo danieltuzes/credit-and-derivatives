@@ -1,25 +1,44 @@
 ---
 import { getCollection } from 'astro:content';
+import { loadLessonChecks } from '../../content/collections';
 import AssessmentRunner from './AssessmentRunner';
 
 interface Props {
-  id: string;
+  /**
+   * Explicit assessment id. Omitted in lesson bodies (Phase C2): the set is
+   * resolved from the route's colocated `<lesson>.checks.yml`.
+   */
+  id?: string;
 }
 
-const { id } = Astro.props;
+const explicitId = Astro.props.id;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const lessonId = Astro.url.pathname
+  .replace(new RegExp(`^${base}/`), '')
+  .replace(/\/$/, '')
+  .replace(/\//g, '.');
+
+const ids = explicitId ? [explicitId] : loadLessonChecks(lessonId);
 
 const assessments = await getCollection('assessments');
-const entry = assessments.find((candidate) => candidate.data.id === id);
-
-if (!entry) {
-  throw new Error(
-    `AssessmentSet: no assessment collection entry with id "${id}"`,
-  );
-}
+const entries = ids.map((id) => {
+  const entry = assessments.find((candidate) => candidate.data.id === id);
+  if (!entry) {
+    throw new Error(
+      `AssessmentSet: no assessment collection entry with id "${id}"`,
+    );
+  }
+  return entry;
+});
 ---
 
-<AssessmentRunner
-  client:visible
-  title={entry.data.title}
-  items={entry.data.items}
-/>
+{
+  entries.map((entry) => (
+    <AssessmentRunner
+      client:visible
+      title={entry.data.title}
+      items={entry.data.items}
+    />
+  ))
+}

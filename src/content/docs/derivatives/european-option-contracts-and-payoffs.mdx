@@ -1,21 +1,11 @@
 ---
 title: European option contracts and payoffs
 description: Separate call and put rights from expiry payoff, current value, premium, and profit.
-lessonId: derivatives.european-option-contracts-and-payoffs
 editorialStatus: draft
-riskTier: 2
-estimatedMinutes: 35
-requires:
-  - finance.cash-flow-perspective.apply
-  - finance.present-value.interpret
 teaches:
   - options.european-contract.interpret
   - options.payoff.calculate
   - options.value-payoff-profit.distinguish
-assessments:
-  - european-option-contracts-payoffs-check
-sources:
-  - hull-options-futures
 assumptions:
   - European exercise occurs only at the stated option expiry
   - One non-negative underlying value and one non-negative strike are quoted in the same currency per unit
@@ -84,9 +74,6 @@ notation:
         kind: competency
         introducedByCompetency: options.value-payoff-profit.distinguish
         introducedInLesson: derivatives.european-option-contracts-and-payoffs
-aiAssisted: true
-sidebar:
-  order: 2
 ---
 
 import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
@@ -157,7 +144,7 @@ printed pp. 211-212, payoff versus profit\}.
 
 ## Check your understanding
 
-<AssessmentSet id="european-option-contracts-payoffs-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

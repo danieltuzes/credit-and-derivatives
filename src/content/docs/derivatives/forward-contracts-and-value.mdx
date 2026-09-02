@@ -1,23 +1,11 @@
 ---
 title: Forward contracts, delivery price, and value
 description: Separate a forward's obligation, fair delivery price, and changing signed contract value.
-lessonId: derivatives.forward-contracts-and-value
 editorialStatus: draft
-riskTier: 2
-estimatedMinutes: 40
-requires:
-  - finance.cash-flow-perspective.apply
-  - finance.present-value.calculate
-  - finance.law-of-one-price.explain
-  - rates.discount-factor.calculate
 teaches:
   - derivatives.forward-contract.interpret
   - derivatives.forward-delivery-price.calculate
   - derivatives.forward-value.calculate
-assessments:
-  - forward-contracts-value-check
-sources:
-  - hull-options-futures
 assumptions:
   - One physically settled forward on a non-negative-price investment asset
   - The long pays the delivery price and receives the underlying at one future delivery time
@@ -68,9 +56,6 @@ notation:
         kind: competency
         introducedByCompetency: derivatives.forward-contract.interpret
         introducedInLesson: derivatives.forward-contracts-and-value
-aiAssisted: true
-sidebar:
-  order: 1
 ---
 
 import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
@@ -160,7 +145,7 @@ existing forward contracts\}.
 
 ## Check your understanding
 
-<AssessmentSet id="forward-contracts-value-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

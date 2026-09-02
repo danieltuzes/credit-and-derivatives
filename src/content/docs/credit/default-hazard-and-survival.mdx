@@ -1,25 +1,12 @@
 ---
 title: Default, hazard, and survival
 description: Read a supplied survival curve, calculate interval default probabilities, and use a constant-hazard toy model.
-lessonId: credit.default-hazard-and-survival
 editorialStatus: draft
-riskTier: 3
-estimatedMinutes: 35
-requires:
-  - finance.cash-flow-timeline.interpret
-  - probability.events.interpret
-  - probability.conditional-probability.calculate
-  - finance.risk-neutral-measure.interpret
 teaches:
   - credit.survival-probability.interpret
   - credit.default-probability-from-survival.calculate
   - credit.hazard-rate.interpret
   - credit.survival-from-constant-hazard.calculate
-assessments:
-  - credit-default-survival-check
-sources:
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
 assumptions:
   - At most one modeled default can occur for the reference entity
   - Survival probabilities are supplied risk-neutral pricing-model inputs rather than historical estimates
@@ -90,9 +77,6 @@ notation:
         kind: competency
         introducedByCompetency: credit.hazard-rate.interpret
         introducedInLesson: credit.default-hazard-and-survival
-aiAssisted: true
-sidebar:
-  order: 1
 ---
 
 import CompactExample from '../../../components/examples/CompactExample.astro';
@@ -262,7 +246,7 @@ The assessment separates survival meaning, interval subtraction, hazard
 interpretation, and constant-hazard arithmetic. Each competency has a direct
 item and a transfer item.
 
-<AssessmentSet id="credit-default-survival-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

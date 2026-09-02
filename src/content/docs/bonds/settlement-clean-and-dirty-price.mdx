@@ -1,20 +1,9 @@
 ---
 title: Settlement, accrued interest, and clean versus dirty price
 description: Calculate actual/actual coupon-period accrual and keep quoted and cash bond prices on one basis.
-lessonId: bonds.settlement-clean-and-dirty-price
 editorialStatus: draft
-riskTier: 2
-estimatedMinutes: 30
-requires:
-  - bonds.fixed-cashflows.identify
-  - finance.cash-flow-timeline.interpret
 teaches:
   - bonds.clean-dirty-price.calculate
-assessments:
-  - bond-settlement-check
-sources:
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
 assumptions:
   - One regular coupon period with previous coupon date less than or equal to settlement and settlement strictly before the next coupon date
   - Actual/actual coupon-period convention using unadjusted UTC calendar dates
@@ -48,9 +37,6 @@ notation:
         kind: competency
         introducedByCompetency: bonds.clean-dirty-price.calculate
         introducedInLesson: bonds.settlement-clean-and-dirty-price
-aiAssisted: true
-sidebar:
-  order: 5
 ---
 
 import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
@@ -101,7 +87,7 @@ before delivery also have to be assigned to the correct owner.
 
 ## Check your understanding
 
-<AssessmentSet id="bond-settlement-check" />
+<AssessmentSet />
 
 ## Sources
 

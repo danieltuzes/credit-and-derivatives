@@ -1,19 +1,9 @@
 ---
 title: Multi-period lattice valuation
 description: Extend one-period risk-neutral valuation to node-by-node backward induction with local discount factors.
-lessonId: derivatives.multiperiod-lattice-valuation
 editorialStatus: draft
-riskTier: 3
-estimatedMinutes: 35
-requires:
-  - options.one-period-binomial-value.calculate
-  - finance.risk-neutral-value.calculate
 teaches:
   - finance.backward-induction.calculate
-assessments:
-  - multiperiod-lattice-check
-sources:
-  - hull-options-futures
 assumptions:
   - A caller-supplied recombining pricing lattice with two successor nodes from each current node
   - Strictly positive one-period discount factors and risk-neutral up weights between zero and one inclusive
@@ -62,9 +52,6 @@ notation:
         kind: competency
         introducedByCompetency: finance.backward-induction.calculate
         introducedInLesson: derivatives.multiperiod-lattice-valuation
-aiAssisted: true
-sidebar:
-  order: 5
 ---
 
 import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
@@ -106,7 +93,7 @@ changes the contract and potentially its option payoff.
 
 ## Check your understanding
 
-<AssessmentSet id="multiperiod-lattice-check" />
+<AssessmentSet />
 
 ## Sources
 

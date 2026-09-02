@@ -1,20 +1,10 @@
 ---
 title: Discount factors
 description: Convert one deterministic future unit into its value at time zero.
-lessonId: foundations.discount-factors
 editorialStatus: draft
-riskTier: 2
-estimatedMinutes: 25
-requires:
-  - rates.periodic-rate.calculate
 teaches:
   - rates.discount-factor.interpret
   - rates.discount-factor.calculate
-assessments:
-  - discount-factor-check
-sources:
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
 assumptions:
   - Deterministic payment of one unit
   - Non-negative nominal annual rate
@@ -41,9 +31,6 @@ notation:
         kind: competency
         introducedByCompetency: rates.discount-factor.interpret
         introducedInLesson: foundations.discount-factors
-aiAssisted: true
-sidebar:
-  order: 4
 ---
 
 import CompactExample from '../../../components/examples/CompactExample.astro';
@@ -143,7 +130,7 @@ These items test meaning, annual calculation, and a semiannual transfer case.
 Each question stays collapsed until you open it; answers and explanations appear
 once you check.
 
-<AssessmentSet id="discount-factor-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

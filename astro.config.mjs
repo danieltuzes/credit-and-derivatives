@@ -6,6 +6,7 @@ import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import {
   loadNotationDefinitions,
+  loadSidebar,
   loadSourceRecords,
 } from './src/content/collections.ts';
 import { createNotationKatexOptions } from './src/notation/katex-options.mjs';
@@ -32,43 +33,10 @@ export default defineConfig({
         PageSidebar: './src/components/starlight/LayoutPageSidebar.astro',
         Sidebar: './src/components/starlight/LayoutSidebar.astro',
       },
-      sidebar: [
-        {
-          label: 'Foundations',
-          items: [{ autogenerate: { directory: 'foundations' } }],
-        },
-        {
-          label: 'Bonds',
-          items: [{ autogenerate: { directory: 'bonds' } }],
-        },
-        {
-          label: 'Rates and curves',
-          items: [{ autogenerate: { directory: 'rates' } }],
-        },
-        {
-          label: 'Derivative foundations',
-          items: [{ autogenerate: { directory: 'derivatives' } }],
-        },
-        {
-          label: 'Bond options',
-          items: [{ autogenerate: { directory: 'bond-options' } }],
-        },
-        {
-          label: 'Credit risk',
-          items: [{ autogenerate: { directory: 'credit' } }],
-        },
-        {
-          label: 'CDS',
-          items: [{ autogenerate: { directory: 'cds' } }],
-        },
-        {
-          label: 'Reference',
-          items: [
-            { label: 'Curriculum map', link: '/curriculum-map/' },
-            { label: 'Notation glossary', link: '/glossary/' },
-          ],
-        },
-      ],
+      // Section groups are fixed; lesson order inside each is derived from the
+      // tracks (see `loadSidebar` / `buildSidebar`), not an authored
+      // `sidebar.order`.
+      sidebar: loadSidebar(),
     }),
     react(),
   ],

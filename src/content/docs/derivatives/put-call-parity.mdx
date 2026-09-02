@@ -1,23 +1,10 @@
 ---
 title: Put-call parity and synthetic forwards
 description: Match European call and put portfolios state by state before solving a missing value.
-lessonId: derivatives.put-call-parity
 editorialStatus: draft
-riskTier: 2
-estimatedMinutes: 35
-requires:
-  - finance.law-of-one-price.explain
-  - derivatives.forward-contract.interpret
-  - derivatives.forward-delivery-price.calculate
-  - options.payoff.calculate
-  - options.value-payoff-profit.distinguish
 teaches:
   - options.put-call-parity.explain
   - options.put-call-parity.calculate
-assessments:
-  - put-call-parity-check
-sources:
-  - hull-options-futures
 assumptions:
   - European call and put on the same underlying with the same strike, expiry, quantity, and settlement basis
   - Deterministic income before expiry is known and represented by present value
@@ -59,9 +46,6 @@ notation:
         kind: competency
         introducedByCompetency: options.put-call-parity.calculate
         introducedInLesson: derivatives.put-call-parity
-aiAssisted: true
-sidebar:
-  order: 3
 ---
 
 import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
@@ -144,7 +128,7 @@ on the same event; the vanilla formula cannot be copied unchanged.
 
 ## Check your understanding
 
-<AssessmentSet id="put-call-parity-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

@@ -1,22 +1,10 @@
 ---
 title: One-period binomial option valuation
 description: Price two-state option payoffs by both exact replication and risk-neutral weighting.
-lessonId: derivatives.one-period-binomial-option-valuation
 editorialStatus: draft
-riskTier: 3
-estimatedMinutes: 45
-requires:
-  - finance.replicating-portfolio-value.calculate
-  - finance.risk-neutral-measure.interpret
-  - finance.risk-neutral-value.calculate
-  - options.payoff.calculate
 teaches:
   - options.binomial-hedge.calculate
   - options.one-period-binomial-value.calculate
-assessments:
-  - one-period-binomial-option-check
-sources:
-  - hull-options-futures
 assumptions:
   - One non-income-paying traded underlying and one risk-free cash account
   - Exactly two possible underlying values at one European option expiry
@@ -132,9 +120,6 @@ notation:
         kind: competency
         introducedByCompetency: options.one-period-binomial-value.calculate
         introducedInLesson: derivatives.one-period-binomial-option-valuation
-aiAssisted: true
-sidebar:
-  order: 4
 ---
 
 import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
@@ -255,7 +240,7 @@ before expiry.
 
 ## Check your understanding
 
-<AssessmentSet id="one-period-binomial-option-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

@@ -1,22 +1,10 @@
 ---
 title: European bond options
 description: Define a standalone option on a bond, align its cash-price basis, and value supplied expiry payoffs on a lattice.
-lessonId: bond-options.european-bond-options
 editorialStatus: draft
-riskTier: 3
-estimatedMinutes: 35
-requires:
-  - options.european-contract.interpret
-  - options.payoff.calculate
-  - bonds.clean-dirty-price.calculate
-  - finance.backward-induction.calculate
 teaches:
   - bond-options.contract.interpret
   - bond-options.european-value.calculate
-assessments:
-  - bond-option-check
-sources:
-  - hull-options-futures
 assumptions:
   - Standalone European call or put on one named bond, exercisable at one stated time
   - Exercise occurs immediately after any scheduled coupon at option expiry, so the supplied expiry bond values are ex-coupon
@@ -65,9 +53,6 @@ notation:
         kind: competency
         introducedByCompetency: bond-options.european-value.calculate
         introducedInLesson: bond-options.european-bond-options
-aiAssisted: true
-sidebar:
-  order: 1
 ---
 
 import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
@@ -115,7 +100,7 @@ coupon entitlement would require different terminal inputs.
 
 ## Check your understanding
 
-<AssessmentSet id="bond-option-check" />
+<AssessmentSet />
 
 ## Sources
 

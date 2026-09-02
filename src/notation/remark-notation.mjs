@@ -107,6 +107,7 @@ function localDefinitionsFromFile(file) {
 // bound against the whole shared registry: an author writes ordinary LaTeX (or
 // an explicit `\explain{key}{latex}`) and every canonical symbol resolves.
 const NOTATION_REGISTRY_PATH = /[\\/]content[\\/]notation[\\/][^\\/]+\.md$/;
+const LESSON_DOC_PATH = /[\\/]content[\\/]docs[\\/](.+?)\.(?:md|mdx)$/;
 
 function isNotationRegistryFile(file) {
   const candidates = [file?.path, file?.history?.[0], file?.data?.file];
@@ -115,10 +116,26 @@ function isNotationRegistryFile(file) {
   );
 }
 
+/**
+ * Lesson id from the source path (Phase C2 — `lessonId` is no longer authored).
+ * Only files in a section directory under `content/docs/` are lessons.
+ */
+function lessonIdFromFile(file) {
+  for (const value of [file?.path, file?.history?.[0], file?.data?.file]) {
+    if (typeof value !== 'string') continue;
+    const match = value.match(LESSON_DOC_PATH);
+    if (!match) continue;
+    const slug = match[1].replace(/\\/g, '/');
+    if (!slug.includes('/') || slug.endsWith('/index')) return undefined;
+    return slug.replace(/\//g, '.');
+  }
+  return undefined;
+}
+
 function lessonNotationFromFile(file) {
   const frontmatter =
     file?.data?.astro?.frontmatter ?? file?.data?.frontmatter ?? file?.data;
-  const lessonId = frontmatter?.lessonId;
+  const lessonId = frontmatter?.lessonId ?? lessonIdFromFile(file);
   const uses = frontmatter?.notation?.uses;
   return {
     lessonId: typeof lessonId === 'string' ? lessonId : undefined,

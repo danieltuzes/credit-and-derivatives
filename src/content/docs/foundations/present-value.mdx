@@ -1,21 +1,10 @@
 ---
 title: Present value of a cash-flow schedule
 description: Discount each signed dated amount and then add the comparable values.
-lessonId: foundations.present-value
 editorialStatus: draft
-riskTier: 2
-estimatedMinutes: 30
-requires:
-  - finance.cash-flow-perspective.apply
-  - rates.discount-factor.calculate
 teaches:
   - finance.present-value.interpret
   - finance.present-value.calculate
-assessments:
-  - present-value-check
-sources:
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
 assumptions:
   - Deterministic signed cash flows
   - A supplied discount factor for every payment time
@@ -67,9 +56,6 @@ notation:
       alignment:
         kind: general
         rationale: Naming a single payment is an exploration aid for the lab, not a tracked competency.
-aiAssisted: true
-sidebar:
-  order: 5
 ---
 
 import DiscountingExplorerMath from '../../../components/labs/DiscountingExplorerMath.astro';
@@ -177,7 +163,7 @@ These items separate interpretation from calculation and include an unfamiliar
 multi-payment case. Each question stays collapsed until you open it; answers and
 explanations appear once you check.
 
-<AssessmentSet id="present-value-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

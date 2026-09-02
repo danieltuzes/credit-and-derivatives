@@ -8,6 +8,10 @@
 import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
 import { loadNotationRegistryInput } from '../../content/collections';
 import {
+  isLessonSlug,
+  lessonIdFromSlug,
+} from '../../content/lesson-derivation';
+import {
   assertValidNotation,
   buildNotationRegistry,
 } from '../../notation/registry';
@@ -16,18 +20,19 @@ import NotationLayer, {
 } from '../notation/NotationLayer.astro';
 import CitationLayer from '../citation/CitationLayer.astro';
 
-const routeData = Astro.locals.starlightRoute.entry
-  .data as typeof Astro.locals.starlightRoute.entry.data & {
-  lessonId?: string;
-};
+// `lessonId` is no longer authored (Phase C2); derive it from the route.
+const routeSlug = Astro.locals.starlightRoute.entry.id;
+const lessonId = isLessonSlug(routeSlug)
+  ? lessonIdFromSlug(routeSlug)
+  : undefined;
 
 const definitions: NotationLayerDefinition[] = [];
-if (routeData.lessonId) {
+if (lessonId) {
   const registry = buildNotationRegistry(await loadNotationRegistryInput());
   assertValidNotation(registry);
 
   const bundle = registry.bundles.find(
-    ({ lessonId }) => lessonId === routeData.lessonId,
+    (candidate) => candidate.lessonId === lessonId,
   );
   const definitionsById = new Map(
     registry.definitions.map((definition) => [definition.id, definition]),
@@ -68,5 +73,5 @@ if (routeData.lessonId) {
 ---
 
 <NotationLayer definitions={definitions} />
-{routeData.lessonId && <CitationLayer />}
+{lessonId && <CitationLayer />}
 <DefaultFooter />

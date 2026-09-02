@@ -1,20 +1,10 @@
 ---
 title: No-arbitrage and replication
 description: Match every dated state-contingent cash flow before using one portfolio to value another.
-lessonId: foundations.no-arbitrage-and-replication
 editorialStatus: draft
-riskTier: 2
-estimatedMinutes: 30
-requires:
-  - finance.cash-flow-perspective.apply
-  - finance.present-value.interpret
 teaches:
   - finance.law-of-one-price.explain
   - finance.replicating-portfolio-value.calculate
-assessments:
-  - no-arbitrage-replication-check
-sources:
-  - tuckman-serrat-fixed-income
 assumptions:
   - All examples use one valuation time, one currency, and one named holder perspective
   - The compared portfolios have identical cash flows at every future date in every modeled state
@@ -68,9 +58,6 @@ notation:
         kind: competency
         introducedByCompetency: finance.law-of-one-price.explain
         introducedInLesson: foundations.no-arbitrage-and-replication
-aiAssisted: true
-sidebar:
-  order: 6
 ---
 
 import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
@@ -134,7 +121,7 @@ to calculate that same no-arbitrage value inside a specified model.
 
 ## Check your understanding
 
-<AssessmentSet id="no-arbitrage-replication-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

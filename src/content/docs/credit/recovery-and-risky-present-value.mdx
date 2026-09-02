@@ -1,26 +1,11 @@
 ---
 title: Recovery and one-period risky present value
 description: Value a narrowly defined recovery-of-par claim whose survival and default-state payments both occur at maturity.
-lessonId: credit.recovery-and-risky-present-value
 editorialStatus: draft
-riskTier: 3
-estimatedMinutes: 30
-requires:
-  - probability.expectation-by-partition.calculate
-  - finance.risk-neutral-value.calculate
-  - finance.cash-flow-perspective.apply
-  - finance.present-value.calculate
-  - credit.survival-probability.interpret
-  - credit.default-probability-from-survival.calculate
 teaches:
   - credit.recovery-rate.interpret
   - credit.loss-given-default.calculate
   - credit.risky-present-value.calculate
-assessments:
-  - credit-recovery-risky-pv-check
-sources:
-  - tuckman-serrat-fixed-income
-  - shreve-stochastic-calculus-finance-ii
 assumptions:
   - One positive par payment is scheduled at maturity from the asset-holder perspective
   - Survival pays full par at maturity
@@ -66,9 +51,6 @@ notation:
         kind: competency
         introducedByCompetency: credit.risky-present-value.calculate
         introducedInLesson: credit.recovery-and-risky-present-value
-aiAssisted: true
-sidebar:
-  order: 2
 ---
 
 import CompactExample from '../../../components/examples/CompactExample.astro';
@@ -225,7 +207,7 @@ full recovery because both modeled states have the same amount and date.
 The assessment tests recovery meaning, loss-given-default arithmetic, and
 direct and transfer calculations under the same one-period timing convention.
 
-<AssessmentSet id="credit-recovery-risky-pv-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

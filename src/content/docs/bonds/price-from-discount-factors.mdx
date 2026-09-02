@@ -1,20 +1,9 @@
 ---
 title: Bond price from discount factors
 description: Apply one discount factor to each promised payment before adding.
-lessonId: bonds.price-from-discount-factors
 editorialStatus: draft
-riskTier: 2
-estimatedMinutes: 25
-requires:
-  - finance.present-value.calculate
-  - bonds.fixed-cashflows.identify
 teaches:
   - bonds.price-from-discount-factors.calculate
-assessments:
-  - bond-discount-factor-price-check
-sources:
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
 assumptions:
   - Promised fixed cash flows from the preceding toy contract
   - One supplied deterministic discount factor for each payment time
@@ -32,9 +21,6 @@ notation:
     - number-of-bond-payments
     - face-value
     - maturity-time
-aiAssisted: true
-sidebar:
-  order: 2
 ---
 
 import CompactExample from '../../../components/examples/CompactExample.astro';
@@ -132,7 +118,7 @@ This set includes one coupon-bond calculation and one transfer schedule. Each
 question stays collapsed until you open it; answers and explanations appear once
 you check.
 
-<AssessmentSet id="bond-discount-factor-price-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

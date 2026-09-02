@@ -1,24 +1,10 @@
 ---
 title: Issuer-default knockout bond options
 description: Value a bond option that is extinguished by issuer default while keeping bond recovery separate.
-lessonId: bond-options.issuer-default-knockout
 editorialStatus: draft
-riskTier: 3
-estimatedMinutes: 50
-requires:
-  - bond-options.contract.interpret
-  - bond-options.european-value.calculate
-  - credit.survival-probability.interpret
-  - credit.recovery-rate.interpret
-  - finance.backward-induction.calculate
 teaches:
   - bond-options.default-knockout.interpret
   - bond-options.default-knockout-value.calculate
-assessments:
-  - default-knockout-bond-option-check
-sources:
-  - hull-options-futures
-  - tuckman-serrat-fixed-income
 assumptions:
   - Standalone European option on one defaultable fixed-cash-flow bond
   - Issuer default in any lattice period before exercise extinguishes the option with zero option rebate
@@ -96,9 +82,6 @@ notation:
         kind: competency
         introducedByCompetency: bond-options.default-knockout-value.calculate
         introducedInLesson: bond-options.issuer-default-knockout
-aiAssisted: true
-sidebar:
-  order: 2
 ---
 
 import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
@@ -193,7 +176,7 @@ rate-credit lattice is supplied rather than calibrated.
 
 ## Check your understanding
 
-<AssessmentSet id="default-knockout-bond-option-check" />
+<AssessmentSet />
 
 ## Sources
 

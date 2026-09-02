@@ -1,24 +1,10 @@
 ---
 title: Risk-neutral pricing is not a risk-free probability
 description: Separate real-world forecasts from no-arbitrage pricing weights, then discount a finite-state expected payoff.
-lessonId: foundations.risk-neutral-pricing
 editorialStatus: draft
-riskTier: 2
-estimatedMinutes: 30
-requires:
-  - finance.present-value.interpret
-  - finance.present-value.calculate
-  - probability.expectation-by-partition.calculate
-  - finance.law-of-one-price.explain
 teaches:
   - finance.risk-neutral-measure.interpret
   - finance.risk-neutral-value.calculate
-assessments:
-  - risk-neutral-pricing-check
-sources:
-  - shreve-stochastic-calculus-finance-ii
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
 assumptions:
   - Valuation occurs at time zero from the claim-holder perspective
   - Examples use a finite disjoint and exhaustive scenario partition
@@ -92,9 +78,6 @@ notation:
         kind: competency
         introducedByCompetency: finance.risk-neutral-measure.interpret
         introducedInLesson: foundations.risk-neutral-pricing
-aiAssisted: true
-sidebar:
-  order: 7
 ---
 
 import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
@@ -237,7 +220,7 @@ pp. 228-233\}.
 These checks separate interpretation from arithmetic and include unfamiliar
 scenario weights and a signed negative payoff.
 
-<AssessmentSet id="risk-neutral-pricing-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

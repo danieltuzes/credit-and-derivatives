@@ -11,7 +11,7 @@
  * inline `readdirSync`/`gray-matter` notation + source loads in `astro.config.mjs`.
  */
 
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { basename, join, relative } from 'node:path';
 import { parseFrontmatter } from '@astrojs/markdown-remark';
 
@@ -35,6 +35,15 @@ import type {
 } from '../notation/types';
 import { isSubstantiveMeaning } from '../notation/prose';
 import { resolveLabel } from '../notation/label';
+import {
+  buildSidebar,
+  deriveRequires,
+  deriveSources,
+  isLessonSlug,
+  lessonIdFromSlug,
+  parseCheckList,
+  type SidebarGroup,
+} from './lesson-derivation';
 
 // Every invocation — the CLI, `astro build`/`check`, and vitest — runs with the
 // repository root as the working directory, matching the deleted file loaders.
@@ -251,18 +260,35 @@ function jsonEntries<T extends { readonly id: string }>(
   });
 }
 
-function lessonEntries(): LessonDefinition[] {
+/** Path relative to `src/content/docs`, POSIX-separated, e.g. `bonds/yield.mdx`. */
+function docSlug(path: string): string {
+  return relative(join(CONTENT_ROOT, 'docs'), path).replace(/\\/g, '/');
+}
+
+/** Assessment ids from a lesson's colocated `<name>.checks.yml`, or `[]`. */
+function lessonCheckIds(lessonPath: string): string[] {
+  const checksPath = lessonPath.replace(/\.mdx?$/, '.checks.yml');
+  return existsSync(checksPath)
+    ? parseCheckList(readFileSync(checksPath, 'utf8'))
+    : [];
+}
+
+function lessonEntries(
+  prerequisitesById: ReadonlyMap<string, readonly string[]>,
+): LessonDefinition[] {
   const lessons: LessonDefinition[] = [];
   for (const path of filesBelow(join(CONTENT_ROOT, 'docs'), ['.md', '.mdx'])) {
+    const slug = docSlug(path);
+    if (!isLessonSlug(slug)) continue;
     const { data, body } = parseDocument(path);
-    if (typeof data.lessonId !== 'string') continue;
+    const teaches = (data.teaches as string[] | undefined) ?? [];
     lessons.push({
-      id: data.lessonId,
-      status: data.editorialStatus as LessonDefinition['status'],
-      requires: (data.requires as string[] | undefined) ?? [],
-      teaches: (data.teaches as string[] | undefined) ?? [],
-      assessments: (data.assessments as string[] | undefined) ?? [],
-      sources: (data.sources as string[] | undefined) ?? [],
+      id: lessonIdFromSlug(slug),
+      status: (data.editorialStatus as LessonDefinition['status']) ?? 'draft',
+      requires: deriveRequires(teaches, prerequisitesById),
+      teaches,
+      assessments: lessonCheckIds(path),
+      sources: deriveSources(body),
       assumptions: (data.assumptions as string[] | undefined) ?? [],
       body,
     });
@@ -271,11 +297,18 @@ function lessonEntries(): LessonDefinition[] {
 }
 
 export async function loadCurriculumCatalog(): Promise<CurriculumCatalog> {
+  const competencies = jsonEntries<CompetencyDefinition>(
+    join(CONTENT_ROOT, 'competencies'),
+  );
+  const prerequisitesById = new Map(
+    competencies.map((competency) => [
+      competency.id,
+      competency.prerequisites ?? [],
+    ]),
+  );
   return {
-    competencies: jsonEntries<CompetencyDefinition>(
-      join(CONTENT_ROOT, 'competencies'),
-    ),
-    lessons: lessonEntries(),
+    competencies,
+    lessons: lessonEntries(prerequisitesById),
     assessments: jsonEntries<AssessmentDefinition>(
       join(CONTENT_ROOT, 'assessments'),
     ),
@@ -354,12 +387,13 @@ function sharedNotationEntries(): SharedNotationDefinitionInput[] {
 function notationLessonEntries(): NotationLessonInput[] {
   const lessons: NotationLessonInput[] = [];
   for (const path of filesBelow(join(CONTENT_ROOT, 'docs'), ['.md', '.mdx'])) {
+    const slug = docSlug(path);
+    if (!isLessonSlug(slug)) continue;
     const { file, data, body } = parseDocument(path);
-    if (typeof data.lessonId !== 'string') continue;
     const notation = record(data.notation ?? {}, `${file} notation`);
     const local = Array.isArray(notation.local) ? notation.local : [];
     lessons.push({
-      lessonId: data.lessonId,
+      lessonId: lessonIdFromSlug(slug),
       status: status(data.editorialStatus, `${file} editorialStatus`),
       uses: strings(notation.uses, `${file} notation.uses`),
       localDefinitions: local.map((entry, index) =>
@@ -397,6 +431,34 @@ export function loadSourceRecords(): Record<string, unknown>[] {
   return jsonEntries<SourceDefinition & { readonly id: string }>(
     join(CONTENT_ROOT, 'sources'),
   ) as unknown as Record<string, unknown>[];
+}
+
+/**
+ * Assessment ids for one lesson, from its colocated `<name>.checks.yml`. The
+ * lesson layout uses this to auto-place `<AssessmentSet>`; nothing is authored
+ * in the MDX body.
+ */
+export function loadLessonChecks(lessonId: string): string[] {
+  const slug = lessonId.replace(/\./g, '/');
+  for (const extension of ['.mdx', '.md']) {
+    const lessonPath = join(CONTENT_ROOT, 'docs', `${slug}${extension}`);
+    if (existsSync(lessonPath)) return lessonCheckIds(lessonPath);
+  }
+  return [];
+}
+
+/**
+ * The Starlight `sidebar` config. Section groups are fixed; the lessons inside
+ * each are ordered by the tracks (see `buildSidebar`), replacing the authored
+ * `sidebar.order` frontmatter and seven `autogenerate` blocks.
+ */
+export function loadSidebar(): SidebarGroup[] {
+  const tracks = jsonEntries<TrackDefinition>(join(CONTENT_ROOT, 'tracks'));
+  const lessonSlugs = filesBelow(join(CONTENT_ROOT, 'docs'), ['.md', '.mdx'])
+    .map(docSlug)
+    .filter(isLessonSlug)
+    .map((slug) => slug.replace(/\.(md|mdx)$/, ''));
+  return buildSidebar(tracks, lessonSlugs);
 }
 
 /**

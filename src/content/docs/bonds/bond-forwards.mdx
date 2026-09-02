@@ -1,20 +1,9 @@
 ---
 title: Bond forwards
 description: Apply cash-and-carry to a coupon bond while keeping coupon ownership and dirty-price units explicit.
-lessonId: bonds.bond-forwards
 editorialStatus: draft
-riskTier: 3
-estimatedMinutes: 30
-requires:
-  - derivatives.forward-delivery-price.calculate
-  - bonds.clean-dirty-price.calculate
-  - bonds.price-from-discount-factors.calculate
 teaches:
   - bonds.forward-delivery-price.calculate
-assessments:
-  - bond-forward-check
-sources:
-  - hull-options-futures
 assumptions:
   - Long forward obligates purchase of one named bond at one delivery time
   - Current bond price and delivery price are both dirty cash prices in the same currency per bond
@@ -40,9 +29,6 @@ notation:
         kind: competency
         introducedByCompetency: bonds.forward-delivery-price.calculate
         introducedInLesson: bonds.bond-forwards
-aiAssisted: true
-sidebar:
-  order: 6
 ---
 
 import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
@@ -89,7 +75,7 @@ unit/convention mismatch.
 
 ## Check your understanding
 
-<AssessmentSet id="bond-forward-check" />
+<AssessmentSet />
 
 ## Sources
 

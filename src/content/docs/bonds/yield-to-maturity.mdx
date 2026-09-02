@@ -1,22 +1,10 @@
 ---
 title: Yield to maturity as a single-rate summary
 description: Interpret the rate that reproduces a toy bond price, then price from a supplied yield.
-lessonId: bonds.yield-to-maturity
 editorialStatus: draft
-riskTier: 2
-estimatedMinutes: 30
-requires:
-  - bonds.price-from-discount-factors.calculate
-  - rates.periodic-rate.calculate
 teaches:
   - bonds.yield-to-maturity.interpret
   - bonds.price-from-yield.calculate
-assessments:
-  - bond-yield-check
-sources:
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
-  - finra-bond-yield
 assumptions:
   - Level fixed coupons and principal redeemed at par
   - Settlement on a coupon date
@@ -34,9 +22,6 @@ notation:
     - maturity-time
     - bond-payment-index
     - number-of-bond-payments
-aiAssisted: true
-sidebar:
-  order: 3
 ---
 
 import CompactExample from '../../../components/examples/CompactExample.astro';
@@ -145,7 +130,7 @@ These items separate yield interpretation from annual and periodic-compounding
 calculations. Each question stays collapsed until you open it; answers and
 explanations appear once you check.
 
-<AssessmentSet id="bond-yield-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 

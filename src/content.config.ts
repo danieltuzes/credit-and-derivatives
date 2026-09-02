@@ -88,18 +88,22 @@ const lessonNotation = z
   .default({ uses: [], local: [] });
 
 /**
- * Lesson frontmatter — reduced shape (Phase C1).
+ * Lesson frontmatter — reduced shape (Phase C1 schema, C2 codemod applied).
  *
  * Authored:  `title`, `description` (Starlight base), `teaches` (ordered — the
- *            curriculum contract, never derived), `assumptions`, `notation.local`.
+ *            curriculum contract, never derived), `assumptions`,
+ *            `notation.uses` + `notation.local`.
  * Artifact:  `editorialStatus` (human-set trust flag).
- * Derived post-C2 / Phase D (kept optional here during the transition, then
- *            moved to the manifest): `lessonId` (path), `requires` (competency
- *            DAG prerequisites of `teaches` minus earlier-in-track `teaches`),
- *            `sources` (`[@…]` occurrences), `notation.uses`, `assessments`
- *            (colocated `checks.yml`), `sidebar.order` (track order).
+ * Derived (in `content/collections.ts` + `content/lesson-derivation.ts`, never
+ *            authored): `lessonId` (doc slug), `requires` (direct competency-DAG
+ *            prerequisites of `teaches`, minus `teaches`), `sources` (`\cite{…}`
+ *            occurrences), `assessments` (colocated `<lesson>.checks.yml`),
+ *            `sidebar` order (track order).
  * Dropped:   `aiAssisted`, `lastReviewed`, `riskTier`, `estimatedMinutes`
  *            (git history + `editorialStatus` + `NEEDS_SOURCE` carry provenance).
+ *
+ * `notation.uses` stays authored until the completeness gate compiles lesson
+ * math in validation (debt D7 / step D3).
  */
 const docs = defineCollection({
   loader: docsLoader(),
@@ -109,11 +113,6 @@ const docs = defineCollection({
       teaches: z.array(id).default([]),
       assumptions: z.array(z.string().min(1)).default([]),
       notation: lessonNotation,
-      // Derived post-C2 / Phase D; still authored during the transition.
-      lessonId: id.optional(),
-      requires: z.array(id).default([]),
-      assessments: z.array(id).default([]),
-      sources: z.array(id).default([]),
     }),
   }),
 });

@@ -5,10 +5,11 @@ import NotationLayer, {
   type NotationLayerDefinition,
 } from './NotationLayer.astro';
 import { resolveLabel } from '../../notation/label';
+import { isLessonSlug } from '../../content/lesson-derivation';
 
 const [notationEntries, lessonEntries] = await Promise.all([
   getCollection('notation'),
-  getCollection('docs', ({ data }) => typeof data.lessonId === 'string'),
+  getCollection('docs', ({ id }) => isLessonSlug(id)),
 ]);
 const labelOf = (data: { key: string; label?: string }) =>
   resolveLabel(data.key, data.label);

@@ -1,21 +1,10 @@
 ---
 title: Discount curve and forward discounting
 description: Move from one discount factor to a dated deterministic curve and derive future-to-future discount factors.
-lessonId: rates.discount-curve-and-forward-discounting
 editorialStatus: draft
-riskTier: 2
-estimatedMinutes: 30
-requires:
-  - rates.discount-factor.interpret
-  - rates.discount-factor.calculate
 teaches:
   - rates.discount-curve.interpret
   - rates.forward-discount-factor.calculate
-assessments:
-  - discount-curve-check
-sources:
-  - tuckman-serrat-fixed-income
-  - hull-options-futures
 assumptions:
   - One deterministic valuation-time discount curve for one stated currency and collateral/funding basis
   - Exact model-year times with no calendar, day-count, curve bootstrapping, or instrument calibration
@@ -50,9 +39,6 @@ notation:
         kind: competency
         introducedByCompetency: rates.forward-discount-factor.calculate
         introducedInLesson: rates.discount-curve-and-forward-discounting
-aiAssisted: true
-sidebar:
-  order: 1
 ---
 
 import AssessmentSet from '../../../components/assessments/AssessmentSet.astro';
@@ -112,7 +98,7 @@ future-to-future factor will actually be observed in every future state.
 
 ## Check your understanding
 
-<AssessmentSet id="discount-curve-check" />
+<AssessmentSet />
 
 ## Sources
 

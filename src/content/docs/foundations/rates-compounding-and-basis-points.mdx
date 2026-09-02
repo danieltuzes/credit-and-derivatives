@@ -1,20 +1,11 @@
 ---
 title: Rate quotes, compounding, and basis points
 description: Separate an annualized quote from its periodic rate and its units.
-lessonId: foundations.rates-compounding-and-basis-points
 editorialStatus: draft
-riskTier: 2
-estimatedMinutes: 25
-requires:
-  - finance.cash-flow-timeline.interpret
 teaches:
   - rates.nominal-rate-quote.interpret
   - rates.periodic-rate.calculate
   - rates.basis-points.convert
-assessments:
-  - rates-compounding-check
-sources:
-  - tuckman-serrat-fixed-income
 assumptions:
   - Nominal annual rates divide evenly across equal compounding periods
   - Compounding frequency is a positive integer
@@ -40,9 +31,6 @@ notation:
       alignment:
         kind: general
         rationale: Integer period counting follows from the track's algebra assumptions.
-aiAssisted: true
-sidebar:
-  order: 3
 ---
 
 import CompactExample from '../../../components/examples/CompactExample.astro';
@@ -148,7 +136,7 @@ These direct and transfer items cover quote interpretation, periodic-rate
 calculation, and basis-point conversion. Each question stays collapsed until you
 open it; answers and explanations appear once you check.
 
-<AssessmentSet id="rates-compounding-check" />
+<AssessmentSet />
 
 ## Model boundary and review note
 
