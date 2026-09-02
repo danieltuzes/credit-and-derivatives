@@ -6,15 +6,21 @@ import { BASE_LIBRARY } from './base-library.mjs';
  * Page-level glyph-map resolver (cleanup plan, D1 decision 2026-09-02).
  *
  * A page declares its glyphs once — `notation.local` plus the shared entries it
- * introduces in prose with `[[key]]` — and formulas stay ordinary LaTeX.
- * This module tokenizes one `$…$` / `$$…$$` expression into identifier atoms
- * and resolves each against that flat page glyph table plus the base library,
- * marking it with a validated `\explain` marker or reporting it unresolved so
- * the caller can fail at `file:line:token`. `\explain{key}{latex}` stays as the
- * escape hatch for a compound or glyph-colliding symbol.
+ * introduces in prose with `[[key]]` — so the glyph table handed in here is a
+ * flat list with **one meaning per glyph**. This module parses one `$…$` /
+ * `$$…$$` expression, matches each declared symbol against it (whole canonical
+ * form first, then a unique base glyph for a shorter or instantiated form),
+ * marks every match with a validated `\explain` marker, and reports any
+ * remaining identifier atom so the caller can fail at `file:line:token`.
+ * `\explain{key}{latex}` in the source stays as the escape hatch for a
+ * compound or glyph-colliding symbol.
  *
- * KaTeX's parse tree is intentionally an internal API. Keep this guard beside
- * the resolver so a dependency update cannot silently change its behavior.
+ * Because the table is unambiguous, matching is a lookup, not a search: no
+ * cross-definition candidate solving, no ambiguity permutation. What remains is
+ * the tokenizer the page-glyph-map syntax requires — a KaTeX parse plus the
+ * structural signatures that let `CF_k` be found as a three-node run and `D` be
+ * found as the head of `D(0,2)`. `katex.__parse` is that tokenizer; the version
+ * guard below keeps a dependency bump from silently changing its tree.
  */
 export const SUPPORTED_KATEX_PARSE_VERSION = '0.16.47';
 
@@ -66,23 +72,16 @@ function assertPinnedKatex() {
   if (katex.version !== SUPPORTED_KATEX_PARSE_VERSION) {
     fail(
       'unsupported-katex-version',
-      `Math binding expects KaTeX ${SUPPORTED_KATEX_PARSE_VERSION}, but ${katex.version} is installed. Review the internal parse-tree adapter before changing the pin.`,
-      {
-        expected: SUPPORTED_KATEX_PARSE_VERSION,
-        actual: katex.version,
-      },
+      `Glyph resolution expects KaTeX ${SUPPORTED_KATEX_PARSE_VERSION}, but ${katex.version} is installed. Review the internal parse-tree adapter before changing the pin.`,
+      { expected: SUPPORTED_KATEX_PARSE_VERSION, actual: katex.version },
     );
   }
 }
 
 function parseMath(latex, label) {
   assertPinnedKatex();
-
   try {
-    return katex.__parse(latex, {
-      throwOnError: true,
-      strict: 'error',
-    });
+    return katex.__parse(latex, { throwOnError: true, strict: 'error' });
   } catch (error) {
     fail(
       'invalid-latex',
@@ -91,6 +90,8 @@ function parseMath(latex, label) {
     );
   }
 }
+
+// --- low-level source scanning -------------------------------------------
 
 function isNode(value) {
   return Boolean(
@@ -121,7 +122,6 @@ function skipWhitespace(value, index) {
 
 function readBracedGroup(value, start) {
   if (value[start] !== '{') return undefined;
-
   let depth = 0;
   for (let cursor = start; cursor < value.length; cursor++) {
     if (isEscaped(value, cursor)) continue;
@@ -138,10 +138,14 @@ function readBracedGroup(value, start) {
       }
     }
   }
-
   return undefined;
 }
 
+/**
+ * Every `\explain{key}{latex}` in the source (the escape hatch). Each key must
+ * already be in the page glyph table. The returned span points at the wrapped
+ * LaTeX so it can be re-marked without disturbing the author's own braces.
+ */
 function findExplainCalls(latex, definitionsByKey) {
   const calls = [];
   let cursor = 0;
@@ -152,8 +156,7 @@ function findExplainCalls(latex, definitionsByKey) {
     cursor = start + EXPLAIN_COMMAND.length;
 
     if (isEscaped(latex, start)) continue;
-    const commandTail = latex[cursor];
-    if (commandTail && /[A-Za-z@]/.test(commandTail)) continue;
+    if (latex[cursor] && /[A-Za-z@]/.test(latex[cursor])) continue;
 
     const keyStart = skipWhitespace(latex, cursor);
     const keyGroup = readBracedGroup(latex, keyStart);
@@ -164,13 +167,15 @@ function findExplainCalls(latex, definitionsByKey) {
         { start },
       );
     }
-
     const key = keyGroup.content.trim();
     if (!KEY_PATTERN.test(key)) {
       fail(
         'invalid-key',
         `Invalid semantic notation key "${key}" in ${EXPLAIN_COMMAND}.`,
-        { key, start },
+        {
+          key,
+          start,
+        },
       );
     }
     if (!definitionsByKey.has(key)) {
@@ -199,10 +204,9 @@ function findExplainCalls(latex, definitionsByKey) {
     }
 
     calls.push({
-      callStart: start,
-      callEnd: latexGroup.end,
-      prefixEnd: latexStart,
       key,
+      prefixEnd: latexStart,
+      callStart: start,
       start: latexGroup.contentStart,
       end: latexGroup.contentEnd,
       token: latexGroup.content,
@@ -214,20 +218,19 @@ function findExplainCalls(latex, definitionsByKey) {
   return calls;
 }
 
+/** Blank out the `\explain{key}{` prefixes so KaTeX can parse what they wrap. */
 function sourceWithoutExplainPrefixes(latex, calls) {
   if (calls.length === 0) return latex;
   const characters = [...latex];
-
   for (const call of calls) {
     for (let index = call.callStart; index < call.prefixEnd; index++) {
-      characters[index] = /\s/.test(characters[index])
-        ? characters[index]
-        : ' ';
+      if (!/\s/.test(characters[index])) characters[index] = ' ';
     }
   }
-
   return characters.join('');
 }
+
+// --- structural signatures --------------------------------------------
 
 function signatureParts(node) {
   if (!isNode(node)) return [];
@@ -239,16 +242,14 @@ function signatureParts(node) {
   if (node.type === 'mathord' || node.type === 'textord') {
     return [`ord:${node.text}`];
   }
-  if (node.type === 'atom') {
+  if (node.type === 'atom')
     return [`atom:${node.family ?? ''}:${node.text ?? ''}`];
-  }
   if (node.type === 'spacing') return [`space:${node.text ?? ''}`];
   if (node.type === 'op' || node.type === 'operatorname') {
     return [`operator:${node.name ?? node.type}`];
   }
-  if (node.type === 'text') {
+  if (node.type === 'text')
     return [`text:${signatureValue(node.body).join('|')}`];
-  }
   if (node.type === 'supsub') {
     return [
       `supsub(${signatureValue(node.base).join('|')})` +
@@ -261,14 +262,12 @@ function signatureParts(node) {
   for (const key of ['family', 'font', 'label', 'name', 'text']) {
     if (typeof node[key] === 'string') primitive.push(`${key}=${node[key]}`);
   }
-
   const children = [];
   for (const key of SOURCE_CHILD_KEYS) {
     if (node[key] !== undefined && node[key] !== null) {
       children.push(`${key}=[${signatureValue(node[key]).join('|')}]`);
     }
   }
-
   return [`${node.type}{${primitive.join(',')}}(${children.join(',')})`];
 }
 
@@ -281,6 +280,8 @@ function sequenceSignature(nodes) {
   return nodes.flatMap(signatureParts).join('|');
 }
 
+// --- source spans -----------------------------------------------------
+
 function nodeSpan(node) {
   let start = Number.POSITIVE_INFINITY;
   let end = Number.NEGATIVE_INFINITY;
@@ -289,7 +290,6 @@ function nodeSpan(node) {
   function visit(value) {
     if (!value || typeof value !== 'object' || visited.has(value)) return;
     visited.add(value);
-
     if (
       value.loc &&
       Number.isInteger(value.loc.start) &&
@@ -298,12 +298,10 @@ function nodeSpan(node) {
       start = Math.min(start, value.loc.start);
       end = Math.max(end, value.loc.end);
     }
-
     if (Array.isArray(value)) {
       for (const child of value) visit(child);
       return;
     }
-
     if (!isNode(value)) return;
     for (const key of SOURCE_CHILD_KEYS) visit(value[key]);
   }
@@ -327,11 +325,29 @@ function childValues(node) {
   const children = [];
   for (const key of SOURCE_CHILD_KEYS) {
     const value = node[key];
-    if (value !== undefined && value !== null) children.push({ key, value });
+    if (value !== undefined && value !== null) children.push(value);
   }
   return children;
 }
 
+function isIdentifierNode(node) {
+  if (node.type !== 'mathord' && node.type !== 'textord') return false;
+  if (typeof node.text !== 'string') return false;
+  if (/^[0-9.,]+$/u.test(node.text)) return false;
+  return /^(?:\p{L}|\\[A-Za-z]+)$/u.test(node.text);
+}
+
+const contains = (outer, inner) =>
+  outer.start <= inner.start && inner.end <= outer.end;
+const sameSpan = (left, right) =>
+  left.start === right.start && left.end === right.end;
+
+/**
+ * Walk the parse tree once, collecting: every maximal run of sibling nodes
+ * (`containers`, where a canonical form is matched), every identifier atom with
+ * its source span, and the spans of every sub/superscript (so a symbol nested
+ * in a script can still be marked).
+ */
 function collectSourceStructure(tree) {
   const containers = [];
   const identifiers = [];
@@ -352,7 +368,7 @@ function collectSourceStructure(tree) {
 
   function visitValue(value, ignored = false) {
     if (Array.isArray(value)) {
-      if (value.every(isNode) && !ignored) addContainer(value);
+      if (!ignored && value.every(isNode)) addContainer(value);
       for (const child of value) visitValue(child, ignored);
       return;
     }
@@ -367,16 +383,13 @@ function collectSourceStructure(tree) {
 
     if (!ignored && isIdentifierNode(value)) {
       const span = nodeSpan(value);
-      if (span) {
-        const identity = `${span.start}:${span.end}`;
-        if (!seenIdentifiers.has(identity)) {
-          seenIdentifiers.add(identity);
-          identifiers.push({
-            node: value,
-            signature: sequenceSignature([value]),
-            ...span,
-          });
-        }
+      if (span && !seenIdentifiers.has(`${span.start}:${span.end}`)) {
+        seenIdentifiers.add(`${span.start}:${span.end}`);
+        identifiers.push({
+          node: value,
+          signature: sequenceSignature([value]),
+          ...span,
+        });
       }
     }
 
@@ -387,14 +400,12 @@ function collectSourceStructure(tree) {
       }
     }
 
-    for (const { value: child } of childValues(value)) {
+    for (const child of childValues(value)) {
       if (Array.isArray(child)) {
-        if (child.every(isNode) && !ignoredBody) addContainer(child);
+        if (!ignoredBody && child.every(isNode)) addContainer(child);
         for (const nested of child) visitValue(nested, ignoredBody);
       } else if (isNode(child)) {
         if (!ignoredBody) addContainer([child]);
-        visitValue(child, ignoredBody);
-      } else if (Array.isArray(child)) {
         visitValue(child, ignoredBody);
       }
     }
@@ -405,148 +416,7 @@ function collectSourceStructure(tree) {
   return { containers, identifiers, scriptSpans };
 }
 
-function isIdentifierNode(node) {
-  if (node.type !== 'mathord' && node.type !== 'textord') return false;
-  if (typeof node.text !== 'string') return false;
-  if (/^[0-9.,]+$/u.test(node.text)) return false;
-  return /^(?:\p{L}|\\[A-Za-z]+)$/u.test(node.text);
-}
-
-function contains(outer, inner) {
-  return outer.start <= inner.start && inner.end <= outer.end;
-}
-
-function properOverlap(left, right) {
-  if (left.end <= right.start || right.end <= left.start) return false;
-  return !contains(left, right) && !contains(right, left);
-}
-
-function sameSpan(left, right) {
-  return left.start === right.start && left.end === right.end;
-}
-
-/**
- * Validate source spans independently of binding inference. Disjoint and
- * nested intervals are valid; identical intervals with different keys are
- * ambiguous; partially overlapping intervals are invalid.
- */
-export function validateBindingSpans(spans, sourceLength = undefined) {
-  const normalized = spans.map((span, index) => {
-    if (
-      !span ||
-      typeof span.key !== 'string' ||
-      !Number.isInteger(span.start) ||
-      !Number.isInteger(span.end) ||
-      span.start < 0 ||
-      span.end <= span.start ||
-      (sourceLength !== undefined && span.end > sourceLength)
-    ) {
-      fail('invalid-span', `Invalid math binding span at index ${index}.`, {
-        index,
-        span,
-        sourceLength,
-      });
-    }
-    return span;
-  });
-
-  for (let leftIndex = 0; leftIndex < normalized.length; leftIndex++) {
-    for (
-      let rightIndex = leftIndex + 1;
-      rightIndex < normalized.length;
-      rightIndex++
-    ) {
-      const left = normalized[leftIndex];
-      const right = normalized[rightIndex];
-
-      if (sameSpan(left, right) && left.key !== right.key) {
-        fail(
-          'ambiguous-span',
-          `Math span ${left.start}:${left.end} resolves to both "${left.key}" and "${right.key}".`,
-          { left, right },
-        );
-      }
-      if (properOverlap(left, right)) {
-        fail(
-          'partial-overlap',
-          `Math bindings "${left.key}" (${left.start}:${left.end}) and "${right.key}" (${right.start}:${right.end}) partially overlap. Spans must be disjoint or nested.`,
-          { left, right },
-        );
-      }
-    }
-  }
-
-  return normalized;
-}
-
-function canonicalDefinitions(definitions) {
-  if (!Array.isArray(definitions)) {
-    fail(
-      'invalid-definitions',
-      'Lesson-scoped notation definitions must be an array of {key, notation}.',
-    );
-  }
-
-  const byKey = new Map();
-  const byCanonicalSignature = new Map();
-  const normalized = [];
-
-  for (const [index, value] of definitions.entries()) {
-    const key = value?.key;
-    const notation = value?.notation;
-    if (!KEY_PATTERN.test(key ?? '')) {
-      fail(
-        'invalid-key',
-        `Invalid notation key at definition index ${index}.`,
-        {
-          index,
-          key,
-        },
-      );
-    }
-    if (typeof notation !== 'string' || notation.trim().length === 0) {
-      fail(
-        'invalid-notation',
-        `Notation definition "${key}" must have non-empty LaTeX.`,
-        { index, key, notation },
-      );
-    }
-    if (byKey.has(key)) {
-      fail(
-        'duplicate-key',
-        `Lesson-scoped notation key "${key}" is defined more than once.`,
-        { key },
-      );
-    }
-
-    const tree = parseMath(notation, `notation "${key}"`);
-    const signature = sequenceSignature(tree);
-    const existing = byCanonicalSignature.get(signature);
-    if (existing && existing.key !== key) {
-      fail(
-        'ambiguous-canonical-notation',
-        `Canonical notation "${notation}" for "${key}" is structurally indistinguishable from "${existing.notation}" for "${existing.key}".`,
-        { left: existing, right: { key, notation } },
-      );
-    }
-
-    const identifiers = collectSourceStructure(tree).identifiers;
-    const definition = {
-      key,
-      notation,
-      tree,
-      signature,
-      nodeLength: tree.length,
-      autoMatch: identifiers.length > 0,
-      fallbackSignature: canonicalBaseSignature(tree),
-    };
-    byKey.set(key, definition);
-    byCanonicalSignature.set(signature, definition);
-    normalized.push(definition);
-  }
-
-  return { byKey, definitions: normalized };
-}
+// --- base-glyph signatures ------------------------------------------
 
 function identifierBaseSignature(node) {
   if (isIdentifierNode(node)) return sequenceSignature([node]);
@@ -556,21 +426,16 @@ function identifierBaseSignature(node) {
   return undefined;
 }
 
+/**
+ * The shorter page form a parameterized symbol also permits: the bare base
+ * glyph of `t_k` / `r_m` / `j^{(m)}` (one significant node) or the head of a
+ * function form `D(0,t)` / `V_0(1_t)` (head followed by `(`).
+ */
 function canonicalBaseSignature(tree) {
   const significant = tree.filter(
-    (node) => !(node.type === 'spacing' || node.type === 'ordgroup'),
+    (node) => node.type !== 'spacing' && node.type !== 'ordgroup',
   );
-
-  // Parameterized canonical symbols such as t_k, r_m, j^(m), and
-  // y^(m_B) deliberately allow the undecorated base glyph as a shorter page
-  // form when that base identifies exactly one definition in lesson scope.
-  if (significant.length === 1) {
-    return identifierBaseSignature(significant[0]);
-  }
-
-  // Function-like notation may have either a plain head (D(0,t)) or a
-  // decorated head (V_0(1_t)). Bind its unique head when the arguments are
-  // concrete instances rather than the canonical placeholders.
+  if (significant.length === 1) return identifierBaseSignature(significant[0]);
   if (significant.length < 2) return undefined;
   const [head, open] = significant;
   if (open.type !== 'atom' || open.family !== 'open' || open.text !== '(') {
@@ -579,155 +444,183 @@ function canonicalBaseSignature(tree) {
   return identifierBaseSignature(head);
 }
 
+/**
+ * KaTeX puts source braces inside an ordgroup node's `loc`, but signatures
+ * treat ordgroups as transparent. Peel a fully-enclosing `{…}` off a matched
+ * span so `\frac{j}{m}` marks as `\frac{\explain{…}{j}}{…}`, not
+ * `\frac\explain{…}{{j}}…`.
+ */
 function unwrapEnclosingGroupSpan(latex, span) {
-  let start = span.start;
-  let end = span.end;
-
-  // KaTeX includes source braces in an ordgroup node's location even though
-  // signatureParts deliberately treats that node as transparent. Matching a
-  // canonical symbol inside a macro argument must therefore keep the braces
-  // outside the injected marker: `\frac{j}{m}` must become
-  // `\frac{\explain{...}{j}}{\explain{...}{m}}`, not
-  // `\frac\explain{...}{{j}}\explain{...}{{m}}`.
+  let { start, end } = span;
   while (latex[start] === '{') {
     const group = readBracedGroup(latex, start);
     if (!group || group.end !== end) break;
     start = group.contentStart;
     end = group.contentEnd;
   }
-
   return { start, end };
 }
 
-function exactCandidates(latex, source, definitions) {
-  const candidates = [];
-  const seen = new Set();
-
-  for (const definition of definitions) {
-    if (!definition.autoMatch || definition.nodeLength === 0) continue;
-
-    for (const container of source.containers) {
-      if (container.length < definition.nodeLength) continue;
-
-      for (
-        let offset = 0;
-        offset <= container.length - definition.nodeLength;
-        offset++
-      ) {
-        const nodes = container.slice(offset, offset + definition.nodeLength);
-        if (sequenceSignature(nodes) !== definition.signature) continue;
-        const rawSpan = sequenceSpan(nodes);
-        if (!rawSpan) continue;
-        const span = unwrapEnclosingGroupSpan(latex, rawSpan);
-
-        const identity = `${definition.key}:${span.start}:${span.end}`;
-        if (seen.has(identity)) continue;
-        seen.add(identity);
-        candidates.push({
-          key: definition.key,
-          notation: definition.notation,
-          start: span.start,
-          end: span.end,
-          token: latex.slice(span.start, span.end),
-          level: 'scope',
-          match: 'canonical',
-        });
-      }
-    }
-  }
-
-  return candidates;
-}
-
-function isSafeScriptNesting(candidate, outer, scriptSpans) {
-  if (candidate.start === outer.start) return false;
+/** A nested symbol may still be marked when it sits inside a script group. */
+function isSafeScriptNesting(inner, outer, scriptSpans) {
+  if (inner.start === outer.start) return false;
   return scriptSpans.some(
-    (script) => contains(outer, script) && contains(script, candidate),
+    (script) => contains(outer, script) && contains(script, inner),
   );
 }
 
-function selectExactBindings(candidates, explicit, scriptSpans) {
-  validateBindingSpans(candidates);
-  validateBindingSpans(explicit);
+// --- glyph table + matching -----------------------------------------
 
-  const ordered = [...candidates, ...explicit].sort(
-    (left, right) =>
-      left.start - right.start ||
-      right.end - left.end ||
-      (left.level === 'explicit' ? -1 : 1),
-  );
-  const selected = [];
-
-  for (const candidate of ordered) {
-    const identical = selected.find((binding) => sameSpan(binding, candidate));
-    if (identical) {
-      if (identical.key !== candidate.key) {
-        if (identical.level === 'explicit') continue;
-        if (candidate.level === 'explicit') {
-          selected.splice(selected.indexOf(identical), 1, candidate);
-          continue;
-        }
-        fail(
-          'ambiguous-span',
-          `Math span ${candidate.start}:${candidate.end} matches both "${identical.key}" and "${candidate.key}".`,
-          { left: identical, right: candidate },
-        );
-      }
-      continue;
-    }
-
-    const containing = selected
-      .filter((binding) => contains(binding, candidate))
-      .sort(
-        (left, right) => left.end - left.start - (right.end - right.start),
-      )[0];
-
-    if (
-      containing &&
-      candidate.level !== 'explicit' &&
-      !isSafeScriptNesting(candidate, containing, scriptSpans)
-    ) {
-      continue;
-    }
-
-    selected.push(candidate);
+/**
+ * Index the page glyph table by structural signature. Because one glyph carries
+ * one meaning per page, each signature maps to exactly one key; a genuine
+ * structural clash between two keys is a page authoring error and fails here.
+ */
+function buildGlyphIndex(definitions) {
+  if (!Array.isArray(definitions)) {
+    fail(
+      'invalid-definitions',
+      'The page glyph table must be an array of {key, notation}.',
+    );
   }
 
-  validateBindingSpans(selected);
-  return selected;
-}
+  const byKey = new Map();
+  const bySignature = new Map();
+  const byBase = new Map();
+  const ambiguousBase = new Set();
+  let maxNodeLength = 0;
 
-function fallbackBindings(latex, identifiers, definitions, selected) {
-  const byHead = new Map();
-  for (const definition of definitions) {
-    if (!definition.fallbackSignature) continue;
-    const matches = byHead.get(definition.fallbackSignature) ?? [];
-    matches.push(definition);
-    byHead.set(definition.fallbackSignature, matches);
-  }
-
-  const bindings = [];
-  for (const identifier of identifiers) {
-    if (selected.some((binding) => contains(binding, identifier))) continue;
-    const candidates = byHead.get(identifier.signature) ?? [];
-    if (candidates.length === 0) continue;
-    if (candidates.length > 1) {
+  for (const [index, value] of definitions.entries()) {
+    const key = value?.key;
+    const notation = value?.notation;
+    if (!KEY_PATTERN.test(key ?? '')) {
       fail(
-        'ambiguous-base-fallback',
-        `Identifier "${latex.slice(identifier.start, identifier.end)}" at ${identifier.start}:${identifier.end} is the canonical base of multiple lesson-scoped definitions: ${candidates.map(({ key }) => `"${key}"`).join(', ')}.`,
+        'invalid-key',
+        `Invalid notation key at glyph-table index ${index}.`,
         {
-          token: latex.slice(identifier.start, identifier.end),
-          start: identifier.start,
-          end: identifier.end,
-          keys: candidates.map(({ key }) => key),
+          index,
+          key,
+        },
+      );
+    }
+    if (typeof notation !== 'string' || notation.trim().length === 0) {
+      fail('invalid-notation', `Glyph "${key}" must have non-empty LaTeX.`, {
+        index,
+        key,
+        notation,
+      });
+    }
+    if (byKey.has(key)) {
+      fail(
+        'duplicate-key',
+        `Page glyph key "${key}" is defined more than once.`,
+        {
+          key,
         },
       );
     }
 
-    const [definition] = candidates;
+    const tree = parseMath(notation, `notation "${key}"`);
+    const entry = { key, notation };
+    byKey.set(key, entry);
+
+    const signature = sequenceSignature(tree);
+    const hasIdentifier = collectSourceStructure(tree).identifiers.length > 0;
+    if (hasIdentifier && tree.length > 0) {
+      const clash = bySignature.get(signature);
+      if (clash && clash !== key) {
+        fail(
+          'ambiguous-canonical-notation',
+          `Page glyphs "${clash}" and "${key}" have structurally identical LaTeX ("${notation}").`,
+          { left: clash, right: key },
+        );
+      }
+      bySignature.set(signature, key);
+      maxNodeLength = Math.max(maxNodeLength, tree.length);
+    }
+
+    const baseSignature = canonicalBaseSignature(tree);
+    if (baseSignature) {
+      if (byBase.has(baseSignature) && byBase.get(baseSignature) !== key) {
+        ambiguousBase.add(baseSignature);
+      } else {
+        byBase.set(baseSignature, key);
+      }
+    }
+  }
+
+  return { byKey, bySignature, byBase, ambiguousBase, maxNodeLength };
+}
+
+/** Bind whole canonical forms: greedy longest match, left to right, per run. */
+function matchCanonicalForms(latex, containers, glyphs) {
+  const bindings = [];
+  const claimed = [];
+
+  for (const container of containers) {
+    let cursor = 0;
+    while (cursor < container.length) {
+      let step = 1;
+      const maxLength = Math.min(
+        glyphs.maxNodeLength,
+        container.length - cursor,
+      );
+      for (let length = maxLength; length >= 1; length--) {
+        const nodes = container.slice(cursor, cursor + length);
+        const key = glyphs.bySignature.get(sequenceSignature(nodes));
+        if (key === undefined) continue;
+        const rawSpan = sequenceSpan(nodes);
+        if (!rawSpan) continue;
+        const span = unwrapEnclosingGroupSpan(latex, rawSpan);
+        step = length;
+        if (
+          claimed.some(
+            (existing) => sameSpan(existing, span) || contains(existing, span),
+          )
+        ) {
+          break;
+        }
+        bindings.push({
+          key,
+          ...span,
+          token: latex.slice(span.start, span.end),
+          level: 'scope',
+          match: 'canonical',
+        });
+        claimed.push(span);
+        break;
+      }
+      cursor += step;
+    }
+  }
+
+  return bindings;
+}
+
+/**
+ * Bind the remaining identifier atoms to a unique base glyph. An atom already
+ * inside a canonical match is skipped unless it sits in a script group; an atom
+ * whose base glyph names two keys fails (the author must reach for `\explain`).
+ */
+function matchBaseGlyphs(latex, identifiers, canonical, glyphs, scriptSpans) {
+  const bindings = [];
+  for (const identifier of identifiers) {
+    const cover = canonical.find((binding) => contains(binding, identifier));
+    if (cover && !isSafeScriptNesting(identifier, cover, scriptSpans)) continue;
+
+    const baseSignature = identifier.signature;
+    if (glyphs.ambiguousBase.has(baseSignature)) {
+      const token = latex.slice(identifier.start, identifier.end);
+      fail(
+        'ambiguous-base-fallback',
+        `Identifier "${token}" at ${identifier.start}:${identifier.end} is the base glyph of more than one page symbol; wrap it in \\explain{key}{${token}}.`,
+        { token, start: identifier.start, end: identifier.end },
+      );
+    }
+    const key = glyphs.byBase.get(baseSignature);
+    if (key === undefined) continue;
     bindings.push({
-      key: definition.key,
-      notation: definition.notation,
+      key,
       start: identifier.start,
       end: identifier.end,
       token: latex.slice(identifier.start, identifier.end),
@@ -735,15 +628,19 @@ function fallbackBindings(latex, identifiers, definitions, selected) {
       match: 'base',
     });
   }
-
   return bindings;
 }
 
+/** Wrap every `level: 'scope'` binding in a `\explain{key}{…}` marker. */
 function injectScopeBindings(latex, bindings) {
   const scopeBindings = bindings.filter(({ level }) => level === 'scope');
   const openings = new Map();
   const closings = new Map();
 
+  const at = (map, index) => {
+    if (!map.has(index)) map.set(index, []);
+    return map.get(index);
+  };
   for (const binding of scopeBindings) {
     let preceding = binding.start - 1;
     while (preceding >= 0 && /\s/.test(latex[preceding])) preceding -= 1;
@@ -751,121 +648,97 @@ function injectScopeBindings(latex, bindings) {
       ...binding,
       scriptGroup: latex[preceding] === '_' || latex[preceding] === '^',
     };
-
-    const atStart = openings.get(binding.start) ?? [];
-    atStart.push(insertion);
-    openings.set(binding.start, atStart);
-
-    const atEnd = closings.get(binding.end) ?? [];
-    atEnd.push(insertion);
-    closings.set(binding.end, atEnd);
+    at(openings, binding.start).push(insertion);
+    at(closings, binding.end).push(insertion);
   }
 
   let output = '';
   for (let index = 0; index <= latex.length; index++) {
-    const ending = (closings.get(index) ?? []).sort(
+    for (const binding of (closings.get(index) ?? []).sort(
       (left, right) => right.start - left.start,
-    );
-    for (const binding of ending) {
+    )) {
       output += binding.scriptGroup ? '}}' : '}';
     }
-
-    const starting = (openings.get(index) ?? []).sort(
+    for (const binding of (openings.get(index) ?? []).sort(
       (left, right) => right.end - left.end,
-    );
-    for (const binding of starting) {
+    )) {
       output += `${binding.scriptGroup ? '{' : ''}${EXPLAIN_COMMAND}{${binding.key}}{`;
     }
-
     if (index < latex.length) output += latex[index];
   }
-
   return output;
 }
 
-function unresolvedIdentifiers(latex, identifiers, bindings, ignored) {
+function unresolvedIdentifiers(latex, identifiers, bindings) {
   return identifiers
     .filter((identifier) => {
       const token = latex.slice(identifier.start, identifier.end);
       return (
-        !ignored.has(token) &&
+        !BASE_LIBRARY.has(token) &&
         !bindings.some((binding) => contains(binding, identifier))
       );
     })
-    .map(({ start, end }) => ({
-      token: latex.slice(start, end),
-      start,
-      end,
-    }))
+    .map(({ start, end }) => ({ token: latex.slice(start, end), start, end }))
     .sort((left, right) => left.start - right.start || left.end - right.end);
 }
 
 /**
- * Resolve and annotate one KaTeX expression against a page's flat glyph table
- * (its `notation.local` entries plus the shared entries it introduces with
- * `[[key]]`). Each entry's canonical LaTeX is matched structurally, then a
- * unique base glyph is matched for shorter or instantiated forms; every
- * remaining identifier atom that is not in the base library is reported
- * unresolved. The returned source offsets always refer to the original,
- * unmodified LaTeX.
+ * Resolve and annotate one KaTeX expression against a page's flat glyph table.
+ * Source offsets in the result always refer to the original, unmodified LaTeX.
  *
  * @param {string} latex
  * @param {Array<{key: string, notation: string}>} definitions
- * @param {{ignoredIdentifiers?: Iterable<string>}} [options]
  */
-export function resolveMathGlyphs(latex, definitions, options = {}) {
+export function resolveMathGlyphs(latex, definitions) {
   if (typeof latex !== 'string') {
     fail('invalid-latex-input', 'Math source must be a string.');
   }
 
-  const canonical = canonicalDefinitions(definitions);
-  const explicitCalls = findExplainCalls(latex, canonical.byKey);
-  const parseableSource = sourceWithoutExplainPrefixes(latex, explicitCalls);
-  const tree = parseMath(parseableSource, 'lesson math');
-  const source = collectSourceStructure(tree);
-  const candidates = exactCandidates(latex, source, canonical.definitions);
-  const exact = selectExactBindings(
-    candidates,
-    explicitCalls,
-    source.scriptSpans,
+  const glyphs = buildGlyphIndex(definitions);
+  const explicitCalls = findExplainCalls(latex, glyphs.byKey);
+  const tree = parseMath(
+    sourceWithoutExplainPrefixes(latex, explicitCalls),
+    'lesson math',
   );
-  const fallback = fallbackBindings(
+  const { containers, identifiers, scriptSpans } = collectSourceStructure(tree);
+
+  const canonical = matchCanonicalForms(latex, containers, glyphs);
+  const covered = [...canonical, ...explicitCalls];
+  const base = matchBaseGlyphs(
     latex,
-    source.identifiers,
-    canonical.definitions,
-    exact,
+    identifiers,
+    covered,
+    glyphs,
+    scriptSpans,
   );
-  const bindings = [...exact, ...fallback].sort(
+
+  const bindings = [...canonical, ...base, ...explicitCalls].sort(
     (left, right) =>
       left.start - right.start ||
       right.end - left.end ||
       (left.level === 'explicit' ? -1 : 1),
   );
 
-  validateBindingSpans(bindings, latex.length);
-  const ignored = new Set([
-    ...BASE_LIBRARY,
-    ...(options.ignoredIdentifiers ?? []),
-  ]);
+  for (const [i, left] of bindings.entries()) {
+    for (const right of bindings.slice(i + 1)) {
+      if (sameSpan(left, right) && left.key !== right.key) {
+        fail(
+          'ambiguous-span',
+          `Math span ${left.start}:${left.end} resolves to both "${left.key}" and "${right.key}".`,
+          { left, right },
+        );
+      }
+    }
+  }
 
   return {
     latex: injectScopeBindings(latex, bindings),
-    bindings: bindings.map(
-      ({ key, notation, start, end, token, level, match }) => ({
-        key,
-        notation,
-        level,
-        match,
-        start,
-        end,
-        token,
-      }),
-    ),
-    unresolved: unresolvedIdentifiers(
-      latex,
-      source.identifiers,
-      bindings,
-      ignored,
-    ),
+    bindings: bindings.map(({ key, level, match, token }) => ({
+      key,
+      level,
+      match,
+      token,
+    })),
+    unresolved: unresolvedIdentifiers(latex, identifiers, bindings),
   };
 }

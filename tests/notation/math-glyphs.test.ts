@@ -3,12 +3,19 @@ import katex from 'katex';
 import { createNotationKatexOptions } from '../../src/reference/katex-options.mjs';
 import {
   GlyphResolutionError,
+  SUPPORTED_KATEX_PARSE_VERSION,
   resolveMathGlyphs,
 } from '../../src/reference/math-glyphs.mjs';
 
 const definition = (key: string, notation: string) => ({ key, notation });
 
 describe('page glyph-map resolver', () => {
+  it('runs against the KaTeX version its parse-tree adapter was written for', () => {
+    // The resolver reads the internal `katex.__parse` tree. Pin the version so
+    // a dependency bump trips this test instead of silently shifting bindings.
+    expect(katex.version).toBe(SUPPORTED_KATEX_PARSE_VERSION);
+  });
+
   it('wraps CF_k and its nested payment index with semantic markers', () => {
     const result = resolveMathGlyphs('CF_k', [
       definition('signed-cash-flow', 'CF_k'),
@@ -29,7 +36,7 @@ describe('page glyph-map resolver', () => {
         key: 'payment-index',
         token: 'k',
         level: 'scope',
-        match: 'canonical',
+        match: 'base',
       },
     ]);
     expect(result.unresolved).toEqual([]);
