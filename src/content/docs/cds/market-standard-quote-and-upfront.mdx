@@ -39,9 +39,9 @@ Standardized CDS quotation separates a fixed running coupon from a
 market-determined upfront amount. Textbook treatments describe converting a
 quoted or par spread into the value of a contract with a fixed coupon, while
 the official converter specification accepts either spread or upfront and
-returns the other. \cite\{tuckman-serrat-fixed-income\}\{Ch. 14 §14.6, printed pp. 366-371; Appendix A14.2, printed pp. 506-507, eqs. A14.5-A14.7\}
-\cite\{hull-options-futures\}\{Ch. 24 §24.4, printed pp. 556-557\}
-\cite\{isda-cds-standard-model\}\{Standard CDS Contract Converter Specification, version May 5, 2009, Functionality and Specification, printed p. 1\}
+returns the other. [@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 366-371; Appendix A14.2, printed pp. 506-507, eqs. A14.5-A14.7]
+[@hull-options-futures; Ch. 24 §24.4, printed pp. 556-557]
+[@isda-cds-standard-model; Standard CDS Contract Converter Specification, version May 5, 2009, Functionality and Specification, printed p. 1]
 
 This lesson uses **market-standard quote**, abbreviated **MSQ**, as a local
 label for that conventional quoted spread. The books and official
@@ -50,14 +50,14 @@ simply _spread_; this page does not claim that “MSQ” is a universal acronym.
 
 The three inputs have distinct jobs:
 
-- the \term\{cds-market-standard-quote\}
+- the [[cds-market-standard-quote]]
   $\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}$ is treated as a
-  zero-upfront \term\{cds-par-spread\} and calibrates this lesson's flat
-  \term\{hazard-rate\} $\lambda$;
-- the \term\{cds-standard-coupon\}
+  zero-upfront [[cds-par-spread]] and calibrates this lesson's flat
+  [[hazard-rate]] $\lambda$;
+- the [[cds-standard-coupon]]
   $\explain{cds-standard-coupon}{c_{\mathrm{std}}}$ determines the running
   premium cash flows;
-- the \term\{cds-upfront-amount\}
+- the [[cds-upfront-amount]]
   $\explain{cds-upfront-amount}{U_0}$ bridges the value difference at
   inception.
 
@@ -68,15 +68,15 @@ The three inputs have distinct jobs:
 - $U_0=0$: no upfront cash changes hands in the toy model;
 - $U_0<0$: the protection buyer receives $-U_0$.
 
-Rates use decimals per year in formulas. Convert a \term\{basis-point\} quote
+Rates use decimals per year in formulas. Convert a [[basis-point]] quote
 to decimal form by dividing by 10,000.
 
 ## Why one upfront amount is enough at inception
 
 At a fixed set of model inputs, all future protection cash flows have already
 been summarized by one positive
-\term\{cds-protection-leg-present-value\} magnitude, and all fixed-coupon cash
-flows by one positive \term\{cds-premium-leg-present-value\} magnitude. Their
+[[cds-protection-leg-present-value]] magnitude, and all fixed-coupon cash
+flows by one positive [[cds-premium-leg-present-value]] magnitude. Their
 difference is one currency amount. One cash transfer at time zero can
 therefore offset that difference exactly:
 
@@ -107,8 +107,8 @@ real-world default forecasts. Under risk-neutral valuation, probabilities are
 pricing weights chosen consistently with traded prices and risk-free
 discounting; “risk-free” describes the discount input, not the probability
 measure. The hazard rate inferred from prices can therefore differ from an
-estimated real-world default intensity. \cite\{tuckman-serrat-fixed-income\}\{Ch. 7 §7.3, printed pp. 182-184, eqs. 7.7-7.8; Ch. 14 §14.7, printed p. 371\}
-\cite\{hull-options-futures\}\{Ch. 23 §23.5, printed pp. 528-530\}
+estimated real-world default intensity. [@tuckman-serrat-fixed-income; Ch. 7 §7.3, printed pp. 182-184, eqs. 7.7-7.8; Ch. 14 §14.7, printed p. 371]
+[@hull-options-futures; Ch. 23 §23.5, printed pp. 528-530]
 
 It would be inaccurate to say that changing probability measure makes
 volatility disappear. This particular converter has no separate volatility
@@ -123,7 +123,7 @@ those risks.
 
 The conversion must use one internally consistent model. For each candidate
 constant hazard rate, calculate the positive
-\term\{cds-premium-annuity\}
+[[cds-premium-annuity]]
 $\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda})$
 and protection-leg value. First solve the zero-upfront quote condition
 
@@ -302,7 +302,7 @@ The official converter is date- and convention-aware: its specified inputs
 include trade and maturity dates, notional, standard coupon, recovery,
 discount inputs, and either spread or upfront; its outputs include the other
 quotation and a cash-settlement amount.
-\cite\{isda-cds-standard-model\}\{Standard CDS Contract Converter Specification, version May 5, 2009, Functionality and Specification, printed p. 1\}
+[@isda-cds-standard-model; Standard CDS Contract Converter Specification, version May 5, 2009, Functionality and Specification, printed p. 1]
 
 This lesson is not an implementation of that standard model. It uses
 model-year periods and a single flat hazard rate. A production conversion also

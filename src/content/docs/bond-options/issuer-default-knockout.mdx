@@ -90,12 +90,12 @@ branch.
 
 ## Value the underlying bond first
 
-At an alive node \term\{lattice-time-index\} $i$,
-\term\{lattice-state-index\} $j$, use the local node discount factor $d_{i,j}$, local
-risk-neutral up weight $q_{i,j}$, \term\{conditional-node-survival-probability\}
+At an alive node [[lattice-time-index]] $i$,
+[[lattice-state-index]] $j$, use the local node discount factor $d_{i,j}$, local
+risk-neutral up weight $q_{i,j}$, [[conditional-node-survival-probability]]
 $s_{i,j}$, next surviving cash flow $CF^B_{i+1}$, and local bond recovery
 $R^B_{i,j}$. First collect the next-time value conditional on survival in the
-local \term\{surviving-bond-continuation-value\}:
+local [[surviving-bond-continuation-value]]:
 
 $$
 \explain{surviving-bond-continuation-value}{H^B_{i,j}}
@@ -106,7 +106,7 @@ $$
 \explain{alive-bond-value}{B^{\mathrm{alive}}_{i+1,j+1}}.
 $$
 
-The \term\{alive-bond-value\} then separates survival and default:
+The [[alive-bond-value]] then separates survival and default:
 
 $$
 \explain{alive-bond-value}{B^{\mathrm{alive}}_{i,j}}
@@ -175,5 +175,5 @@ rate-credit lattice is supplied rather than calibrated.
 Bond-option cash-price conventions follow Hull, Chapter 28 §28.1; the analogous
 default-extinguishment convention is described for CDS forwards and options in
 Chapter 24 §24.5; backward induction follows Chapter 12
-\cite\{hull-options-futures\}. Recovery conventions must state base and timing, as
-emphasized by the fixed-income treatment \cite\{tuckman-serrat-fixed-income\}.
+[@hull-options-futures]. Recovery conventions must state base and timing, as
+emphasized by the fixed-income treatment [@tuckman-serrat-fixed-income].

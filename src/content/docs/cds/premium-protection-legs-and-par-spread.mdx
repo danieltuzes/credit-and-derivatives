@@ -217,10 +217,8 @@ entity. The protection buyer pays a running premium to the protection seller.
 If a covered credit event occurs before maturity, the seller makes a
 loss-related protection payment. Unlike buying the entity's bond, entering a
 CDS does not itself lend principal to the reference entity. Tuckman and Serrat
-describe the fee and contingent legs in Chapter 14\cite\{tuckman-serrat-fixed-income\}\{§14.5,
-printed pp. 361–362\}; Hull describes the same buyer/seller cash-flow directions
-and quarterly premium convention\cite\{hull-options-futures\}\{§24.1, printed pp.
-548–550\}.
+describe the fee and contingent legs in Chapter 14[@tuckman-serrat-fixed-income; §14.5, printed pp. 361–362]; Hull describes the same buyer/seller cash-flow directions
+and quarterly premium convention[@hull-options-futures; §24.1, printed pp. 548–550].
 
 This lesson reports both leg present values as positive magnitudes. From the
 protection buyer's perspective,
@@ -235,9 +233,9 @@ The seller has the opposite signed value in this two-party model.
 
 ## Start from disjoint events
 
-Let the random \term\{cds-default-time\} be $\tau$. Use the local
-\term\{cds-period-index\} $i$ across the
-\term\{number-of-cds-periods\} $n$. The schedule has dates
+Let the random [[cds-default-time]] be $\tau$. Use the local
+[[cds-period-index]] $i$ across the
+[[number-of-cds-periods]] $n$. The schedule has dates
 $0=t_0<t_1<\cdots<t_n=T$. Define the disjoint interval events
 
 $$
@@ -252,7 +250,7 @@ and add $\explain{cds-default-event}{G_0}=\{\tau>T\}$ for survival through
 maturity. These events are
 disjoint and exhaustive under the one-default assumption.
 
-For a local \term\{cds-event-payoff\} $Y$ that is constant at $y_i$ on each
+For a local [[cds-event-payoff]] $Y$ that is constant at $y_i$ on each
 event,
 
 $$
@@ -278,15 +276,13 @@ $$
 That distinction is exactly why a single period-end payment is not an exact
 treatment of a mid-period default. Refining every interval into smaller
 default-time buckets turns the sum into an integral. Shreve gives the finite
-disjoint-event expectation rule used here\cite\{shreve-stochastic-calculus-finance-ii\}\{Ch.
-1 §1.3, printed pp. 13–18\}. Tuckman and Serrat's CDS table likewise weights
-cash flows by survival/default events\cite\{tuckman-serrat-fixed-income\}\{§14.6,
-printed pp. 368–370, Table 14.10 and eqs. 14.6–14.7\}.
+disjoint-event expectation rule used here[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.3, printed pp. 13–18]. Tuckman and Serrat's CDS table likewise weights
+cash flows by survival/default events[@tuckman-serrat-fixed-income; §14.6, printed pp. 368–370, Table 14.10 and eqs. 14.6–14.7].
 
 ## Hazard supplies the probabilities in the formulas
 
-The lesson's \term\{hazard-rate\} $\lambda$ is constant, non-negative, and
-measured per model-year under the \term\{risk-neutral-probability-measure\}
+The lesson's [[hazard-rate]] $\lambda$ is constant, non-negative, and
+measured per model-year under the [[risk-neutral-probability-measure]]
 $\mathbb{Q}$. It gives
 
 $$
@@ -314,15 +310,13 @@ $$
 $$
 
 These are pricing probabilities, not forecasts. A CDS-implied hazard rate can
-be risk-neutral rather than a prediction of realized defaults\cite\{tuckman-serrat-fixed-income\}\{§14.7,
-printed p. 371\}. The constant-hazard survival relation is given in §14.6 and
-Appendix A14.1\cite\{tuckman-serrat-fixed-income\}\{printed pp. 367–368 and 505,
-eqs. 14.4–14.5 and A14.1–A14.2\}.
+be risk-neutral rather than a prediction of realized defaults[@tuckman-serrat-fixed-income; §14.7, printed p. 371]. The constant-hazard survival relation is given in §14.6 and
+Appendix A14.1[@tuckman-serrat-fixed-income; printed pp. 367–368 and 505, eqs. 14.4–14.5 and A14.1–A14.2].
 
 ## What happens when default is mid-period
 
 Suppose default occurs at $u$ in $(t_{i-1},t_i]$. The supplied
-\term\{recovery-rate\} is $R$.
+[[recovery-rate]] is $R$.
 
 - The scheduled premium at $t_i$ is not paid, because the reference entity did
   not survive to that date.
@@ -335,16 +329,14 @@ Suppose default occurs at $u$ in $(t_{i-1},t_i]$. The supplied
   $u$, not automatically from $t_i$.
 
 Hull explicitly notes that a final accrued premium is paid when default occurs
-between scheduled dates\cite\{hull-options-futures\}\{§24.1, printed pp. 548–550\}.
+between scheduled dates[@hull-options-futures; §24.1, printed pp. 548–550].
 The half-period and midpoint calculations in Hull and Tuckman are useful
-discrete approximations\cite\{hull-options-futures\}\{§24.2, printed pp. 551–554,
-Tables 24.1–24.4\}\cite\{tuckman-serrat-fixed-income\}\{§14.6, printed pp. 368–370,
-Table 14.10\}. Here, because the toy hazard and discount rate are constant, we
+discrete approximations[@hull-options-futures; §24.2, printed pp. 551–554, Tables 24.1–24.4][@tuckman-serrat-fixed-income; §14.6, printed pp. 368–370, Table 14.10]. Here, because the toy hazard and discount rate are constant, we
 can integrate the modeled default time exactly instead.
 
 ## Exact premium-leg expectation in this model
 
-Let the \term\{continuously-compounded-risk-free-rate\} be $r$, so
+Let the [[continuously-compounded-risk-free-rate]] be $r$, so
 $D(0,u)=\exp(-ru)$. The positive scheduled-premium factor is
 
 $$
@@ -380,7 +372,7 @@ $$
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}.
 $$
 
-A spread quoted in \term\{basis-point\} units per year is divided by 10,000
+A spread quoted in [[basis-point]] units per year is divided by 10,000
 before entering the formula.
 
 ## Exact protection-leg expectation in this model
@@ -404,7 +396,7 @@ disjoint time buckets are added.
 ## Closed forms and the zero-upfront par spread
 
 For the regular model-year schedule, $\alpha_i=t_i-t_{i-1}$ and the
-\term\{maturity-time\} is $T=t_n$. Define the
+[[maturity-time]] is $T=t_n$. Define the
 algebraic abbreviation
 $\explain{cds-combined-decay-rate}{\kappa}=r+\lambda$. Then
 
@@ -432,7 +424,7 @@ At $\kappa=0$, the continuous limits replace the two fractions by
 $\alpha_i^2/2$ and $T$, respectively. The implementation uses stable versions
 of those limits.
 
-The \term\{cds-par-spread\} $s^\star$ is the running spread that makes the legs
+The [[cds-par-spread]] $s^\star$ is the running spread that makes the legs
 equal with no upfront amount:
 
 $$
@@ -444,8 +436,7 @@ PV_0^{\mathrm{prem}}(s^\star)=PV_0^{\mathrm{prot}}.
 $$
 
 Tuckman and Serrat state the equal-leg fair-spread condition and its
-spread/upfront relationship\cite\{tuckman-serrat-fixed-income\}\{§14.6, printed
-pp. 370–371, and Appendix A14.2, printed pp. 506–507\}. The next lesson separates
+spread/upfront relationship[@tuckman-serrat-fixed-income; §14.6, printed pp. 370–371, and Appendix A14.2, printed pp. 506–507]. The next lesson separates
 this model par spread from a standard running coupon and a signed upfront fee.
 
 <CompactExamples
@@ -532,8 +523,7 @@ Risk-neutral valuation does not make volatility disappear. A change from the
 real-world measure to $\mathbb{Q}$ changes pricing probabilities (and, in common
 diffusion models, drift), not the size of random fluctuations; Shreve shows the
 Brownian volatility term remains after the risk-neutral change of
-measure\cite\{shreve-stochastic-calculus-finance-ii\}\{Ch. 5 §5.2.2, printed pp.
-214–217\}.
+measure[@shreve-stochastic-calculus-finance-ii; Ch. 5 §5.2.2, printed pp. 214–217].
 
 This particular CDS model needs no separate volatility parameter because its
 risk-free rate, hazard rate, and recovery are deterministic, and both legs are

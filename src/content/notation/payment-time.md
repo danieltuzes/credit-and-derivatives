@@ -21,7 +21,7 @@ editorialStatus: draft
 aiAssisted: true
 ---
 
-The payment time $t_k$ is the time in years from \term{valuation-time} to
+The payment time $t_k$ is the time in years from [[valuation-time]] to
 cash flow $k$.
 
 The subscript $k$ labels a row in an ordered schedule. The value $t_k$ is a

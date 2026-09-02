@@ -65,7 +65,7 @@ const stripTrailingPeriod = (value) => value.replace(/\s*\.\s*$/, '');
 
 /**
  * One reference-list line: "Authors, Title (edition, year). Locator."
- * `locator` is the text an author passed to `\cite\{id\}\{locator\}` and is
+ * `locator` is the text an author passed after the `;` in `[@id; locator]` and is
  * optional. The source record's own catalog `locator` is not used here.
  *
  * @param {Record<string, unknown>} record

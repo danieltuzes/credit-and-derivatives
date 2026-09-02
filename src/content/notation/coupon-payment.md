@@ -24,8 +24,8 @@ aiAssisted: true
 The level coupon payment $C$ is the periodic cash amount promised by the toy
 fixed-rate bond.
 
-Its definition nests \term{face-value}, \term{annual-coupon-rate}, and
-\term{bond-payment-frequency}:
+Its definition nests [[face-value]], [[annual-coupon-rate]], and
+[[bond-payment-frequency]]:
 
 $$
 C=\frac{cF}{m_{\mathrm B}}.

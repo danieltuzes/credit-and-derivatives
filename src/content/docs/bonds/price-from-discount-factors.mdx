@@ -22,12 +22,12 @@ promised cash-flow schedule and supplied discount factors.
 
 ## Bond pricing is a present-value application
 
-Use the \term\{bond-payment-index\} $k$ to select one of the
-\term\{number-of-bond-payments\} $n$. Write the promised
-\term\{bond-cash-flow\} as $CF_k^{\mathrm{bond}}$, its
-\term\{payment-time\} as $t_k$, and its matching \term\{discount-factor\} as
-$D(0,t_k)$. Write the \term\{bond-price\}, which is the
-\term\{present-value\} at \term\{valuation-time\} $0$, as $P_0$.
+Use the [[bond-payment-index]] $k$ to select one of the
+[[number-of-bond-payments]] $n$. Write the promised
+[[bond-cash-flow]] as $CF_k^{\mathrm{bond}}$, its
+[[payment-time]] as $t_k$, and its matching [[discount-factor]] as
+$D(0,t_k)$. Write the [[bond-price]], which is the
+[[present-value]] at [[valuation-time]] $0$, as $P_0$.
 
 The pricing rule is
 
@@ -81,8 +81,8 @@ $$
 
   <CompactExample label="Zero-coupon boundary">
 
-If every coupon is zero, only the \term\{face-value\} $F$ at
-\term\{maturity-time\} $T$ remains:
+If every coupon is zero, only the [[face-value]] $F$ at
+[[maturity-time]] $T$ remains:
 
 $$
 P_0=F D(0,T).
@@ -114,8 +114,6 @@ Discount factors are supplied, not calibrated. Credit risk is absent even
 though the broader project concerns credit products.
 
 The rule $P_0=\sum_k CF_k^{\mathrm{bond}}\,D(0,t_k)$ follows Tuckman &
-Serrat\cite\{tuckman-serrat-fixed-income\}\{§1.2, each bond price as its cash
-flows times the matching discount factors (eqs. 1.1-1.3), checked against market
-prices in Table 1.4\}; Hull discounts each cash flow at its own zero rate the
-same way\cite\{hull-options-futures\}\{Ch. 4, "Bond Pricing"\}. The lesson
+Serrat[@tuckman-serrat-fixed-income; §1.2, each bond price as its cash flows times the matching discount factors (eqs. 1.1-1.3), checked against market prices in Table 1.4]; Hull discounts each cash flow at its own zero rate the
+same way[@hull-options-futures; Ch. 4, "Bond Pricing"]. The lesson
 stays `draft` pending human confirmation of the printed locators.

@@ -46,8 +46,8 @@ future dates.
 
 ## A curve is a dated collection, not one yield
 
-At \term\{valuation-time\}, the earlier \term\{discount-factor\} $D(0,t)$ valued a
-deterministic payment at one \term\{payment-time\}. A discount curve supplies
+At [[valuation-time]], the earlier [[discount-factor]] $D(0,t)$ valued a
+deterministic payment at one [[payment-time]]. A discount curve supplies
 that value across many times. Every node must keep the same currency, valuation date, and
 collateral/funding basis. Mixing bases does not create one coherent curve.
 
@@ -62,8 +62,8 @@ below one is not.
 
 ## Discount between future times
 
-Let local \term\{forward-discount-start-time\} $t$ precede local
-\term\{forward-discount-end-time\} $T$. The \term\{forward-discount-factor\} is
+Let local [[forward-discount-start-time]] $t$ precede local
+[[forward-discount-end-time]] $T$. The [[forward-discount-factor]] is
 
 $$
 \explain{forward-discount-factor}{Z(t,T)}
@@ -99,6 +99,6 @@ future-to-future factor will actually be observed in every future state.
 
 Discount-factor pricing and the law-of-one-price interpretation follow
 Tuckman and Serrat, Chapter 1 §§1.2–1.4 and Chapter 2 §§2.1 and 2.4
-\cite\{tuckman-serrat-fixed-income\}. The later derivatives use of dated factors is
+[@tuckman-serrat-fixed-income]. The later derivatives use of dated factors is
 consistent with Hull's interest-rate and forward-pricing chapters
-\cite\{hull-options-futures\}.
+[@hull-options-futures].

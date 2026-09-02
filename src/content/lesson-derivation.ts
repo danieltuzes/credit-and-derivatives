@@ -12,7 +12,7 @@
  *                     what the lesson teaches itself. `teaches` is kept
  *                     topologically ordered, so the intra-lesson subtraction is
  *                     safe for the `lesson-order` check.
- * - `sources`       — the `\cite{…}` ids in the body (the validator already
+ * - `sources`       — the `[@…]` ids in the body (the validator already
  *                     required frontmatter `sources` to equal this set exactly).
  * - `assessments`   — the id list in the colocated `<lesson>.checks.yml`.
  * - `sidebar` order — per section, lessons in the order the tracks introduce
@@ -20,8 +20,8 @@
  *
  * `notation.uses` is retired (D3): the completeness gate compiles every
  * lesson's math against the page glyph table — `notation.local` plus the
- * shared keys the body names with `\term` / `\explain` — so an import list is
- * redundant.
+ * shared keys the body names with `[[key]]` / `\explain` — so an import list
+ * is redundant.
  */
 
 /** `foundations/discount-factors` → `foundations.discount-factors`. */
@@ -60,17 +60,18 @@ export function deriveRequires(
 }
 
 /**
- * Source ids cited with `\cite{id}` (optionally `\cite{id}{locator}`, and the
- * MDX-safe `\cite\{id\}` form) in a lesson body, with fenced and inline code
- * stripped first so a syntax example does not count. Mirrors the reader in
- * `curriculum/validation.ts`.
+ * Source ids cited with `[@id]` (optionally `[@id; locator]`) in a lesson body,
+ * with fenced and inline code stripped first so a syntax example does not
+ * count. Mirrors the reader in `curriculum/validation.ts`.
  */
 export function citedSourceIds(body: string): Set<string> {
   const withoutCode = body
     .replace(/```[\s\S]*?```/g, '')
     .replace(/`[^`\n]*`/g, '');
   const ids = new Set<string>();
-  for (const match of withoutCode.matchAll(/\\cite\\?\{([^{}\\]+)\\?\}/g)) {
+  for (const match of withoutCode.matchAll(
+    /\[@([a-z0-9][a-z0-9.-]*)(?:;[^\]]*)?\]/g,
+  )) {
     ids.add((match[1] ?? '').trim());
   }
   return ids;

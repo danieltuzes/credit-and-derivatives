@@ -40,10 +40,10 @@ After this lesson, you should be able to:
 ## Undo accumulation
 
 On this page, $t$ is the shorter generic-horizon form of the shared
-\term\{payment-time\}, measured in years from \term\{valuation-time\} $0$.
-Write the \term\{compounding-frequency\} as $m$, the
-\term\{periodic-rate\} as $r_m$, the \term\{accumulation-factor\} as
-$A(0,t)$, and the \term\{discount-factor\} as $D(0,t)$.
+[[payment-time]], measured in years from [[valuation-time]] $0$.
+Write the [[compounding-frequency]] as $m$, the
+[[periodic-rate]] as $r_m$, the [[accumulation-factor]] as
+$A(0,t)$, and the [[discount-factor]] as $D(0,t)$.
 
 The accumulation factor grows a time-zero unit forward. The discount factor
 reverses that operation:
@@ -59,7 +59,7 @@ they appear in one expression.
 
 If $D(0,2)=0.94$, then one deterministic unit paid at $t=2$ years has value
 0.94 units at valuation time. Write this local
-\term\{discounted-unit-value\} as $V_0(1_t)$. At the stated two-year horizon,
+[[discounted-unit-value]] as $V_0(1_t)$. At the stated two-year horizon,
 
 $$
 V_0(1_2)
@@ -73,7 +73,7 @@ that payment occurs.
 <CompactExamples summary="Worked examples (3)">
   <CompactExample label="Annual compounding">
 
-At a 5% \term\{nominal-annual-rate\} with $m=1$ and $t=2$,
+At a 5% [[nominal-annual-rate]] with $m=1$ and $t=2$,
 
 $$
 D(0,2)
@@ -131,9 +131,7 @@ not yet teach spot curves, interpolation, day counts, default, recovery,
 liquidity, or funding.
 
 The discount-factor definition and the $D(0,t)=(1+r_m)^{-mt}$ form follow
-Tuckman & Serrat\cite\{tuckman-serrat-fixed-income\}\{§1.2, the discount
-factor as the value today of one unit paid at t; §2.4, eqs. 2.17-2.19, the
-semiannually compounded form\}; Hull gives the same
+Tuckman & Serrat[@tuckman-serrat-fixed-income; §1.2, the discount factor as the value today of one unit paid at t; §2.4, eqs. 2.17-2.19, the semiannually compounded form]; Hull gives the same
 present-value-of-a-future-unit
-reading\cite\{hull-options-futures\}\{Ch. 4, "Bond Pricing"\}. The lesson
+reading[@hull-options-futures; Ch. 4, "Bond Pricing"]. The lesson
 stays `draft` pending human confirmation of the printed locators.

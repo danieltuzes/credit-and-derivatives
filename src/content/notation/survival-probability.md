@@ -25,8 +25,8 @@ aiAssisted: true
 
 The survival probability $S(0,t)$ is the probability, under the explicitly
 named model measure, that the modeled reference entity has not defaulted from
-\term{valuation-time} through future time $t$.
+[[valuation-time]] through future time $t$.
 
-It is a probability, not a \term{discount-factor}. A lesson must say whether
+It is a probability, not a [[discount-factor]]. A lesson must say whether
 the probability is a pricing-model input or a real-world estimate; the draft
 credit and CDS lessons use supplied pricing-model probabilities.

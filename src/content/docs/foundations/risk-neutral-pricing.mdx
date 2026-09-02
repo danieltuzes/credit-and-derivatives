@@ -86,22 +86,21 @@ After this lesson, you should be able to:
 
 ## Two measures answer two different questions
 
-Stand at \term\{valuation-time\} $0$. Let the local
-\term\{risk-neutral-pricing-horizon\} $T$ be a future time in exact model-years,
-and let the \term\{terminal-random-payoff\} $X_T$ be the signed USD amount a
+Stand at [[valuation-time]] $0$. Let the local
+[[risk-neutral-pricing-horizon]] $T$ be a future time in exact model-years,
+and let the [[terminal-random-payoff]] $X_T$ be the signed USD amount a
 claim holder receives or pays then.
 
 A probability measure assigns mutually consistent weights to events. The
-\term\{real-world-probability-measure\} $\mathbb{P}$ is intended to describe
+[[real-world-probability-measure]] $\mathbb{P}$ is intended to describe
 modeled actual-world likelihoods: it is the relevant measure for a forecast.
-The \term\{risk-neutral-probability-measure\} $\mathbb{Q}$ instead supplies
+The [[risk-neutral-probability-measure]] $\mathbb{Q}$ instead supplies
 weights for an arbitrage-consistent pricing model. The same event can therefore
 have different probabilities under $\mathbb{P}$ and $\mathbb{Q}$. Shreve makes
 this actual-versus-risk-neutral distinction when introducing change of measure
-\cite\{shreve-stochastic-calculus-finance-ii\}\{Ch. 1 §1.6, printed pp. 32-35\};
+[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.6, printed pp. 32-35];
 Hull makes the same forecasting-versus-valuation distinction
-\cite\{hull-options-futures\}\{Ch. 12 §12.2, printed pp. 257-260; Ch. 14 §14.7,
-printed pp. 311-313\}.
+[@hull-options-futures; Ch. 12 §12.2, printed pp. 257-260; Ch. 14 §14.7, printed pp. 311-313].
 
 > **There is no “risk-free measure” in this model.** The measure is
 > **risk-neutral**. “Risk-free” describes the cash account and discounting
@@ -120,18 +119,15 @@ chosen so that discounted traded prices are martingales. In plain language,
 after applying the benchmark discounting, today's traded price equals its
 conditional $\mathbb{Q}$-weighted future value. Shreve states the martingale
 condition and its discounted-payoff consequence
-\cite\{shreve-stochastic-calculus-finance-ii\}\{Ch. 5 §5.2.2, printed pp.
-214-217, eqs. 5.2.22-5.2.24; §5.2.4, printed pp. 218-219, eqs.
-5.2.29-5.2.31\}. Tuckman and Serrat give the same expected-discounted-value
+[@shreve-stochastic-calculus-finance-ii; Ch. 5 §5.2.2, printed pp. 214-217, eqs. 5.2.22-5.2.24; §5.2.4, printed pp. 218-219, eqs. 5.2.29-5.2.31]. Tuckman and Serrat give the same expected-discounted-value
 construction in a finite-state fixed-income setting
-\cite\{tuckman-serrat-fixed-income\}\{Ch. 7 §7.3, printed pp. 182-184, eqs.
-7.7-7.8\}.
+[@tuckman-serrat-fixed-income; Ch. 7 §7.3, printed pp. 182-184, eqs. 7.7-7.8].
 
-To calculate the \term\{risk-neutral-expectation\}, use the local
-\term\{risk-neutral-scenario-index\} $j$ and
-\term\{risk-neutral-scenario-count\} $m$. Let $x_j$ be the local
-\term\{risk-neutral-scenario-payoff\}, in USD at $T$, and let $q_j$ be its
-dimensionless \term\{risk-neutral-scenario-probability\}. For disjoint,
+To calculate the [[risk-neutral-expectation]], use the local
+[[risk-neutral-scenario-index]] $j$ and
+[[risk-neutral-scenario-count]] $m$. Let $x_j$ be the local
+[[risk-neutral-scenario-payoff]], in USD at $T$, and let $q_j$ be its
+dimensionless [[risk-neutral-scenario-probability]]. For disjoint,
 exhaustive scenarios on which the payoff is constant,
 
 $$
@@ -144,8 +140,8 @@ q_j\ge 0,
 $$
 
 This expected payoff is measured in future USD at $T$. It is not yet a
-time-zero value. Let the supplied \term\{discount-factor\} be $D(0,T)$, in
-time-zero USD per USD at $T$. The claim's \term\{present-value\} is
+time-zero value. Let the supplied [[discount-factor]] be $D(0,T)$, in
+time-zero USD per USD at $T$. The claim's [[present-value]] is
 
 $$
 PV_0
@@ -191,8 +187,7 @@ would be a different calculation.
 Changing from $\mathbb{P}$ to $\mathbb{Q}$ reweights modeled outcomes; it does
 not erase randomness. In the standard diffusion change-of-measure result, the
 drift changes while the diffusion coefficient remains
-\cite\{shreve-stochastic-calculus-finance-ii\}\{Ch. 5 §5.2.2, printed pp.
-214-217, especially eqs. 5.2.22-5.2.24\}. Volatility therefore remains a model
+[@shreve-stochastic-calculus-finance-ii; Ch. 5 §5.2.2, printed pp. 214-217, especially eqs. 5.2.22-5.2.24]. Volatility therefore remains a model
 input for nonlinear claims such as options. Product-specific reasons why a
 restricted linear model may omit a separate volatility input belong beside that
 product model rather than in this foundation.
@@ -204,8 +199,7 @@ conditions, absence of arbitrage is tied to existence of a suitable martingale
 measure, while uniqueness requires the stronger condition that the modeled
 market be complete. This is a boundary note rather than a competency assessed
 on this page. Shreve develops the existence and uniqueness distinction
-\cite\{shreve-stochastic-calculus-finance-ii\}\{Ch. 5 §§5.4.3-5.4.4, printed
-pp. 228-233\}.
+[@shreve-stochastic-calculus-finance-ii; Ch. 5 §§5.4.3-5.4.4, printed pp. 228-233].
 
 ## Check your understanding
 

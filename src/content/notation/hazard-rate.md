@@ -27,5 +27,5 @@ default intensity per model-year under the explicitly stated probability
 measure. The credit and CDS lessons use a risk-neutral pricing measure. It is
 not a cumulative default probability and is not an interest rate.
 
-In the lesson's constant-hazard model, \term{survival-probability} is
+In the lesson's constant-hazard model, [[survival-probability]] is
 $S(0,t)=\exp(-\lambda t)$.

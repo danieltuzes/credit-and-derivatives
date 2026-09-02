@@ -20,7 +20,7 @@ aiAssisted: true
 ---
 
 The loss-given-default fraction is the complement of the
-\term{recovery-rate}:
+[[recovery-rate]]:
 
 $$
 \mathrm{LGD}=1-R.

@@ -22,7 +22,7 @@ aiAssisted: true
 ---
 
 The annual coupon rate $c$ is the stated contractual rate applied to
-\term{face-value} in the simplified fixed-rate bond.
+[[face-value]] in the simplified fixed-rate bond.
 
 It determines promised coupon amounts. It is not the bond's yield to maturity,
 expected return, or current yield.

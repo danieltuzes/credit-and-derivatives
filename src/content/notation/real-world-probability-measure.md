@@ -28,4 +28,4 @@ intended to describe actual-world event likelihoods.
 It is the measure used when the question is a forecast rather than an
 arbitrage-consistent price. A model's probabilities under $\mathbb{P}$ need
 not equal its pricing weights under the
-\term{risk-neutral-probability-measure}.
+[[risk-neutral-probability-measure]].

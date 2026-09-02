@@ -23,7 +23,7 @@ const notationLabelByKey = new Map(
 );
 
 // "Used directly in" comes from the resolved notation registry — each lesson's
-// direct `\term` / `\explain` references — not an authored import list
+// direct `[[key]]` / `\explain` references — not an authored import list
 // (`notation.uses` is retired).
 const registry = buildNotationRegistry(await loadNotationRegistryInput());
 const lessonById = new Map(
@@ -52,7 +52,7 @@ const renderedEntries = await Promise.all(
     })),
 );
 
-// Drives the hover explanation for `\term` links inside the definition
+// Drives the hover explanation for `[[key]]` links inside the definition
 // bodies. Every entry is already shown in full on this page, so the layer
 // renders in panel-only mode: no visible list, just the shared panel.
 const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(

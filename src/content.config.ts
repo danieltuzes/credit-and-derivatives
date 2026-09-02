@@ -81,7 +81,7 @@ const localNotationDefinition = notationEntryShape;
 const lessonNotation = z
   .object({
     // `notation.uses` is retired (D3): a lesson pulls a shared key into scope
-    // by referencing it in prose (`\term`) or math (`\explain`).
+    // by referencing it in prose (`[[key]]`) or math (`\explain`).
     local: z.array(localNotationDefinition).default([]),
   })
   .default({ local: [] });
@@ -95,7 +95,7 @@ const lessonNotation = z
  * Artifact:  `editorialStatus` (human-set trust flag).
  * Derived (in `content/collections.ts` + `content/lesson-derivation.ts`, never
  *            authored): `lessonId` (doc slug), `requires` (direct competency-DAG
- *            prerequisites of `teaches`, minus `teaches`), `sources` (`\cite{…}`
+ *            prerequisites of `teaches`, minus `teaches`), `sources` (`[@…]`
  *            occurrences), `assessments` (colocated `<lesson>.checks.yml`),
  *            `sidebar` order (track order).
  * Dropped:   `aiAssisted`, `lastReviewed`, `riskTier`, `estimatedMinutes`

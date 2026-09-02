@@ -22,8 +22,8 @@ aiAssisted: true
 ---
 
 The maturity time $T$ is the final scheduled payment time of the simplified
-bond, measured from \term{valuation-time}.
+bond, measured from [[valuation-time]].
 
-With a regular \term{bond-payment-frequency} $m_{\mathrm B}$, the toy model has
+With a regular [[bond-payment-frequency]] $m_{\mathrm B}$, the toy model has
 $n=m_{\mathrm B}T$ payment periods and requires that product to be a whole
 number.

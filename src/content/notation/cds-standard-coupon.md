@@ -32,5 +32,5 @@ It is converted from basis points per year to a decimal rate before
 calculation.
 
 The standard coupon is a contractual cash-flow input. It need not equal the
-\term{cds-market-standard-quote}; a signed upfront amount balances the
+[[cds-market-standard-quote]]; a signed upfront amount balances the
 difference at inception.

@@ -67,12 +67,12 @@ After this lesson, you should be able to:
 
 ## Make values comparable before adding
 
-Use the local \term\{present-value-payment-index\} $k$ to select one row and
-the local \term\{number-of-future-payments\} $n$ to count the included future
-rows. At row $k$, write the \term\{signed-cash-flow\} as $CF_k$, its
-\term\{payment-time\} as $t_k$, and the matching \term\{discount-factor\} as
-$D(0,t_k)$. Write the schedule's \term\{present-value\} at
-\term\{valuation-time\} $0$ as $PV_0$.
+Use the local [[present-value-payment-index]] $k$ to select one row and
+the local [[number-of-future-payments]] $n$ to count the included future
+rows. At row $k$, write the [[signed-cash-flow]] as $CF_k$, its
+[[payment-time]] as $t_k$, and the matching [[discount-factor]] as
+$D(0,t_k)$. Write the schedule's [[present-value]] at
+[[valuation-time]] $0$ as $PV_0$.
 
 The present value of the deterministic schedule is
 
@@ -96,7 +96,7 @@ PV_0
 \approx\text{USD }907.03.
 $$
 
-The output unit is USD at \term\{valuation-time\} from the holder's
+The output unit is USD at [[valuation-time]] from the holder's
 perspective.
 
   </CompactExample>
@@ -141,9 +141,9 @@ be added without another model.
 </CompactExamples>
 
 The lab below turns the one-payment case into a calculator. It builds each
-\term\{discount-factor\} from a single \term\{discounting-lab-rate\} compounded
-once a year, then applies it to one \term\{discounting-lab-cash-flow\} to report
-the \term\{present-value\} at \term\{valuation-time\} $0$. Its formulas carry the
+[[discount-factor]] from a single [[discounting-lab-rate]] compounded
+once a year, then applies it to one [[discounting-lab-cash-flow]] to report
+the [[present-value]] at [[valuation-time]] $0$. Its formulas carry the
 same explained symbols as the prose above.
 
 <DiscountingExplorerMath />
@@ -165,8 +165,6 @@ This is deterministic present value. It omits curves, calendars, uncertainty,
 credit, recovery, liquidity, tax, and funding.
 
 The rule $PV_0=\sum_k CF_k\,D(0,t_k)$ follows Tuckman &
-Serrat\cite\{tuckman-serrat-fixed-income\}\{§1.2, price as the sum of each cash
-flow times its discount factor (eqs. 1.1-1.3); full price equals present value
-(eq. 1.5)\}; Hull states the same
-principle\cite\{hull-options-futures\}\{Ch. 4, "Bond Pricing"\}. The lesson
+Serrat[@tuckman-serrat-fixed-income; §1.2, price as the sum of each cash flow times its discount factor (eqs. 1.1-1.3); full price equals present value (eq. 1.5)]; Hull states the same
+principle[@hull-options-futures; Ch. 4, "Bond Pricing"]. The lesson
 stays `draft` pending human confirmation of the printed locators.

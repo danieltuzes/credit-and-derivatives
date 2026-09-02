@@ -22,10 +22,10 @@ editorialStatus: draft
 aiAssisted: true
 ---
 
-The bond price $P_0$ is the \term{present-value} of the simplified bond's
-promised \term{bond-cash-flow} amounts.
+The bond price $P_0$ is the [[present-value]] of the simplified bond's
+promised [[bond-cash-flow]] amounts.
 
-Given one \term{discount-factor} for each scheduled time,
+Given one [[discount-factor]] for each scheduled time,
 
 $$
 P_0=\sum_{k=1}^{n}CF_k^{\mathrm{bond}}D(0,t_k).

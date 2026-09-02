@@ -25,8 +25,8 @@ aiAssisted: true
 The par spread $s^{\star}$ is the contractual spread that makes the positive
 premium-leg and protection-leg magnitudes equal at valuation time in the stated
 toy model. It is calculated from the
-\term{cds-protection-leg-present-value} magnitude and the
-\term{cds-premium-annuity} under the same assumptions.
+[[cds-protection-leg-present-value]] magnitude and the
+[[cds-premium-annuity]] under the same assumptions.
 
 It is not a standard-coupon/upfront quote and does not include calibration or
 transaction-specific adjustments.

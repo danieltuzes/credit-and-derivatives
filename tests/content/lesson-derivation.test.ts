@@ -50,13 +50,13 @@ describe('deriveRequires', () => {
 
 describe('citedSourceIds / deriveSources', () => {
   const body = [
-    'Body cites \\cite\\{tuckman-serrat-fixed-income\\}\\{§1.2\\} and',
-    '\\cite{hull-options-futures}{Ch. 4}. Repeat \\cite{hull-options-futures}.',
+    'Body cites [@tuckman-serrat-fixed-income; §1.2] and',
+    '[@hull-options-futures; Ch. 4]. Repeat [@hull-options-futures].',
     '',
     '```tex',
-    '\\cite{ignored-in-fence}',
+    '[@ignored-in-fence]',
     '```',
-    'Inline `\\cite{ignored-inline}` stays inert.',
+    'Inline `[@ignored-inline]` stays inert.',
   ].join('\n');
 
   it('collects cited ids, ignoring code and duplicates', () => {

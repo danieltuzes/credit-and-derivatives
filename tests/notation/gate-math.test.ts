@@ -46,7 +46,7 @@ describe('completeness gate — every rendered-math context', () => {
         lessons: [
           lesson({
             lessonId: 'foundations.clean',
-            body: 'The \\term{discount-factor} is $D(0,2)$.\n\n$$\nD(0,t)\n$$',
+            body: 'The [[discount-factor]] is $D(0,2)$.\n\n$$\nD(0,t)\n$$',
             localDefinitions: [
               {
                 key: 'clean-local',
@@ -91,7 +91,7 @@ describe('completeness gate — every rendered-math context', () => {
         lessons: [
           lesson({
             lessonId: 'foundations.body',
-            body: 'Intro line.\n\nThe \\term{discount-factor} appears, then $z$ does not.',
+            body: 'Intro line.\n\nThe [[discount-factor]] appears, then $z$ does not.',
           }),
         ],
       },
@@ -117,7 +117,7 @@ describe('completeness gate — every rendered-math context', () => {
           lesson({
             lessonId: 'foundations.slot',
             body: [
-              'The \\term{discount-factor}.',
+              'The [[discount-factor]].',
               '',
               '<CompactExample label="x">',
               '',
@@ -151,7 +151,7 @@ describe('completeness gate — every rendered-math context', () => {
         lessons: [
           lesson({
             lessonId: 'foundations.formula',
-            body: 'The \\term{discount-factor}.',
+            body: 'The [[discount-factor]].',
             localDefinitions: [
               {
                 key: 'formula-local',
@@ -191,7 +191,7 @@ describe('completeness gate — every rendered-math context', () => {
         lessons: [
           lesson({
             lessonId: 'foundations.assessment',
-            body: 'The \\term{discount-factor}.',
+            body: 'The [[discount-factor]].',
           }),
         ],
       },

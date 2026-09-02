@@ -22,8 +22,8 @@ aiAssisted: true
 The number of bond payments $n$ counts the remaining regular coupon dates,
 including maturity.
 
-Under the toy schedule, the count is the \term{bond-payment-frequency}
-multiplied by \term{maturity-time}:
+Under the toy schedule, the count is the [[bond-payment-frequency]]
+multiplied by [[maturity-time]]:
 
 $$
 n=m_{\mathrm B}T.

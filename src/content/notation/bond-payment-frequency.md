@@ -26,7 +26,7 @@ The bond payment frequency $m_{\mathrm B}$ is the number of scheduled coupon
 payments per year in this simplified regular bond.
 
 The subscript keeps it distinct from the general
-\term{compounding-frequency}. The toy yield model later sets the two numerical
+[[compounding-frequency]]. The toy yield model later sets the two numerical
 frequencies equal and states that assumption visibly.
 
 **NEEDS_SOURCE:** verify the contractual and quotation convention before

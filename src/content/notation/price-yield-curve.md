@@ -23,8 +23,8 @@ aiAssisted: true
 ---
 
 The price-yield curve $P(y)$ holds promised positive fixed cash flows constant
-and evaluates \term{bond-price} across different
-\term{yield-to-maturity} inputs.
+and evaluates [[bond-price]] across different
+[[yield-to-maturity]] inputs.
 
 In the toy model the curve slopes downward for non-negative yields and is not a
 straight line. This page treats curvature qualitatively; duration and convexity

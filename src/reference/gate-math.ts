@@ -52,7 +52,7 @@ interface LessonAssessmentLink {
   readonly assessmentIds: readonly string[];
 }
 
-const TERM_KEY = /\\term\\?\{([a-z0-9]+(?:[.-][a-z0-9]+)*)\\?\}/g;
+const TERM_KEY = /\[\[\s*([a-z0-9]+(?:[.-][a-z0-9]+)*)\s*\]\]/g;
 const EXPLAIN_KEY = /\\explain\s*\{([a-z0-9]+(?:[.-][a-z0-9]+)*)\}/g;
 const DISPLAY_MATH = /\$\$([\s\S]+?)\$\$/g;
 const INLINE_MATH = /(?<![\\$])\$(?!\s)([^$\n]+?)(?<![\\\s])\$(?!\d)/g;
@@ -154,11 +154,11 @@ function resolveInto(
 }
 
 const BODY_FIX =
-  'Introduce the symbol with \\term{key}, define it in notation.local, or wrap it in \\explain{key}{latex}.';
+  'Introduce the symbol with [[key]], define it in notation.local, or wrap it in \\explain{key}{latex}.';
 const FORMULA_FIX =
   'Every right-hand-side variable of a notation.local formula must resolve to the entry key, another page symbol, or the base library.';
 const ASSESSMENT_FIX =
-  "Introduce the symbol in the owning lesson's prose with \\term{key}, or wrap it in \\explain{key}{latex}.";
+  "Introduce the symbol in the owning lesson's prose with [[key]], or wrap it in \\explain{key}{latex}.";
 
 /**
  * Resolve every rendered-math context against the page glyph table. Returns one

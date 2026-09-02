@@ -7,14 +7,14 @@ const pairs = (text: string) =>
   );
 
 describe('notation reference extraction', () => {
-  it('reads ordinary Markdown \\term{} and ignores code fences and inline code', () => {
+  it('reads [[key]] prose refs and ignores code fences and inline code', () => {
     const body = [
-      'Use \\term{rate} in ordinary Markdown.',
+      'Use [[rate]] in ordinary Markdown.',
       '',
-      'Literal examples stay inert: `\\term{ignored-inline}`.',
+      'Literal examples stay inert: `[[ignored-inline]]`.',
       '',
       '```tex',
-      '\\term{ignored-fence}',
+      '[[ignored-fence]]',
       '\\explain{ignored-fence}{x}',
       '```',
       '',
@@ -23,9 +23,8 @@ describe('notation reference extraction', () => {
     expect(pairs(body)).toEqual([{ key: 'rate', kind: 'prose' }]);
   });
 
-  it('reads MDX-safe \\term\\{\\} braces and \\explain{} math references', () => {
-    const body =
-      'Use \\term\\{rate\\} in MDX and annotate $\\explain{rate}{r}$.\n';
+  it('reads [[key]] prose refs and \\explain{} math references together', () => {
+    const body = 'Use [[rate]] in MDX and annotate $\\explain{rate}{r}$.\n';
 
     expect(pairs(body)).toEqual([
       { key: 'rate', kind: 'prose' },

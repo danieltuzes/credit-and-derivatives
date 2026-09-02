@@ -88,11 +88,11 @@ After this lesson, you should be able to:
 
 ## Survival answers a dated probability question
 
-The \term\{survival-probability\} $S^{\mathbb{Q}}(0,t)$ is the supplied
-probability, under the \term\{risk-neutral-probability-measure\}
+The [[survival-probability]] $S^{\mathbb{Q}}(0,t)$ is the supplied
+probability, under the [[risk-neutral-probability-measure]]
 $\mathbb{Q}$, that the reference entity has not defaulted between
-\term\{valuation-time\} $0$ and future time $t$. With the local
-\term\{credit-default-time\} $\tau$,
+[[valuation-time]] $0$ and future time $t$. With the local
+[[credit-default-time]] $\tau$,
 
 $$
 \explain{survival-probability}{S^{\mathbb{Q}}(0,t)}
@@ -113,18 +113,17 @@ $$
 
 and does not increase with time. The page does not estimate these probabilities
 from data or market quotes. Tuckman and Serrat introduce survival and default
-probabilities for CDS valuation\cite\{tuckman-serrat-fixed-income\}\{Ch. 14
-§14.6, printed pp. 367–370, eqs. 14.4–14.7\}; Hull distinguishes risk-neutral
+probabilities for CDS valuation[@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 367–370, eqs. 14.4–14.7]; Hull distinguishes risk-neutral
 default probabilities used in valuation from real-world probabilities
-\cite\{hull-options-futures\}\{Ch. 23 §23.5, printed pp. 528–530\}.
+[@hull-options-futures; Ch. 23 §23.5, printed pp. 528–530].
 
 ## An interval probability is a drop in survival
 
-Use the local \term\{credit-period-index\} $i$ to select one of the
-\term\{number-of-credit-periods\} $n$. The matching
-\term\{payment-time\} is written explicitly as
+Use the local [[credit-period-index]] $i$ to select one of the
+[[number-of-credit-periods]] $n$. The matching
+[[payment-time]] is written explicitly as
 $\explain{payment-time}{t_i}$. For ordered times, the
-\term\{interval-default-probability\} is
+[[interval-default-probability]] is
 
 $$
 \explain{interval-default-probability}{\Delta q_i^{\mathbb{Q}}}
@@ -145,10 +144,10 @@ modeled default.
 
 ## Constant hazard is an intensity, not a cumulative probability
 
-The \term\{hazard-rate\} $\lambda$ is a constant conditional default intensity
+The [[hazard-rate]] $\lambda$ is a constant conditional default intensity
 per model-year in this deliberately narrow model. It is not the probability of
 default by the end of one year and is not a discount rate. Using the local
-\term\{credit-small-time-increment\} $\Delta t$, its conditional definition is
+[[credit-small-time-increment]] $\Delta t$, its conditional definition is
 
 $$
 \explain{hazard-rate}{\lambda}
@@ -174,10 +173,8 @@ The matching cumulative default probability by $t$ is therefore
 $1-S(0,t)$. This lesson does not introduce piecewise hazard rates, curve
 calibration, or a statistical estimator. The conditional intensity and
 constant-hazard exponential survival relation are developed in Tuckman and
-Serrat\cite\{tuckman-serrat-fixed-income\}\{Ch. 14 §14.6, printed pp. 367–368;
-Appendix A14.1, printed p. 505, eqs. A14.1–A14.2\} and Hull
-\cite\{hull-options-futures\}\{Ch. 23 §§23.2 and 23.5, printed pp. 522–523 and
-528–530\}.
+Serrat[@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 367–368; Appendix A14.1, printed p. 505, eqs. A14.1–A14.2] and Hull
+[@hull-options-futures; Ch. 23 §§23.2 and 23.5, printed pp. 522–523 and 528–530].
 
 <CompactExamples
   summary="Worked examples"

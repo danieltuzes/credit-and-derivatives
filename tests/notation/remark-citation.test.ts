@@ -78,7 +78,7 @@ const referenceList = (tree: TestNode): TestNode | undefined =>
 describe('remark citation adapter', () => {
   it('numbers each source by first appearance and reuses the number', () => {
     const tree = paragraph(
-      'First \\cite{tuckman-serrat-fixed-income} then \\cite{finra-bond-yield} then again \\cite{tuckman-serrat-fixed-income}.',
+      'First [@tuckman-serrat-fixed-income] then [@finra-bond-yield] then again [@tuckman-serrat-fixed-income].',
     );
     const testFile = run(tree);
 
@@ -98,7 +98,7 @@ describe('remark citation adapter', () => {
 
   it('gives one source two numbers when the locators differ', () => {
     const tree = paragraph(
-      'See \\cite{tuckman-serrat-fixed-income}{\u00a71.2} and \\cite{tuckman-serrat-fixed-income}{\u00a73.2}.',
+      'See [@tuckman-serrat-fixed-income; \u00a71.2] and [@tuckman-serrat-fixed-income; \u00a73.2].',
     );
     run(tree);
 
@@ -111,9 +111,7 @@ describe('remark citation adapter', () => {
   });
 
   it('anchors the first marker and the list item so the backref resolves', () => {
-    const tree = paragraph(
-      'Claim \\cite{tuckman-serrat-fixed-income}{\u00a71.1}.',
-    );
+    const tree = paragraph('Claim [@tuckman-serrat-fixed-income; \u00a71.1].');
     run(tree);
 
     const marker = markers(tree)[0];
@@ -130,7 +128,7 @@ describe('remark citation adapter', () => {
   });
 
   it('renders the source url when the record has one', () => {
-    const tree = paragraph('Guidance \\cite{finra-bond-yield}.');
+    const tree = paragraph('Guidance [@finra-bond-yield].');
     run(tree);
     const item = referenceList(tree)!.children![0];
     const link = item.children?.[0]?.children?.find(
@@ -152,12 +150,12 @@ describe('remark citation adapter', () => {
     let suppliedSources = [sources[0]];
     const transform = remarkCitation({ sources: () => suppliedSources });
 
-    const firstTree = paragraph('First \\cite{tuckman-serrat-fixed-income}.');
+    const firstTree = paragraph('First [@tuckman-serrat-fixed-income].');
     transform(firstTree, file());
     expect(markers(firstTree)).toHaveLength(1);
 
     suppliedSources = [...sources];
-    const addedAfterStartup = paragraph('Later \\cite{finra-bond-yield}.');
+    const addedAfterStartup = paragraph('Later [@finra-bond-yield].');
     transform(addedAfterStartup, file());
 
     expect(markers(addedAfterStartup)).toHaveLength(1);
@@ -170,7 +168,7 @@ describe('remark citation adapter', () => {
       children: [
         {
           type: 'paragraph',
-          children: [{ type: 'inlineCode', value: '\\cite{finra-bond-yield}' }],
+          children: [{ type: 'inlineCode', value: '[@finra-bond-yield]' }],
         },
       ],
     };
@@ -180,14 +178,18 @@ describe('remark citation adapter', () => {
   });
 
   it('fails on an unknown source id', () => {
-    expect(() => run(paragraph('Bad \\cite{no-such-source}.'))).toThrow(
+    expect(() => run(paragraph('Bad [@no-such-source].'))).toThrow(
       /Unknown source id "no-such-source"/,
     );
   });
 
   it('fails on a malformed source id', () => {
-    expect(() => run(paragraph('Bad \\cite{Not A Key}.'))).toThrow(
-      /Invalid source id/,
+    expect(() => run(paragraph('Bad [@bad-].'))).toThrow(/Invalid source id/);
+  });
+
+  it('fails on a stray, uncompletable citation open', () => {
+    expect(() => run(paragraph('Bad [@Not A Key].'))).toThrow(
+      /Malformed citation/,
     );
   });
 });

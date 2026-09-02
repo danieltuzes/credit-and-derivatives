@@ -25,8 +25,8 @@ aiAssisted: true
 ---
 
 The risk-neutral expectation operator averages a random quantity using the
-weights from the \term{risk-neutral-probability-measure}.
+weights from the [[risk-neutral-probability-measure]].
 
-Applied to a \term{terminal-random-payoff}, its result has the same
+Applied to a [[terminal-random-payoff]], its result has the same
 future-currency units as the quantity being averaged; discounting is a separate
 step.

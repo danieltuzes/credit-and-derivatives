@@ -24,7 +24,7 @@ aiAssisted: true
 The periodic rate $r_m$ is the rate applied once per compounding period.
 
 For the nominal convention used here, it nests the
-\term{nominal-annual-rate} and \term{compounding-frequency} definitions:
+[[nominal-annual-rate]] and [[compounding-frequency]] definitions:
 
 $$
 r_m=\frac{j^{(m)}}{m}.

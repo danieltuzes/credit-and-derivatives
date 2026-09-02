@@ -209,8 +209,8 @@ function maskMarkdownLiterals(text: string): string {
 }
 
 /**
- * Notation references (`\term{key}`, MDX-safe `\term\{key\}`, `\explain{key}`)
- * in a body, ignoring code fences and inline code, sorted by position.
+ * Notation references (`[[key]]` in prose, `\explain{key}` in math) in a body,
+ * ignoring code fences and inline code, sorted by position.
  */
 export function extractNotationReferences(
   text: string,
@@ -220,8 +220,7 @@ export function extractNotationReferences(
   const references: NotationReferenceInput[] = [];
   const searchable = maskMarkdownLiterals(text);
   const patterns: readonly [RegExp, NotationReferenceInput['kind']][] = [
-    [/\\term\\\{([^{}]+)\\\}/g, kind ?? 'prose'],
-    [/\\term\{([^{}]+)\}/g, kind ?? 'prose'],
+    [/\[\[\s*([^\][]+?)\s*\]\]/g, kind ?? 'prose'],
     [/\\explain\{([^{}]+)\}/g, kind ?? 'math'],
   ];
 

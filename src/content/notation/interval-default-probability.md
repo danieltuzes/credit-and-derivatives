@@ -23,7 +23,7 @@ aiAssisted: true
 ---
 
 For two ordered endpoints, the interval default probability is the earlier
-\term{survival-probability} minus the later survival probability. Lessons add
+[[survival-probability]] minus the later survival probability. Lessons add
 an explicit schedule index when they apply that subtraction.
 
 This draft assumes at most one modeled default and a non-increasing supplied

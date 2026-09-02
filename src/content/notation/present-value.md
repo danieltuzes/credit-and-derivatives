@@ -21,10 +21,10 @@ aiAssisted: true
 ---
 
 Present value $PV_0$ combines dated signed cash flows into one value at
-\term{valuation-time}.
+[[valuation-time]].
 
 For deterministic cash flows, its definition nests
-\term{signed-cash-flow} and \term{discount-factor}:
+[[signed-cash-flow]] and [[discount-factor]]:
 
 $$
 PV_0=\sum_{k=1}^{n}CF_kD(0,t_k).

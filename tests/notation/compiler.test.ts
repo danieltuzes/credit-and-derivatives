@@ -73,7 +73,7 @@ describe('Astro lesson-math compiler integration', () => {
 
   it('compiles pure CF_k and concrete t_1 through remark, rehype, and KaTeX', async () => {
     const result = await compiler.render(
-      String.raw`The \term\{signed-cash-flow\} is $CF_k$. Its concrete \term\{payment-time\} can be $t_1=0.5$ years.
+      String.raw`The [[signed-cash-flow]] is $CF_k$. Its concrete [[payment-time]] can be $t_1=0.5$ years.
 
 $$
 CF_k \quad\text{occurs at}\quad t_k.
@@ -93,7 +93,7 @@ $$`,
 
   it('compiles the periodic-rate fraction without a recovered KaTeX error', async () => {
     const result = await compiler.render(
-      String.raw`The \term\{periodic-rate\}, \term\{nominal-annual-rate\}, and \term\{compounding-frequency\} satisfy $r_m=\frac{j^{(m)}}{m}$.`,
+      String.raw`The [[periodic-rate]], [[nominal-annual-rate]], and [[compounding-frequency]] satisfy $r_m=\frac{j^{(m)}}{m}$.`,
       {
         frontmatter: validFrontmatter,
         fileURL: new URL('file:///compiler-periodic-rate-fixture.mdx'),
@@ -152,7 +152,7 @@ $$`,
       await expect(
         compiler.render(
           [
-            'The \\term\\{signed-cash-flow\\} recurs.',
+            'The [[signed-cash-flow]] recurs.',
             '',
             '<CompactExample label="x">',
             '',

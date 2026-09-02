@@ -24,9 +24,9 @@ aiAssisted: true
 ---
 
 The accumulation factor $A(0,t)$ grows one unit at
-\term{valuation-time} to time $t$ under the stated compounding model.
+[[valuation-time]] to time $t$ under the stated compounding model.
 
-Using \term{periodic-rate} $r_m$ and \term{compounding-frequency} $m$,
+Using [[periodic-rate]] $r_m$ and [[compounding-frequency]] $m$,
 
 $$
 A(0,t)=(1+r_m)^{mt}.

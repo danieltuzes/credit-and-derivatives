@@ -22,7 +22,7 @@ aiAssisted: true
 ---
 
 The promised bond cash flow $CF_k^{\mathrm{bond}}$ is the
-\term{coupon-payment} on each scheduled date plus \term{face-value} on the
+[[coupon-payment]] on each scheduled date plus [[face-value]] on the
 final date.
 
 For $n$ payments in the simplified model,

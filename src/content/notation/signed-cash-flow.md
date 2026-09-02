@@ -21,7 +21,7 @@ aiAssisted: true
 ---
 
 The signed cash flow $CF_k$ is the amount exchanged at
-\term{payment-time} $t_k$, measured from one explicitly named perspective.
+[[payment-time]] $t_k$, measured from one explicitly named perspective.
 
 This playground uses positive amounts for receipts and negative amounts for
 payments by the stated holder. Changing perspective reverses every sign; it

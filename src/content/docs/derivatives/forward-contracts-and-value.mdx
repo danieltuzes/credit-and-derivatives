@@ -63,11 +63,11 @@ After this lesson, you should be able to:
 
 ## An obligation, not an option
 
-The \term\{forward-delivery-time\} $T_{\mathrm{fwd}}$ is when the exchange
+The [[forward-delivery-time]] $T_{\mathrm{fwd}}$ is when the exchange
 occurs. Under the physical-settlement convention, the long pays the
-\term\{forward-delivery-price\} $K_{\mathrm{fwd}}$ and receives one unit of
-the asset. If its \term\{derivative-underlying-value\} then is
-$S_{T_{\mathrm{fwd}}}$, the local \term\{long-forward-expiry-payoff\} per unit
+[[forward-delivery-price]] $K_{\mathrm{fwd}}$ and receives one unit of
+the asset. If its [[derivative-underlying-value]] then is
+$S_{T_{\mathrm{fwd}}}$, the local [[long-forward-expiry-payoff]] per unit
 is
 
 $$
@@ -77,20 +77,19 @@ $$
 
 The short has the exact opposite payoff. Hull distinguishes this bilateral
 obligation from an option holder's exercise right and gives the corresponding
-long and short payoff directions\cite\{hull-options-futures\}\{Ch. 1 §1.3,
-printed pp. 5-7, forward contracts and payoffs\}.
+long and short payoff directions[@hull-options-futures; Ch. 1 §1.3, printed pp. 5-7, forward contracts and payoffs].
 
 ## Fair delivery price at inception
 
-The \term\{forward-price\} $F_{0,T_{\mathrm{fwd}}}$ is the delivery price that
-would make a new contract worth zero at \term\{valuation-time\} $0$. Suppose
+The [[forward-price]] $F_{0,T_{\mathrm{fwd}}}$ is the delivery price that
+would make a new contract worth zero at [[valuation-time]] $0$. Suppose
 the underlying is worth $S_0$ and the local
-\term\{deterministic-income-present-value\} paid before delivery is $I_0$.
+[[deterministic-income-present-value]] paid before delivery is $I_0$.
 The forward long does not own the asset before delivery, so the prepaid value of
 what will be delivered is $S_0-I_0$.
 
 Under the stated cash-and-carry assumptions, with the delivery-time
-\term\{discount-factor\} $D(0,T_{\mathrm{fwd}})$, the law of one price gives
+[[discount-factor]] $D(0,T_{\mathrm{fwd}})$, the law of one price gives
 
 $$
 F_{0,T_{\mathrm{fwd}}}
@@ -99,8 +98,7 @@ $$
 
 Hull derives the no-income and known-income forward prices by matching a spot
 purchase and financing strategy to the forward exchange
-\cite\{hull-options-futures\}\{Ch. 5 §§5.3-5.5, printed pp. 103-108, cash-and-carry
-forward pricing and known income\}.
+[@hull-options-futures; Ch. 5 §§5.3-5.5, printed pp. 103-108, cash-and-carry forward pricing and known income].
 
 For $S_0=100$, $I_0=4$, and $D(0,T_{\mathrm{fwd}})=0.95$,
 
@@ -115,8 +113,8 @@ price.
 ## An existing forward can gain or lose value
 
 After inception, $K_{\mathrm{fwd}}$ remains fixed while the current forward
-price can change. For local \term\{forward-contract-quantity\} $N$, the
-\term\{forward-contract-value\} to the long at time zero is
+price can change. For local [[forward-contract-quantity]] $N$, the
+[[forward-contract-value]] to the long at time zero is
 
 $$
 V_0^{\mathrm{fwd}}
@@ -133,8 +131,7 @@ $$
 
 The short's value is USD +37.60 under the same inputs. Hull derives this
 discounted forward-price difference for an existing contract
-\cite\{hull-options-futures\}\{Ch. 5 §5.7, printed pp. 109-111, valuation of
-existing forward contracts\}.
+[@hull-options-futures; Ch. 5 §5.7, printed pp. 109-111, valuation of existing forward contracts].
 
 ## Check your understanding
 

@@ -17,7 +17,7 @@ export interface LessonDefinition {
   readonly assessments: readonly string[];
   readonly sources: readonly string[];
   readonly assumptions: readonly string[];
-  /** Raw Markdown body, used to keep inline `\cite` in sync with `sources`. */
+  /** Raw Markdown body, used to keep inline `[@…]` citations in sync with `sources`. */
   readonly body?: string;
 }
 
@@ -113,9 +113,9 @@ function buildIndex<T extends { readonly id: string }>(
 }
 
 /**
- * Source ids referenced by `\cite\{id\}` (optionally `\cite\{id\}\{locator\}`)
- * in a lesson body, with fenced and inline code removed first so an example
- * of the syntax does not count as a real citation.
+ * Source ids referenced by `[@id]` (optionally `[@id; locator]`) in a lesson
+ * body, with fenced and inline code removed first so an example of the syntax
+ * does not count as a real citation.
  */
 function citedSourceIds(body: string | undefined): Set<string> {
   if (!body) return new Set();
@@ -123,7 +123,9 @@ function citedSourceIds(body: string | undefined): Set<string> {
     .replace(/```[\s\S]*?```/g, '')
     .replace(/`[^`\n]*`/g, '');
   const ids = new Set<string>();
-  for (const match of withoutCode.matchAll(/\\cite\\?\{([^{}\\]+)\\?\}/g)) {
+  for (const match of withoutCode.matchAll(
+    /\[@([a-z0-9][a-z0-9.-]*)(?:;[^\]]*)?\]/g,
+  )) {
     ids.add((match[1] ?? '').trim());
   }
   return ids;
@@ -331,7 +333,7 @@ export function validateCurriculum(
       if (lesson.body !== undefined && !cited.has(sourceId)) {
         issues.push({
           kind: 'unknown-reference',
-          message: `${lesson.id} declares source ${sourceId} but never cites it with \\cite\\{${sourceId}\\}`,
+          message: `${lesson.id} declares source ${sourceId} but never cites it with [@${sourceId}]`,
         });
       }
     }

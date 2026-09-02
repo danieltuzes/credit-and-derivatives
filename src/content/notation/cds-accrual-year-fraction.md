@@ -23,7 +23,7 @@ aiAssisted: true
 ---
 
 The accrual year fraction $\alpha_i$ is supplied directly in this lesson. It
-converts the annualized \term{cds-contract-spread} into a period amount.
+converts the annualized [[cds-contract-spread]] into a period amount.
 
 For the lesson's equal model-year periods, it is the arithmetic difference
 between adjacent model times. This is not a claim about the calendar day-count

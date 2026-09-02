@@ -6,7 +6,7 @@ import { BASE_LIBRARY } from './base-library.mjs';
  * Page-level glyph-map resolver (cleanup plan, D1 decision 2026-09-02).
  *
  * A page declares its glyphs once — `notation.local` plus the shared entries it
- * introduces in prose with `\term{key}` — and formulas stay ordinary LaTeX.
+ * introduces in prose with `[[key]]` — and formulas stay ordinary LaTeX.
  * This module tokenizes one `$…$` / `$$…$$` expression into identifier atoms
  * and resolves each against that flat page glyph table plus the base library,
  * marking it with a validated `\explain` marker or reporting it unresolved so
@@ -803,7 +803,7 @@ function unresolvedIdentifiers(latex, identifiers, bindings, ignored) {
 /**
  * Resolve and annotate one KaTeX expression against a page's flat glyph table
  * (its `notation.local` entries plus the shared entries it introduces with
- * `\term{key}`). Each entry's canonical LaTeX is matched structurally, then a
+ * `[[key]]`). Each entry's canonical LaTeX is matched structurally, then a
  * unique base glyph is matched for shorter or instantiated forms; every
  * remaining identifier atom that is not in the base library is reported
  * unresolved. The returned source offsets always refer to the original,

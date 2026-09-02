@@ -2,14 +2,14 @@
  * Remark adapter for semantic notation references.
  *
  * Author syntax:
- *   - Prose introduces a meaning: `\\term{rates.discount-factor}`
+ *   - Prose introduces a meaning: `[[rates.discount-factor]]`
  *   - Later math uses ordinary LaTeX: `D(0,t)`
- *   - `\\explain{rates.discount-factor}{D(0,t)}` remains available when
- *     lexical scope cannot select one meaning unambiguously.
+ *   - `\\explain{rates.discount-factor}{D(0,t)}` remains available inside math
+ *     when lexical scope cannot select one meaning unambiguously.
  *
  * Prose references become ordinary links. Lesson math is resolved against the
  * page glyph table — `notation.local` plus the shared entries the page names
- * with `\\term{key}` (or `\\explain{key}{…}`) — and the base library; the
+ * with `[[key]]` (or `\\explain{key}{…}`) — and the base library; the
  * adapter then injects the narrowly trusted `\\explain` marker before
  * build-time KaTeX rendering. `notation.uses` is retired: the use is the
  * declaration (D1 decision, 2026-09-02).
@@ -52,8 +52,8 @@ const PROSE_SKIP_TYPES = new Set([
   'yaml',
 ]);
 
-const TERM_PATTERN = /\\term\{([^{}]+)\}/g;
-const TERM_OPEN = '\\term{';
+const TERM_PATTERN = /\[\[\s*([^\][]+?)\s*\]\]/g;
+const TERM_OPEN = '[[';
 const EXPLAIN = '\\explain';
 const HTML_DATA = '\\htmlData';
 
@@ -142,24 +142,25 @@ function lessonIdFrom(file) {
   return typeof lessonId === 'string' ? lessonId : undefined;
 }
 
-const ANY_TERM_KEY = /\\term\\?\{([^{}]+?)\\?\}/g;
+const ANY_TERM_KEY = /\[\[\s*([^\][]+?)\s*\]\]/g;
 const ANY_EXPLAIN_KEY = /\\explain\s*\{([^{}]+)\}/g;
 
 /**
  * The shared keys a page pulls into scope (D1 decision — `notation.uses` is
  * retired, the declaration is the use): every key it introduces in prose with
- * `\term{key}` and every key it disambiguates in math with `\explain{key}{…}`.
+ * `[[key]]` and every key it disambiguates in math with `\explain{key}{…}`.
  * Scanning the tree covers both real VFiles and hand-built test trees.
  */
 function collectPageSharedKeys(tree) {
   const keys = new Set();
   const scan = (node) => {
     if (!node || typeof node !== 'object') return;
-    if (typeof node.value === 'string' && node.value.includes('\\')) {
+    const value = typeof node.value === 'string' ? node.value : '';
+    if (value.includes('[[') || value.includes('\\explain')) {
       for (const pattern of [ANY_TERM_KEY, ANY_EXPLAIN_KEY]) {
         pattern.lastIndex = 0;
         let match;
-        while ((match = pattern.exec(node.value))) {
+        while ((match = pattern.exec(value))) {
           const key = match[1].trim();
           if (NOTATION_KEY_PATTERN.test(key)) keys.add(key);
         }
@@ -175,7 +176,7 @@ function pageGlyphScope(localDefinitions, sharedDefinitions, pageSharedKeys) {
   return [
     ...localDefinitions.values(),
     // A page-local definition wins; a shared entry the page also names with
-    // `\term` does not shadow it or land twice in the resolver's scope.
+    // `[[key]]` does not shadow it or land twice in the resolver's scope.
     ...[...pageSharedKeys]
       .filter((key) => !localDefinitions.has(key))
       .map((key) => sharedDefinitions.get(key))
@@ -319,7 +320,7 @@ function proseNodes(value, resolve, file, node, references, base = '') {
 
     const key = match[1].trim();
     if (!NOTATION_KEY_PATTERN.test(key)) {
-      fail(file, `Invalid notation key "${key}" in ${TERM_OPEN}...}.`, node);
+      fail(file, `Invalid notation key "${key}" in [[...]].`, node);
     }
 
     if (match.index > cursor) {
@@ -356,7 +357,7 @@ function proseNodes(value, resolve, file, node, references, base = '') {
     if (malformed !== -1) {
       fail(
         file,
-        `Malformed notation reference near "${value.slice(malformed, malformed + 40)}". Expected ${TERM_OPEN}semantic.key}.`,
+        `Malformed notation reference near "${value.slice(malformed, malformed + 40)}". Expected [[semantic.key]].`,
         node,
       );
     }
@@ -375,7 +376,7 @@ function proseNodes(value, resolve, file, node, references, base = '') {
   if (malformed !== -1) {
     fail(
       file,
-      `Malformed notation reference. Expected ${TERM_OPEN}semantic.key}.`,
+      `Malformed notation reference. Expected [[semantic.key]].`,
       node,
     );
   }
@@ -551,7 +552,7 @@ export default function remarkNotation(options = {}) {
               .join(', ');
             fail(
               file,
-              `Unresolved notation in ${context}: ${unresolved}. Introduce the symbol with \\term{key}, define it in notation.local, or wrap it in \\explain{key}{latex}.`,
+              `Unresolved notation in ${context}: ${unresolved}. Introduce the symbol with [[key]], define it in notation.local, or wrap it in \\explain{key}{latex}.`,
               node,
             );
           }

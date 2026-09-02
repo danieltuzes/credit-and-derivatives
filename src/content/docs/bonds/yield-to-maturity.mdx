@@ -27,13 +27,13 @@ After this lesson, you should be able to:
 
 ## What yield means in this toy model
 
-Use the \term\{bond-payment-index\} $k$ to select one of the
-\term\{number-of-bond-payments\} $n$, and write its promised
-\term\{bond-cash-flow\} as $CF_k^{\mathrm{bond}}$. Write the
-\term\{bond-price\} as $P_0$ and the \term\{bond-payment-frequency\} as
+Use the [[bond-payment-index]] $k$ to select one of the
+[[number-of-bond-payments]] $n$, and write its promised
+[[bond-cash-flow]] as $CF_k^{\mathrm{bond}}$. Write the
+[[bond-price]] as $P_0$ and the [[bond-payment-frequency]] as
 $m_{\mathrm B}$.
 
-Write \term\{yield-to-maturity\} as $y^{(m_{\mathrm B})}$. It is the one
+Write [[yield-to-maturity]] as $y^{(m_{\mathrm B})}$. It is the one
 nominal annual rate, compounded at the bond payment frequency, that makes the
 discounted promised payments equal the bond price:
 
@@ -50,12 +50,12 @@ or another quote. Here it means only the explicitly defined bond yield.
 
 ## Coupon rate and yield do different jobs
 
-- The coupon rate fixes the promised \term\{coupon-payment\} $C$ in the
+- The coupon rate fixes the promised [[coupon-payment]] $C$ in the
   contract.
 - The supplied yield controls the denominators used by this pricing summary.
 
 Changing the yield input does not rewrite the bond's coupons or
-\term\{face-value\} $F$.
+[[face-value]] $F$.
 
 <CompactExamples
   summary="Worked examples"
@@ -101,7 +101,7 @@ same timing or compounding model.
 
   <CompactExample label="Zero-coupon special case">
 
-With no coupons and \term\{maturity-time\} $T$,
+With no coupons and [[maturity-time]] $T$,
 
 $$
 P_0=\frac{F}{(1+y^{(m_{\mathrm B})}/m_{\mathrm B})^{m_{\mathrm B}T}}.
@@ -128,11 +128,8 @@ from a price. A real bond implementation also needs schedules, day counts,
 accrued interest, clean/dirty price, and potentially credit and option models.
 
 The single-rate definition and the $2T$-period pricing formula follow Tuckman &
-Serrat\cite\{tuckman-serrat-fixed-income\}\{§3.2, "Yield to Maturity": the
-single rate that discounts a bond's cash flows to its market price (eq. 3.5 and
-the general formula), also its internal rate of return\}; Hull gives the same
-definition, solved iteratively\cite\{hull-options-futures\}\{Ch. 4, "Bond
-Yield"\}. FINRA defines it as the return to an investor who buys at the market
+Serrat[@tuckman-serrat-fixed-income; §3.2, "Yield to Maturity": the single rate that discounts a bond's cash flows to its market price (eq. 3.5 and the general formula), also its internal rate of return]; Hull gives the same
+definition, solved iteratively[@hull-options-futures; Ch. 4, "Bond Yield"]. FINRA defines it as the return to an investor who buys at the market
 price and holds to
-maturity\cite\{finra-bond-yield\}\{"Yield to maturity" section\}. The lesson
+maturity[@finra-bond-yield; "Yield to maturity" section]. The lesson
 stays `draft` pending human confirmation of the printed locators.

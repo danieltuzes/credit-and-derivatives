@@ -66,7 +66,7 @@ export function renderLabMath(
     const list = result.unresolved.map(({ token }) => `"${token}"`).join(', ');
     throw new Error(
       `Lab math uses undefined notation ${list}. Every symbol must resolve to ` +
-        `a notation entry in this page's glyph scope (a \\term reference or ` +
+        `a notation entry in this page's glyph scope (a [[key]] reference or ` +
         `notation.local).\n  template: ${template.trim()}`,
     );
   }

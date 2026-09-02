@@ -20,11 +20,11 @@ aiAssisted: true
 ---
 
 The bond payment index $k$ labels one remaining scheduled payment in increasing
-time order. The \term{number-of-bond-payments} gives the final included index.
+time order. The [[number-of-bond-payments]] gives the final included index.
 
 $$
 k\in\{1,\ldots,n\}.
 $$
 
-This index is bookkeeping. The matching \term{payment-time} supplies the time
-in years, and the matching \term{bond-cash-flow} supplies the promised amount.
+This index is bookkeeping. The matching [[payment-time]] supplies the time
+in years, and the matching [[bond-cash-flow]] supplies the promised amount.

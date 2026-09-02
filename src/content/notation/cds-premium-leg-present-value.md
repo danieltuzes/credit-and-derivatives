@@ -25,7 +25,7 @@ aiAssisted: true
 
 The premium-leg present value $PV_0^{\mathrm{prem}}$ is shown as a positive
 magnitude. In the lesson model it equals contractual spread times notional
-times the selected \term{cds-premium-annuity}.
+times the selected [[cds-premium-annuity]].
 
 From the protection buyer's signed perspective, this leg is paid and therefore
 enters net value with a minus sign.

@@ -40,14 +40,14 @@ After this lesson, you should be able to:
 ## One label is not enough
 
 The phrase “an annual rate of 6%” is incomplete for compounding unless its
-convention is stated. In this slice, write the \term\{nominal-annual-rate\} as
-$j^{(m)}$ and pair it with the \term\{compounding-frequency\} $m$. Write the
-resulting \term\{periodic-rate\} as $r_m$.
+convention is stated. In this slice, write the [[nominal-annual-rate]] as
+$j^{(m)}$ and pair it with the [[compounding-frequency]] $m$. Write the
+resulting [[periodic-rate]] as $r_m$.
 
 On this page, $t$ is the shorter generic-horizon form of the shared
-\term\{payment-time\}. The \term\{valuation-time\} is $0$. Use the local
-\term\{number-of-compounding-periods\} $N$ for the number of rate applications,
-and write the resulting \term\{accumulation-factor\} as $A(0,t)$.
+[[payment-time]]. The [[valuation-time]] is $0$. Use the local
+[[number-of-compounding-periods]] $N$ for the number of rate applications,
+and write the resulting [[accumulation-factor]] as $A(0,t)$.
 
 Under the stated nominal-rate convention, the periodic rate is
 
@@ -68,8 +68,8 @@ r_2=\frac{0.06}{2}=0.03.
 $$
 
 The model applies 3% once every half-year. Over $t=1.5$ years, the local
-\term\{number-of-compounding-periods\} is $N=mt=3$, so the
-\term\{accumulation-factor\} is
+[[number-of-compounding-periods]] is $N=mt=3$, so the
+[[accumulation-factor]] is
 
 $$
 A(0,1.5)
@@ -77,8 +77,8 @@ A(0,1.5)
 =1.092727.
 $$
 
-One unit at \term\{valuation-time\} grows to 1.092727 model units at the
-\term\{payment-time\} 1.5 years later.
+One unit at [[valuation-time]] grows to 1.092727 model units at the
+[[payment-time]] 1.5 years later.
 
   </CompactExample>
   <CompactExample label="Nominal is not effective annual">
@@ -96,7 +96,7 @@ quantities. The semantic key prevents an author from calling both merely
   </CompactExample>
   <CompactExample label="Basis-point arithmetic">
 
-A \term\{basis-point\} is a unit for rate differences:
+A [[basis-point]] is a unit for rate differences:
 
 $$
 25\,\mathrm{bp}
@@ -136,8 +136,5 @@ This page does not introduce continuous compounding, effective-rate conversion
 as a general API, day counts, or a term structure.
 
 The nominal-quote-plus-frequency convention and the basis-point unit follow
-Tuckman & Serrat\cite\{tuckman-serrat-fixed-income\}\{§2.1, rates quoted as
-annual rates over a term of fixed-length periods, simple or compound; §2.4, eq.
-2.17, the periodic-compounding form; a basis point is 0.01%, Ch. 0 footnote and
-Ch. 3\}. The lesson stays `draft` pending human confirmation of the printed
+Tuckman & Serrat[@tuckman-serrat-fixed-income; §2.1, rates quoted as annual rates over a term of fixed-length periods, simple or compound; §2.4, eq. 2.17, the periodic-compounding form; a basis point is 0.01%, Ch. 0 footnote and Ch. 3]. The lesson stays `draft` pending human confirmation of the printed
 locators.

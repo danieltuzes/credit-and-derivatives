@@ -128,18 +128,18 @@ After this lesson, you should be able to:
 ## Two states, two traded positions
 
 Let the underlying be worth $\explain{derivative-underlying-value}{S_0}$ at
-\term\{valuation-time\} and take exactly the local values
-\term\{binomial-up-underlying-value\}
+[[valuation-time]] and take exactly the local values
+[[binomial-up-underlying-value]]
 $\explain{binomial-up-underlying-value}{S^{\mathrm{up}}}$ or
-\term\{binomial-down-underlying-value\}
+[[binomial-down-underlying-value]]
 $\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}$ at the
-\term\{option-expiry-time\} $T_{\mathrm{opt}}$. A claim pays local
-\term\{binomial-up-claim-payoff\}
+[[option-expiry-time]] $T_{\mathrm{opt}}$. A claim pays local
+[[binomial-up-claim-payoff]]
 $\explain{binomial-up-claim-payoff}{X^{\mathrm{up}}}$ or
-\term\{binomial-down-claim-payoff\}
+[[binomial-down-claim-payoff]]
 $\explain{binomial-down-claim-payoff}{X^{\mathrm{down}}}$.
 
-The local \term\{binomial-hedge-units\} that matches the payoff difference are
+The local [[binomial-hedge-units]] that matches the payoff difference are
 
 $$
 \explain{binomial-hedge-units}{\Delta}
@@ -149,7 +149,7 @@ $$
 -\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}}.
 $$
 
-The local \term\{binomial-risk-free-expiry-cash\} then matches the down state:
+The local [[binomial-risk-free-expiry-cash]] then matches the down state:
 
 $$
 \explain{binomial-risk-free-expiry-cash}{M_{T_{\mathrm{opt}}}}
@@ -158,7 +158,7 @@ $$
 \explain{binomial-down-underlying-value}{S^{\mathrm{down}}}.
 $$
 
-Consequently the local \term\{binomial-claim-value\} of the replicating
+Consequently the local [[binomial-claim-value]] of the replicating
 portfolio is
 
 $$
@@ -171,7 +171,7 @@ $$
 
 ## The same value with risk-neutral weights
 
-The no-arbitrage tree chooses local \term\{binomial-risk-neutral-up-weight\}
+The no-arbitrage tree chooses local [[binomial-risk-neutral-up-weight]]
 $q$ so the underlying itself is priced correctly:
 
 $$
@@ -182,7 +182,7 @@ $$
 -\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}}.
 $$
 
-Using the \term\{risk-neutral-probability-measure\} $\mathbb{Q}$, the same claim
+Using the [[risk-neutral-probability-measure]] $\mathbb{Q}$, the same claim
 value is
 
 $$
@@ -196,8 +196,7 @@ $$
 
 Hull derives the one-step hedge and then shows that its no-arbitrage value equals
 the discounted risk-neutral expected payoff
-\cite\{hull-options-futures\}\{Ch. 12 §§12.1-12.2, printed pp. 253-259,
-one-step binomial replication and risk-neutral valuation\}.
+[@hull-options-futures; Ch. 12 §§12.1-12.2, printed pp. 253-259, one-step binomial replication and risk-neutral valuation].
 
 ## Worked call example
 
@@ -205,7 +204,7 @@ Let $\explain{derivative-underlying-value}{S_0}=100$,
 $\explain{binomial-up-underlying-value}{S^{\mathrm{up}}}=120$,
 $\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}=80$,
 $\explain{discount-factor}{D(0,T_{\mathrm{opt}})}=1/1.05$, and let the
-\term\{option-strike-price\} be
+[[option-strike-price]] be
 $\explain{option-strike-price}{K}=100$. The call payoffs are
 $\explain{binomial-up-claim-payoff}{X^{\mathrm{up}}}=20$ and
 $\explain{binomial-down-claim-payoff}{X^{\mathrm{down}}}=0$.

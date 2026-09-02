@@ -59,7 +59,7 @@ export function buildNotationRegistry(
   const availableDefinitionIds = new Set(definitions.keys());
 
   // `notation.uses` is retired (D1 decision): a lesson pulls a shared key into
-  // scope by referencing it (`\term`/`\explain`), and every reference resolves
+  // scope by referencing it (`[[key]]`/`\explain`), and every reference resolves
   // directly against page-local then shared definitions.
 
   for (const candidate of definitions.values()) {

@@ -58,14 +58,14 @@ After this lesson, you should be able to:
 ## Name the recovery convention before calculating
 
 This lesson uses one narrow convention only. A claim has positive local
-\term\{recovery-par-amount\} $F$ and one local
-\term\{recovery-payment-time\} $T$, measured from
-\term\{valuation-time\} $0$.
+[[recovery-par-amount]] $F$ and one local
+[[recovery-payment-time]] $T$, measured from
+[[valuation-time]] $0$.
 
 - If the reference entity survives through $T$, the holder receives $F$ at
   $T$.
 - If it defaults at any earlier time, the holder receives $RF$ at $T$, where
-  \term\{recovery-rate\} $R$ is deterministic.
+  [[recovery-rate]] $R$ is deterministic.
 
 Both state payments occur at the same scheduled time. That timing is a model
 assumption, not an assertion about an actual instrument. In particular, this
@@ -74,13 +74,13 @@ settlement delay, or a CDS settlement mechanism.
 
 Tuckman and Serrat define a bond recovery rate relative to face amount and
 identify the complementary loss fraction in their credit-loss discussion
-\cite\{tuckman-serrat-fixed-income\}\{Ch. 14 §14.2, printed p. 353\}. The
+[@tuckman-serrat-fixed-income; Ch. 14 §14.2, printed p. 353]. The
 payment-at-maturity timing on this page is an explicit teaching convention,
 not a claim that this is the only recovery convention.
 
 ## Recovery and loss given default are complements here
 
-The \term\{loss-given-default\} fraction is
+The [[loss-given-default]] fraction is
 
 $$
 \mathrm{LGD}=1-R,
@@ -93,14 +93,14 @@ market convention, forecast, or appropriate assumption for any real entity.
 
 ## Take the state-weighted maturity amount, then discount it
 
-The supplied \term\{survival-probability\} is
+The supplied [[survival-probability]] is
 $\explain{survival-probability}{S^{\mathbb{Q}}(0,T)}$ under the
-\term\{risk-neutral-probability-measure\} $\mathbb{Q}$. Under the one-default
+[[risk-neutral-probability-measure]] $\mathbb{Q}$. Under the one-default
 model, the pricing probability assigned to default before $T$ is
 $1-S^{\mathbb{Q}}(0,T)$.
 
 For this single interval from $0$ through $T$, $1-S(0,T)$ is the
-\term\{interval-default-probability\}. The state-weighted amount paid at $T$
+[[interval-default-probability]]. The state-weighted amount paid at $T$
 is
 
 $$
@@ -109,14 +109,12 @@ $$
 
 This is the two-event specialization of the expectation-by-partition rule:
 survival pays $F$ and default pays $RF$. Shreve gives the finite-valued
-expectation rule\cite\{shreve-stochastic-calculus-finance-ii\}\{Ch. 1 §1.3,
-printed pp. 13–18\}; Tuckman and Serrat apply survival/default event weighting
-and discounting to credit cash flows\cite\{tuckman-serrat-fixed-income\}\{Ch.
-14 §14.7, printed pp. 371–372, eq. 14.8 and Table 14.11\}.
+expectation rule[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.3, printed pp. 13–18]; Tuckman and Serrat apply survival/default event weighting
+and discounting to credit cash flows[@tuckman-serrat-fixed-income; Ch. 14 §14.7, printed pp. 371–372, eq. 14.8 and Table 14.11].
 
 Both state amounts are paid at $T$, so the same supplied
-\term\{discount-factor\} $\explain{discount-factor}{D(0,T)}$ applies. The
-\term\{recovery-of-par-present-value\} is
+[[discount-factor]] $\explain{discount-factor}{D(0,T)}$ applies. The
+[[recovery-of-par-present-value]] is
 
 $$
 \explain{recovery-of-par-present-value}{PV_0^{\mathrm{RoP}}}
@@ -127,7 +125,7 @@ $$
 \right].
 $$
 
-This is a \term\{present-value\} calculation from the asset-holder perspective:
+This is a [[present-value]] calculation from the asset-holder perspective:
 the modeled future receipts and their value are positive. A purchase price paid
 by that holder would have the opposite cash-flow sign.
 

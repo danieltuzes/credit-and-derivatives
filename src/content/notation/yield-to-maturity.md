@@ -25,8 +25,8 @@ aiAssisted: true
 ---
 
 Yield to maturity $y^{(m_{\mathrm B})}$ is the single nominal annual rate,
-compounded at the stated \term{bond-payment-frequency}, that reproduces the toy
-\term{bond-price} from its promised cash flows.
+compounded at the stated [[bond-payment-frequency]], that reproduces the toy
+[[bond-price]] from its promised cash flows.
 
 In this slice it appears in
 

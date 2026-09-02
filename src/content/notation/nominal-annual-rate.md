@@ -22,7 +22,7 @@ aiAssisted: true
 ---
 
 The nominal annual rate $j^{(m)}$ is an annualized quote whose periodic rate is
-obtained using its stated \term{compounding-frequency} $m$.
+obtained using its stated [[compounding-frequency]] $m$.
 
 In this playground's nominal-compounding model,
 
