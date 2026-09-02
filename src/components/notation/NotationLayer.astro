@@ -10,7 +10,7 @@ export type NotationAlignment =
 export interface NotationLayerDefinition {
   key: string;
   notation: string;
-  title: string;
+  label: string;
   summary: string;
   formula?: string;
   units?: string;
@@ -121,9 +121,9 @@ const panelId = `${id}-panel`;
                 <a
                   href={definition.href}
                   data-notation-link={definition.key}
-                  aria-label={`${definition.title}: open the full definition`}
+                  aria-label={`${definition.label}: open the full definition`}
                 >
-                  {definition.title}
+                  {definition.label}
                 </a>
                 {definition.editorialStatus &&
                   definition.editorialStatus !== 'reviewed' && (

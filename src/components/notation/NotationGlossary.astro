@@ -4,14 +4,17 @@ import NotationMath from './NotationMath.astro';
 import NotationLayer, {
   type NotationLayerDefinition,
 } from './NotationLayer.astro';
+import { resolveLabel } from '../../notation/label';
 
 const [notationEntries, lessonEntries] = await Promise.all([
   getCollection('notation'),
   getCollection('docs', ({ data }) => typeof data.lessonId === 'string'),
 ]);
+const labelOf = (data: { key: string; label?: string }) =>
+  resolveLabel(data.key, data.label);
 const lessonsByNotationKey = new Map<string, typeof lessonEntries>();
-const notationTitleByKey = new Map(
-  notationEntries.map((entry) => [entry.data.key, entry.data.title]),
+const notationLabelByKey = new Map(
+  notationEntries.map((entry) => [entry.data.key, labelOf(entry.data)]),
 );
 for (const lesson of lessonEntries) {
   for (const key of lesson.data.notation.uses) {
@@ -26,7 +29,7 @@ const renderedEntries = await Promise.all(
     .sort(
       (left, right) =>
         left.data.domain.localeCompare(right.data.domain) ||
-        left.data.title.localeCompare(right.data.title),
+        labelOf(left.data).localeCompare(labelOf(right.data)),
     )
     .map(async (entry) => ({
       entry,
@@ -41,7 +44,7 @@ const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
   (entry) => ({
     key: entry.data.key,
     notation: entry.data.latex,
-    title: entry.data.title,
+    label: labelOf(entry.data),
     summary: entry.data.meaning,
     units: entry.data.units,
     seeAlso: entry.data.seeAlso,
@@ -63,7 +66,7 @@ const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
     {
       renderedEntries.map(({ entry }) => (
         <li>
-          <a href={`#notation-${entry.data.key}`}>{entry.data.title}</a>
+          <a href={`#notation-${entry.data.key}`}>{labelOf(entry.data)}</a>
         </li>
       ))
     }
@@ -86,13 +89,13 @@ const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
               <NotationMath class="glossary-symbol" latex={entry.data.latex} />
             </span>
             <div>
-              <h2>{entry.data.title}</h2>
+              <h2>{labelOf(entry.data)}</h2>
               <code>{entry.data.key}</code>
               <a
                 class="glossary-anchor"
                 href={`#notation-${entry.data.key}`}
                 data-glossary-anchor
-                aria-label={`Copy link to “${entry.data.title}”`}
+                aria-label={`Copy link to “${labelOf(entry.data)}”`}
                 title="Copy link to this entry"
               >
                 <span aria-hidden="true">#</span>
@@ -124,7 +127,7 @@ const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
                 <dd class="see-also">
                   {entry.data.seeAlso.map((key) => (
                     <a href={`#notation-${key}`}>
-                      {notationTitleByKey.get(key) ?? key}
+                      {notationLabelByKey.get(key) ?? key}
                     </a>
                   ))}
                 </dd>

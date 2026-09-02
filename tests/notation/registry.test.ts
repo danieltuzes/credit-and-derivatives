@@ -23,7 +23,7 @@ const sharedDefinition = (
 ): SharedNotationDefinitionInput => ({
   key,
   notation: key,
-  title: key,
+  label: key,
   summary: `${key} test summary`,
   aliases: [],
   domain: 'test',
@@ -48,7 +48,7 @@ const localDefinition = (
 ): LocalNotationDefinitionInput => ({
   key,
   notation: key,
-  title: key,
+  label: key,
   summary: `${key} on this page`,
   sources: [],
   seeAlso: [],
@@ -437,7 +437,7 @@ describe('notation registry', () => {
   it('distinguishes duplicate and conflicting definitions', () => {
     const duplicate = sharedDefinition('rate');
     const conflicting = sharedDefinition('rate', {
-      title: 'A different meaning',
+      label: 'A different meaning',
       source: { file: 'notation/zz-rate-conflict.md' },
     });
     const registry = buildNotationRegistry({

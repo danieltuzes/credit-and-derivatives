@@ -34,6 +34,7 @@ import type {
   SourceSpan,
 } from '../notation/types';
 import { isSubstantiveMeaning } from '../notation/prose';
+import { resolveLabel } from '../notation/label';
 
 // Every invocation — the CLI, `astro build`/`check`, and vitest — runs with the
 // repository root as the working directory, matching the deleted file loaders.
@@ -290,29 +291,28 @@ function localDefinition(
   file: string,
   index: number,
 ): LocalNotationDefinitionInput {
-  const label = `${file} notation.local[${index}]`;
-  const data = record(raw, label);
-  // One notation shape (Phase C1b): `latex`/`meaning`; the pre-C1b names
-  // `notation`/`summary`/`title` are still read until the codemod.
-  const latex = string(data.latex, `${label}.latex`);
-  const meaning = meaningText(data.meaning, `${label}.meaning`);
-  const formula = optionalString(data.formula, `${label}.formula`);
-  const units = optionalString(data.units, `${label}.units`);
+  const at = `${file} notation.local[${index}]`;
+  const data = record(raw, at);
+  const key = string(data.key, `${at}.key`);
+  const latex = string(data.latex, `${at}.latex`);
+  const meaning = meaningText(data.meaning, `${at}.meaning`);
+  const formula = optionalString(data.formula, `${at}.formula`);
+  const units = optionalString(data.units, `${at}.units`);
   const definitionText = [meaning, formula]
     .filter((value): value is string => value !== undefined)
     .join('\n');
 
   return {
-    key: string(data.key, `${label}.key`),
+    key,
     notation: latex,
-    title: string(data.title ?? meaning, `${label}.title`),
+    label: resolveLabel(key, optionalString(data.label, `${at}.label`)),
     summary: meaning,
-    sources: sourceIds(data.sources, `${label}.sources`),
-    seeAlso: strings(data.seeAlso, `${label}.seeAlso`),
+    sources: sourceIds(data.sources, `${at}.sources`),
+    seeAlso: strings(data.seeAlso, `${at}.seeAlso`),
     alignment:
       data.alignment === undefined
         ? { kind: 'general', rationale: 'Lesson-local symbol.' }
-        : alignment(data.alignment, `${label}.alignment`),
+        : alignment(data.alignment, `${at}.alignment`),
     references: extractNotationReferences(definitionText, file, 'definition'),
     source: { file },
     ...(formula === undefined ? {} : { formula }),
@@ -334,7 +334,7 @@ function sharedNotationEntries(): SharedNotationDefinitionInput[] {
     return {
       key,
       notation: string(data.latex, `${file} latex`),
-      title: string(data.title ?? meaning, `${file} title`),
+      label: resolveLabel(key, optionalString(data.label, `${file} label`)),
       summary: meaning,
       aliases: strings(data.aliases, `${file} aliases`),
       domain: string(data.domain, `${file} domain`),

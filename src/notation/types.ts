@@ -30,7 +30,7 @@ export interface NotationReferenceInput {
 export interface SharedNotationDefinitionInput {
   readonly key: string;
   readonly notation: string;
-  readonly title: string;
+  readonly label: string;
   readonly summary: string;
   readonly aliases: readonly string[];
   readonly domain: string;
@@ -49,7 +49,7 @@ export interface SharedNotationDefinitionInput {
 export interface LocalNotationDefinitionInput {
   readonly key: string;
   readonly notation: string;
-  readonly title: string;
+  readonly label: string;
   readonly summary: string;
   readonly formula?: string;
   readonly units?: string;
@@ -126,7 +126,7 @@ interface NotationDefinitionRecordBase {
   readonly key: string;
   readonly scope: NotationDefinitionScope;
   readonly notation: string;
-  readonly title: string;
+  readonly label: string;
   readonly seeAlso: readonly string[];
   readonly alignment: NotationAlignment;
   readonly status: EditorialStatus;

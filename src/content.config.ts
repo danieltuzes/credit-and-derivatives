@@ -57,11 +57,11 @@ const notationSource = z.union([
  *
  * Authored: `key`, `latex`, `meaning`, optional `formula`, optional `units`
  * (or `dimensionless: true`), `seeAlso`, `sources` (`{id, locator}`),
- * optional `alignment` (defaults to `general`).
+ * optional `alignment` (defaults to `general`), optional `label`.
  *
- * `title` remains accepted (deprecated): `perspective` and `details` were
- * folded into `meaning` and removed; dropping `title` is a further content
- * pass. The `notationProse` refinement rejects an under-specified `meaning`.
+ * The display label defaults to the humanized `key` (see `notation/label.ts`);
+ * `label` is authored only where that reads wrong. The `notationProse`
+ * refinement rejects an under-specified `meaning`.
  */
 const notationEntryShape = z.object({
   key: id,
@@ -73,8 +73,7 @@ const notationEntryShape = z.object({
   seeAlso: z.array(id).default([]),
   sources: z.array(notationSource).default([]),
   alignment: notationAlignmentDefault,
-  // Deprecated — a later content pass drops `title`.
-  title: z.string().min(1).optional(),
+  label: z.string().min(1).optional(),
 });
 
 const localNotationDefinition = notationEntryShape;
@@ -234,12 +233,11 @@ const sources = defineCollection({
 /**
  * Standalone notation collection — the one `notationEntry` shape plus the
  * shared-only extras: `domain`, `aliases`, its own `editorialStatus`, and a
- * Markdown body. `title` is still authored (a later content pass drops it).
+ * Markdown body.
  */
 const notation = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/notation' }),
   schema: notationEntryShape.extend({
-    title: z.string().min(1),
     domain: id,
     aliases: z.array(z.string().min(1)).default([]),
     editorialStatus,
