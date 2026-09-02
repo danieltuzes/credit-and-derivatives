@@ -4,7 +4,7 @@ import NotationMath from './NotationMath.astro';
 import NotationLayer, {
   type NotationLayerDefinition,
 } from './NotationLayer.astro';
-import { resolveLabel } from '../../notation/label';
+import { resolveLabel } from '../../reference/label';
 import { isLessonSlug } from '../../content/lesson-derivation';
 
 const [notationEntries, lessonEntries] = await Promise.all([

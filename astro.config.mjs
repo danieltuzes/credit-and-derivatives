@@ -9,10 +9,10 @@ import {
   loadSidebar,
   loadSourceRecords,
 } from './src/content/collections.ts';
-import { createNotationKatexOptions } from './src/notation/katex-options.mjs';
-import rehypeFailKatexErrors from './src/notation/rehype-fail-katex-errors.mjs';
-import remarkCitation from './src/notation/remark-citation.mjs';
-import remarkNotation from './src/notation/remark-notation.mjs';
+import { createNotationKatexOptions } from './src/reference/katex-options.mjs';
+import rehypeFailKatexErrors from './src/reference/rehype-fail-katex-errors.mjs';
+import remarkCitation from './src/reference/remark-citation.mjs';
+import remarkNotation from './src/reference/remark-notation.mjs';
 
 // The deployment base path. Empty for local dev, `pnpm verify`, and e2e (the
 // site serves from `/`); the GitHub Pages workflow sets `SITE_BASE=/equations`.

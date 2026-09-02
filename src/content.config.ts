@@ -3,7 +3,7 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
-import { isSubstantiveMeaning } from './notation/prose';
+import { isSubstantiveMeaning } from './reference/prose';
 
 const editorialStatus = z.enum(['draft', 'in-review', 'reviewed']);
 const id = z.string().regex(/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/);
@@ -59,7 +59,7 @@ const notationSource = z.union([
  * (or `dimensionless: true`), `seeAlso`, `sources` (`{id, locator}`),
  * optional `alignment` (defaults to `general`), optional `label`.
  *
- * The display label defaults to the humanized `key` (see `notation/label.ts`);
+ * The display label defaults to the humanized `key` (see `reference/label.ts`);
  * `label` is authored only where that reads wrong. The `notationProse`
  * refinement rejects an under-specified `meaning`.
  */

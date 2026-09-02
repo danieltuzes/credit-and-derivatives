@@ -2,9 +2,9 @@ import { createMarkdownProcessor } from '@astrojs/markdown-remark';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
-import { createNotationKatexOptions } from '../../src/notation/katex-options.mjs';
-import rehypeFailKatexErrors from '../../src/notation/rehype-fail-katex-errors.mjs';
-import remarkNotation from '../../src/notation/remark-notation.mjs';
+import { createNotationKatexOptions } from '../../src/reference/katex-options.mjs';
+import rehypeFailKatexErrors from '../../src/reference/rehype-fail-katex-errors.mjs';
+import remarkNotation from '../../src/reference/remark-notation.mjs';
 
 const sharedDefinitions = [
   {

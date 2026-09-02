@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import remarkNotation from '../../src/notation/remark-notation.mjs';
+import remarkNotation from '../../src/reference/remark-notation.mjs';
 
 interface TestNode {
   type: string;

@@ -62,7 +62,7 @@ on `PATH`) is the simplest fix.
 | `src/content.config.ts`                                  | Authoritative Zod schemas for all content                  |
 | `src/domain/`                                            | Pure financial and mathematical calculations               |
 | `src/curriculum/`                                        | Curriculum graph and semantic validation                   |
-| `src/notation/`                                          | Notation parsing, registry, scoping, KaTeX adapters        |
+| `src/reference/`                                         | Notation parsing, registry, scoping, KaTeX adapters        |
 | `src/components/`                                        | Astro/React UI (labs, notation layer, glossary, examples)  |
 | `scripts/`                                               | Repository-level validation commands                       |
 | `tests/`                                                 | Unit, property, curriculum, browser, accessibility tests   |

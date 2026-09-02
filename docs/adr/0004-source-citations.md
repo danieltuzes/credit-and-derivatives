@@ -25,7 +25,7 @@ reference list, with an optional hover panel over the same markup.
   ordered list to the document. Each item is
   `Authors, Title (edition, year). Locator.` plus the source URL when present,
   the source record's editorial status when not `reviewed`, and a `↩`
-  back-link. `src/notation/citation-format.mjs` holds the pure formatting and
+  back-link. `src/reference/citation-format.mjs` holds the pure formatting and
   is shared with the panel island.
 - `src/curriculum/validation.ts` requires every `sources:` frontmatter id to
   be cited at least once in the body and every cited id to appear in

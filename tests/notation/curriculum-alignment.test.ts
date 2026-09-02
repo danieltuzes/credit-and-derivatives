@@ -11,13 +11,13 @@ import type {
 import {
   assertValidNotationAlignment,
   validateNotationAlignment,
-} from '../../src/notation/curriculum-alignment';
-import { buildNotationRegistry } from '../../src/notation/registry';
+} from '../../src/reference/curriculum-alignment';
+import { buildNotationRegistry } from '../../src/reference/registry';
 import type {
   NotationAlignment,
   NotationLessonInput,
   SharedNotationDefinitionInput,
-} from '../../src/notation/types';
+} from '../../src/reference/types';
 
 type EditorialCompetency = CompetencyDefinition & {
   readonly editorialStatus: 'draft' | 'in-review' | 'reviewed';

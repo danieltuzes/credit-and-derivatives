@@ -32,9 +32,9 @@ import type {
   NotationRegistryInput,
   SharedNotationDefinitionInput,
   SourceSpan,
-} from '../notation/types';
-import { isSubstantiveMeaning } from '../notation/prose';
-import { resolveLabel } from '../notation/label';
+} from '../reference/types';
+import { isSubstantiveMeaning } from '../reference/prose';
+import { resolveLabel } from '../reference/label';
 import {
   buildSidebar,
   deriveRequires,

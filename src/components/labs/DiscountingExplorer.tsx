@@ -9,7 +9,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import type { RenderedLabMath } from '../../notation/render-lab-math';
+import type { RenderedLabMath } from '../../reference/render-lab-math';
 import { periodicDiscountFactor } from '../../domain/present-value';
 
 const money = new Intl.NumberFormat('en-US', {

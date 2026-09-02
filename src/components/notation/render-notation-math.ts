@@ -1,5 +1,5 @@
 import rehypeKatex from 'rehype-katex';
-import { createNotationKatexOptions } from '../../notation/katex-options.mjs';
+import { createNotationKatexOptions } from '../../reference/katex-options.mjs';
 
 interface HastText {
   type: 'text';

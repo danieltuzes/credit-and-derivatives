@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import katex from 'katex';
-import { createNotationKatexOptions } from '../../src/notation/katex-options.mjs';
+import { createNotationKatexOptions } from '../../src/reference/katex-options.mjs';
 import {
   MathBindingError,
   bindMathNotation,
-} from '../../src/notation/math-bindings.mjs';
+} from '../../src/reference/math-bindings.mjs';
 
 const definition = (key: string, notation: string) => ({ key, notation });
 

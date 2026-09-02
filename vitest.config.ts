@@ -7,7 +7,7 @@ export default defineConfig({
       include: [
         'src/domain/**/*.ts',
         'src/curriculum/**/*.ts',
-        'src/notation/**/*.{ts,mjs}',
+        'src/reference/**/*.{ts,mjs}',
       ],
     },
   },

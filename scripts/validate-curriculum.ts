@@ -2,11 +2,11 @@ import {
   assertValidCurriculum,
   validateCurriculum,
 } from '../src/curriculum/validation';
-import { assertValidNotationAlignment } from '../src/notation/curriculum-alignment';
+import { assertValidNotationAlignment } from '../src/reference/curriculum-alignment';
 import {
   assertValidNotation,
   buildNotationRegistry,
-} from '../src/notation/registry';
+} from '../src/reference/registry';
 import {
   loadCurriculumCatalog,
   loadNotationRegistryInput,
