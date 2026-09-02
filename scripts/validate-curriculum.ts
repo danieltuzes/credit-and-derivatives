@@ -3,6 +3,7 @@ import {
   validateCurriculum,
 } from '../src/curriculum/validation';
 import { assertValidNotationAlignment } from '../src/reference/curriculum-alignment';
+import { gateContentMath } from '../src/reference/gate-math';
 import {
   assertValidNotation,
   buildNotationRegistry,
@@ -30,6 +31,36 @@ for (const warning of notationRegistry.diagnostics.filter(
   (diagnostic) => diagnostic.severity === 'warning',
 )) {
   console.warn(`[${warning.code}] ${warning.message}`);
+}
+
+// Completeness gate (D3): resolve every rendered-math context against the page
+// glyph table — lesson body, `notation.local` formulas, and assessment
+// prompt/explanation math — with the same resolver the Astro remark pass uses.
+const mathGate = gateContentMath({
+  notationInput,
+  assessments: catalog.assessments as unknown as {
+    id: string;
+    items?: { id?: string; prompt?: string; explanation?: string }[];
+  }[],
+  lessonAssessments: catalog.lessons.map((lesson) => ({
+    lessonId: lesson.id,
+    assessmentIds: lesson.assessments,
+  })),
+});
+const formatMathIssue = (issue: (typeof mathGate)[number]): string => {
+  const at = issue.line ? `${issue.file}:${issue.line}` : issue.file;
+  return `[math-complete] ${at}: ${issue.message}`;
+};
+for (const issue of mathGate.filter((item) => item.severity === 'warning')) {
+  console.warn(formatMathIssue(issue));
+}
+const mathGateErrors = mathGate.filter((issue) => issue.severity === 'error');
+if (mathGateErrors.length > 0) {
+  throw new Error(
+    `Completeness gate failed in ${mathGateErrors.length} rendered-math context(s):\n${mathGateErrors
+      .map((issue) => `- ${formatMathIssue(issue)}`)
+      .join('\n')}`,
+  );
 }
 
 const locatorGaps = notationSourceLocatorGaps();

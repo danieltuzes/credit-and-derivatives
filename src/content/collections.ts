@@ -395,7 +395,6 @@ function notationLessonEntries(): NotationLessonInput[] {
     lessons.push({
       lessonId: lessonIdFromSlug(slug),
       status: status(data.editorialStatus, `${file} editorialStatus`),
-      uses: strings(notation.uses, `${file} notation.uses`),
       localDefinitions: local.map((entry, index) =>
         localDefinition(entry, file, index),
       ),

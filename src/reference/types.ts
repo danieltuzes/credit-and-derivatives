@@ -64,8 +64,6 @@ export interface LocalNotationDefinitionInput {
 export interface NotationLessonInput {
   readonly lessonId: string;
   readonly status: EditorialStatus;
-  /** Explicit notation imports declared by the lesson author. */
-  readonly uses: readonly string[];
   readonly localDefinitions: readonly LocalNotationDefinitionInput[];
   /** References harvested from lesson prose and equations, excluding definitions. */
   readonly references: readonly NotationReferenceInput[];
@@ -84,12 +82,9 @@ export type NotationDiagnosticCode =
   | 'duplicate-page'
   | 'duplicate-definition'
   | 'conflicting-definition'
-  | 'duplicate-use'
-  | 'undeclared-reference'
   | 'undefined-reference'
   | 'reference-cycle'
   | 'unused-definition'
-  | 'unused-use'
   | 'alignment-unknown-competency'
   | 'alignment-unknown-lesson'
   | 'alignment-introduction'
@@ -166,7 +161,6 @@ export interface NotationPageBundle {
   readonly lessonId: string;
   readonly status: EditorialStatus;
   readonly source: SourceSpan;
-  readonly declaredUses: readonly string[];
   readonly bindings: readonly NotationBinding[];
   readonly definitionIds: readonly string[];
 }

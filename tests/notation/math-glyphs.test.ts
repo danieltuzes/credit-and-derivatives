@@ -2,15 +2,15 @@ import { describe, expect, it } from 'vitest';
 import katex from 'katex';
 import { createNotationKatexOptions } from '../../src/reference/katex-options.mjs';
 import {
-  MathBindingError,
-  bindMathNotation,
-} from '../../src/reference/math-bindings.mjs';
+  GlyphResolutionError,
+  resolveMathGlyphs,
+} from '../../src/reference/math-glyphs.mjs';
 
 const definition = (key: string, notation: string) => ({ key, notation });
 
-describe('lesson math bindings', () => {
+describe('page glyph-map resolver', () => {
   it('wraps CF_k and its nested payment index with semantic markers', () => {
-    const result = bindMathNotation('CF_k', [
+    const result = resolveMathGlyphs('CF_k', [
       definition('signed-cash-flow', 'CF_k'),
       definition('payment-index', 'k'),
     ]);
@@ -44,7 +44,7 @@ describe('lesson math bindings', () => {
   });
 
   it('keeps fraction argument braces outside injected notation markers', () => {
-    const result = bindMathNotation(String.raw`r_m=\frac{j^{(m)}}{m}.`, [
+    const result = resolveMathGlyphs(String.raw`r_m=\frac{j^{(m)}}{m}.`, [
       definition('periodic-rate', 'r_m'),
       definition('nominal-annual-rate', String.raw`j^{(m)}`),
       definition('compounding-frequency', 'm'),
@@ -72,16 +72,16 @@ describe('lesson math bindings', () => {
       definition('yield-to-maturity', String.raw`y^{(m_{\mathrm B})}`),
     ];
 
-    expect(bindMathNotation('t_2=2', definitions).unresolved).toEqual([]);
+    expect(resolveMathGlyphs('t_2=2', definitions).unresolved).toEqual([]);
     expect(
-      bindMathNotation(String.raw`j^{(2)}=0.06`, definitions).unresolved,
+      resolveMathGlyphs(String.raw`j^{(2)}=0.06`, definitions).unresolved,
     ).toEqual([]);
-    expect(bindMathNotation('r_2=0.03', definitions).unresolved).toEqual([]);
-    expect(bindMathNotation('y=0.05', definitions).unresolved).toEqual([]);
+    expect(resolveMathGlyphs('r_2=0.03', definitions).unresolved).toEqual([]);
+    expect(resolveMathGlyphs('y=0.05', definitions).unresolved).toEqual([]);
   });
 
   it('ignores prose inside math text commands', () => {
-    const result = bindMathNotation(
+    const result = resolveMathGlyphs(
       String.raw`CF_k\quad\text{occurs at}\quad t_k`,
       [
         definition('signed-cash-flow', 'CF_k'),
@@ -95,17 +95,17 @@ describe('lesson math bindings', () => {
   });
 
   it('reports identifiers that have no semantic definition in lesson scope', () => {
-    expect(bindMathNotation('z+1', []).unresolved).toEqual([
+    expect(resolveMathGlyphs('z+1', []).unresolved).toEqual([
       { token: 'z', start: 0, end: 1 },
     ]);
   });
 
   it('fails rather than guessing when a base glyph has two meanings', () => {
     expect(() =>
-      bindMathNotation('P', [
+      resolveMathGlyphs('P', [
         definition('bond-price', 'P_0'),
         definition('price-yield-curve', 'P(y)'),
       ]),
-    ).toThrow(MathBindingError);
+    ).toThrow(GlyphResolutionError);
   });
 });

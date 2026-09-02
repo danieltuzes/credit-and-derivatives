@@ -1,14 +1,36 @@
 import katex from 'katex';
 
+import { BASE_LIBRARY } from './base-library.mjs';
+
 /**
+ * Page-level glyph-map resolver (cleanup plan, D1 decision 2026-09-02).
+ *
+ * A page declares its glyphs once — `notation.local` plus the shared entries it
+ * introduces in prose with `\term{key}` — and formulas stay ordinary LaTeX.
+ * This module tokenizes one `$…$` / `$$…$$` expression into identifier atoms
+ * and resolves each against that flat page glyph table plus the base library,
+ * marking it with a validated `\explain` marker or reporting it unresolved so
+ * the caller can fail at `file:line:token`. `\explain{key}{latex}` stays as the
+ * escape hatch for a compound or glyph-colliding symbol.
+ *
  * KaTeX's parse tree is intentionally an internal API. Keep this guard beside
- * the adapter so a dependency update cannot silently change binding behavior.
+ * the resolver so a dependency update cannot silently change its behavior.
  */
 export const SUPPORTED_KATEX_PARSE_VERSION = '0.16.47';
 
 const KEY_PATTERN = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const EXPLAIN_COMMAND = String.raw`\explain`;
-const DEFAULT_IGNORED_IDENTIFIERS = new Set(['d']);
+
+// Letters inside these fonts are upright roman labels (`\mathrm{B}`) or
+// universal set / operator symbols (`\mathbb{N}`, `\mathcal{F}`), not bindable
+// identifier atoms. They are treated like the base library.
+const IGNORED_FONTS = new Set([
+  'mathrm',
+  'mathbb',
+  'mathcal',
+  'mathfrak',
+  'mathscr',
+]);
 const SOURCE_CHILD_KEYS = new Set([
   'above',
   'base',
@@ -27,17 +49,17 @@ const SOURCE_CHILD_KEYS = new Set([
   'text',
 ]);
 
-export class MathBindingError extends Error {
+export class GlyphResolutionError extends Error {
   constructor(code, message, details = undefined) {
     super(message);
-    this.name = 'MathBindingError';
+    this.name = 'GlyphResolutionError';
     this.code = code;
     this.details = details;
   }
 }
 
 function fail(code, message, details) {
-  throw new MathBindingError(code, message, details);
+  throw new GlyphResolutionError(code, message, details);
 }
 
 function assertPinnedKatex() {
@@ -341,7 +363,7 @@ function collectSourceStructure(tree) {
       value.type === 'text' ||
       value.type === 'op' ||
       value.type === 'operatorname' ||
-      (value.type === 'font' && value.font === 'mathrm');
+      (value.type === 'font' && IGNORED_FONTS.has(value.font));
 
     if (!ignored && isIdentifierNode(value)) {
       const span = nodeSpan(value);
@@ -779,16 +801,19 @@ function unresolvedIdentifiers(latex, identifiers, bindings, ignored) {
 }
 
 /**
- * Resolve and annotate one KaTeX expression using the definitions already in
- * lesson scope. Canonical expressions are matched structurally before a
- * unique function-head fallback is considered. The returned source offsets
- * always refer to the original, unmodified LaTeX.
+ * Resolve and annotate one KaTeX expression against a page's flat glyph table
+ * (its `notation.local` entries plus the shared entries it introduces with
+ * `\term{key}`). Each entry's canonical LaTeX is matched structurally, then a
+ * unique base glyph is matched for shorter or instantiated forms; every
+ * remaining identifier atom that is not in the base library is reported
+ * unresolved. The returned source offsets always refer to the original,
+ * unmodified LaTeX.
  *
  * @param {string} latex
  * @param {Array<{key: string, notation: string}>} definitions
  * @param {{ignoredIdentifiers?: Iterable<string>}} [options]
  */
-export function bindMathNotation(latex, definitions, options = {}) {
+export function resolveMathGlyphs(latex, definitions, options = {}) {
   if (typeof latex !== 'string') {
     fail('invalid-latex-input', 'Math source must be a string.');
   }
@@ -819,7 +844,7 @@ export function bindMathNotation(latex, definitions, options = {}) {
 
   validateBindingSpans(bindings, latex.length);
   const ignored = new Set([
-    ...DEFAULT_IGNORED_IDENTIFIERS,
+    ...BASE_LIBRARY,
     ...(options.ignoredIdentifiers ?? []),
   ]);
 

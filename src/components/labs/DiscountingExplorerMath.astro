@@ -10,14 +10,14 @@ import DiscountingExplorer, {
 
 type TemplateId = keyof typeof DISCOUNTING_LAB_MATH;
 
-const routeData = Astro.locals.starlightRoute.entry.data as {
+const entry = Astro.locals.starlightRoute.entry;
+const routeData = entry.data as {
   notation?: {
-    uses?: string[];
     local?: Array<{ key: string; latex: string }>;
   };
 };
 
-const scope = await labMathScope(routeData.notation);
+const scope = await labMathScope(routeData.notation, entry.body ?? '');
 
 const math = {} as Record<TemplateId, RenderedLabMath>;
 for (const id of Object.keys(DISCOUNTING_LAB_MATH) as TemplateId[]) {

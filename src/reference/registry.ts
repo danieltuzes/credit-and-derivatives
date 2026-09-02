@@ -58,61 +58,9 @@ export function buildNotationRegistry(
   );
   const availableDefinitionIds = new Set(definitions.keys());
 
-  const declaredUses = new Map<string, Set<string>>();
-  const unresolvedUses = new Map<string, Set<string>>();
-  const usedDeclarations = new Map<string, Set<string>>();
-
-  for (const lesson of lessons.values()) {
-    const declared = new Set<string>();
-    const unresolved = new Set<string>();
-    const used = new Set<string>();
-    declaredUses.set(lesson.lessonId, declared);
-    unresolvedUses.set(lesson.lessonId, unresolved);
-    usedDeclarations.set(lesson.lessonId, used);
-
-    for (const key of [...lesson.uses].sort()) {
-      if (!isNotationKey(key)) {
-        diagnostics.push(
-          diagnostic({
-            code: 'invalid-key',
-            message: `${lesson.lessonId} declares invalid notation key ${JSON.stringify(key)}`,
-            key,
-            lessonId: lesson.lessonId,
-            source: lesson.source,
-          }),
-        );
-        continue;
-      }
-      if (declared.has(key)) {
-        diagnostics.push(
-          diagnostic({
-            code: 'duplicate-use',
-            message: `${lesson.lessonId} repeats notation use ${key}`,
-            key,
-            lessonId: lesson.lessonId,
-            source: lesson.source,
-          }),
-        );
-        continue;
-      }
-      declared.add(key);
-
-      // `uses` imports shared definitions. Page-local definitions are already
-      // in lexical scope and must not be repeated in this list.
-      if (!availableDefinitionIds.has(sharedDefinitionId(key))) {
-        unresolved.add(key);
-        diagnostics.push(
-          diagnostic({
-            code: 'undefined-reference',
-            message: `${lesson.lessonId} declares unknown notation use ${key}`,
-            key,
-            lessonId: lesson.lessonId,
-            source: lesson.source,
-          }),
-        );
-      }
-    }
-  }
+  // `notation.uses` is retired (D1 decision): a lesson pulls a shared key into
+  // scope by referencing it (`\term`/`\explain`), and every reference resolves
+  // directly against page-local then shared definitions.
 
   for (const candidate of definitions.values()) {
     const references = sortedReferences(candidate.input.references);
@@ -141,25 +89,6 @@ export function buildNotationRegistry(
           continue;
         }
 
-        const resolvesLocally = definitionId.startsWith(`page:${lessonId}:`);
-        const declared = declaredUses.get(lessonId) ?? new Set<string>();
-        if (!resolvesLocally && !declared.has(reference.key)) {
-          diagnostics.push(
-            diagnostic({
-              code: 'undeclared-reference',
-              message: `${lessonId} local definition ${candidate.input.key} references undeclared notation ${reference.key}`,
-              key: reference.key,
-              lessonId,
-              definitionId: candidate.id,
-              source: reference.source,
-            }),
-          );
-          continue;
-        }
-        if (!resolvesLocally) {
-          usedDeclarations.get(lessonId)?.add(reference.key);
-        }
-
         resolved.push({ ...reference, definitionId });
         continue;
       }
@@ -184,13 +113,7 @@ export function buildNotationRegistry(
       resolved.push({ ...reference, definitionId });
     }
     candidate.resolvedReferences = sortResolvedReferences(resolved);
-    validateSeeAlsoReferences(
-      candidate,
-      availableDefinitionIds,
-      declaredUses,
-      usedDeclarations,
-      diagnostics,
-    );
+    validateSeeAlsoReferences(candidate, availableDefinitionIds, diagnostics);
   }
 
   const directReferences = new Map<string, ResolvedNotationReference[]>();
@@ -200,7 +123,6 @@ export function buildNotationRegistry(
       kind: 'page',
       lessonId: lesson.lessonId,
     };
-    const declared = declaredUses.get(lesson.lessonId) ?? new Set<string>();
 
     for (const reference of sortedReferences(lesson.references)) {
       if (!validatePageReferenceKey(reference, lesson, diagnostics)) continue;
@@ -210,28 +132,10 @@ export function buildNotationRegistry(
         availableDefinitionIds,
       );
       if (definitionId === undefined) {
-        if (!unresolvedUses.get(lesson.lessonId)?.has(reference.key)) {
-          diagnostics.push(
-            diagnostic({
-              code: 'undefined-reference',
-              message: `${lesson.lessonId} references unknown notation ${reference.key}`,
-              key: reference.key,
-              lessonId: lesson.lessonId,
-              source: reference.source,
-            }),
-          );
-        }
-        continue;
-      }
-
-      const resolvesLocally = definitionId.startsWith(
-        `page:${lesson.lessonId}:`,
-      );
-      if (!resolvesLocally && !declared.has(reference.key)) {
         diagnostics.push(
           diagnostic({
-            code: 'undeclared-reference',
-            message: `${lesson.lessonId} references undeclared notation ${reference.key}`,
+            code: 'undefined-reference',
+            message: `${lesson.lessonId} references unknown notation ${reference.key}`,
             key: reference.key,
             lessonId: lesson.lessonId,
             source: reference.source,
@@ -239,9 +143,7 @@ export function buildNotationRegistry(
         );
         continue;
       }
-      if (!resolvesLocally) {
-        usedDeclarations.get(lesson.lessonId)?.add(reference.key);
-      }
+
       resolved.push({ ...reference, definitionId });
     }
     directReferences.set(lesson.lessonId, sortResolvedReferences(resolved));
@@ -279,9 +181,6 @@ export function buildNotationRegistry(
       lessonId: lesson.lessonId,
       status: lesson.status,
       source: lesson.source,
-      declaredUses: uniqueSorted([
-        ...(declaredUses.get(lesson.lessonId) ?? []),
-      ]),
       bindings: [...bindingByKey]
         .map(([key, definitionId]) => ({ key, definitionId }))
         .sort(
@@ -316,22 +215,6 @@ export function buildNotationRegistry(
         definitionId: candidate.id,
         source: candidate.input.source,
       });
-    }
-  }
-
-  for (const lesson of lessons.values()) {
-    const used = usedDeclarations.get(lesson.lessonId) ?? new Set<string>();
-    for (const key of declaredUses.get(lesson.lessonId) ?? []) {
-      if (!used.has(key)) {
-        diagnostics.push({
-          code: 'unused-use',
-          severity: 'warning',
-          message: `${lesson.lessonId} declares notation ${key} but never references it`,
-          key,
-          lessonId: lesson.lessonId,
-          source: lesson.source,
-        });
-      }
     }
   }
 
@@ -489,7 +372,6 @@ function buildDefinitionIndex(
 function normalizeLesson(lesson: NotationLessonInput): NotationLessonInput {
   return {
     ...lesson,
-    uses: [...lesson.uses].sort(),
     localDefinitions: lesson.localDefinitions
       .map(normalizeLocalDefinition)
       .sort(
@@ -564,8 +446,6 @@ function validatePageReferenceKey(
 function validateSeeAlsoReferences(
   candidate: DefinitionCandidate,
   availableDefinitionIds: ReadonlySet<string>,
-  declaredUses: ReadonlyMap<string, ReadonlySet<string>>,
-  usedDeclarations: ReadonlyMap<string, Set<string>>,
   diagnostics: NotationDiagnostic[],
 ): void {
   for (const key of uniqueSorted(candidate.input.seeAlso)) {
@@ -593,31 +473,7 @@ function validateSeeAlsoReferences(
           source: candidate.input.source,
         }),
       );
-      continue;
     }
-
-    if (candidate.kind === 'shared') continue;
-
-    const lessonId = candidate.lesson.lessonId;
-    const resolvesLocally = definitionId.startsWith(`page:${lessonId}:`);
-    if (resolvesLocally) continue;
-
-    const declared = declaredUses.get(lessonId) ?? new Set<string>();
-    if (!declared.has(key)) {
-      diagnostics.push(
-        diagnostic({
-          code: 'undeclared-reference',
-          message: `${lessonId} local definition ${candidate.input.key} has undeclared seeAlso target ${key}`,
-          key,
-          lessonId,
-          definitionId: candidate.id,
-          source: candidate.input.source,
-        }),
-      );
-      continue;
-    }
-
-    usedDeclarations.get(lessonId)?.add(key);
   }
 }
 

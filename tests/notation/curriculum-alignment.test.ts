@@ -90,7 +90,6 @@ const notationLesson = (
 ): NotationLessonInput => ({
   lessonId,
   status: 'draft',
-  uses: [key],
   localDefinitions: [],
   references: [
     {

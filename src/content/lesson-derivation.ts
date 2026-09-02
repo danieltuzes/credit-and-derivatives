@@ -5,7 +5,7 @@
  * layout, the tests) goes through that one loader.
  *
  * Authored per lesson after C2: `title`, `description`, `teaches`, `assumptions`,
- * `editorialStatus`, `notation` (`uses` + `local`). Everything below is derived:
+ * `editorialStatus`, `notation.local`. Everything below is derived:
  *
  * - `lessonId`      — the doc slug, `/` → `.` (`foundations/discount-factors`).
  * - `requires`      — direct competency-graph prerequisites of `teaches`, minus
@@ -18,9 +18,10 @@
  * - `sidebar` order — per section, lessons in the order the tracks introduce
  *                     them (a stable merge of every track's `lessons`).
  *
- * `notation.uses` stays authored until the completeness gate compiles lesson
- * math in validation (debt D7 / step D3); a `\term`-only scan would miss the
- * eight lessons that pull a shared symbol in through bare-glyph math alone.
+ * `notation.uses` is retired (D3): the completeness gate compiles every
+ * lesson's math against the page glyph table — `notation.local` plus the
+ * shared keys the body names with `\term` / `\explain` — so an import list is
+ * redundant.
  */
 
 /** `foundations/discount-factors` → `foundations.discount-factors`. */

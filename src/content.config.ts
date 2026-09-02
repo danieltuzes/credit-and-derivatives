@@ -80,19 +80,18 @@ const localNotationDefinition = notationEntryShape;
 
 const lessonNotation = z
   .object({
-    // Derived post-C2 (shared keys referenced by prose/math, not defined
-    // locally); still authored during the transition.
-    uses: z.array(id).default([]),
+    // `notation.uses` is retired (D3): a lesson pulls a shared key into scope
+    // by referencing it in prose (`\term`) or math (`\explain`).
     local: z.array(localNotationDefinition).default([]),
   })
-  .default({ uses: [], local: [] });
+  .default({ local: [] });
 
 /**
  * Lesson frontmatter — reduced shape (Phase C1 schema, C2 codemod applied).
  *
  * Authored:  `title`, `description` (Starlight base), `teaches` (ordered — the
  *            curriculum contract, never derived), `assumptions`,
- *            `notation.uses` + `notation.local`.
+ *            `notation.local` (page-local symbols only).
  * Artifact:  `editorialStatus` (human-set trust flag).
  * Derived (in `content/collections.ts` + `content/lesson-derivation.ts`, never
  *            authored): `lessonId` (doc slug), `requires` (direct competency-DAG
@@ -100,10 +99,8 @@ const lessonNotation = z
  *            occurrences), `assessments` (colocated `<lesson>.checks.yml`),
  *            `sidebar` order (track order).
  * Dropped:   `aiAssisted`, `lastReviewed`, `riskTier`, `estimatedMinutes`
- *            (git history + `editorialStatus` + `NEEDS_SOURCE` carry provenance).
- *
- * `notation.uses` stays authored until the completeness gate compiles lesson
- * math in validation (debt D7 / step D3).
+ *            (git history + `editorialStatus` + `NEEDS_SOURCE` carry provenance);
+ *            `notation.uses` (D3 — a shared symbol is imported by using it).
  */
 const docs = defineCollection({
   loader: docsLoader(),

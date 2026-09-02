@@ -67,7 +67,6 @@ const lesson = (
 ): NotationLessonInput => ({
   lessonId,
   status: 'draft',
-  uses: [],
   localDefinitions: [],
   references: [],
   body: '',
@@ -117,7 +116,6 @@ describe('notation registry', () => {
       ],
       lessons: [
         lesson(lessonId, {
-          uses: ['curve'],
           localDefinitions: [localDefinition('rate', lessonId)],
           references: [reference('curve', `lessons/${lessonId}.mdx`, 'prose')],
         }),
@@ -148,7 +146,6 @@ describe('notation registry', () => {
       sharedDefinitions: [sharedDefinition('discount-factor')],
       lessons: [
         lesson(lessonId, {
-          uses: ['discount-factor'],
           localDefinitions: [
             localDefinition('local-factor', lessonId, {
               seeAlso: ['discount-factor'],
@@ -169,8 +166,8 @@ describe('notation registry', () => {
     expect(codes(registry.diagnostics)).not.toContain('unused-use');
   });
 
-  it('requires a local seeAlso target in shared scope to be imported', () => {
-    const lessonId = 'rates.undeclared-see-also';
+  it('resolves a local seeAlso target against shared scope with no import list', () => {
+    const lessonId = 'rates.local-see-also-shared';
     const registry = buildNotationRegistry({
       sharedDefinitions: [sharedDefinition('discount-factor')],
       lessons: [
@@ -187,17 +184,11 @@ describe('notation registry', () => {
       ],
     });
 
-    expect(registry.diagnostics).toContainEqual(
-      expect.objectContaining({
-        code: 'undeclared-reference',
-        key: 'discount-factor',
-        lessonId,
-        definitionId: `page:${lessonId}:local-factor`,
-      }),
-    );
+    expect(codes(registry.diagnostics)).not.toContain('undefined-reference');
     expect(registry.bundles[0]?.definitionIds).toEqual([
       `page:${lessonId}:local-factor`,
     ]);
+    expect(() => assertValidNotation(registry)).not.toThrow();
   });
 
   it('lets a local seeAlso target shadow a shared definition without an import', () => {
@@ -225,7 +216,7 @@ describe('notation registry', () => {
     expect(codes(registry.diagnostics)).not.toContain('undeclared-reference');
   });
 
-  it('requires direct shared references to be declared by the lesson', () => {
+  it('resolves a direct shared reference from the reference alone (no import list)', () => {
     const registry = buildNotationRegistry({
       sharedDefinitions: [sharedDefinition('discount-factor')],
       lessons: [
@@ -241,15 +232,11 @@ describe('notation registry', () => {
       ],
     });
 
-    expect(registry.diagnostics).toContainEqual(
-      expect.objectContaining({
-        code: 'undeclared-reference',
-        key: 'discount-factor',
-        lessonId: 'rates.discounting',
-      }),
-    );
-    expect(registry.bundles[0]?.bindings).toEqual([]);
-    expect(() => assertValidNotation(registry)).toThrow(/undeclared-reference/);
+    expect(codes(registry.diagnostics)).not.toContain('undefined-reference');
+    expect(registry.bundles[0]?.bindings).toEqual([
+      { key: 'discount-factor', definitionId: 'shared:discount-factor' },
+    ]);
+    expect(() => assertValidNotation(registry)).not.toThrow();
   });
 
   it('builds transitive page bundles and distinguishes direct backlinks', () => {
@@ -267,7 +254,6 @@ describe('notation registry', () => {
       ],
       lessons: [
         lesson('bonds.price', {
-          uses: ['bond-price'],
           references: [
             reference('bond-price', 'lessons/bonds.price.mdx', 'math'),
           ],
@@ -277,7 +263,6 @@ describe('notation registry', () => {
 
     expect(registry.bundles[0]).toMatchObject({
       lessonId: 'bonds.price',
-      declaredUses: ['bond-price'],
       bindings: [{ key: 'bond-price', definitionId: 'shared:bond-price' }],
       definitionIds: [
         'shared:bond-price',
@@ -321,7 +306,6 @@ describe('notation registry', () => {
       ],
       lessons: [
         lesson('bonds.price-see-also', {
-          uses: ['bond-price'],
           references: [
             reference('bond-price', 'lessons/bonds.price-see-also.mdx', 'math'),
           ],
@@ -346,7 +330,6 @@ describe('notation registry', () => {
       ],
       lessons: [
         lesson('lesson.unknown', {
-          uses: ['missing-page-key'],
           references: [
             reference(
               'missing-page-key',
@@ -457,10 +440,8 @@ describe('notation registry', () => {
     );
   });
 
-  it('reports duplicate lessons, duplicate imports, and unused declarations', () => {
-    const first = lesson('lesson.duplicates', {
-      uses: ['rate', 'rate'],
-    });
+  it('reports a duplicate lesson page', () => {
+    const first = lesson('lesson.duplicates');
     const registry = buildNotationRegistry({
       sharedDefinitions: [sharedDefinition('rate')],
       lessons: [first, { ...first, source: { file: 'lessons/duplicate.mdx' } }],
@@ -469,12 +450,6 @@ describe('notation registry', () => {
     expect(registry.diagnostics).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ code: 'duplicate-page' }),
-        expect.objectContaining({ code: 'duplicate-use', key: 'rate' }),
-        expect.objectContaining({
-          code: 'unused-use',
-          severity: 'warning',
-          key: 'rate',
-        }),
       ]),
     );
   });

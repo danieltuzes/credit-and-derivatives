@@ -7,9 +7,12 @@
  *   - `\\explain{rates.discount-factor}{D(0,t)}` remains available when
  *     lexical scope cannot select one meaning unambiguously.
  *
- * Prose references become ordinary links. Lesson math is resolved against
- * page-local definitions and explicit shared imports, then the adapter injects
- * the narrowly trusted `\\explain` marker before build-time KaTeX rendering.
+ * Prose references become ordinary links. Lesson math is resolved against the
+ * page glyph table — `notation.local` plus the shared entries the page names
+ * with `\\term{key}` (or `\\explain{key}{…}`) — and the base library; the
+ * adapter then injects the narrowly trusted `\\explain` marker before
+ * build-time KaTeX rendering. `notation.uses` is retired: the use is the
+ * declaration (D1 decision, 2026-09-02).
  *
  * Definitions can be supplied as a Map, an array, an object keyed by the
  * semantic key, or a loader returning one of those forms. Loaders are
@@ -30,7 +33,7 @@
 
 export const NOTATION_KEY_PATTERN = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 
-import { MathBindingError, bindMathNotation } from './math-bindings.mjs';
+import { GlyphResolutionError, resolveMathGlyphs } from './math-glyphs.mjs';
 
 const PROSE_SKIP_TYPES = new Set([
   'code',
@@ -103,9 +106,9 @@ function localDefinitionsFromFile(file) {
 }
 
 // Registry definition pages (`src/content/notation/*.md`) carry their own
-// worked equations. They have no `notation.uses` import list, so their math is
-// bound against the whole shared registry: an author writes ordinary LaTeX (or
-// an explicit `\explain{key}{latex}`) and every canonical symbol resolves.
+// worked equations. Their math is resolved against the whole shared registry:
+// an author writes ordinary LaTeX (or an explicit `\explain{key}{latex}`) and
+// every canonical symbol resolves.
 const NOTATION_REGISTRY_PATH = /[\\/]content[\\/]notation[\\/][^\\/]+\.md$/;
 const LESSON_DOC_PATH = /[\\/]content[\\/]docs[\\/](.+?)\.(?:md|mdx)$/;
 
@@ -132,29 +135,49 @@ function lessonIdFromFile(file) {
   return undefined;
 }
 
-function lessonNotationFromFile(file) {
+function lessonIdFrom(file) {
   const frontmatter =
     file?.data?.astro?.frontmatter ?? file?.data?.frontmatter ?? file?.data;
   const lessonId = frontmatter?.lessonId ?? lessonIdFromFile(file);
-  const uses = frontmatter?.notation?.uses;
-  return {
-    lessonId: typeof lessonId === 'string' ? lessonId : undefined,
-    uses: new Set(
-      Array.isArray(uses) ? uses.filter((key) => typeof key === 'string') : [],
-    ),
-  };
+  return typeof lessonId === 'string' ? lessonId : undefined;
 }
 
-function lessonScopedMathDefinitions(
-  lessonNotation,
-  localDefinitions,
-  sharedDefinitions,
-) {
-  if (!lessonNotation.lessonId) return [];
+const ANY_TERM_KEY = /\\term\\?\{([^{}]+?)\\?\}/g;
+const ANY_EXPLAIN_KEY = /\\explain\s*\{([^{}]+)\}/g;
 
+/**
+ * The shared keys a page pulls into scope (D1 decision — `notation.uses` is
+ * retired, the declaration is the use): every key it introduces in prose with
+ * `\term{key}` and every key it disambiguates in math with `\explain{key}{…}`.
+ * Scanning the tree covers both real VFiles and hand-built test trees.
+ */
+function collectPageSharedKeys(tree) {
+  const keys = new Set();
+  const scan = (node) => {
+    if (!node || typeof node !== 'object') return;
+    if (typeof node.value === 'string' && node.value.includes('\\')) {
+      for (const pattern of [ANY_TERM_KEY, ANY_EXPLAIN_KEY]) {
+        pattern.lastIndex = 0;
+        let match;
+        while ((match = pattern.exec(node.value))) {
+          const key = match[1].trim();
+          if (NOTATION_KEY_PATTERN.test(key)) keys.add(key);
+        }
+      }
+    }
+    if (Array.isArray(node.children)) node.children.forEach(scan);
+  };
+  scan(tree);
+  return keys;
+}
+
+function pageGlyphScope(localDefinitions, sharedDefinitions, pageSharedKeys) {
   return [
     ...localDefinitions.values(),
-    ...[...lessonNotation.uses]
+    // A page-local definition wins; a shared entry the page also names with
+    // `\term` does not shadow it or land twice in the resolver's scope.
+    ...[...pageSharedKeys]
+      .filter((key) => !localDefinitions.has(key))
       .map((key) => sharedDefinitions.get(key))
       .filter(Boolean),
   ].map((definition) => ({
@@ -241,6 +264,25 @@ function warn(file, message, node) {
     return;
   }
   console.warn(message);
+}
+
+/**
+ * `file:line:column` for an unresolved identifier, where `offset` is its
+ * position inside the math node's source. Falls back to `file` alone when the
+ * node has no parse position (hand-built test trees).
+ */
+function tokenLocation(file, node, value, offset) {
+  const path = file?.path ?? 'math';
+  const start = node?.position?.start;
+  if (!start || typeof start.line !== 'number') return path;
+  const before = String(value).slice(0, offset);
+  const newlines = before.split('\n').length - 1;
+  const line = start.line + newlines;
+  const column =
+    newlines === 0
+      ? (start.column ?? 1) + offset
+      : before.length - before.lastIndexOf('\n') - 1 + 1;
+  return `${path}:${line}:${column}`;
 }
 
 function firstUnescaped(value, marker, from = 0) {
@@ -428,12 +470,12 @@ export default function remarkNotation(options = {}) {
       (definition) => ({ key: definition.key, notation: definition.notation }),
     );
     const localDefinitions = localDefinitionsFromFile(file);
-    const lessonNotation = lessonNotationFromFile(file);
+    const lessonId = lessonIdFrom(file);
     const registryFile = isNotationRegistryFile(file);
-    const mathDefinitions = lessonScopedMathDefinitions(
-      lessonNotation,
+    const mathScope = pageGlyphScope(
       localDefinitions,
       sharedDefinitions,
+      collectPageSharedKeys(tree),
     );
     const references = [];
     const resolved = new Map();
@@ -460,18 +502,6 @@ export default function remarkNotation(options = {}) {
           }
         : undefined;
 
-      if (
-        lessonNotation.lessonId &&
-        !localDefinitions.has(key) &&
-        !lessonNotation.uses.has(key)
-      ) {
-        fail(
-          file,
-          `Notation key "${key}" is used in ${lessonNotation.lessonId} but is not imported by notation.uses.`,
-          node,
-        );
-      }
-
       if (!result) {
         const message = `Unknown notation key "${key}" in ${kind}.`;
         if (unknown === 'error') fail(file, message, node);
@@ -490,23 +520,21 @@ export default function remarkNotation(options = {}) {
         const value = String(node.value ?? '');
         inspectExplainCalls(value, resolve, file, node, references);
 
-        const bindingScope = lessonNotation.lessonId
-          ? mathDefinitions
+        const bindingScope = lessonId
+          ? mathScope
           : registryFile
             ? registryMathDefinitions
             : undefined;
 
         if (bindingScope) {
-          const context = lessonNotation.lessonId
-            ? 'lesson math'
-            : 'notation definition math';
+          const context = lessonId ? 'lesson math' : 'notation definition math';
 
           let result;
           try {
-            result = bindMathNotation(value, bindingScope);
+            result = resolveMathGlyphs(value, bindingScope);
           } catch (error) {
             const message =
-              error instanceof MathBindingError
+              error instanceof GlyphResolutionError
                 ? error.message
                 : `Could not resolve ${context}: ${
                     error instanceof Error ? error.message : String(error)
@@ -516,11 +544,14 @@ export default function remarkNotation(options = {}) {
 
           if (result.unresolved.length > 0) {
             const unresolved = result.unresolved
-              .map(({ token, start }) => `"${token}" at offset ${start}`)
+              .map(
+                ({ token, start }) =>
+                  `${tokenLocation(file, node, value, start)}: "${token}"`,
+              )
               .join(', ');
             fail(
               file,
-              `Unresolved notation in ${context}: ${unresolved}. Introduce and import or locally define every variable, or wrap it in \\explain{key}{latex}.`,
+              `Unresolved notation in ${context}: ${unresolved}. Introduce the symbol with \\term{key}, define it in notation.local, or wrap it in \\explain{key}{latex}.`,
               node,
             );
           }

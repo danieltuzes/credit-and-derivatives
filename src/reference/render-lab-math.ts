@@ -1,5 +1,5 @@
 import katex from 'katex';
-import { bindMathNotation } from './math-bindings.mjs';
+import { resolveMathGlyphs } from './math-glyphs.mjs';
 import { createNotationKatexOptions } from './katex-options.mjs';
 
 export interface LabMathScopeDefinition {
@@ -53,7 +53,7 @@ export function renderLabMath(
 
   let result: BindResult;
   try {
-    result = bindMathNotation(forBinding, [...scope]) as BindResult;
+    result = resolveMathGlyphs(forBinding, [...scope]) as BindResult;
   } catch (error) {
     throw new Error(
       `Lab math failed to compile: ${
@@ -66,7 +66,7 @@ export function renderLabMath(
     const list = result.unresolved.map(({ token }) => `"${token}"`).join(', ');
     throw new Error(
       `Lab math uses undefined notation ${list}. Every symbol must resolve to ` +
-        `a notation entry in this page's scope (notation.uses or ` +
+        `a notation entry in this page's glyph scope (a \\term reference or ` +
         `notation.local).\n  template: ${template.trim()}`,
     );
   }

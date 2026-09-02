@@ -42,13 +42,6 @@ const sharedDefinitions = [
 const validFrontmatter = {
   lessonId: 'compiler.notation-fixture',
   notation: {
-    uses: [
-      'signed-cash-flow',
-      'payment-time',
-      'nominal-annual-rate',
-      'compounding-frequency',
-      'periodic-rate',
-    ],
     local: [
       {
         key: 'payment-index',
@@ -100,7 +93,7 @@ $$`,
 
   it('compiles the periodic-rate fraction without a recovered KaTeX error', async () => {
     const result = await compiler.render(
-      String.raw`Under the stated nominal-rate convention, the periodic rate is $r_m=\frac{j^{(m)}}{m}$.`,
+      String.raw`The \term\{periodic-rate\}, \term\{nominal-annual-rate\}, and \term\{compounding-frequency\} satisfy $r_m=\frac{j^{(m)}}{m}$.`,
       {
         frontmatter: validFrontmatter,
         fileURL: new URL('file:///compiler-periodic-rate-fixture.mdx'),
@@ -139,11 +132,47 @@ $$`,
         compiler.render('An unbound variable is $t$.', {
           frontmatter: {
             lessonId: 'compiler.unresolved-fixture',
-            notation: { uses: [], local: [] },
+            notation: { local: [] },
           },
           fileURL: new URL('file:///compiler-unresolved-fixture.mdx'),
         }),
-      ).rejects.toThrow(/Unresolved notation in lesson math: "t" at offset 0/);
+      ).rejects.toThrow(
+        /Unresolved notation in lesson math: [^:]+:\d+:\d+: "t"/,
+      );
+    } finally {
+      consoleError.mockRestore();
+    }
+  });
+
+  it('gates math inside a component slot at file:line:token', async () => {
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+    try {
+      await expect(
+        compiler.render(
+          [
+            'The \\term\\{signed-cash-flow\\} recurs.',
+            '',
+            '<CompactExample label="x">',
+            '',
+            '$$',
+            'CF_k + w',
+            '$$',
+            '',
+            '</CompactExample>',
+          ].join('\n'),
+          {
+            frontmatter: {
+              lessonId: 'compiler.slot-fixture',
+              notation: { local: [] },
+            },
+            fileURL: new URL('file:///compiler-slot-fixture.mdx'),
+          },
+        ),
+      ).rejects.toThrow(
+        /Unresolved notation in lesson math: [^:]+:\d+:\d+: "w"/,
+      );
     } finally {
       consoleError.mockRestore();
     }

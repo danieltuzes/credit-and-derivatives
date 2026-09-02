@@ -5,7 +5,12 @@ import NotationLayer, {
   type NotationLayerDefinition,
 } from './NotationLayer.astro';
 import { resolveLabel } from '../../reference/label';
-import { isLessonSlug } from '../../content/lesson-derivation';
+import {
+  isLessonSlug,
+  lessonIdFromSlug,
+} from '../../content/lesson-derivation';
+import { loadNotationRegistryInput } from '../../content/collections';
+import { buildNotationRegistry } from '../../reference/registry';
 
 const [notationEntries, lessonEntries] = await Promise.all([
   getCollection('notation'),
@@ -13,16 +18,25 @@ const [notationEntries, lessonEntries] = await Promise.all([
 ]);
 const labelOf = (data: { key: string; label?: string }) =>
   resolveLabel(data.key, data.label);
-const lessonsByNotationKey = new Map<string, typeof lessonEntries>();
 const notationLabelByKey = new Map(
   notationEntries.map((entry) => [entry.data.key, labelOf(entry.data)]),
 );
-for (const lesson of lessonEntries) {
-  for (const key of lesson.data.notation.uses) {
-    const current = lessonsByNotationKey.get(key) ?? [];
-    current.push(lesson);
-    lessonsByNotationKey.set(key, current);
-  }
+
+// "Used directly in" comes from the resolved notation registry — each lesson's
+// direct `\term` / `\explain` references — not an authored import list
+// (`notation.uses` is retired).
+const registry = buildNotationRegistry(await loadNotationRegistryInput());
+const lessonById = new Map(
+  lessonEntries.map((lesson) => [lessonIdFromSlug(lesson.id), lesson]),
+);
+const lessonsByNotationKey = new Map<string, typeof lessonEntries>();
+for (const backlink of registry.backlinks) {
+  if (!backlink.direct) continue;
+  const lesson = lessonById.get(backlink.lessonId);
+  if (!lesson) continue;
+  const current = lessonsByNotationKey.get(backlink.key) ?? [];
+  if (!current.includes(lesson)) current.push(lesson);
+  lessonsByNotationKey.set(backlink.key, current);
 }
 
 const renderedEntries = await Promise.all(
