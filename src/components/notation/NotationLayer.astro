@@ -702,6 +702,10 @@ const panelId = `${id}-panel`;
     .notation-panel {
       position: fixed;
       z-index: 100;
+      /* The panel is an <aside> in the content flow; a stray cascade margin
+         would offset a position:fixed box from its computed `top`, so the
+         JS placement (which clears display equations) must start from zero. */
+      margin: 0;
       width: min(23rem, calc(100vw - 1.5rem));
       overflow: auto;
       padding: 1rem;
