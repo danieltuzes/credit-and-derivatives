@@ -96,7 +96,7 @@ test('renders a hovered CF_k label with MathML and a smaller subscript', async (
     'signed-cash-flow',
   );
   await expect(explanationPanel.locator('[data-panel-title]')).toHaveText(
-    'Signed cash-flow amount',
+    'Signed cash flow',
   );
   await expect(explanationPanel.locator('[data-panel-summary]')).toContainText(
     'Amount received or paid at one event',
@@ -357,9 +357,7 @@ test('explains notation on hover from the standalone glossary', async ({
   await symbol.hover();
   await expect(panel).toBeVisible();
   await expect(panel).toHaveAttribute('data-active-notation-key', 'bond-price');
-  await expect(panel.locator('[data-panel-title]')).toHaveText(
-    'Bond price at valuation time',
-  );
+  await expect(panel.locator('[data-panel-title]')).toHaveText('Bond price');
 
   // Clicking pins it open until dismissed.
   await symbol.click();
