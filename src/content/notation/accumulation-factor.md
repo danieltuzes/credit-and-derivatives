@@ -1,7 +1,6 @@
 ---
 key: accumulation-factor
 latex: 'A(0,t)'
-title: Accumulation factor
 meaning: Grows one current unit over a stated future horizon under the selected rate model.
 aliases:
   - compounding factor
@@ -10,7 +9,7 @@ domain: rates
 units: dimensionless currency-units per current currency-unit
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 2 §2.1 (compounding of an annualized rate); the accumulation factor is the reciprocal of the discount factor d(t) of Ch. 1 §1.2.'
+    locator: 'Ch. 2 §2.4, printed pp. 73-74, Eqs. 2.17-2.19 (growth of one current currency unit to time t and the reciprocal relation between that growth factor and d(t)).'
 seeAlso:
   - periodic-rate
   - compounding-frequency

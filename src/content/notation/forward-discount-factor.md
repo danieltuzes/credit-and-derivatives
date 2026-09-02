@@ -1,7 +1,6 @@
 ---
 key: forward-discount-factor
 latex: 'Z(t,T)'
-title: Forward discount factor
 meaning: 'Value at future model time t of one currency unit paid at later model time T under the stated deterministic curve, with t strictly before T.'
 aliases:
   - future-to-future discount factor
@@ -9,7 +8,7 @@ domain: rates
 units: currency at time t per one unit of the same currency at time T
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 2 §§2.1 and 2.4 (annualized rate quotations and spot-rate discount factors).'
+    locator: 'Ch. 2 §2.5, printed pp. 74-75, Eqs. 2.20-2.22 (the future interval from t - 0.5 to t and its value relation through dated discount factors).'
 seeAlso:
   - discount-factor
   - payment-time

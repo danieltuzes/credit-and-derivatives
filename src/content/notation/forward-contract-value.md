@@ -1,13 +1,12 @@
 ---
 key: forward-contract-value
 latex: 'V_t^{\mathrm{fwd}}'
-title: Forward contract value
 meaning: "Signed current value of an existing forward from the named counterparty's perspective; positive to the long when the current forward price exceeds the contract's fixed delivery price under the lesson model."
 domain: derivatives
 units: stated currency at model time t
 sources:
   - id: hull-options-futures
-    locator: 'Ch. 5 §5.7, printed pp. 109-111 (value of an existing forward).'
+    locator: 'Ch. 5 §5.7, printed pp. 109-111, Eqs. 5.4-5.7 (signed value of an existing long or short forward).'
 seeAlso:
   - forward-price
   - forward-delivery-price

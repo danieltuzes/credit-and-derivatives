@@ -1,7 +1,6 @@
 ---
 key: nominal-annual-rate
 latex: 'j^{(m)}'
-title: Nominal annual rate
 meaning: Annualized rate quote that must be paired with its compounding frequency.
 aliases:
   - nominal rate
@@ -10,7 +9,7 @@ domain: rates
 units: decimal per year in code; percent per year in labeled prose and UI
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 2 §2.1 (annualized rate quotations and compounding conventions).'
+    locator: 'Ch. 2 §2.1, printed pp. 66-67, Eq. 2.7 (annual rate quote paired with n compounding periods per year).'
 seeAlso:
   - compounding-frequency
   - periodic-rate

@@ -1,7 +1,6 @@
 ---
 key: real-world-probability-measure
 latex: '\mathbb{P}'
-title: Real-world probability measure
 meaning: 'Assigns modeled probabilities intended to describe actual-world event likelihoods; used for forecasting and statistical statements under the stated real-world model.'
 aliases:
   - physical probability measure
@@ -10,7 +9,7 @@ domain: probability
 units: dimensionless probability weights between zero and one
 sources:
   - id: shreve-stochastic-calculus-finance-ii
-    locator: 'Ch. 1 §1.6, printed pp. 32-35 (change of measure; actual versus risk-neutral probabilities).'
+    locator: 'Ch. 1 §1.6, printed p. 35 (actual and risk-neutral probability measures and their distinct roles).'
   - id: hull-options-futures
     locator: 'Ch. 23 §23.5, printed pp. 528-530 (risk-neutral versus real-world default probabilities).'
 seeAlso:

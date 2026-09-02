@@ -1,7 +1,6 @@
 ---
 key: cds-notional
 latex: 'N'
-title: CDS notional
 meaning: 'Reference currency amount that scales the simplified premium and protection legs; a positive amount, not itself a signed leg cash flow.'
 aliases:
   - CDS reference notional
@@ -9,9 +8,9 @@ domain: cds
 units: stated currency
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 14 §14.5, printed pp. 361-366 (CDS contract, fee and contingent legs, quarterly premium, and default accrual).'
+    locator: 'Ch. 14 §14.5, printed pp. 361-362 (CDS notional amount and premium/protection cash flows scaled to that amount).'
   - id: hull-options-futures
-    locator: 'Ch. 24 §24.1, printed pp. 548-550 (CDS definition, quarterly premium, protection settlement, and accrued premium after a mid-period default).'
+    locator: 'Ch. 24 §24.1, printed p. 548 (notional principal and periodic CDS premium payments).'
 seeAlso: []
 alignment:
   kind: competency

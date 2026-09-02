@@ -1,13 +1,12 @@
 ---
 key: forward-delivery-time
 latex: 'T_{\mathrm{fwd}}'
-title: Forward delivery time
 meaning: "Future model time when the forward counterparties exchange the underlying and delivery payment; a contract date shared by the long and short, not the underlying asset's maturity."
 domain: derivatives
 units: model-years from the stated valuation time
 sources:
   - id: hull-options-futures
-    locator: 'Ch. 5 §§5.3-5.5, printed pp. 103-108 (cash-and-carry assumptions, the no-income forward price, and the known-income adjustment including a coupon-bond example).'
+    locator: 'Ch. 5 §5.3, printed p. 103 (T as time until the forward or futures delivery date).'
 seeAlso:
   - payment-time
 alignment:

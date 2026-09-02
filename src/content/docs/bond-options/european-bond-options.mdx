@@ -32,12 +32,11 @@ notation:
   local:
     - key: bond-option-expiry-value
       latex: 'B_{T_{\mathrm{opt}}}^{\mathrm{dirty}}'
-      title: Dirty bond value at option expiry
       meaning: Ex-coupon dirty cash value of the named bond at the European exercise instant.
       units: stated currency per bond at option expiry
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 28 §28.1, printed pp. 648-652 (European bond option value and payoff at expiry against a dirty strike).'
+          locator: 'Ch. 28 §28.1, printed pp. 648-650, Eqs. 28.1-28.3 (European bond options on cash or dirty bond value with a cash strike).'
       seeAlso:
         - dirty-bond-price
       alignment:
@@ -46,24 +45,22 @@ notation:
         introducedInLesson: bond-options.european-bond-options
     - key: bond-call-expiry-payoff
       latex: 'X^{B,\mathrm{call}}_{T_{\mathrm{opt}}}'
-      title: Bond call expiry payoff
       meaning: Non-negative holder payoff from buying the bond at the dirty strike when economically beneficial.
       units: stated currency per option at expiry
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 28 §28.1, printed pp. 648-652 (European bond option value and payoff at expiry against a dirty strike).'
+          locator: 'Ch. 28 §28.1, printed pp. 648-650, Eqs. 28.1-28.3 (European bond options on cash or dirty bond value with a cash strike).'
       alignment:
         kind: competency
         introducedByCompetency: bond-options.european-value.calculate
         introducedInLesson: bond-options.european-bond-options
     - key: bond-put-expiry-payoff
       latex: 'X^{B,\mathrm{put}}_{T_{\mathrm{opt}}}'
-      title: Bond put expiry payoff
       meaning: Non-negative holder payoff from selling the bond at the dirty strike when economically beneficial.
       units: stated currency per option at expiry
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 28 §28.1, printed pp. 648-652 (European bond option value and payoff at expiry against a dirty strike).'
+          locator: 'Ch. 28 §28.1, printed pp. 648-650, Eqs. 28.1-28.3 (European bond options on cash or dirty bond value with a cash strike).'
       alignment:
         kind: competency
         introducedByCompetency: bond-options.european-value.calculate

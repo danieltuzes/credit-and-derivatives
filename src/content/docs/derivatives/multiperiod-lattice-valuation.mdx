@@ -29,24 +29,22 @@ notation:
   local:
     - key: lattice-node-discount-factor
       latex: 'd_{i,j}'
-      title: One-period node discount factor
       meaning: Currency at node i,j per one unit of currency at either successor node one step later.
       units: current-node currency per next-time currency
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eq. 12.5 and Eqs. 12.7-12.10 (one-step discounting in backward induction).'
       alignment:
         kind: competency
         introducedByCompetency: finance.backward-induction.calculate
         introducedInLesson: derivatives.multiperiod-lattice-valuation
     - key: lattice-node-up-weight
       latex: 'q_{i,j}'
-      title: Risk-neutral node up weight
       meaning: Pricing probability assigned to the up successor conditional on the current node.
       units: probability between zero and one
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eq. 12.6 and Eqs. 12.7-12.10 (risk-neutral up weight in backward induction).'
       seeAlso:
         - risk-neutral-probability-measure
       alignment:
@@ -55,12 +53,11 @@ notation:
         introducedInLesson: derivatives.multiperiod-lattice-valuation
     - key: lattice-next-cash-flow
       latex: 'CF_{i+1,j}'
-      title: Next-date node cash flow
       meaning: Signed cash paid at a successor node immediately before its continuation value is measured.
       units: stated currency at the successor time
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eqs. 12.7-12.10 (backward induction from successor claim values and terminal payoffs).'
       alignment:
         kind: competency
         introducedByCompetency: finance.backward-induction.calculate

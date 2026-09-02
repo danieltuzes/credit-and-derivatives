@@ -1,7 +1,6 @@
 ---
 key: cds-premium-annuity
 latex: 'A_0^{\mathrm{prem}}'
-title: CDS premium annuity per unit notional
 meaning: "Present-value coefficient that multiplies contractual spread and notional in the simplified premium leg; positive, and includes scheduled premiums and exact accrued premium under the lesson's default-time model."
 aliases:
   - risky premium annuity
@@ -9,9 +8,9 @@ domain: cds
 units: model-years of present value per unit notional
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 14 §§14.5-14.6, printed pp. 361-370, eqs. 14.4-14.7 (premium-leg present-value coefficient including accrued premium), and Appendix A14.1-A14.2, printed pp. 505-507.'
+    locator: 'Ch. 14 §14.6, printed pp. 368-370, Table 14.10 and Eq. 14.6; Appendix A14.2, printed p. 506, Eq. A14.5 (fee-leg coefficient from scheduled premiums plus half-period default accrual).'
   - id: hull-options-futures
-    locator: 'Ch. 24 §24.2, printed pp. 551-554, Tables 24.1-24.4 (survival/default weighting, scheduled premium, half-period default and accrual approximation, protection present value, and equal-leg spread).'
+    locator: 'Ch. 24 §24.2, printed pp. 552-553, Table 24.2 and Table 24.4 (present-value coefficients for scheduled and accrued premium payments).'
 seeAlso:
   - cds-accrual-year-fraction
   - survival-probability

@@ -1,13 +1,12 @@
 ---
 key: option-expiry-time
 latex: 'T_{\mathrm{opt}}'
-title: Option expiry time
 meaning: "Future model time when a European option's exercise decision and payoff are determined; a contract date shared by holder and writer, distinct from a bond maturity."
 domain: options
 units: model-years from the stated valuation time
 sources:
   - id: hull-options-futures
-    locator: 'Ch. 1 §1.5, printed pp. 7-9 (option expiration date), and Ch. 9, printed pp. 211-212.'
+    locator: 'Ch. 1 §1.5, printed p. 7 (expiration or maturity date and European exercise only on that date).'
 seeAlso:
   - payment-time
 alignment:

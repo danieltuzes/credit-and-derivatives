@@ -39,48 +39,44 @@ notation:
   local:
     - key: knockout-node-discount-factor
       latex: 'd_{i,j}'
-      title: Knockout-lattice node discount factor
       meaning: One-period discount factor from the current alive node to the next lattice time.
       units: current-node currency per next-time currency
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eq. 12.5 and Eqs. 12.7-12.10 (one-step discounting in backward induction).'
       alignment:
         kind: competency
         introducedByCompetency: bond-options.default-knockout-value.calculate
         introducedInLesson: bond-options.issuer-default-knockout
     - key: knockout-node-up-weight
       latex: 'q_{i,j}'
-      title: Knockout-lattice risk-neutral up weight
       meaning: Conditional pricing probability assigned to the next up rate state if the issuer survives.
       units: probability between zero and one
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eq. 12.6 and Eqs. 12.7-12.10 (risk-neutral up weight in backward induction).'
       alignment:
         kind: competency
         introducedByCompetency: bond-options.default-knockout-value.calculate
         introducedInLesson: bond-options.issuer-default-knockout
     - key: surviving-bond-next-cash-flow
       latex: 'CF^{B}_{i+1}'
-      title: Next surviving bond cash flow
       meaning: Coupon or coupon-plus-redemption paid at the next lattice time only if the issuer survives the period.
       units: stated currency per bond at the next time
       sources:
         - id: tuckman-serrat-fixed-income
-          locator: 'Ch. 1 §§1.1-1.2, printed pp. 50-52 (scheduled coupon and principal cash flows of a coupon bond).'
+          locator: 'Ch. 1 §1.1, printed p. 50 and Table 1.1 (scheduled coupon and principal cash flows); Ch. 14 §14.7, printed pp. 371-372 and Table 14.11 (bond cash flows separated into default and no-default states).'
       alignment:
         kind: competency
         introducedByCompetency: bond-options.default-knockout-value.calculate
         introducedInLesson: bond-options.issuer-default-knockout
     - key: bond-default-recovery-cash
       latex: 'R_{i,j}^{B}'
-      title: Bond recovery cash after period default
       meaning: Non-negative recovery paid on the underlying bond at the next lattice date after default in the period.
       units: stated currency per bond at the next time
       sources:
         - id: tuckman-serrat-fixed-income
-          locator: 'Ch. 14 §14.5, printed pp. 361-366 (recovery fraction of notional after default).'
+          locator: 'Ch. 14 §14.7, printed pp. 371-372, Table 14.11 and Eq. 14.9 (defaulted bond principal recovery as face amount times recovery rate).'
       seeAlso:
         - recovery-rate
       alignment:
@@ -89,14 +85,13 @@ notation:
         introducedInLesson: bond-options.issuer-default-knockout
     - key: surviving-bond-continuation-value
       latex: 'H^B_{i,j}'
-      title: Surviving bond continuation value
       meaning: Next-time scheduled bond cash plus risk-neutral expected ex-cash-flow bond value, conditional on period survival.
       units: stated currency per bond at the next time
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eqs. 12.7-12.10 (backward induction from successor claim values and terminal payoffs).'
         - id: tuckman-serrat-fixed-income
-          locator: 'Ch. 7 §7.3, printed pp. 182-184, eqs. 7.7-7.8 (risk-neutral valuation on a binomial tree by expected discounted value).'
+          locator: 'Ch. 7 §7.3, printed pp. 182-184, Eqs. 7.7-7.8 (one-period risk-neutral expected-discounted valuation); Ch. 14 §14.7, printed pp. 371-372, Table 14.11 and Eqs. 14.8-14.10 (survival- and default-contingent bond cash flows).'
       alignment:
         kind: competency
         introducedByCompetency: bond-options.default-knockout-value.calculate

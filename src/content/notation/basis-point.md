@@ -1,7 +1,6 @@
 ---
 key: basis-point
 latex: '1\,\mathrm{bp}'
-title: Basis point
 meaning: Rate-change unit equal to one hundredth of one percentage point.
 aliases:
   - bp
@@ -10,7 +9,7 @@ domain: rates
 units: one ten-thousandth in decimal-rate units
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 0 (market overview; a basis point defined as 0.01%).'
+    locator: 'Ch. O §O.2, printed p. 7, n. 4 (a basis point equals 0.01 percentage point).'
 seeAlso:
   - nominal-annual-rate
 alignment:

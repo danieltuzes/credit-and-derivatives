@@ -35,12 +35,11 @@ notation:
   local:
     - key: parity-income-present-value
       latex: 'I_0'
-      title: Present value of income before option expiry
       meaning: 'Valuation-time value of deterministic income paid by the underlying before the matched option expiry. Subtracting it from spot gives the prepaid forward value used in parity.'
       units: stated currency at valuation time per unit of underlying
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 10 §10.4, printed pp. 221-225 (prepaid forward and the present value of income in European put-call parity).'
+          locator: 'Ch. 5 §5.5, printed pp. 107-108, Eq. 5.2 (spot less present value of known pre-delivery income), and Ch. 10 §10.7, printed pp. 229-230, Eq. 10.10 (present value of dividends in European put-call parity).'
       seeAlso:
         - discount-factor
       alignment:
@@ -49,12 +48,11 @@ notation:
         introducedInLesson: derivatives.put-call-parity
     - key: prepaid-forward-value
       latex: '\widetilde{F}_{0,T_{\mathrm{opt}}}'
-      title: Prepaid forward value
       meaning: 'Current value of receiving the underlying at expiry with no delivery payment then. Under the known-income model it equals spot value less the present value of income paid before expiry.'
       units: stated currency at valuation time per unit of underlying
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 10 §10.4, printed pp. 221-225 (prepaid forward and the present value of income in European put-call parity).'
+          locator: 'Ch. 5 §5.5, printed pp. 107-108, Eq. 5.2 (spot less present value of known pre-delivery income as discounted forward value), and Ch. 10 §10.7, printed pp. 229-230, Eq. 10.10 (the same quantity in European put-call parity).'
       seeAlso:
         - derivative-underlying-value
       alignment:

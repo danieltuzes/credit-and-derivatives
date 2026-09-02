@@ -1,7 +1,6 @@
 ---
 key: cds-contract-spread
 latex: 's'
-title: CDS contractual spread
 meaning: 'Annualized premium rate applied to notional and each stated accrual year fraction; a positive rate paid by the protection buyer in the simplified lesson.'
 aliases:
   - CDS premium rate
@@ -9,9 +8,9 @@ domain: cds
 units: decimal per year in calculations; basis points per year when explicitly quoted
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 14 §14.5, printed pp. 361-366 (CDS contract, fee and contingent legs, quarterly premium, and default accrual).'
+    locator: 'Ch. 14 §14.5, printed p. 362 (CDS spread as the annualized premium on a CDS with zero upfront payment).'
   - id: hull-options-futures
-    locator: 'Ch. 24 §24.1, printed pp. 548-550 (CDS definition, quarterly premium, protection settlement, and accrued premium after a mid-period default).'
+    locator: 'Ch. 24 §24.1, printed pp. 548-549 (periodic premium amount and CDS spread as an annual percentage of notional).'
 seeAlso:
   - cds-notional
   - basis-point

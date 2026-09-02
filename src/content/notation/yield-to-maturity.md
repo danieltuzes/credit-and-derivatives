@@ -1,7 +1,6 @@
 ---
 key: yield-to-maturity
 latex: 'y^{(m_{\mathrm B})}'
-title: Yield to maturity
 meaning: 'Single nominal annual rate that reproduces the simplified bond price.'
 aliases:
   - YTM
@@ -10,9 +9,9 @@ domain: bonds
 units: nominal annual decimal rate compounded at the bond payment frequency
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 3 §3.2 (yield to maturity as the single rate that reproduces a bond price).'
+    locator: 'Ch. 3 §3.2, printed pp. 82-83, Eqs. 3.5-3.8 (yield to maturity as the single rate that discounts a bond’s cash flows to its market price).'
   - id: finra-bond-yield
-    locator: "Sections 'What Is Yield?' and 'Yield to Maturity' (yield to maturity as the discount rate that equates all future cash flows to the current price)."
+    locator: "§ Key Terms (yield to maturity as the discount rate equating future coupon and principal cash flows to the bond's market price)."
 seeAlso:
   - bond-price
   - bond-cash-flow

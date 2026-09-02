@@ -1,7 +1,6 @@
 ---
 key: coupon-payment
 latex: 'C'
-title: Coupon payment
 meaning: 'Level periodic cash amount promised by the simplified fixed-rate bond; a positive receipt for the bondholder in these lessons.'
 aliases:
   - periodic coupon

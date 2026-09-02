@@ -1,7 +1,6 @@
 ---
 key: annual-coupon-rate
 latex: 'c'
-title: Annual coupon rate
 meaning: "Contractual annual rate used to determine a fixed-rate bond's coupon payments; applied to face value, not to market price."
 aliases:
   - coupon rate

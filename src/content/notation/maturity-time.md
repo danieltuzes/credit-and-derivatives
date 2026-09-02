@@ -1,7 +1,6 @@
 ---
 key: maturity-time
 latex: 'T'
-title: Maturity time
 meaning: Final scheduled time when principal is redeemed in the simplified bond.
 aliases:
   - term to maturity

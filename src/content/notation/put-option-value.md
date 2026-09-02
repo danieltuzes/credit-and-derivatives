@@ -1,13 +1,13 @@
 ---
 key: put-option-value
 latex: 'p_t'
-title: European put value
+label: 'European put value'
 meaning: 'Current non-negative value to the holder of a European put under the stated model, before any financing or transaction costs.'
 domain: options
 units: stated currency at model time t
 sources:
   - id: hull-options-futures
-    locator: 'Ch. 1 §1.5, printed pp. 7-9 (put option and holder rights), and Ch. 9, printed pp. 211-212 (value versus payoff and profit).'
+    locator: 'Ch. 1 §1.5, printed pp. 7-9 (put holder right and option purchase price), and Ch. 9 §9.1, printed pp. 194-196 (European put option price and holder value/profit example).'
 seeAlso:
   - option-strike-price
   - option-expiry-time

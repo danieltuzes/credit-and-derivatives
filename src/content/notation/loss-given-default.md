@@ -1,7 +1,6 @@
 ---
 key: loss-given-default
 latex: '\mathrm{LGD}'
-title: Loss given default fraction
 meaning: 'Fraction of an explicitly stated reference amount not recovered under a deterministic recovery convention, relative to the same reference amount used by the recovery rate.'
 aliases:
   - LGD
@@ -9,7 +8,7 @@ domain: credit
 units: decimal fraction between zero and one
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 14 §14.5, printed pp. 361-366 (loss fraction applied to notional in the contingent leg).'
+    locator: 'Ch. 14 §14.2, printed p. 353 (loss as one minus the recovery fraction of face amount); Appendix A14.2, printed p. 506, Eq. A14.6 (CDS contingent-leg amount scaled by one minus recovery).'
 seeAlso:
   - recovery-rate
 alignment:

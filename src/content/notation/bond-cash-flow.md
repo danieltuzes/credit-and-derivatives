@@ -1,7 +1,6 @@
 ---
 key: bond-cash-flow
 latex: 'CF_k^{\mathrm{bond}}'
-title: Bond cash flow
 meaning: 'Promised amount paid to the bondholder on one scheduled payment date; a positive receipt for the bondholder, with default excluded in this slice.'
 aliases:
   - promised bond payment
@@ -9,7 +8,7 @@ domain: bonds
 units: stated currency at payment time t_k
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 1 §§1.1-1.2, printed pp. 50-52 (scheduled coupon and principal cash flows of a coupon bond).'
+    locator: 'Ch. 1 §1.1, printed p. 50 and Table 1.1 (scheduled coupon payments and principal repayment of a coupon bond).'
 seeAlso:
   - coupon-payment
   - face-value

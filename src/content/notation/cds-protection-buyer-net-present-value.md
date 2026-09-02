@@ -1,7 +1,6 @@
 ---
 key: cds-protection-buyer-net-present-value
 latex: 'PV_0^{\mathrm{buyer}}'
-title: CDS protection-buyer net present value
 meaning: 'Signed protection-buyer value equal to protection-leg magnitude minus premium-leg magnitude; positive favors the protection buyer and negative favors the protection seller in the two-leg toy model.'
 aliases:
   - protection-buyer net PV
@@ -9,9 +8,9 @@ domain: cds
 units: stated currency at valuation time
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 14 §§14.5-14.6, printed pp. 361-370 (contingent leg minus fee leg).'
+    locator: 'Ch. 14 §14.6, printed pp. 369-370, Table 14.10 and Eqs. 14.6-14.7 (fee- and contingent-leg values and the upfront amount balancing their difference).'
   - id: hull-options-futures
-    locator: 'Ch. 24 §24.2, printed pp. 551-554, Tables 24.1-24.4 (survival/default weighting, scheduled premium, half-period default and accrual approximation, protection present value, and equal-leg spread).'
+    locator: 'Ch. 24 §24.2, printed pp. 552-554, Tables 24.2-24.4 (premium and protection present values and the buyer/seller mark-to-market sign).'
 seeAlso:
   - cds-premium-leg-present-value
   - cds-protection-leg-present-value

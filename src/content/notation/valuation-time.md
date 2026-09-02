@@ -1,7 +1,6 @@
 ---
 key: valuation-time
 latex: '0'
-title: Valuation time
 meaning: Common origin from which later model times and present values are measured.
 aliases:
   - today
@@ -10,7 +9,7 @@ domain: finance
 units: years from the valuation date
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 1 §1.2 (the pricing date, time 0, from which all cash-flow times are measured).'
+    locator: 'Ch. 1 §1.2, printed pp. 51-52 (value today on the pricing date of a cash flow received t years later).'
 seeAlso:
   - payment-time
 alignment:

@@ -1,7 +1,6 @@
 ---
 key: cds-accrual-year-fraction
 latex: '\alpha_i'
-title: CDS premium accrual year fraction
 meaning: 'Supplied year fraction that converts an annualized spread into the premium amount for one scheduled period; a positive model input.'
 aliases:
   - premium accrual fraction
@@ -9,9 +8,9 @@ domain: cds
 units: years under the explicitly stated synthetic schedule convention
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 14 §14.5, printed pp. 361-366 (CDS contract, fee and contingent legs, quarterly premium, and default accrual).'
+    locator: 'Ch. 14 §14.5, printed p. 362 (quarterly premium until default or maturity); Appendix A14.2, printed p. 506, Eq. A14.5 (period day-count fraction applied to the annual CDS spread).'
   - id: hull-options-futures
-    locator: 'Ch. 24 §24.2, printed pp. 551-554, Tables 24.1-24.4 (survival/default weighting, scheduled premium, half-period default and accrual approximation, protection present value, and equal-leg spread).'
+    locator: 'Ch. 24 §24.1, printed pp. 548-549 (periodic premium amount, day-count adjustment, and accrued premium after default), and §24.2, printed pp. 552-553, Table 24.4 (half-period accrued-premium approximation).'
 seeAlso:
   - cds-contract-spread
   - payment-time

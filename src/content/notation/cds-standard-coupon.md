@@ -1,7 +1,6 @@
 ---
 key: cds-standard-coupon
 latex: 'c_{\mathrm{std}}'
-title: CDS standard running coupon
 meaning: "Fixed annualized rate used to determine the contract's running premium cash flows in the lesson's standard-coupon model; a positive rate paid by the protection buyer on surviving notional and as accrued premium after default."
 aliases:
   - standard coupon
@@ -10,11 +9,11 @@ domain: cds
 units: decimal per year in calculations; basis points per year when explicitly quoted
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 14 §14.6, printed pp. 366-370, Tables 14.9-14.10 and eqs. 14.4-14.7 (event-weighted leg present values, fair-spread equality, standardized coupons, and spread/upfront conversion).'
+    locator: 'Ch. 14 §14.6, printed pp. 366-370 and Table 14.10 (standardized 100- or 500-basis-point annual coupons and the resulting upfront amount); Appendix A14.2, printed p. 506, Eq. A14.7 (upfront amount from CDS spread less CDS coupon).'
   - id: hull-options-futures
-    locator: 'Ch. 24 §24.4, printed pp. 556-557 (fixed coupon, implied hazard, and upfront price from a quoted spread).'
+    locator: 'Ch. 24 §24.4, printed pp. 556-557 (fixed coupon C and quarterly running payments on remaining notional).'
   - id: isda-cds-standard-model
-    locator: 'ISDA Standard CDS Contract Converter Specification (version May 5, 2009), Functionality and Specification, printed p. 1 (standardized conversion between spread and upfront using a standard coupon, recovery rate, and discount inputs).'
+    locator: 'ISDA Standard CDS Contract Converter Specification (version May 5, 2009), Specification, printed pp. 1-2 (the standard coupon as a user input and as the coupon rate determining premium-leg payment dates and amounts).'
 seeAlso:
   - cds-contract-spread
   - cds-market-standard-quote

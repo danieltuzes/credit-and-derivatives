@@ -1,7 +1,6 @@
 ---
 key: risk-neutral-expectation
 latex: '\mathbb{E}^{\mathbb{Q}}'
-title: Risk-neutral expectation
 meaning: 'Averages a random quantity using probabilities supplied by the risk-neutral measure, that is, pricing weights rather than real-world forecast probabilities.'
 aliases:
   - Q-expectation
@@ -9,7 +8,7 @@ domain: finance
 units: same units as the quantity inside the expectation
 sources:
   - id: shreve-stochastic-calculus-finance-ii
-    locator: 'Ch. 5 §5.2.4, printed pp. 218-219, eqs. 5.2.29-5.2.31 (the risk-neutral expected discounted payoff pricing formula).'
+    locator: 'Ch. 5 §5.2.4, printed p. 218, Eqs. 5.2.29-5.2.31 (the risk-neutral expected discounted payoff pricing formula).'
   - id: tuckman-serrat-fixed-income
     locator: 'Ch. 7 §7.3, printed pp. 182-184, eqs. 7.7-7.8 (risk-neutral probabilities that recover market prices by expected discounted value).'
   - id: hull-options-futures

@@ -68,14 +68,13 @@ notation:
   local:
     - key: cds-period-index
       latex: 'i'
-      title: CDS period index
       meaning: 'Selects one default interval and its following scheduled premium date. The index is bookkeeping and is not itself a time, probability, or currency amount.'
       formula: 'i \in \{1,\ldots,n\}'
       sources:
         - id: tuckman-serrat-fixed-income
-          locator: 'Ch. 14 §14.5, printed pp. 361-366 (CDS fee and contingent legs, quarterly premium, and default accrual).'
+          locator: 'Appendix A14.2, printed p. 506, Eqs. A14.5-A14.7 (premium-date index i over the CDS payment schedule).'
         - id: hull-options-futures
-          locator: 'Ch. 24 §24.2, printed pp. 551-554, Tables 24.1-24.4 (per-period survival/default weighting, scheduled premium, accrual to default, and protection present value).'
+          locator: 'Ch. 24 §24.2, printed pp. 551-553, Tables 24.1-24.4 (per-period rows for survival, default, premium, accrual, and protection values).'
       seeAlso:
         - payment-time
         - cds-accrual-year-fraction
@@ -85,7 +84,6 @@ notation:
         introducedInLesson: cds.premium-protection-legs-and-par-spread
     - key: number-of-cds-periods
       latex: 'n'
-      title: Number of CDS periods
       meaning: 'Counts the finite premium and default intervals in the simplified CDS schedule. It is a positive integer determined by model term and payment frequency.'
       formula: 'n \in \{1,2,\ldots\}'
       sources: []
@@ -96,15 +94,14 @@ notation:
         rationale: Finite schedule indexing is bookkeeping used by the lesson.
     - key: cds-default-time
       latex: '\tau'
-      title: Modeled default time
       meaning: 'Random model time at which the reference entity first defaults. It is measured in model-years from valuation time under the stated risk-neutral model.'
       formula: '\tau > 0'
       units: model-years after valuation time
       sources:
         - id: tuckman-serrat-fixed-income
-          locator: 'Appendix A14.1-A14.2, printed pp. 505-507, eqs. A14.1-A14.7 (constant-hazard default-time density and CDS leg formulas).'
+          locator: 'Appendix A14.1, printed p. 505, Eqs. A14.1-A14.4 (constant-hazard survival and cumulative default probabilities over time).'
         - id: hull-options-futures
-          locator: 'Ch. 24 §24.1, printed pp. 548-550 (CDS timeline: default time relative to premium dates).'
+          locator: 'Ch. 24 §§24.1-24.2, printed pp. 548-552 (default timing relative to scheduled premium dates and modeled default times within payment periods).'
       seeAlso:
         - valuation-time
         - hazard-rate
@@ -114,14 +111,13 @@ notation:
         introducedInLesson: cds.premium-protection-legs-and-par-spread
     - key: cds-default-event
       latex: 'G_i'
-      title: CDS default-interval event
       meaning: 'Event that modeled default occurs after one premium date and no later than the next. Together with survival through maturity, these events are disjoint and exhaustive in the one-default model.'
       formula: 'G_i=\{t_{i-1}<\tau\leq t_i\}'
       sources:
         - id: tuckman-serrat-fixed-income
-          locator: 'Ch. 14 §14.6, printed pp. 366-370, Tables 14.9-14.10 and eqs. 14.4-14.7 (event-weighted leg present values and fair-spread equality).'
+          locator: 'Ch. 14 §14.6, printed pp. 368-369 and Table 14.10; Appendix A14.2, printed p. 506, Eqs. A14.5-A14.7 (default probability in each payment interval as a successive-survival difference).'
         - id: hull-options-futures
-          locator: 'Ch. 24 §24.2, printed pp. 551-554, Tables 24.1-24.4 (per-period survival/default weighting, scheduled premium, accrual to default, and protection present value).'
+          locator: 'Ch. 24 §24.2, printed pp. 551-552, Table 24.1 (per-year default intervals represented by unconditional default probabilities).'
       seeAlso:
         - cds-default-time
         - payment-time
@@ -131,11 +127,10 @@ notation:
         introducedInLesson: cds.premium-protection-legs-and-par-spread
     - key: cds-event-payoff
       latex: 'Y'
-      title: Generic CDS scenario payoff
       meaning: 'Random discounted payoff used to connect event partitions to a CDS-leg expectation. Its currency sign and perspective must be stated before taking an expectation.'
       sources:
         - id: shreve-stochastic-calculus-finance-ii
-          locator: 'Ch. 1 §1.3, printed pp. 13-18, Thms. 1.3.1 and 1.3.4 (a random variable, its value on a partition event, and its expectation).'
+          locator: 'Ch. 1 §1.3, printed p. 18, Thm. 1.3.4(i) (finite-valued random-variable expectation); Ch. 5 §5.2.4, printed p. 218, Eqs. 5.2.28-5.2.31 (a terminal payoff and risk-neutral expected discounted payoff pricing).'
       seeAlso:
         - risk-neutral-expectation
       alignment:
@@ -143,11 +138,10 @@ notation:
         rationale: The symbol specializes the prerequisite expectation rule to this lesson.
     - key: cds-event-payoff-value
       latex: 'y_i'
-      title: Payoff value on one CDS event
       meaning: 'Constant value taken by the generic payoff on one event in a finite partition. If the payoff varies inside an event, conditional expectation replaces this constant.'
       sources:
         - id: shreve-stochastic-calculus-finance-ii
-          locator: 'Ch. 1 §1.3, printed pp. 13-18, Thms. 1.3.1 and 1.3.4 (a random variable, its value on a partition event, and its expectation).'
+          locator: 'Ch. 1 §1.3, printed p. 18, Thm. 1.3.4(i) (a finite-valued random variable and its event-value expectation); Ch. 2 §2.3, printed pp. 68-69, Def. 2.3.1 (conditional expectation over event information).'
       seeAlso:
         - cds-event-payoff
         - cds-default-event
@@ -156,7 +150,6 @@ notation:
         rationale: The symbol specializes the prerequisite finite-event expectation rule.
     - key: cds-default-integration-time
       latex: 'u'
-      title: Possible default time in an integral
       meaning: 'Integration variable ranging over every possible default time inside one CDS period. It is a deterministic dummy variable; the random default time is a different symbol.'
       units: model-years after valuation time
       sources: []
@@ -167,15 +160,14 @@ notation:
         rationale: A continuous integral needs a dummy time variable distinct from the random default time.
     - key: cds-accrued-year-fraction-at-default
       latex: 'a_i(u)'
-      title: Premium accrual at default
       meaning: 'Year fraction accrued from the preceding premium date to a possible default time in period i. In the regular model-year schedule it equals elapsed model time since the period start.'
       formula: 'a_i(u)=u-t_{i-1}'
       units: model-years of premium accrual
       sources:
         - id: tuckman-serrat-fixed-income
-          locator: 'Ch. 14 §14.5, printed pp. 361-366 (CDS fee and contingent legs, quarterly premium, and default accrual).'
+          locator: 'Ch. 14 §14.6, printed p. 369 (premium accrued from the period start to default, with half-period accrual used in the example); Appendix A14.2, printed p. 506, Eq. A14.5 (half-period default-accrual approximation).'
         - id: hull-options-futures
-          locator: 'Ch. 24 §24.2, printed pp. 551-554, Tables 24.1-24.4 (per-period survival/default weighting, scheduled premium, accrual to default, and protection present value).'
+          locator: 'Ch. 24 §24.1, printed p. 549 (accrual from the preceding premium date to the default date), and §24.2, printed pp. 552-553, Table 24.4 (half-period accrued-premium approximation).'
       seeAlso:
         - cds-accrual-year-fraction
         - cds-default-integration-time
@@ -185,13 +177,12 @@ notation:
         introducedInLesson: cds.premium-protection-legs-and-par-spread
     - key: continuously-compounded-risk-free-rate
       latex: 'r'
-      title: Continuously compounded risk-free rate
       meaning: "Deterministic annual decimal rate used to discount this lesson's model cash flows. It is a pricing input and is separate from the hazard rate."
       formula: 'D(0,u)=\exp(-ru)'
       units: decimal rate per model-year
       sources:
         - id: shreve-stochastic-calculus-finance-ii
-          locator: 'Ch. 5 §5.2.4, printed pp. 218-219, eqs. 5.2.29-5.2.31 (deterministic discounting in the risk-neutral pricing formula).'
+          locator: 'Ch. 4 §4.5.1, printed pp. 154-155, Eqs. 4.5.2 and 4.5.4-4.5.5 (a constant interest rate and exponential discounting).'
       seeAlso:
         - discount-factor
         - hazard-rate
@@ -200,7 +191,6 @@ notation:
         rationale: This is a stated specialization of the previously taught discount-factor input.
     - key: cds-combined-decay-rate
       latex: '\kappa'
-      title: Discount-plus-hazard rate
       meaning: 'Abbreviation for the sum of the deterministic risk-free rate and constant hazard rate. It shortens the closed forms and has no separate market interpretation.'
       formula: '\kappa=r+\lambda'
       units: decimal rate per model-year
@@ -213,14 +203,13 @@ notation:
         rationale: The abbreviation is algebraic bookkeeping for the closed-form example.
     - key: cds-scheduled-premium-annuity
       latex: 'A_0^{\mathrm{sched}}'
-      title: Scheduled premium annuity
       meaning: 'Present-value factor for scheduled premiums per unit notional and unit annual running rate. It includes a scheduled payment only when the name survives to that payment date.'
       units: model-years
       sources:
         - id: tuckman-serrat-fixed-income
-          locator: 'Ch. 14 §§14.5-14.6, printed pp. 361-370, eqs. 14.4-14.7, and Appendix A14.1-A14.2, printed pp. 505-507 (scheduled and accrued premium present-value factors).'
+          locator: 'Appendix A14.2, printed p. 506, Eq. A14.5 (scheduled fee-leg present-value term weighted by survival, plus a separate half-period default-accrual term).'
         - id: hull-options-futures
-          locator: 'Ch. 24 §24.2, printed pp. 551-554, Tables 24.1-24.4 (per-period survival/default weighting, scheduled premium, accrual to default, and protection present value).'
+          locator: 'Ch. 24 §24.2, printed p. 552, Table 24.2 (present value of scheduled premiums conditional on survival).'
       seeAlso:
         - cds-premium-annuity
       alignment:
@@ -229,14 +218,13 @@ notation:
         introducedInLesson: cds.premium-protection-legs-and-par-spread
     - key: cds-accrued-premium-annuity
       latex: 'A_0^{\mathrm{accr}}'
-      title: Accrued-on-default premium annuity
       meaning: 'Present-value factor for exact premium accrual paid at modeled default. It integrates accrued year fraction, discounting, and risk-neutral default density over every possible default time.'
       units: model-years
       sources:
         - id: tuckman-serrat-fixed-income
-          locator: 'Ch. 14 §§14.5-14.6, printed pp. 361-370, eqs. 14.4-14.7, and Appendix A14.1-A14.2, printed pp. 505-507 (scheduled and accrued premium present-value factors).'
+          locator: 'Ch. 14 §14.6, printed p. 369 and Eq. 14.6; Appendix A14.2, printed p. 506, Eq. A14.5 (half-period accrued-premium present-value approximation).'
         - id: hull-options-futures
-          locator: 'Ch. 24 §24.2, printed pp. 551-554, Tables 24.1-24.4 (per-period survival/default weighting, scheduled premium, accrual to default, and protection present value).'
+          locator: 'Ch. 24 §24.2, printed pp. 552-553, Table 24.4 (mid-period approximation to accrued premium on default).'
       seeAlso:
         - cds-premium-annuity
         - cds-accrued-year-fraction-at-default
@@ -246,14 +234,13 @@ notation:
         introducedInLesson: cds.premium-protection-legs-and-par-spread
     - key: cds-protection-factor
       latex: 'B_0^{\mathrm{prot}}'
-      title: CDS protection factor
       meaning: 'Present value of protection per unit CDS notional in the simplified model. It includes loss given default, discounting, and the risk-neutral default-time density.'
       units: present currency-units per notional currency-unit
       sources:
         - id: tuckman-serrat-fixed-income
-          locator: 'Ch. 14 §14.5, printed pp. 361-366, eqs. 14.4-14.7 (contingent/protection leg present value).'
+          locator: 'Ch. 14 §14.6, printed pp. 369-370, Table 14.10 and Eq. 14.7; Appendix A14.2, printed p. 506, Eq. A14.6 (protection-leg present value from loss given default, discount factors, and interval default probabilities).'
         - id: hull-options-futures
-          locator: 'Ch. 24 §24.2, printed pp. 551-554, Tables 24.1-24.4 (per-period survival/default weighting, scheduled premium, accrual to default, and protection present value).'
+          locator: 'Ch. 24 §24.2, printed pp. 552-553, Table 24.3 (present value of expected protection payoff per unit notional).'
       seeAlso:
         - cds-protection-leg-present-value
         - loss-given-default

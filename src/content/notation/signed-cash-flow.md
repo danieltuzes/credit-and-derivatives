@@ -1,7 +1,6 @@
 ---
 key: signed-cash-flow
 latex: 'CF_k'
-title: Signed cash-flow amount
 meaning: 'Amount received or paid at one event from the stated holder perspective; positive means received and negative means paid by that holder.'
 aliases:
   - cash flow
@@ -10,7 +9,7 @@ domain: finance
 units: stated currency units
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 1 §§1.2-1.4, printed pp. 52-57 (cash flows entering a price with a sign for the holder position).'
+    locator: 'Ch. 1 §1.4, printed pp. 55-57 and Table 1.5 (cash receipts from long bond positions and payment obligations from a short bond position in a replicating trade).'
 seeAlso:
   - payment-time
 alignment:

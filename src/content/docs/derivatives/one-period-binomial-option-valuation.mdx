@@ -34,12 +34,11 @@ notation:
   local:
     - key: binomial-up-underlying-value
       latex: 'S^{\mathrm{up}}'
-      title: Underlying value in the up state
       meaning: One of the two possible underlying values at the one-period expiry.
       units: stated currency per unit of underlying at expiry
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §12.1, printed pp. 253-256, Fig. 12.1 and Fig. 12.2 (one-step up and down underlying values and corresponding claim payoffs).'
       seeAlso:
         - derivative-underlying-value
       alignment:
@@ -48,12 +47,11 @@ notation:
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-down-underlying-value
       latex: 'S^{\mathrm{down}}'
-      title: Underlying value in the down state
       meaning: The lower of the two possible underlying values at the one-period expiry.
       units: stated currency per unit of underlying at expiry
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §12.1, printed pp. 253-256, Fig. 12.1 and Fig. 12.2 (one-step up and down underlying values and corresponding claim payoffs).'
       seeAlso:
         - derivative-underlying-value
       alignment:
@@ -62,36 +60,33 @@ notation:
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-up-claim-payoff
       latex: 'X^{\mathrm{up}}'
-      title: Claim payoff in the up state
       meaning: Signed expiry payoff of the claim when the underlying takes its up-state value.
       units: stated currency at expiry
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §12.1, printed pp. 253-256, Fig. 12.1 and Fig. 12.2 (one-step up and down underlying values and corresponding claim payoffs).'
       alignment:
         kind: competency
         introducedByCompetency: options.binomial-hedge.calculate
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-down-claim-payoff
       latex: 'X^{\mathrm{down}}'
-      title: Claim payoff in the down state
       meaning: Signed expiry payoff of the claim when the underlying takes its down-state value.
       units: stated currency at expiry
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §12.1, printed pp. 253-256, Fig. 12.1 and Fig. 12.2 (one-step up and down underlying values and corresponding claim payoffs).'
       alignment:
         kind: competency
         introducedByCompetency: options.binomial-hedge.calculate
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-hedge-units
       latex: '\Delta'
-      title: One-period hedge units
       meaning: Signed units of underlying in the portfolio that replicates the two claim payoffs.
       units: units of underlying per claim
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §12.1, printed pp. 254-256, Eq. 12.1 (signed underlying units in the one-step replicating portfolio).'
       seeAlso:
         - derivative-underlying-value
       alignment:
@@ -100,12 +95,11 @@ notation:
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-risk-free-expiry-cash
       latex: 'M_{T_{\mathrm{opt}}}'
-      title: Risk-free cash position at expiry
       meaning: Signed expiry cash amount held with the underlying units to reproduce both claim payoffs.
       units: stated currency at expiry
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §12.1, printed pp. 254-256, Eq. 12.1 and Eq. 12.2 (replicating stock position and discounted riskless residual value).'
       seeAlso:
         - discount-factor
       alignment:
@@ -114,12 +108,11 @@ notation:
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-risk-neutral-up-weight
       latex: q
-      title: Risk-neutral up-state weight
       meaning: 'Model-implied pricing probability assigned to the up state by the no-arbitrage tree. It is dimensionless and lies between zero and one when the tree is arbitrage-consistent.'
       units: probability between zero and one
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §§12.1-12.2, printed pp. 256-258, Eq. 12.2 and Eq. 12.3 (risk-neutral up weight and discounted expected payoff).'
       seeAlso:
         - risk-neutral-probability-measure
       alignment:
@@ -128,12 +121,11 @@ notation:
         introducedInLesson: derivatives.one-period-binomial-option-valuation
     - key: binomial-claim-value
       latex: V_0
-      title: One-period claim value
       meaning: Time-zero value obtained identically from the replicating portfolio and risk-neutral expected payoff.
       units: stated currency at valuation time
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 12 §§12.1-12.3, printed pp. 253-261 (binomial tree: up/down values, replicating position, risk-neutral weight, one-step discount, and discounted expected payoff).'
+          locator: 'Ch. 12 §12.1, printed pp. 253-256, Eq. 12.2 (one-step claim value from replication and discounted risk-neutral payoff).'
       seeAlso:
         - valuation-time
       alignment:

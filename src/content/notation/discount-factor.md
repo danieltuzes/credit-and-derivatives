@@ -1,7 +1,6 @@
 ---
 key: discount-factor
 latex: 'D(0,t)'
-title: Discount factor
 meaning: Converts one deterministic future unit into value at valuation time.
 aliases:
   - present-value factor
@@ -9,7 +8,7 @@ domain: rates
 units: current currency-units per future currency-unit
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 1 §1.2, eqs. 1.1-1.3 (discount factor d(t) as the value today of one unit paid at t; price equals the sum of cash flows times discount factors).'
+    locator: 'Ch. 1 §1.2, printed pp. 51-52, Eqs. 1.1-1.3 (d(t) as the value today of one currency unit received in t years and its use in bond present value).'
 seeAlso:
   - accumulation-factor
   - valuation-time

@@ -1,7 +1,6 @@
 ---
 key: dirty-bond-price
 latex: 'P^{\mathrm{dirty}}'
-title: Dirty bond price
 meaning: 'Full cash or invoice price paid for the bond, equal to clean price plus accrued interest; a positive cash price paid by the buyer under the stated settlement convention.'
 aliases:
   - full price
@@ -11,9 +10,9 @@ domain: bonds
 units: stated currency at settlement
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 1 §1.6, printed pp. 60-62 (actual/actual accrued interest; flat/clean price plus accrued equals the full/dirty invoice price).'
+    locator: 'Ch. 1 §1.6, printed pp. 60-61 and Eq. 1.5 (flat or clean price and full or dirty price equal to clean price plus accrued interest).'
   - id: hull-options-futures
-    locator: 'Ch. 28 §28.1, printed pp. 648-652 (clean/dirty strike treatment in bond options).'
+    locator: 'Ch. 28 §28.1, printed p. 650, Eq. 28.3 (cash or dirty bond price and quoted or clean bond price plus accrued interest).'
 seeAlso:
   - bond-price
   - clean-bond-price

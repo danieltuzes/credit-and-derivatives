@@ -1,7 +1,6 @@
 ---
 key: cds-market-standard-quote
 latex: 's_{\mathrm{MSQ}}'
-title: CDS market-standard quote
 meaning: "Conventional quoted spread treated as a zero-upfront par spread by the lesson's simplified converter; a name for the spread input used to infer pricing-model default risk, not necessarily the contract's fixed running coupon."
 aliases:
   - MSQ
@@ -11,11 +10,11 @@ domain: cds
 units: decimal per year in calculations; basis points per year when explicitly quoted
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 14 §14.6, printed pp. 366-370, Tables 14.9-14.10 and eqs. 14.4-14.7 (event-weighted leg present values, fair-spread equality, standardized coupons, and spread/upfront conversion).'
+    locator: 'Ch. 14 §14.5, printed p. 362 (CDS spread as the annualized zero-upfront premium); Ch. 14 §14.6, printed pp. 366-370, Table 14.10 and Eqs. 14.4-14.7 (standard coupons and spread-to-upfront conversion).'
   - id: hull-options-futures
-    locator: 'Ch. 24 §24.4, printed pp. 556-557 (fixed coupon, implied hazard, and upfront price from a quoted spread).'
+    locator: 'Ch. 24 §24.4, printed pp. 556-557 (quoted spread, implied hazard rate, fixed coupon, and price or up-front amount).'
   - id: isda-cds-standard-model
-    locator: 'ISDA Standard CDS Contract Converter Specification (version May 5, 2009), Functionality and Specification, printed p. 1 (standardized conversion between spread and upfront using a standard coupon, recovery rate, and discount inputs).'
+    locator: 'ISDA Standard CDS Contract Converter Specification (version May 5, 2009), Specification, printed pp. 1 and 4 (spread/upfront conversion; a spread input is treated as the coupon on a zero-upfront CDS to solve the constant hazard rate).'
 seeAlso:
   - cds-par-spread
   - hazard-rate

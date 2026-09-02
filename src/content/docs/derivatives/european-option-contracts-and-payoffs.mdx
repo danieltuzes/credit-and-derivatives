@@ -31,12 +31,11 @@ notation:
   local:
     - key: long-call-expiry-payoff
       latex: '\Pi_{T_{\mathrm{opt}}}^{\mathrm{call}}'
-      title: Long call payoff at expiry
       meaning: 'Non-negative amount received by the holder of a European call at expiry. Per unit it is the positive part of underlying expiry value minus strike.'
       units: stated currency at option expiry
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 1 §1.5, printed pp. 7-9 (European call payoff as the positive part of underlying value minus strike).'
+          locator: 'Ch. 9 §9.2, printed pp. 197-198, Fig. 9.5 (long European call payoff as the positive part of underlying value minus strike).'
       seeAlso:
         - option-strike-price
         - option-expiry-time
@@ -46,12 +45,11 @@ notation:
         introducedInLesson: derivatives.european-option-contracts-and-payoffs
     - key: long-put-expiry-payoff
       latex: '\Pi_{T_{\mathrm{opt}}}^{\mathrm{put}}'
-      title: Long put payoff at expiry
       meaning: 'Non-negative amount received by the holder of a European put at expiry. Per unit it is the positive part of strike minus underlying expiry value.'
       units: stated currency at option expiry
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 1 §1.5, printed pp. 7-9 (European put payoff as the positive part of strike minus underlying value).'
+          locator: 'Ch. 9 §9.2, printed pp. 197-198, Fig. 9.5 (long European put payoff as the positive part of strike minus underlying value).'
       seeAlso:
         - option-strike-price
         - option-expiry-time
@@ -61,12 +59,11 @@ notation:
         introducedInLesson: derivatives.european-option-contracts-and-payoffs
     - key: option-premium-paid
       latex: '\pi_0'
-      title: Option premium paid
       meaning: 'Positive valuation-time amount paid by the option holder to acquire the contractual right. Its financing convention must be stated before converting an expiry payoff into profit.'
       units: stated currency at premium payment time
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 9 practice questions 9.1-9.2 and 9.9-9.10, printed pp. 211-212 (premium paid, and expiry payoff versus profit).'
+          locator: 'Ch. 9 §§9.1-9.2, printed pp. 194-198, Fig. 9.1 and Fig. 9.2 (up-front option price and the distinction between profit and payoff).'
       seeAlso:
         - call-option-value
         - put-option-value
@@ -76,12 +73,11 @@ notation:
         introducedInLesson: derivatives.european-option-contracts-and-payoffs
     - key: option-holder-expiry-profit
       latex: 'G_{T_{\mathrm{opt}}}'
-      title: Option holder profit at expiry
       meaning: 'Expiry payoff less the premium carried to expiry under the explicitly stated financing convention. In the simplest examples financing is ignored, so the initially paid premium is subtracted directly.'
       units: stated currency at option expiry
       sources:
         - id: hull-options-futures
-          locator: 'Ch. 9 practice questions 9.1-9.2 and 9.9-9.10, printed pp. 211-212 (premium paid, and expiry payoff versus profit).'
+          locator: 'Ch. 9 §§9.1-9.2, printed pp. 194-198, Fig. 9.1 and Fig. 9.2 (option profit as payoff less the initial option price when discounting is ignored).'
       seeAlso:
         - option-premium-paid
       alignment:

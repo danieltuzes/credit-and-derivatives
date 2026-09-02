@@ -1,7 +1,6 @@
 ---
 key: number-of-bond-payments
 latex: 'n'
-title: Number of bond payments
 meaning: 'Counts the remaining regular coupon dates including maturity; a positive integer for the simplified regular bond schedule.'
 aliases:
   - remaining coupon-date count

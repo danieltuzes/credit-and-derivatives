@@ -1,7 +1,7 @@
 ---
 key: hazard-rate
 latex: '\lambda'
-title: Constant hazard rate
+label: 'Constant hazard rate'
 meaning: "Constant conditional default intensity used by the lesson's simplified exponential survival model; a risk-neutral pricing input conditional on survival to the current instant, not a cumulative probability."
 aliases:
   - constant default intensity
@@ -9,9 +9,9 @@ domain: credit
 units: decimal intensity per model-year
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 14 §14.7, printed p. 371, and Appendix A14.1, printed pp. 505-506 (constant hazard in the exponential survival model).'
+    locator: 'Ch. 14 §14.6, printed p. 367, Eqs. 14.4-14.5 (constant hazard, short-interval default probability, and exponential survival/default probabilities); Ch. 14 §14.7, printed p. 371 (price-implied hazard may be risk-neutral rather than a real-world forecast); Appendix A14.1, printed p. 505, Eqs. A14.1-A14.4 (constant-hazard survival derivation).'
   - id: hull-options-futures
-    locator: 'Ch. 23 §23.2, printed pp. 522-523 (default intensity/hazard rate and survival probability).'
+    locator: 'Ch. 23 §23.2, printed pp. 522-523, Eq. 23.1 (hazard rate as short-interval conditional default intensity and the exponential survival relation), and §23.5, printed pp. 528-530 (risk-neutral versus real-world default probabilities).'
 seeAlso:
   - survival-probability
 alignment:

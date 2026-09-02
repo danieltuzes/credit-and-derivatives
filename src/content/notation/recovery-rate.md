@@ -1,7 +1,6 @@
 ---
 key: recovery-rate
 latex: 'R'
-title: Recovery rate
 meaning: 'Fraction of a stated reference amount recovered after a modeled default under an explicitly stated recovery convention; a non-negative fraction whose reference amount, payment timing, and settlement convention are set by the model that uses it.'
 aliases:
   - recovery fraction
@@ -9,7 +8,7 @@ domain: credit
 units: decimal fraction between zero and one
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 14 §14.5, printed pp. 361-366 (recovery fraction of notional after default).'
+    locator: 'Ch. 14 §14.2, printed p. 353 and Table 14.4 (recovery rate as the recovered fraction of face amount after default); Ch. 14 §14.5, printed pp. 361-362 (CDS compensation based on post-default bond value).'
 seeAlso: []
 alignment:
   kind: competency

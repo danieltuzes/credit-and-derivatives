@@ -1,7 +1,6 @@
 ---
 key: periodic-rate
 latex: 'r_m'
-title: Periodic rate
 meaning: 'Rate applied once in each compounding period under the stated convention, derived from the stated nominal annual quote in this model.'
 aliases:
   - rate per period
@@ -9,7 +8,7 @@ domain: rates
 units: decimal per compounding period
 sources:
   - id: tuckman-serrat-fixed-income
-    locator: 'Ch. 2 §2.1 (per-period rate implied by a nominal annual quote and its compounding frequency).'
+    locator: 'Ch. 2 §2.1, printed p. 67, Eq. 2.7 (per-period rate r-hat divided by n from an annual rate compounded n times per year).'
 seeAlso:
   - nominal-annual-rate
   - compounding-frequency

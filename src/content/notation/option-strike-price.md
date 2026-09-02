@@ -1,7 +1,6 @@
 ---
 key: option-strike-price
 latex: 'K'
-title: Option strike price
 meaning: "Contractual price per unit of underlying used to determine the option's exercise payoff; a positive contractual amount, with payoff signs depending on call or put and holder or writer perspective."
 aliases:
   - exercise price
@@ -9,7 +8,7 @@ domain: options
 units: expiry-time currency per unit of underlying
 sources:
   - id: hull-options-futures
-    locator: 'Ch. 1 §1.5, printed pp. 7-9 (strike/exercise price of an option).'
+    locator: 'Ch. 1 §1.5, printed p. 7 (exercise or strike price as the contractual option price).'
 seeAlso:
   - option-expiry-time
   - derivative-underlying-value
