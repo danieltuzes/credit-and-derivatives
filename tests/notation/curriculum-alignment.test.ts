@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   loadCurriculumCatalog,
   loadNotationRegistryInput,
-} from '../../src/content/collections';
+} from '../../src/compiler/collections';
 import type {
   CompetencyDefinition,
   CurriculumCatalog,

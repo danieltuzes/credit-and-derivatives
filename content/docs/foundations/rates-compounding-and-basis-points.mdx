@@ -1,0 +1,140 @@
+---
+title: Rate quotes, compounding, and basis points
+description: Separate an annualized quote from its periodic rate and its units.
+editorialStatus: draft
+teaches:
+  - rates.nominal-rate-quote.interpret
+  - rates.periodic-rate.calculate
+  - rates.basis-points.convert
+assumptions:
+  - Nominal annual rates divide evenly across equal compounding periods
+  - Compounding frequency is a positive integer
+  - Time is an exact number of model years
+  - Every example horizon is grid-aligned so m times t is a non-negative integer
+notation:
+  local:
+    - key: number-of-compounding-periods
+      latex: N
+      meaning: 'Counts how many times the periodic rate is applied over the stated horizon. Under equal periods, the count equals compounding frequency multiplied by time in years.'
+      formula: 'N=mt'
+      seeAlso:
+        - compounding-frequency
+        - payment-time
+      alignment:
+        kind: general
+        rationale: Integer period counting follows from the track's algebra assumptions.
+---
+
+import CompactExample from '../../../src/components/examples/CompactExample.astro';
+import CompactExamples from '../../../src/components/examples/CompactExamples.astro';
+import AssessmentSet from '../../../src/components/assessments/AssessmentSet.astro';
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- interpret a nominal annual quote together with its frequency;
+- calculate the rate applied in one compounding period;
+- convert between decimal rates, percentages, and basis points.
+
+## One label is not enough
+
+The phrase “an annual rate of 6%” is incomplete for compounding unless its
+convention is stated. In this slice, write the [[nominal-annual-rate]] as
+$j^{(m)}$ and pair it with the [[compounding-frequency]] $m$. Write the
+resulting [[periodic-rate]] as $r_m$.
+
+On this page, $t$ is the shorter generic-horizon form of the shared
+[[payment-time]]. The [[valuation-time]] is $0$. Use the local
+[[number-of-compounding-periods]] $N$ for the number of rate applications,
+and write the resulting [[accumulation-factor]] as $A(0,t)$.
+
+Under the stated nominal-rate convention, the periodic rate is
+
+$$
+r_m=\frac{j^{(m)}}{m}.
+$$
+
+This is a declared convention, not a universal conversion rule for every kind
+of annual rate.
+
+<CompactExamples summary="Worked examples (3)">
+  <CompactExample label="Nominal 6%, compounded semiannually">
+
+With $j^{(2)}=0.06$ and $m=2$,
+
+$$
+r_2=\frac{0.06}{2}=0.03.
+$$
+
+The model applies 3% once every half-year. Over $t=1.5$ years, the local
+[[number-of-compounding-periods]] is $N=mt=3$, so the
+[[accumulation-factor]] is
+
+$$
+A(0,1.5)
+=(1+0.03)^3
+=1.092727.
+$$
+
+One unit at [[valuation-time]] grows to 1.092727 model units at the
+[[payment-time]] 1.5 years later.
+
+  </CompactExample>
+  <CompactExample label="Nominal is not effective annual">
+
+Under the same nominal 6% semiannual convention, one year of compounding gives
+
+$$
+(1.03)^2-1=0.0609=6.09\%.
+$$
+
+Thus the 6% input and 6.09% one-year effective growth rate are different
+quantities. The semantic key prevents an author from calling both merely
+“annualRate.”
+
+  </CompactExample>
+  <CompactExample label="Basis-point arithmetic">
+
+A [[basis-point]] is a unit for rate differences:
+
+$$
+25\,\mathrm{bp}
+=25\times0.0001
+=0.0025
+=0.25\%.
+$$
+
+A move from 4.10% to 4.35% is therefore $0.25$ percentage points, or 25 bp.
+Write the unit explicitly; the bare number 25 is ambiguous.
+
+  </CompactExample>
+</CompactExamples>
+
+## Common unit boundary
+
+| Representation                | Same rate |
+| ----------------------------- | --------: |
+| Decimal used by domain code   |    0.0435 |
+| Percentage shown to a learner |     4.35% |
+| Basis points above zero       |    435 bp |
+
+User interfaces convert percentages at their boundary. Domain functions take
+decimal rates.
+
+## Check your understanding
+
+These direct and transfer items cover quote interpretation, periodic-rate
+calculation, and basis-point conversion. Each question stays collapsed until you
+open it; answers and explanations appear once you check.
+
+<AssessmentSet />
+
+## Model boundary and review note
+
+This page does not introduce continuous compounding, effective-rate conversion
+as a general API, day counts, or a term structure.
+
+The nominal-quote-plus-frequency convention and the basis-point unit follow
+Tuckman & Serrat[@tuckman-serrat-fixed-income; §2.1, rates quoted as annual rates over a term of fixed-length periods, simple or compound; §2.4, eq. 2.17, the periodic-compounding form; a basis point is 0.01%, Ch. 0 footnote and Ch. 3]. The lesson stays `draft` pending human confirmation of the printed
+locators.

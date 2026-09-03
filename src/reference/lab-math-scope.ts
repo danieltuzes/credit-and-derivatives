@@ -1,4 +1,4 @@
-import { loadManifest } from '../content/manifest';
+import { loadManifest } from '../compiler/manifest';
 import type { LabMathScopeDefinition } from './render-lab-math';
 
 interface LessonNotationFrontmatter {

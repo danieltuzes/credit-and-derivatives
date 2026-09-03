@@ -5,7 +5,7 @@ import {
   simplifiedFlatHazardUpfrontToQuote,
   valueSimplifiedFlatHazardCds,
   type SimplifiedFlatHazardCdsModelInput,
-} from '../../src/domain/cds/flat-hazard-cds';
+} from '../../content/domain/cds/flat-hazard-cds';
 
 function expectRelativeClose(
   actual: number,

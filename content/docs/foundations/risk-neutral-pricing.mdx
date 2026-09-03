@@ -1,0 +1,220 @@
+---
+title: Risk-neutral pricing is not a risk-free probability
+description: Separate real-world forecasts from no-arbitrage pricing weights, then discount a finite-state expected payoff.
+editorialStatus: draft
+teaches:
+  - finance.risk-neutral-measure.interpret
+  - finance.risk-neutral-value.calculate
+assumptions:
+  - Valuation occurs at time zero from the claim-holder perspective
+  - Examples use a finite disjoint and exhaustive scenario partition
+  - The terminal payoff and all values are signed USD amounts
+  - The supplied risk-free discount factor is deterministic
+  - The pricing model is arbitrage-free and admits at least one risk-neutral measure relative to its cash-account numeraire
+notation:
+  local:
+    - key: risk-neutral-pricing-horizon
+      latex: T
+      meaning: 'Future model time at which the one terminal payoff is delivered. It is measured in exact model-years from valuation time zero and is not a calendar date.'
+      formula: 'T>0'
+      units: years from valuation time
+      sources: []
+      seeAlso:
+        - valuation-time
+        - terminal-random-payoff
+      alignment:
+        kind: general
+        rationale: A one-horizon finite-state model is the worked-example convention for this lesson.
+    - key: risk-neutral-scenario-index
+      latex: j
+      meaning: 'Selects one scenario in the finite pricing partition. It is a bookkeeping label rather than a probability or time.'
+      formula: 'j \in \{1,\ldots,m\}'
+      sources: []
+      seeAlso:
+        - risk-neutral-probability-measure
+      alignment:
+        kind: general
+        rationale: Finite indexing is part of the probability prerequisite and this lesson's stated assumptions.
+    - key: risk-neutral-scenario-count
+      latex: m
+      meaning: 'Counts the disjoint and exhaustive scenarios in the finite pricing partition. It is a positive integer and does not measure time or money.'
+      formula: 'm \in \mathbb{N}'
+      sources: []
+      seeAlso:
+        - risk-neutral-probability-measure
+      alignment:
+        kind: general
+        rationale: Counting a finite partition is part of the probability prerequisite.
+    - key: risk-neutral-scenario-payoff
+      latex: 'x_j'
+      meaning: 'Realized signed terminal amount in one scenario. Positive means received and negative means paid by the claim holder at the horizon.'
+      units: USD at the pricing horizon in this lesson
+      sources: []
+      seeAlso:
+        - terminal-random-payoff
+      alignment:
+        kind: competency
+        introducedByCompetency: finance.risk-neutral-value.calculate
+        introducedInLesson: foundations.risk-neutral-pricing
+    - key: risk-neutral-scenario-probability
+      latex: 'q_j'
+      meaning: 'Pricing weight assigned by the risk-neutral measure to one scenario. The weights are dimensionless, non-negative, and sum to one over the finite partition.'
+      formula: 'q_j \ge 0,\quad \sum_{j=1}^{m}q_j=1'
+      units: dimensionless probability
+      sources:
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.1, printed pp. 2-3, Def. 1.1.2 and Eq. 1.1.5 (probability weights, normalization, and finite additivity over disjoint events); Ch. 5 §5.2.2, printed pp. 216-217, Eqs. 5.2.22-5.2.24 (the risk-neutral measure and discounted-price martingale condition).'
+      seeAlso:
+        - risk-neutral-probability-measure
+      alignment:
+        kind: competency
+        introducedByCompetency: finance.risk-neutral-measure.interpret
+        introducedInLesson: foundations.risk-neutral-pricing
+---
+
+import AssessmentSet from '../../../src/components/assessments/AssessmentSet.astro';
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- distinguish a real-world probability from a risk-neutral pricing weight;
+- explain why changing measure does not remove uncertainty or volatility;
+- calculate an expected discounted payoff in a finite-state model;
+- state why a simple CDS model can omit a separate volatility input without
+  claiming that volatility never matters.
+
+## Two measures answer two different questions
+
+Stand at [[valuation-time]] $0$. Let the local
+[[risk-neutral-pricing-horizon]] $T$ be a future time in exact model-years,
+and let the [[terminal-random-payoff]] $X_T$ be the signed USD amount a
+claim holder receives or pays then.
+
+A probability measure assigns mutually consistent weights to events. The
+[[real-world-probability-measure]] $\mathbb{P}$ is intended to describe
+modeled actual-world likelihoods: it is the relevant measure for a forecast.
+The [[risk-neutral-probability-measure]] $\mathbb{Q}$ instead supplies
+weights for an arbitrage-consistent pricing model. The same event can therefore
+have different probabilities under $\mathbb{P}$ and $\mathbb{Q}$. Shreve makes
+this actual-versus-risk-neutral distinction when introducing change of measure
+[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.6, printed pp. 32-35];
+Hull makes the same forecasting-versus-valuation distinction
+[@hull-options-futures; Ch. 12 §12.2, printed pp. 257-260; Ch. 14 §14.7, printed pp. 311-313].
+
+> **There is no “risk-free measure” in this model.** The measure is
+> **risk-neutral**. “Risk-free” describes the cash account and discounting
+> convention used as the pricing benchmark. It does not describe the event
+> probabilities, and it does not make the payoff safe.
+
+The name also does not assume that every investor is indifferent to risk.
+Risk preferences and risk premia help make $\mathbb{P}$ and $\mathbb{Q}$
+different; the pricing calculation uses $\mathbb{Q}$ after it has been selected
+or calibrated.
+
+## From a partition to a price
+
+In a no-arbitrage model with the cash account as numeraire, $\mathbb{Q}$ is
+chosen so that discounted traded prices are martingales. In plain language,
+after applying the benchmark discounting, today's traded price equals its
+conditional $\mathbb{Q}$-weighted future value. Shreve states the martingale
+condition and its discounted-payoff consequence
+[@shreve-stochastic-calculus-finance-ii; Ch. 5 §5.2.2, printed pp. 214-217, eqs. 5.2.22-5.2.24; §5.2.4, printed pp. 218-219, eqs. 5.2.29-5.2.31]. Tuckman and Serrat give the same expected-discounted-value
+construction in a finite-state fixed-income setting
+[@tuckman-serrat-fixed-income; Ch. 7 §7.3, printed pp. 182-184, eqs. 7.7-7.8].
+
+To calculate the [[risk-neutral-expectation]], use the local
+[[risk-neutral-scenario-index]] $j$ and
+[[risk-neutral-scenario-count]] $m$. Let $x_j$ be the local
+[[risk-neutral-scenario-payoff]], in USD at $T$, and let $q_j$ be its
+dimensionless [[risk-neutral-scenario-probability]]. For disjoint,
+exhaustive scenarios on which the payoff is constant,
+
+$$
+\mathbb{E}^{\mathbb{Q}}[X_T]
+=\sum_{j=1}^{m}x_jq_j,
+\qquad
+q_j\ge 0,
+\qquad
+\sum_{j=1}^{m}q_j=1.
+$$
+
+This expected payoff is measured in future USD at $T$. It is not yet a
+time-zero value. Let the supplied [[discount-factor]] be $D(0,T)$, in
+time-zero USD per USD at $T$. The claim's [[present-value]] is
+
+$$
+PV_0
+=\mathbb{E}^{\mathbb{Q}}\!\left[D(0,T)X_T\right]
+=D(0,T)\mathbb{E}^{\mathbb{Q}}[X_T]
+=D(0,T)\sum_{j=1}^{m}x_jq_j.
+$$
+
+The second equality uses this lesson's assumption that $D(0,T)$ is
+deterministic. If discounting is random, it must generally remain inside the
+expectation; replacing an expectation of a product by a product of expectations
+would require additional assumptions.
+
+## Worked example
+
+Suppose $D(0,T)=0.95$ and the claim has two disjoint, exhaustive outcomes:
+
+| Scenario $j$ | Risk-neutral probability $q_j$ | Payoff $x_j$, USD at $T$ | Contribution $q_jx_j$, USD at $T$ |
+| -----------: | -----------------------------: | -----------------------: | --------------------------------: |
+|            1 |                           0.25 |                      120 |                             30.00 |
+|            2 |                           0.75 |                       40 |                             30.00 |
+
+The risk-neutral expected payoff and time-zero value are
+
+$$
+\mathbb{E}^{\mathbb{Q}}[X_T]
+=0.25(120)+0.75(40)
+=\text{USD }60\text{ at }T,
+$$
+
+$$
+PV_0
+=0.95(60)
+=\text{USD }57\text{ at time }0.
+$$
+
+No $\mathbb{P}$ probabilities enter this price because the example explicitly
+supplies $\mathbb{Q}$ pricing weights. Estimating a real-world expected payoff
+would be a different calculation.
+
+## Uncertainty remains
+
+Changing from $\mathbb{P}$ to $\mathbb{Q}$ reweights modeled outcomes; it does
+not erase randomness. In the standard diffusion change-of-measure result, the
+drift changes while the diffusion coefficient remains
+[@shreve-stochastic-calculus-finance-ii; Ch. 5 §5.2.2, printed pp. 214-217, especially eqs. 5.2.22-5.2.24]. Volatility therefore remains a model
+input for nonlinear claims such as options. Product-specific reasons why a
+restricted linear model may omit a separate volatility input belong beside that
+product model rather than in this foundation.
+
+## Advanced boundary: uniqueness
+
+The supplied pricing measure need not be unique. Under the usual technical
+conditions, absence of arbitrage is tied to existence of a suitable martingale
+measure, while uniqueness requires the stronger condition that the modeled
+market be complete. This is a boundary note rather than a competency assessed
+on this page. Shreve develops the existence and uniqueness distinction
+[@shreve-stochastic-calculus-finance-ii; Ch. 5 §§5.4.3-5.4.4, printed pp. 228-233].
+
+## Check your understanding
+
+These checks separate interpretation from arithmetic and include unfamiliar
+scenario weights and a signed negative payoff.
+
+<AssessmentSet />
+
+## Model boundary and review note
+
+This lesson uses one terminal payoff, a finite scenario partition, deterministic
+risk-free discounting, and supplied $\mathbb{Q}$ weights. It does not estimate
+$\mathbb{P}$, calibrate $\mathbb{Q}$, generate a yield curve, treat a stochastic
+numeraire, establish market completeness, or value counterparty, liquidity,
+funding, or option effects.
+
+All source records, notation, formulas, examples, and answer keys remain
+`draft` pending independent human source, quantitative, and editorial review.

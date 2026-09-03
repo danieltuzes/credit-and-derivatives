@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { loadCurriculumCatalog } from '../../src/content/collections';
+import { loadCurriculumCatalog } from '../../src/compiler/collections';
 import {
   assertValidCurriculum,
   curriculumErrors,

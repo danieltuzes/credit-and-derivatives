@@ -8,8 +8,8 @@ import {
   lessonIdFromSlug,
   mergeTrackOrder,
   parseCheckList,
-} from '../../src/content/lesson-derivation';
-import { loadCurriculumCatalog } from '../../src/content/collections';
+} from '../../src/compiler/lesson-derivation';
+import { loadCurriculumCatalog } from '../../src/compiler/collections';
 
 describe('lessonIdFromSlug / isLessonSlug', () => {
   it('maps a section slug to a dotted id', () => {
@@ -109,9 +109,13 @@ describe('buildSidebar', () => {
     { id: 't1', lessons: ['foundations.intro', 'bonds.a', 'bonds.b'] },
   ];
   const slugs = ['bonds/b', 'bonds/a', 'foundations/intro'];
+  const sections = [
+    { dir: 'foundations', label: 'Foundations' },
+    { dir: 'bonds', label: 'Bonds' },
+  ];
 
   it('groups by section, orders lessons by track position, and appends Reference', () => {
-    const sidebar = buildSidebar(tracks, slugs);
+    const sidebar = buildSidebar(tracks, slugs, sections);
     const foundations = sidebar.find((group) => group.label === 'Foundations');
     const bonds = sidebar.find((group) => group.label === 'Bonds');
     expect(foundations?.items).toEqual(['foundations/intro']);

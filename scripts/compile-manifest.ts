@@ -11,13 +11,14 @@ import {
   compileManifest,
   MANIFEST_PATH,
   writeManifest,
-} from '../src/content/manifest';
-import { syncResolutionReports } from '../src/content/resolution-report';
-import { notationSourceLocatorGaps } from '../src/content/collections';
+} from '../src/compiler/manifest';
+import { syncResolutionReports } from '../src/compiler/resolution-report';
+import { notationSourceLocatorGaps } from '../src/compiler/collections';
 import { consistencyCounts } from '../src/reference/consistency';
 import { curriculumErrors } from '../src/curriculum/validation';
+import { courseConfig } from '../content/course.config';
 
-const manifest = await compileManifest();
+const manifest = await compileManifest(courseConfig);
 writeManifest(manifest);
 
 const { curriculum, notation, alignment, math, consistency, equations } =

@@ -3,24 +3,26 @@ import { describe, expect, it } from 'vitest';
 import {
   compileManifest,
   MANIFEST_SCHEMA_VERSION,
-} from '../../src/content/manifest';
-import { buildResolutionReports } from '../../src/content/resolution-report';
+} from '../../src/compiler/manifest';
+import { buildResolutionReports } from '../../src/compiler/resolution-report';
 import {
   consistencyCounts,
   runConsistencyChecks,
   type ConsistencyCode,
 } from '../../src/reference/consistency';
-import { loadNotationSpecs } from '../../src/content/collections';
+import { loadNotationSpecs } from '../../src/compiler/collections';
 import { parseLintIgnore } from '../../src/reference/lint-ignore';
 import {
   offVocabularyTokens,
   unitsTokens,
 } from '../../src/reference/units-vocab';
 import { buildNotationRegistry } from '../../src/reference/registry';
-import { loadNotationRegistryInput } from '../../src/content/collections';
-import { loadCurriculumCatalog } from '../../src/content/collections';
+import { loadNotationRegistryInput } from '../../src/compiler/collections';
+import { loadCurriculumCatalog } from '../../src/compiler/collections';
+import { courseConfig } from '../../content/course.config';
 
 const NO_IGNORE = { entries: [], matches: () => false };
+const CONVENTIONS = courseConfig.conventions;
 
 describe('units vocabulary', () => {
   it('splits on whitespace and internal hyphens, drops bare numbers', () => {
@@ -87,6 +89,7 @@ describe('runConsistencyChecks (real corpus)', () => {
       specs,
       catalog,
       lintIgnore: NO_IGNORE,
+      conventions: CONVENTIONS,
     });
     expect(all.length).toBeGreaterThan(0);
     expect(all.every((d) => d.severity === 'warning')).toBe(true);
@@ -102,6 +105,7 @@ describe('runConsistencyChecks (real corpus)', () => {
         matches: (code, detail) =>
           code === 'glyph-unique-in-corpus' && detail === 'n',
       },
+      conventions: CONVENTIONS,
     });
     expect(
       all.some((d) => d.code === 'glyph-unique-in-corpus' && d.glyph === 'n'),
@@ -126,6 +130,7 @@ describe('runConsistencyChecks (real corpus)', () => {
       specs,
       catalog,
       lintIgnore: NO_IGNORE,
+      conventions: CONVENTIONS,
     };
     expect(JSON.stringify(runConsistencyChecks(input))).toBe(
       JSON.stringify(runConsistencyChecks(input)),
@@ -135,7 +140,7 @@ describe('runConsistencyChecks (real corpus)', () => {
 
 describe('manifest D6 additions', () => {
   it('records consistency diagnostics and per-lesson resolution rows', async () => {
-    const manifest = await compileManifest();
+    const manifest = await compileManifest(courseConfig);
     expect(manifest.schemaVersion).toBe(MANIFEST_SCHEMA_VERSION);
 
     const { consistency } = manifest.diagnostics;
@@ -170,12 +175,12 @@ describe('manifest D6 additions', () => {
   });
 
   it('builds one resolution report per lesson plus the consistency report, deterministically', async () => {
-    const manifest = await compileManifest();
+    const manifest = await compileManifest(courseConfig);
     const a = buildResolutionReports(manifest);
     const b = buildResolutionReports(manifest);
 
     expect(a.size).toBe(manifest.lessons.length + 1);
-    expect(a.has('resolution/consistency-report.json')).toBe(true);
+    expect(a.has('build/resolution/consistency-report.json')).toBe(true);
     for (const [path, content] of a) {
       expect(content).toBe(b.get(path));
       expect(content.endsWith('\n')).toBe(true);

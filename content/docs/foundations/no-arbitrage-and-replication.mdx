@@ -1,0 +1,130 @@
+---
+title: No-arbitrage and replication
+description: Match every dated state-contingent cash flow before using one portfolio to value another.
+editorialStatus: draft
+teaches:
+  - finance.law-of-one-price.explain
+  - finance.replicating-portfolio-value.calculate
+assumptions:
+  - All examples use one valuation time, one currency, and one named holder perspective
+  - The compared portfolios have identical cash flows at every future date in every modeled state
+  - The teaching model omits bid-ask spreads, transaction costs, taxes, funding differences, short-sale constraints, and liquidity effects
+notation:
+  local:
+    - key: replication-security-index
+      latex: i
+      meaning: 'Selects one traded security in the finite replicating portfolio. It is a bookkeeping label and has no monetary unit.'
+      formula: 'i \in \{1,\ldots,n\}'
+      alignment:
+        kind: general
+        rationale: Finite portfolio indexing is part of this lesson's algebra assumptions.
+    - key: replication-security-count
+      latex: n
+      meaning: 'Counts the traded securities in the finite replicating portfolio. It is a positive integer rather than a time or cash amount.'
+      formula: 'n \in \mathbb{N}'
+      alignment:
+        kind: general
+        rationale: Counting a finite portfolio is part of this lesson's algebra assumptions.
+    - key: replication-security-quantity
+      latex: 'a_i'
+      meaning: "Number of units of security i held in the replicating portfolio. A positive quantity is long and a negative quantity is short from the portfolio holder's perspective."
+      seeAlso:
+        - signed-cash-flow
+      alignment:
+        kind: competency
+        introducedByCompetency: finance.replicating-portfolio-value.calculate
+        introducedInLesson: foundations.no-arbitrage-and-replication
+    - key: replication-security-value
+      latex: 'V_{0,i}'
+      meaning: 'Current currency value per unit of one security used in the replicating portfolio. Every value uses the same valuation time and currency.'
+      units: stated currency per security at valuation time
+      seeAlso:
+        - valuation-time
+      alignment:
+        kind: competency
+        introducedByCompetency: finance.replicating-portfolio-value.calculate
+        introducedInLesson: foundations.no-arbitrage-and-replication
+    - key: replicated-claim-value
+      latex: 'V_0^{\mathrm{claim}}'
+      meaning: 'Current value assigned to the claim whose future cash flows are exactly reproduced. Under the stated no-arbitrage assumptions it equals the signed current value of the replicating portfolio.'
+      units: stated currency at valuation time
+      seeAlso:
+        - present-value
+      alignment:
+        kind: competency
+        introducedByCompetency: finance.law-of-one-price.explain
+        introducedInLesson: foundations.no-arbitrage-and-replication
+---
+
+import AssessmentSet from '../../../src/components/assessments/AssessmentSet.astro';
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- explain why identical dated state-contingent cash flows have the same value under the stated assumptions;
+- distinguish exact replication from matching only an expected cash flow;
+- calculate a claim value from signed positions in a replicating portfolio.
+
+## Compare cash flows, not labels
+
+The law of one price applies when two packages produce the same
+[[signed-cash-flow]] at every relevant future date and in every modeled
+state. Their legal names can differ. What matters is the full cash-flow vector
+from the same perspective.
+
+If the packages had different values at [[valuation-time]] $0$, the
+lesson's frictionless model would permit buying the cheaper package and selling
+the dearer one. The future cash flows cancel, leaving the initial difference.
+That is the no-arbitrage link behind the pricing rule. Tuckman and Serrat state
+the law of one price and connect deviations from it to an arbitrage trade built
+from a replicating portfolio[@tuckman-serrat-fixed-income; Ch. 1 §§1.3-1.4, printed pp. 53-57, law of one price and arbitrage replication].
+
+Matching only a mean is not enough. A payment of USD 100 only in an up state is
+not the same cash flow as USD 100 only in a down state, even if someone assigns
+the two states equal probability.
+
+## Value the replicating portfolio
+
+Use the local [[replication-security-index]] $i$ to select one security
+and the local [[replication-security-count]] $n$ to count them. Let the
+signed [[replication-security-quantity]] be $a_i$ and the current
+[[replication-security-value]] be $V_{0,i}$. When that portfolio exactly
+matches the claim's future cash flows, the [[replicated-claim-value]] is
+
+$$
+V_0^{\mathrm{claim}}=\sum_{i=1}^{n}a_iV_{0,i}.
+$$
+
+A positive $a_i$ is long; a negative $a_i$ is short. The formula uses current
+values because the future matching has already done the economic work.
+
+Suppose a claim is replicated by two units of security A worth USD 12 each and
+one unit of security B worth USD 7. The replicating portfolio, and therefore the
+claim, has value
+
+$$
+V_0^{\mathrm{claim}}=2(12)+1(7)=\text{USD }31.
+$$
+
+## Where this bridge leads
+
+Forward prices use cash-and-carry replication. Put-call parity compares two
+portfolios with identical expiry cash flows. A binomial option model constructs
+a state-by-state replicating portfolio. Risk-neutral valuation is another way
+to calculate that same no-arbitrage value inside a specified model.
+
+## Check your understanding
+
+<AssessmentSet />
+
+## Model boundary and review note
+
+Real trades can have bid-ask spreads, different borrowing and lending rates,
+short-sale constraints, collateral, taxes, liquidity differences, and execution
+risk. Those effects can prevent a textbook arbitrage from being executable.
+This lesson establishes a deliberately frictionless pricing benchmark rather
+than claiming that every observed price difference is free profit.
+
+The source locator, notation, examples, and answer keys remain `draft` pending
+independent human review.

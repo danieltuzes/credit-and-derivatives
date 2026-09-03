@@ -3,7 +3,7 @@ import {
   actualActualCouponPeriodAccrual,
   cleanPriceFromDirty,
   dirtyPriceFromClean,
-} from '../../src/domain/bonds/settlement';
+} from '../../content/domain/bonds/settlement';
 
 describe('bond settlement conventions', () => {
   it('matches an actual/actual coupon-period example', () => {

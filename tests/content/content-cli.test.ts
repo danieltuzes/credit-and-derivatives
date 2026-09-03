@@ -1,7 +1,8 @@
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { courseConfig } from '../../content/course.config';
 
-import { compileManifest } from '../../src/content/manifest';
+import { compileManifest } from '../../src/compiler/manifest';
 import {
   ContentCliError,
   contentCheck,
@@ -13,10 +14,10 @@ import {
   renderLesson,
   scaffoldLesson,
   scaffoldTerm,
-} from '../../src/content/cli';
+} from '../../src/compiler/cli';
 
-const manifest = await compileManifest();
-const DOCS = join(process.cwd(), 'src', 'content', 'docs');
+const manifest = await compileManifest(courseConfig);
+const DOCS = join(process.cwd(), 'content', 'docs');
 const SAMPLE_LESSON = 'foundations.discount-factors';
 
 describe('content status', () => {
@@ -143,19 +144,17 @@ describe('content check — renderability', () => {
 describe('content new — non-overwriting draft scaffolds', () => {
   it('scaffolds a lesson with the reduced frontmatter and a checks.yml', () => {
     const scaffold = scaffoldLesson('foundations/brand-new-lesson');
-    expect(scaffold.path).toBe(
-      'src/content/docs/foundations/brand-new-lesson.mdx',
-    );
+    expect(scaffold.path).toBe('content/docs/foundations/brand-new-lesson.mdx');
     expect(scaffold.contents).toMatch(/editorialStatus: draft/);
     expect(scaffold.contents).toMatch(/teaches: \[\]/);
     expect(scaffold.companions[0]?.path).toBe(
-      'src/content/docs/foundations/brand-new-lesson.checks.yml',
+      'content/docs/foundations/brand-new-lesson.checks.yml',
     );
   });
 
   it('scaffolds a term with a substantive placeholder meaning', () => {
     const scaffold = scaffoldTerm('brand-new-term');
-    expect(scaffold.path).toBe('src/content/notation/brand-new-term.md');
+    expect(scaffold.path).toBe('content/notation/brand-new-term.md');
     expect(scaffold.contents).toMatch(/key: brand-new-term/);
     expect(scaffold.contents).toMatch(/editorialStatus: draft/);
     expect(scaffold.contents).toMatch(/aiAssisted: true/);

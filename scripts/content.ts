@@ -19,7 +19,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
-import { compileManifest } from '../src/content/manifest';
+import { compileManifest } from '../src/compiler/manifest';
 import {
   ContentCliError,
   contentCheck,
@@ -28,7 +28,8 @@ import {
   scaffoldLesson,
   scaffoldTerm,
   type Scaffold,
-} from '../src/content/cli';
+} from '../src/compiler/cli';
+import { courseConfig } from '../content/course.config';
 
 const USAGE = `Usage:
   pnpm content status
@@ -120,7 +121,7 @@ async function main(): Promise<void> {
     return;
   }
 
-  const manifest = await compileManifest();
+  const manifest = await compileManifest(courseConfig);
 
   switch (args.command) {
     case 'status': {

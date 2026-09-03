@@ -1,0 +1,154 @@
+---
+title: The bond price-yield relationship
+description: See why fixed positive cash-flow prices fall with yield and why the curve is nonlinear.
+editorialStatus: draft
+teaches:
+  - bonds.price-yield-direction.explain
+  - bonds.price-yield-curvature.interpret
+assumptions:
+  - Promised positive fixed cash flows are held constant
+  - Flat nominal annual yield compounded at coupon frequency
+  - Yields remain non-negative before and after every displayed shock
+  - Settlement on a coupon date
+  - No default, liquidity, tax, funding, or embedded option
+notation:
+  local:
+    - key: yield-shock
+      latex: '\Delta y'
+      meaning: 'A page-local finite change in the supplied yield input. The sign is new yield minus old yield; the unit must be decimal, percentage points, or basis points as explicitly labeled.'
+      formula: '\Delta y=y_{\mathrm{new}}-y_{\mathrm{old}}'
+      seeAlso:
+        - yield-to-maturity
+      alignment:
+        kind: competency
+        introducedByCompetency: bonds.price-yield-direction.explain
+        introducedInLesson: bonds.price-yield-relationship
+    - key: price-change
+      latex: '\Delta P'
+      meaning: 'New toy-model price minus old toy-model price for a stated yield shock. This finite change is not yet a duration or convexity approximation.'
+      formula: '\Delta P=P(y+\Delta y)-P(y)'
+      seeAlso:
+        - bond-price
+        - price-yield-curve
+      alignment:
+        kind: competency
+        introducedByCompetency: bonds.price-yield-curvature.interpret
+        introducedInLesson: bonds.price-yield-relationship
+---
+
+import CompactExample from '../../../src/components/examples/CompactExample.astro';
+import CompactExamples from '../../../src/components/examples/CompactExamples.astro';
+import BondPriceExplorer from '../../labs/BondPriceExplorer';
+import AssessmentSet from '../../../src/components/assessments/AssessmentSet.astro';
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- explain why a fixed positive-cash-flow bond's price falls when yield rises;
+- hold contract cash flows fixed while changing only the discounting input;
+- recognize that the price-yield relationship is curved rather than linear.
+
+## Direction comes from every denominator
+
+Write the [[bond-payment-frequency]] as $m_{\mathrm B}$. On this page,
+$y$ is the shorter functional-argument form of the
+[[yield-to-maturity]] $y^{(m_{\mathrm B})}$. Write the
+[[price-yield-curve]] as $P(y)$.
+
+Use the [[bond-payment-index]] $k$ to select one of the
+[[number-of-bond-payments]] $n$, and write each promised positive
+[[bond-cash-flow]] as $CF_k^{\mathrm{bond}}$. Then
+
+$$
+P(y)=
+\sum_{k=1}^{n}
+\frac{CF_k^{\mathrm{bond}}}
+{\left(1+y/m_{\mathrm B}\right)^k}.
+$$
+
+Within the stated non-negative-yield domain, if yield rises while every cash
+flow stays fixed, every positive denominator increases. Every discounted
+contribution decreases, so [[bond-price]] decreases. The shock table also
+assumes the new yield remains in that domain.
+
+Define the local [[yield-shock]] $\Delta y$ as new yield minus old
+yield, and define the local [[price-change]] $\Delta P$ as new price
+minus old price.
+
+| Yield shock  | Denominators | Price change |
+| ------------ | ------------ | ------------ |
+| $\Delta y>0$ | Increase     | $\Delta P<0$ |
+| $\Delta y<0$ | Decrease     | $\Delta P>0$ |
+
+This statement is conditional on the promised cash flows being held fixed.
+
+<CompactExamples
+  summary="Worked examples"
+  hint="Open the set, then choose a price-yield comparison."
+  tabsLabel="Bond price-yield relationship examples"
+>
+  <CompactExample label="Three points form a curve">
+
+For a five-year bond with a 5% annual coupon rate, semiannual payments, and face
+value 100:
+
+| Nominal annual yield | Price per 100 face |
+| -------------------: | -----------------: |
+|                   5% |           100.0000 |
+|                   6% |            95.7349 |
+|                   7% |            91.6834 |
+
+The price falls as yield rises. The two one-percentage-point price changes are
+not identical, which rules out a straight line.
+
+  </CompactExample>
+
+  <CompactExample label="Equal shocks, unequal moves">
+
+Starting from 5% yield:
+
+- a fall to 4% raises price from 100.0000 to 104.4913, a gain of 4.4913;
+- a rise to 6% lowers price from 100.0000 to 95.7349, a loss of 4.2651.
+
+The shock sizes are equal, but the absolute price changes differ. This is the
+qualitative curvature competency. Duration, DV01, and convexity are not yet
+being calculated.
+
+  </CompactExample>
+
+  <CompactExample label="Hold other inputs fixed">
+
+If an issuer changes a coupon, a default occurs, or the settlement date moves,
+then more than yield has changed. The simple inverse-direction comparison no
+longer isolates one input.
+
+  </CompactExample>
+</CompactExamples>
+
+<BondPriceExplorer client:visible />
+
+The chart, live result, and data-table alternative all use the same tested
+domain function. The notation panel is an explanatory layer only; it performs
+no pricing.
+
+## Check your understanding
+
+These direct and transfer items cover direction and nonlinearity. Each question
+stays collapsed until you open it; answers and explanations appear once you
+check.
+
+<AssessmentSet />
+
+## Model boundary and review note
+
+The plotted curve is a toy yield summary, not a credit curve or recommendation.
+It omits accrued interest, term-structure effects, default, recovery, liquidity,
+tax, funding, and embedded options.
+
+The inverse direction and the curvature both follow Tuckman &
+Serrat[@tuckman-serrat-fixed-income; §4.1, "Price-Rate Curves", Figure 4.2, prices decrease as rates rise; §4.5, "Convexity", price-rate curves of coupon bonds are convex]; Hull notes the same negative price-yield
+relationship[@hull-options-futures; §4.8, Duration]. FINRA states
+plainly that price and yield are inversely
+related[@finra-bond-yield; "Price and yield" section]. The lesson stays
+`draft` pending human confirmation of the printed locators.

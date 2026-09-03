@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
-import { loadManifest } from '../content/manifest';
-import { isLessonSlug, lessonIdFromSlug } from '../content/lesson-derivation';
+import { loadManifest } from '../compiler/manifest';
+import { isLessonSlug, lessonIdFromSlug } from '../compiler/lesson-derivation';
 
 const [tracks, docs, competencies, manifest] = await Promise.all([
   getCollection('tracks'),

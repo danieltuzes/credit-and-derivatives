@@ -5,7 +5,7 @@ import {
   europeanOptionWriterPayoff,
   putCallParityResidual,
   putValueFromParity,
-} from '../../src/domain/derivatives/european-options';
+} from '../../content/domain/derivatives/european-options';
 
 describe('European option primitives', () => {
   it('calculates call and put holder payoffs', () => {

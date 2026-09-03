@@ -54,20 +54,29 @@ on `PATH`) is the simplest fix.
 
 ## Repository map
 
-| Path                                                     | Purpose                                                    |
-| -------------------------------------------------------- | ---------------------------------------------------------- |
-| `src/content/docs/`                                      | MDX lessons and site pages                                 |
-| `src/content/{competencies,assessments,tracks,sources}/` | Curriculum data (JSON)                                     |
-| `src/content/notation/`                                  | Shared define-once notation entries (Markdown)             |
-| `src/content.config.ts`                                  | Authoritative Zod schemas for all content                  |
-| `src/domain/`                                            | Pure financial and mathematical calculations               |
-| `src/curriculum/`                                        | Curriculum graph and semantic validation                   |
-| `src/reference/`                                         | Notation parsing, registry, scoping, KaTeX adapters        |
-| `src/components/`                                        | Astro/React UI (labs, notation layer, glossary, examples)  |
-| `scripts/`                                               | Repository-level validation commands                       |
-| `tests/`                                                 | Unit, property, curriculum, browser, accessibility tests   |
-| `docs/`                                                  | Architecture reference and ADRs                            |
-| `reference-library/`                                     | Local (git-ignored) cache of source texts for verification |
+The repo is split into an engine (`src/`) and a course (`content/`); a
+dependency-boundary test (`tests/unit/boundaries.test.ts`) keeps the engine free
+of any course reference.
+
+| Path                                                 | Purpose                                                           |
+| ---------------------------------------------------- | ----------------------------------------------------------------- |
+| `content/docs/`                                      | MDX lessons and site pages                                        |
+| `content/{competencies,assessments,tracks,sources}/` | Curriculum data (JSON)                                            |
+| `content/notation/`                                  | Shared define-once notation entries (Markdown)                    |
+| `content/domain/`                                    | Pure financial and mathematical calculations (this course)        |
+| `content/labs/`                                      | The course's interactive React explorers                          |
+| `content/course.config.ts`                           | Course identity: title, sidebar sections, domains, conventions    |
+| `src/content.config.ts`                              | Authoritative Zod schemas + collection wiring                     |
+| `src/compiler/`                                      | The one manifest compiler + the `content` CLI                     |
+| `src/curriculum/`                                    | Curriculum graph and semantic validation                          |
+| `src/reference/`                                     | Notation parsing, registry, scoping, KaTeX adapters               |
+| `src/components/`                                    | Engine UI (notation layer, citations, glossary, examples, layout) |
+| `src/{progress,session,analytics}/`                  | LMS / analytics / identity seams (no-op impls)                    |
+| `build/`                                             | Compiled output: `manifest.json` (git-ignored) + `resolution/`    |
+| `scripts/`                                           | Repository-level validation + authoring commands                  |
+| `tests/`                                             | Unit, property, curriculum, browser, accessibility tests          |
+| `docs/`                                              | Architecture reference and ADRs                                   |
+| `reference-library/`                                 | Local (git-ignored) cache of source texts for verification        |
 
 ## Where things are documented
 

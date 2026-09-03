@@ -9,11 +9,11 @@
  * D5); this component never rebuilds the registry.
  */
 import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
-import { loadManifest } from '../../content/manifest';
+import { loadManifest } from '../../compiler/manifest';
 import {
   isLessonSlug,
   lessonIdFromSlug,
-} from '../../content/lesson-derivation';
+} from '../../compiler/lesson-derivation';
 import NotationLayer, {
   type NotationLayerDefinition,
 } from '../notation/NotationLayer.astro';

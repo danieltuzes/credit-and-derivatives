@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { backwardInductionValue } from '../../src/domain/valuation/recombining-lattice';
+import { backwardInductionValue } from '../../content/domain/valuation/recombining-lattice';
 
 describe('recombining lattice backward induction', () => {
   it('values a two-step claim from terminal node values', () => {

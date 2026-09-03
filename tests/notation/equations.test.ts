@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { courseConfig } from '../../content/course.config';
 
 import remarkNotation from '../../src/reference/remark-notation.mjs';
 import {
@@ -8,7 +9,7 @@ import {
   stripEquationLabels,
 } from '../../src/reference/equations.mjs';
 import { validateEquations } from '../../src/reference/equations-validate';
-import { compileManifest } from '../../src/content/manifest';
+import { compileManifest } from '../../src/compiler/manifest';
 
 // --- pure helpers -----------------------------------------------------
 
@@ -229,7 +230,7 @@ describe('remarkNotation equation wrapping (D7)', () => {
 
 describe('manifest equation identity (D7)', () => {
   it('records labelled equations, the cross-page table, and no blocking diagnostics', async () => {
-    const manifest = await compileManifest();
+    const manifest = await compileManifest(courseConfig);
     expect(manifest.schemaVersion).toBe(3);
 
     const keys = manifest.equations.labels.map((l) => l.key).sort();

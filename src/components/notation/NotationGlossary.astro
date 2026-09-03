@@ -8,8 +8,8 @@ import { resolveLabel } from '../../reference/label';
 import {
   isLessonSlug,
   lessonIdFromSlug,
-} from '../../content/lesson-derivation';
-import { loadManifest } from '../../content/manifest';
+} from '../../compiler/lesson-derivation';
+import { loadManifest } from '../../compiler/manifest';
 
 const [notationEntries, lessonEntries, manifest] = await Promise.all([
   getCollection('notation'),

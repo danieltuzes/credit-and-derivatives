@@ -1,0 +1,179 @@
+---
+title: Issuer-default knockout bond options
+description: Value a bond option that is extinguished by issuer default while keeping bond recovery separate.
+editorialStatus: draft
+teaches:
+  - bond-options.default-knockout.interpret
+  - bond-options.default-knockout-value.calculate
+assumptions:
+  - Standalone European option on one defaultable fixed-cash-flow bond
+  - Issuer default in any lattice period before exercise extinguishes the option with zero option rebate
+  - The underlying bond may pay a separately supplied non-negative recovery cash amount at the next lattice date after period default
+  - Exercise occurs immediately after any scheduled surviving bond cash flow at expiry; strike and alive bond values are dirty cash amounts
+  - Supplied risk-neutral up weights, conditional survival probabilities, recoveries, and one-period discount factors; no calibration or real-world forecast
+  - Conditional survival/default is applied at the current node before the next rate-state branch; no simultaneous-event ambiguity inside a period
+  - No counterparty default, early exercise, option rebate, restructuring, settlement delay, correlation calibration, liquidity, tax, or funding adjustment
+notation:
+  local:
+    - key: knockout-node-discount-factor
+      latex: 'd_{i,j}'
+      meaning: One-period discount factor from the current alive node to the next lattice time.
+      units: current-node currency per next-time currency
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eq. 12.5 and Eqs. 12.7-12.10 (one-step discounting in backward induction).'
+      alignment:
+        kind: competency
+        introducedByCompetency: bond-options.default-knockout-value.calculate
+        introducedInLesson: bond-options.issuer-default-knockout
+    - key: knockout-node-up-weight
+      latex: 'q_{i,j}'
+      meaning: Conditional pricing probability assigned to the next up rate state if the issuer survives.
+      units: probability between zero and one
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eq. 12.6 and Eqs. 12.7-12.10 (risk-neutral up weight in backward induction).'
+      alignment:
+        kind: competency
+        introducedByCompetency: bond-options.default-knockout-value.calculate
+        introducedInLesson: bond-options.issuer-default-knockout
+    - key: surviving-bond-next-cash-flow
+      latex: 'CF^{B}_{i+1}'
+      meaning: Coupon or coupon-plus-redemption paid at the next lattice time only if the issuer survives the period.
+      units: stated currency per bond at the next time
+      sources:
+        - id: tuckman-serrat-fixed-income
+          locator: 'Ch. 1 §1.1, printed p. 50 and Table 1.1 (scheduled coupon and principal cash flows); Ch. 14 §14.7, printed pp. 371-372 and Table 14.11 (bond cash flows separated into default and no-default states).'
+      alignment:
+        kind: competency
+        introducedByCompetency: bond-options.default-knockout-value.calculate
+        introducedInLesson: bond-options.issuer-default-knockout
+    - key: bond-default-recovery-cash
+      latex: 'R_{i,j}^{B}'
+      meaning: Non-negative recovery paid on the underlying bond at the next lattice date after default in the period.
+      units: stated currency per bond at the next time
+      sources:
+        - id: tuckman-serrat-fixed-income
+          locator: 'Ch. 14 §14.7, printed pp. 371-372, Table 14.11 and Eq. 14.9 (defaulted bond principal recovery as face amount times recovery rate).'
+      seeAlso:
+        - recovery-rate
+      alignment:
+        kind: competency
+        introducedByCompetency: bond-options.default-knockout-value.calculate
+        introducedInLesson: bond-options.issuer-default-knockout
+    - key: surviving-bond-continuation-value
+      latex: 'H^B_{i,j}'
+      meaning: Next-time scheduled bond cash plus risk-neutral expected ex-cash-flow bond value, conditional on period survival.
+      units: stated currency per bond at the next time
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eqs. 12.7-12.10 (backward induction from successor claim values and terminal payoffs).'
+        - id: tuckman-serrat-fixed-income
+          locator: 'Ch. 7 §7.3, printed pp. 182-184, Eqs. 7.7-7.8 (one-period risk-neutral expected-discounted valuation); Ch. 14 §14.7, printed pp. 371-372, Table 14.11 and Eqs. 14.8-14.10 (survival- and default-contingent bond cash flows).'
+      alignment:
+        kind: competency
+        introducedByCompetency: bond-options.default-knockout-value.calculate
+        introducedInLesson: bond-options.issuer-default-knockout
+---
+
+import AssessmentSet from '../../../src/components/assessments/AssessmentSet.astro';
+
+## Contract definition
+
+Here “knockout” has one precise trigger: if the issuer defaults before the
+European exercise instant, the option is extinguished and pays no option
+rebate. This is not a barrier tied to the bond's market price.
+
+The underlying bond is a different claim. It may still pay recovery after
+default. That recovery belongs in the bond tree, never in the option's default
+branch.
+
+## Value the underlying bond first
+
+At an alive node [[lattice-time-index]] $i$,
+[[lattice-state-index]] $j$, use the local node discount factor $d_{i,j}$, local
+risk-neutral up weight $q_{i,j}$, [[conditional-node-survival-probability]]
+$s_{i,j}$, next surviving cash flow $CF^B_{i+1}$, and local bond recovery
+$R^B_{i,j}$. First collect the next-time value conditional on survival in the
+local [[surviving-bond-continuation-value]]:
+
+$$
+\explain{surviving-bond-continuation-value}{H^B_{i,j}}
+=\explain{surviving-bond-next-cash-flow}{CF^B_{i+1}}
++(1-\explain{knockout-node-up-weight}{q_{i,j}})
+\explain{alive-bond-value}{B^{\mathrm{alive}}_{i+1,j}}
++\explain{knockout-node-up-weight}{q_{i,j}}
+\explain{alive-bond-value}{B^{\mathrm{alive}}_{i+1,j+1}}.
+$$
+
+The [[alive-bond-value]] then separates survival and default:
+
+$$
+\explain{alive-bond-value}{B^{\mathrm{alive}}_{i,j}}
+=\explain{knockout-node-discount-factor}{d_{i,j}}
+\left[
+\explain{conditional-node-survival-probability}{s_{i,j}}
+\explain{surviving-bond-continuation-value}{H^B_{i,j}}
++(1-\explain{conditional-node-survival-probability}{s_{i,j}})
+\explain{bond-default-recovery-cash}{R^B_{i,j}}
+\right].
+$$
+
+Values are ex-cash-flow at each node. Recovery is approximated as paid at the
+next lattice date, an explicit simplification.
+
+## Apply the knockout to option continuation
+
+At call expiry, conditional on the issuer still being alive,
+
+$$
+\explain{knockout-bond-option-value}{O^{\mathrm{KO}}_{T,j}}
+=\max\left(
+\explain{alive-bond-value}{B^{\mathrm{alive}}_{T,j}}
+-\explain{option-strike-price}{K},0\right).
+$$
+
+Before expiry, the default branch is zero:
+
+$$
+\explain{knockout-bond-option-value}{O^{\mathrm{KO}}_{i,j}}
+=\explain{knockout-node-discount-factor}{d_{i,j}}
+\explain{conditional-node-survival-probability}{s_{i,j}}
+\left[
+(1-\explain{knockout-node-up-weight}{q_{i,j}})
+\explain{knockout-bond-option-value}{O^{\mathrm{KO}}_{i+1,j}}
++\explain{knockout-node-up-weight}{q_{i,j}}
+\explain{knockout-bond-option-value}{O^{\mathrm{KO}}_{i+1,j+1}}
+\right].
+$$
+
+There is no recovery term in this option equation. If survival at the current
+node is zero, the option value is zero even when the bond recovery is positive.
+
+## Parity changes with the contingency
+
+Vanilla put-call parity does not automatically survive this contract change.
+Call minus put is zero in a pre-expiry default state, so its matching synthetic
+forward must also be extinguished by the same default event. A default-free
+forward is not the state-by-state match.
+
+## Model and source boundary
+
+Hull describes European bond options and separately describes credit
+derivatives whose forwards/options cease to exist after reference-entity
+default. The exact combination here—an issuer-default knockout option on the
+issuer's bond—is a transparent teaching synthesis implementing the stated
+contract, not a claim that all bond options use this convention. The joint
+rate-credit lattice is supplied rather than calibrated.
+
+## Check your understanding
+
+<AssessmentSet />
+
+## Sources
+
+Bond-option cash-price conventions follow Hull, Chapter 28 §28.1; the analogous
+default-extinguishment convention is described for CDS forwards and options in
+Chapter 24 §24.5; backward induction follows Chapter 12
+[@hull-options-futures]. Recovery conventions must state base and timing, as
+emphasized by the fixed-income treatment [@tuckman-serrat-fixed-income].

@@ -1,0 +1,246 @@
+---
+title: One-period binomial option valuation
+description: Price two-state option payoffs by both exact replication and risk-neutral weighting.
+editorialStatus: draft
+teaches:
+  - options.binomial-hedge.calculate
+  - options.one-period-binomial-value.calculate
+assumptions:
+  - One non-income-paying traded underlying and one risk-free cash account
+  - Exactly two possible underlying values at one European option expiry
+  - One strictly positive deterministic discount factor to expiry
+  - The current underlying value lies strictly between the discounted no-arbitrage bounds implied by the two expiry values
+  - The two traded instruments span the two modeled states
+notation:
+  local:
+    - key: binomial-up-underlying-value
+      latex: 'S^{\mathrm{up}}'
+      meaning: One of the two possible underlying values at the one-period expiry.
+      units: stated currency per unit of underlying at expiry
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §12.1, printed pp. 253-256, Fig. 12.1 and Fig. 12.2 (one-step up and down underlying values and corresponding claim payoffs).'
+      seeAlso:
+        - derivative-underlying-value
+      alignment:
+        kind: competency
+        introducedByCompetency: options.one-period-binomial-value.calculate
+        introducedInLesson: derivatives.one-period-binomial-option-valuation
+    - key: binomial-down-underlying-value
+      latex: 'S^{\mathrm{down}}'
+      meaning: The lower of the two possible underlying values at the one-period expiry.
+      units: stated currency per unit of underlying at expiry
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §12.1, printed pp. 253-256, Fig. 12.1 and Fig. 12.2 (one-step up and down underlying values and corresponding claim payoffs).'
+      seeAlso:
+        - derivative-underlying-value
+      alignment:
+        kind: competency
+        introducedByCompetency: options.one-period-binomial-value.calculate
+        introducedInLesson: derivatives.one-period-binomial-option-valuation
+    - key: binomial-up-claim-payoff
+      latex: 'X^{\mathrm{up}}'
+      meaning: Signed expiry payoff of the claim when the underlying takes its up-state value.
+      units: stated currency at expiry
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §12.1, printed pp. 253-256, Fig. 12.1 and Fig. 12.2 (one-step up and down underlying values and corresponding claim payoffs).'
+      alignment:
+        kind: competency
+        introducedByCompetency: options.binomial-hedge.calculate
+        introducedInLesson: derivatives.one-period-binomial-option-valuation
+    - key: binomial-down-claim-payoff
+      latex: 'X^{\mathrm{down}}'
+      meaning: Signed expiry payoff of the claim when the underlying takes its down-state value.
+      units: stated currency at expiry
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §12.1, printed pp. 253-256, Fig. 12.1 and Fig. 12.2 (one-step up and down underlying values and corresponding claim payoffs).'
+      alignment:
+        kind: competency
+        introducedByCompetency: options.binomial-hedge.calculate
+        introducedInLesson: derivatives.one-period-binomial-option-valuation
+    - key: binomial-hedge-units
+      latex: '\Delta'
+      meaning: Signed units of underlying in the portfolio that replicates the two claim payoffs.
+      units: units of underlying per claim
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §12.1, printed pp. 254-256, Eq. 12.1 (signed underlying units in the one-step replicating portfolio).'
+      seeAlso:
+        - derivative-underlying-value
+      alignment:
+        kind: competency
+        introducedByCompetency: options.binomial-hedge.calculate
+        introducedInLesson: derivatives.one-period-binomial-option-valuation
+    - key: binomial-risk-free-expiry-cash
+      latex: 'M_{T_{\mathrm{opt}}}'
+      meaning: Signed expiry cash amount held with the underlying units to reproduce both claim payoffs.
+      units: stated currency at expiry
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §12.1, printed pp. 254-256, Eq. 12.1 and Eq. 12.2 (replicating stock position and discounted riskless residual value).'
+      seeAlso:
+        - discount-factor
+      alignment:
+        kind: competency
+        introducedByCompetency: options.binomial-hedge.calculate
+        introducedInLesson: derivatives.one-period-binomial-option-valuation
+    - key: binomial-risk-neutral-up-weight
+      latex: q
+      meaning: 'Model-implied pricing probability assigned to the up state by the no-arbitrage tree. It is dimensionless and lies between zero and one when the tree is arbitrage-consistent.'
+      units: probability between zero and one
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §§12.1-12.2, printed pp. 256-258, Eq. 12.2 and Eq. 12.3 (risk-neutral up weight and discounted expected payoff).'
+      seeAlso:
+        - risk-neutral-probability-measure
+      alignment:
+        kind: competency
+        introducedByCompetency: options.one-period-binomial-value.calculate
+        introducedInLesson: derivatives.one-period-binomial-option-valuation
+    - key: binomial-claim-value
+      latex: V_0
+      meaning: Time-zero value obtained identically from the replicating portfolio and risk-neutral expected payoff.
+      units: stated currency at valuation time
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §12.1, printed pp. 253-256, Eq. 12.2 (one-step claim value from replication and discounted risk-neutral payoff).'
+      seeAlso:
+        - valuation-time
+      alignment:
+        kind: competency
+        introducedByCompetency: options.one-period-binomial-value.calculate
+        introducedInLesson: derivatives.one-period-binomial-option-valuation
+---
+
+import AssessmentSet from '../../../src/components/assessments/AssessmentSet.astro';
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- construct the two-position portfolio that matches both state payoffs;
+- calculate the tree's risk-neutral up-state weight;
+- show that replication and discounted risk-neutral expectation give the same value.
+
+## Two states, two traded positions
+
+Let the underlying be worth $\explain{derivative-underlying-value}{S_0}$ at
+[[valuation-time]] and take exactly the local values
+[[binomial-up-underlying-value]]
+$\explain{binomial-up-underlying-value}{S^{\mathrm{up}}}$ or
+[[binomial-down-underlying-value]]
+$\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}$ at the
+[[option-expiry-time]] $T_{\mathrm{opt}}$. A claim pays local
+[[binomial-up-claim-payoff]]
+$\explain{binomial-up-claim-payoff}{X^{\mathrm{up}}}$ or
+[[binomial-down-claim-payoff]]
+$\explain{binomial-down-claim-payoff}{X^{\mathrm{down}}}$.
+
+The local [[binomial-hedge-units]] that matches the payoff difference are
+
+$$
+\explain{binomial-hedge-units}{\Delta}
+=\frac{\explain{binomial-up-claim-payoff}{X^{\mathrm{up}}}
+-\explain{binomial-down-claim-payoff}{X^{\mathrm{down}}}}
+{\explain{binomial-up-underlying-value}{S^{\mathrm{up}}}
+-\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}}.
+$$
+
+The local [[binomial-risk-free-expiry-cash]] then matches the down state:
+
+$$
+\explain{binomial-risk-free-expiry-cash}{M_{T_{\mathrm{opt}}}}
+=\explain{binomial-down-claim-payoff}{X^{\mathrm{down}}}
+-\explain{binomial-hedge-units}{\Delta}\,
+\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}.
+$$
+
+Consequently the local [[binomial-claim-value]] of the replicating
+portfolio is
+
+$$
+\explain{binomial-claim-value}{V_0}
+=\explain{binomial-hedge-units}{\Delta}\,
+\explain{derivative-underlying-value}{S_0}
++\explain{discount-factor}{D(0,T_{\mathrm{opt}})}
+\explain{binomial-risk-free-expiry-cash}{M_{T_{\mathrm{opt}}}}.
+$$
+
+## The same value with risk-neutral weights
+
+The no-arbitrage tree chooses local [[binomial-risk-neutral-up-weight]]
+$q$ so the underlying itself is priced correctly:
+
+$$
+\explain{binomial-risk-neutral-up-weight}{q}
+=\frac{\explain{derivative-underlying-value}{S_0}/D(0,T_{\mathrm{opt}})
+-\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}}
+{\explain{binomial-up-underlying-value}{S^{\mathrm{up}}}
+-\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}}.
+$$
+
+Using the [[risk-neutral-probability-measure]] $\mathbb{Q}$, the same claim
+value is
+
+$$
+\explain{binomial-claim-value}{V_0}
+=\explain{discount-factor}{D(0,T_{\mathrm{opt}})}
+\left(\explain{binomial-risk-neutral-up-weight}{q}\,
+\explain{binomial-up-claim-payoff}{X^{\mathrm{up}}}
++(1-\explain{binomial-risk-neutral-up-weight}{q})
+\explain{binomial-down-claim-payoff}{X^{\mathrm{down}}}\right).
+$$
+
+Hull derives the one-step hedge and then shows that its no-arbitrage value equals
+the discounted risk-neutral expected payoff
+[@hull-options-futures; Ch. 12 §§12.1-12.2, printed pp. 253-259, one-step binomial replication and risk-neutral valuation].
+
+## Worked call example
+
+Let $\explain{derivative-underlying-value}{S_0}=100$,
+$\explain{binomial-up-underlying-value}{S^{\mathrm{up}}}=120$,
+$\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}=80$,
+$\explain{discount-factor}{D(0,T_{\mathrm{opt}})}=1/1.05$, and let the
+[[option-strike-price]] be
+$\explain{option-strike-price}{K}=100$. The call payoffs are
+$\explain{binomial-up-claim-payoff}{X^{\mathrm{up}}}=20$ and
+$\explain{binomial-down-claim-payoff}{X^{\mathrm{down}}}=0$.
+
+Then $\explain{binomial-hedge-units}{\Delta}=0.5$,
+$\explain{binomial-risk-free-expiry-cash}{M_{T_{\mathrm{opt}}}}=-40$, and
+$\explain{binomial-risk-neutral-up-weight}{q}=0.625$. Both methods give
+
+$$
+\explain{binomial-claim-value}{V_0}
+=0.5(100)+\frac{-40}{1.05}
+=\frac{0.625(20)+0.375(0)}{1.05}
+=11.9047619.
+$$
+
+The negative cash position is borrowing; it is not a negative option value.
+
+## From one period to a path
+
+Repeating this valuation one step at a time produces backward induction on a
+multi-period tree. Later bond-option lessons need node-specific discounting and
+an additional survival/default state. A default-triggered knock-out cannot be
+valued from a terminal distribution alone because the option may terminate
+before expiry.
+
+## Check your understanding
+
+<AssessmentSet />
+
+## Model boundary and review note
+
+This complete two-state model has one non-income-paying traded underlying, one
+risk-free account, and deterministic discounting. It does not estimate
+real-world probabilities, volatility, multiple time steps, stochastic rates,
+default, or transaction and funding effects.
+
+The two valuation methods are implemented together in a pure tested domain
+module. The hand-calculated answer and implementation both remain subject to
+independent human quantitative review.

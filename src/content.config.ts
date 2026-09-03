@@ -1,9 +1,17 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
 import { isSubstantiveMeaning } from './reference/prose';
+
+// Phase F: content lives in the top-level `content/` folder, not `src/content/`.
+// `docsLoader()` is hard-wired to `<srcDir>/content/docs`, so the `docs`
+// collection uses a plain glob with the same extensions and `_`-prefix ignore.
+const CONTENT_DIR = './content';
+const docsGlob = glob({
+  base: `${CONTENT_DIR}/docs`,
+  pattern: '**/[^_]*.{md,mdx}',
+});
 
 const editorialStatus = z.enum(['draft', 'in-review', 'reviewed']);
 const id = z.string().regex(/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/);
@@ -103,7 +111,7 @@ const lessonNotation = z
  *            `notation.uses` (D3 — a shared symbol is imported by using it).
  */
 const docs = defineCollection({
-  loader: docsLoader(),
+  loader: docsGlob,
   schema: docsSchema({
     extend: z.object({
       editorialStatus: editorialStatus.default('draft'),
@@ -117,7 +125,7 @@ const docs = defineCollection({
 const competencies = defineCollection({
   loader: glob({
     pattern: '**/*.json',
-    base: './src/content/competencies',
+    base: './content/competencies',
   }),
   schema: z.object({
     id,
@@ -153,7 +161,7 @@ const assessmentItemBase = z.object({
 const assessments = defineCollection({
   loader: glob({
     pattern: '**/*.json',
-    base: './src/content/assessments',
+    base: './content/assessments',
   }),
   schema: z.object({
     id,
@@ -188,7 +196,7 @@ const assessments = defineCollection({
 });
 
 const tracks = defineCollection({
-  loader: glob({ pattern: '**/*.json', base: './src/content/tracks' }),
+  loader: glob({ pattern: '**/*.json', base: './content/tracks' }),
   schema: z.object({
     id,
     title: z.string().min(1),
@@ -201,7 +209,7 @@ const tracks = defineCollection({
 });
 
 const sources = defineCollection({
-  loader: glob({ pattern: '**/*.json', base: './src/content/sources' }),
+  loader: glob({ pattern: '**/*.json', base: './content/sources' }),
   schema: z.object({
     id,
     type: z.enum([
@@ -232,7 +240,7 @@ const sources = defineCollection({
  * Markdown body.
  */
 const notation = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/notation' }),
+  loader: glob({ pattern: '**/*.md', base: './content/notation' }),
   schema: notationEntryShape.extend({
     domain: id,
     aliases: z.array(z.string().min(1)).default([]),

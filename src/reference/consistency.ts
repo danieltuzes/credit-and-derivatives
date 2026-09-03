@@ -24,8 +24,9 @@
  * `src/content/resolution-report.ts`.
  */
 
+import type { CourseConventions } from '../compiler/course-config';
 import type { CurriculumCatalog } from '../curriculum/validation';
-import type { NotationSpec } from '../content/collections';
+import type { NotationSpec } from '../compiler/collections';
 import type { LintIgnore } from './lint-ignore';
 import { offVocabularyTokens } from './units-vocab';
 import type {
@@ -62,10 +63,9 @@ export interface ConsistencyInput {
   readonly specs: readonly NotationSpec[];
   readonly catalog: CurriculumCatalog;
   readonly lintIgnore: LintIgnore;
+  /** Convention keys this course anchors on (from `content/course.config.ts`). */
+  readonly conventions: CourseConventions;
 }
-
-const CASH_FLOW_PERSPECTIVE_COMPETENCY = 'finance.cash-flow-perspective.apply';
-const SIGN_CONVENTION_KEY = 'signed-cash-flow';
 
 const CONVENTION_RE =
   /\bsign convention\b|\bcash-flow perspective\b|\bholder(?:'s)?(?:\s+\w+){0,2}\s+perspective\b|\bfrom (?:a|one|the|its)(?:\s+\w+){0,3}\s+perspective\b|\breverses? every sign\b|\bpositive (?:means|amounts?)\b/i;
@@ -226,12 +226,14 @@ function checkConventionSingleDefinition(
     const body = lesson.body;
     if (!CONVENTION_RE.test(body)) continue;
     const meta = lessonById.get(lesson.lessonId);
+    const { signConventionKey, cashFlowPerspectiveCompetency } =
+      input.conventions;
     const anchoredByCompetency = [
       ...(meta?.teaches ?? []),
       ...(meta?.requires ?? []),
-    ].includes(CASH_FLOW_PERSPECTIVE_COMPETENCY);
+    ].includes(cashFlowPerspectiveCompetency);
     const anchoredByTerm = new RegExp(
-      `\\[\\[\\s*${SIGN_CONVENTION_KEY}\\s*\\]\\]`,
+      `\\[\\[\\s*${signConventionKey}\\s*\\]\\]`,
     ).test(body);
     if (anchoredByCompetency || anchoredByTerm) continue;
     if (
@@ -244,7 +246,7 @@ function checkConventionSingleDefinition(
       severity: 'warning',
       lessonId: lesson.lessonId,
       file: lesson.source.file,
-      message: `${lesson.lessonId} states a sign / cash-flow-perspective convention in prose but does not resolve it to a single declaration ([[${SIGN_CONVENTION_KEY}]] or ${CASH_FLOW_PERSPECTIVE_COMPETENCY})`,
+      message: `${lesson.lessonId} states a sign / cash-flow-perspective convention in prose but does not resolve it to a single declaration ([[${signConventionKey}]] or ${cashFlowPerspectiveCompetency})`,
     });
   }
 }

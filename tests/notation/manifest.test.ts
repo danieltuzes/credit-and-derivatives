@@ -1,21 +1,22 @@
 import { describe, expect, it } from 'vitest';
+import { courseConfig } from '../../content/course.config';
 import {
   compileManifest,
   MANIFEST_SCHEMA_VERSION,
   serializeManifest,
-} from '../../src/content/manifest';
+} from '../../src/compiler/manifest';
 
 describe('content manifest (Phase D5)', () => {
   it('compiles deterministically — two runs are byte-identical', async () => {
     const [first, second] = await Promise.all([
-      compileManifest(),
-      compileManifest(),
+      compileManifest(courseConfig),
+      compileManifest(courseConfig),
     ]);
     expect(serializeManifest(first)).toBe(serializeManifest(second));
   });
 
   it('serializes with recursively sorted object keys', async () => {
-    const manifest = await compileManifest();
+    const manifest = await compileManifest(courseConfig);
     const text = serializeManifest(manifest);
     const topKeys = Object.keys(JSON.parse(text) as Record<string, unknown>);
     expect(topKeys).toEqual([...topKeys].sort());
@@ -23,7 +24,7 @@ describe('content manifest (Phase D5)', () => {
   });
 
   it('carries the schema version and the core collections', async () => {
-    const manifest = await compileManifest();
+    const manifest = await compileManifest(courseConfig);
     expect(manifest.schemaVersion).toBe(MANIFEST_SCHEMA_VERSION);
     expect(manifest.lessons.length).toBeGreaterThan(0);
     expect(manifest.competencies.length).toBeGreaterThan(0);
@@ -34,7 +35,7 @@ describe('content manifest (Phase D5)', () => {
   });
 
   it('gives every lesson a resolved notation bundle and derived metadata', async () => {
-    const manifest = await compileManifest();
+    const manifest = await compileManifest(courseConfig);
     const lesson = manifest.lessons.find(
       (entry) => entry.id === 'foundations.discount-factors',
     );
@@ -59,7 +60,7 @@ describe('content manifest (Phase D5)', () => {
   });
 
   it('exposes the notation registry and diagnostics without a page-time rebuild', async () => {
-    const manifest = await compileManifest();
+    const manifest = await compileManifest(courseConfig);
     expect(
       manifest.notation.diagnostics.filter((d) => d.severity === 'error'),
     ).toEqual([]);

@@ -4,7 +4,7 @@ import {
   continuousZeroRate,
   createLogLinearDiscountCurve,
   forwardDiscountFactor,
-} from '../../src/domain/rates/discount-curve';
+} from '../../content/domain/rates/discount-curve';
 
 describe('log-linear discount curve', () => {
   it('preserves nodes and interpolates the logarithm of discount factors', () => {

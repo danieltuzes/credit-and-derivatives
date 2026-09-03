@@ -4,11 +4,12 @@ import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
-import { loadManifest } from './src/content/manifest.ts';
+import { loadManifest } from './src/compiler/manifest.ts';
 import { createNotationKatexOptions } from './src/reference/katex-options.mjs';
 import rehypeFailKatexErrors from './src/reference/rehype-fail-katex-errors.mjs';
 import remarkCitation from './src/reference/remark-citation.mjs';
 import remarkNotation from './src/reference/remark-notation.mjs';
+import { courseConfig } from './content/course.config.ts';
 
 // The deployment base path. Empty for local dev, `pnpm verify`, and e2e (the
 // site serves from `/`); the GitHub Pages workflow sets `SITE_BASE=/equations`.
@@ -17,8 +18,9 @@ const base = process.env.SITE_BASE || undefined;
 
 // The one compiler manifest (Phase D5). `pnpm validate:content` regenerates it
 // before every `astro check` / `astro build`; a cold `astro dev` compiles it
-// once here. Nothing in this config re-walks `src/content/`.
-const manifest = await loadManifest();
+// once here (with this course's config). Nothing in this config re-walks
+// `content/`.
+const manifest = await loadManifest(courseConfig);
 
 export default defineConfig({
   output: 'static',
@@ -26,9 +28,8 @@ export default defineConfig({
   base,
   integrations: [
     starlight({
-      title: 'Credit Products Playground',
-      description:
-        'Interactive foundations for bonds, credit risk, CDS, CDX, and their options.',
+      title: courseConfig.title,
+      description: courseConfig.description,
       customCss: ['./src/styles/global.css'],
       components: {
         Footer: './src/components/starlight/LessonFooter.astro',

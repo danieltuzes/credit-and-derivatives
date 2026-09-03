@@ -1,0 +1,149 @@
+---
+title: Forward contracts, delivery price, and value
+description: Separate a forward's obligation, fair delivery price, and changing signed contract value.
+editorialStatus: draft
+teaches:
+  - derivatives.forward-contract.interpret
+  - derivatives.forward-delivery-price.calculate
+  - derivatives.forward-value.calculate
+assumptions:
+  - One physically settled forward on a non-negative-price investment asset
+  - The long pays the delivery price and receives the underlying at one future delivery time
+  - Any income paid before delivery is deterministic and represented by its valuation-time present value
+  - One strictly positive deterministic discount factor converts delivery-time currency to valuation-time currency
+  - No initial margin, collateral, counterparty default, bid-ask spread, tax, short-sale constraint, or daily settlement
+notation:
+  local:
+    - key: deterministic-income-present-value
+      latex: 'I_0'
+      meaning: 'Valuation-time value of cash income paid by the underlying after valuation and before forward delivery. It is subtracted from spot value because the forward long does not own the asset early enough to receive that income.'
+      units: stated currency at valuation time per unit of underlying
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 5 §5.5, printed pp. 107-108, Eq. 5.2 (present value I of known pre-delivery income), and §5.7, printed p. 111, Eq. 5.6 (known-income forward value).'
+      seeAlso:
+        - discount-factor
+      alignment:
+        kind: competency
+        introducedByCompetency: derivatives.forward-delivery-price.calculate
+        introducedInLesson: derivatives.forward-contracts-and-value
+    - key: forward-contract-quantity
+      latex: N
+      meaning: 'Positive number of underlying units delivered under the forward contract. Contract value and payoff scale linearly with this quantity.'
+      formula: 'N>0'
+      alignment:
+        kind: general
+        rationale: Position scaling is part of the lesson's elementary arithmetic assumptions.
+    - key: long-forward-expiry-payoff
+      latex: '\Pi_{T_{\mathrm{fwd}}}^{\mathrm{long}}'
+      meaning: 'Signed delivery-time value received by the long after exchanging the fixed delivery payment for the underlying. Per unit it equals underlying value at delivery minus the contractual delivery price.'
+      units: stated currency at forward delivery time
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 1 §1.3, printed pp. 5-6, Fig. 1.2 (long forward payoff as underlying value at delivery minus delivery price).'
+      seeAlso:
+        - forward-delivery-price
+        - derivative-underlying-value
+      alignment:
+        kind: competency
+        introducedByCompetency: derivatives.forward-contract.interpret
+        introducedInLesson: derivatives.forward-contracts-and-value
+---
+
+import AssessmentSet from '../../../src/components/assessments/AssessmentSet.astro';
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- read the long and short obligations of a forward;
+- distinguish delivery price, current forward price, and contract value;
+- calculate a fair delivery price with deterministic income;
+- calculate the signed value of an existing forward.
+
+## An obligation, not an option
+
+The [[forward-delivery-time]] $T_{\mathrm{fwd}}$ is when the exchange
+occurs. Under the physical-settlement convention, the long pays the
+[[forward-delivery-price]] $K_{\mathrm{fwd}}$ and receives one unit of
+the asset. If its [[derivative-underlying-value]] then is
+$S_{T_{\mathrm{fwd}}}$, the local [[long-forward-expiry-payoff]] per unit
+is
+
+$$
+\Pi_{T_{\mathrm{fwd}}}^{\mathrm{long}}
+=S_{T_{\mathrm{fwd}}}-K_{\mathrm{fwd}}.
+$$
+
+The short has the exact opposite payoff. Hull distinguishes this bilateral
+obligation from an option holder's exercise right and gives the corresponding
+long and short payoff directions[@hull-options-futures; Ch. 1 §1.3, printed pp. 5-7, forward contracts and payoffs].
+
+## Fair delivery price at inception
+
+The [[forward-price]] $F_{0,T_{\mathrm{fwd}}}$ is the delivery price that
+would make a new contract worth zero at [[valuation-time]] $0$. Suppose
+the underlying is worth $S_0$ and the local
+[[deterministic-income-present-value]] paid before delivery is $I_0$.
+The forward long does not own the asset before delivery, so the prepaid value of
+what will be delivered is $S_0-I_0$.
+
+Under the stated cash-and-carry assumptions, with the delivery-time
+[[discount-factor]] $D(0,T_{\mathrm{fwd}})$, the law of one price gives
+
+$$
+F_{0,T_{\mathrm{fwd}}}
+=\frac{S_0-I_0}{D(0,T_{\mathrm{fwd}})}.
+$$
+
+Hull derives the no-income and known-income forward prices by matching a spot
+purchase and financing strategy to the forward exchange
+[@hull-options-futures; Ch. 5 §§5.3-5.5, printed pp. 103-108, cash-and-carry forward pricing and known income].
+
+For $S_0=100$, $I_0=4$, and $D(0,T_{\mathrm{fwd}})=0.95$,
+
+$$
+F_{0,T_{\mathrm{fwd}}}=\frac{100-4}{0.95}=101.0526316.
+$$
+
+The nonzero delivery price is not an inception premium. The fair new contract's
+signed value is zero because its fixed delivery price equals the current forward
+price.
+
+## An existing forward can gain or lose value
+
+After inception, $K_{\mathrm{fwd}}$ remains fixed while the current forward
+price can change. For local [[forward-contract-quantity]] $N$, the
+[[forward-contract-value]] to the long at time zero is
+
+$$
+V_0^{\mathrm{fwd}}
+=N D(0,T_{\mathrm{fwd}})
+\left(F_{0,T_{\mathrm{fwd}}}-K_{\mathrm{fwd}}\right).
+$$
+
+If $N=10$, the current forward price is 98, the contract delivery price is 102,
+and the discount factor is 0.94, then
+
+$$
+V_0^{\mathrm{fwd}}=10(0.94)(98-102)=-37.60.
+$$
+
+The short's value is USD +37.60 under the same inputs. Hull derives this
+discounted forward-price difference for an existing contract
+[@hull-options-futures; Ch. 5 §5.7, printed pp. 109-111, valuation of existing forward contracts].
+
+## Check your understanding
+
+<AssessmentSet />
+
+## Model boundary and review note
+
+This is a teaching cash-and-carry model for an investment asset with known
+income and deterministic discounting. It does not model futures-style daily
+settlement, repo specialness, collateral, counterparty credit, taxes, borrowing
+asymmetry, delivery options, or an asset that cannot be financed or shorted on
+the assumed terms.
+
+The formulas are implemented in a pure tested domain module. Sources, notation,
+examples, code, and answer keys remain `draft` pending independent human review.
