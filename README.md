@@ -41,42 +41,48 @@ on `PATH`) is the simplest fix.
 
 ## Commands
 
-| Command                             | Purpose                                   |
-| ----------------------------------- | ----------------------------------------- |
-| `pnpm dev`                          | Editor preview with hot reload            |
-| `pnpm validate:content`             | Curriculum + notation semantic validation |
-| `pnpm check`                        | Astro + TypeScript checks                 |
-| `pnpm test` / `pnpm test:watch`     | Numerical, curriculum, notation tests     |
-| `pnpm test:e2e`                     | Astro server + browser + accessibility    |
-| `pnpm build` / `pnpm preview`       | Static production build / preview it      |
-| `pnpm format` / `pnpm format:check` | Prettier write / check                    |
-| `pnpm verify`                       | Every required pre-review check, in order |
+| Command                             | Purpose                                        |
+| ----------------------------------- | ---------------------------------------------- |
+| `pnpm dev`                          | Editor preview with hot reload                 |
+| `pnpm build:engine`                 | Build `@danieltuzes/legend` (`tsup` → `dist/`) |
+| `pnpm validate:content`             | Curriculum + notation semantic validation      |
+| `pnpm check`                        | Astro + TypeScript checks                      |
+| `pnpm test` / `pnpm test:watch`     | Numerical, curriculum, notation tests          |
+| `pnpm test:e2e`                     | Astro server + browser + accessibility         |
+| `pnpm build` / `pnpm preview`       | Static production build / preview it           |
+| `pnpm format` / `pnpm format:check` | Prettier write / check                         |
+| `pnpm verify`                       | Every required pre-review check, in order      |
 
 ## Repository map
 
-The repo is split into an engine (`src/`) and a course (`content/`); a
-dependency-boundary test (`tests/unit/boundaries.test.ts`) keeps the engine free
-of any course reference.
+The repo is a pnpm workspace split into an **engine** (`packages/legend/`, the
+`@danieltuzes/legend` package) and a **course** (everything at the root:
+`content/`, `astro.config.mjs`, `scripts/`, `tests/`). The course depends on the
+engine via `workspace:*`; a dependency-boundary test
+(`tests/unit/boundaries.test.ts`) keeps the engine free of any course reference
+and the course's `content/domain/` framework-free. When the two halves become
+separate repos this is a move, not a detangle.
 
-| Path                                                 | Purpose                                                           |
-| ---------------------------------------------------- | ----------------------------------------------------------------- |
-| `content/docs/`                                      | MDX lessons and site pages                                        |
-| `content/{competencies,assessments,tracks,sources}/` | Curriculum data (JSON)                                            |
-| `content/notation/`                                  | Shared define-once notation entries (Markdown)                    |
-| `content/domain/`                                    | Pure financial and mathematical calculations (this course)        |
-| `content/labs/`                                      | The course's interactive React explorers                          |
-| `content/course.config.ts`                           | Course identity: title, sidebar sections, domains, conventions    |
-| `src/content.config.ts`                              | Authoritative Zod schemas + collection wiring                     |
-| `src/compiler/`                                      | The one manifest compiler + the `content` CLI                     |
-| `src/curriculum/`                                    | Curriculum graph and semantic validation                          |
-| `src/reference/`                                     | Notation parsing, registry, scoping, KaTeX adapters               |
-| `src/components/`                                    | Engine UI (notation layer, citations, glossary, examples, layout) |
-| `src/{progress,session,analytics}/`                  | LMS / analytics / identity seams (no-op impls)                    |
-| `build/`                                             | Compiled output: `manifest.json` (git-ignored) + `resolution/`    |
-| `scripts/`                                           | Repository-level validation + authoring commands                  |
-| `tests/`                                             | Unit, property, curriculum, browser, accessibility tests          |
-| `docs/`                                              | Architecture reference and ADRs                                   |
-| `reference-library/`                                 | Local (git-ignored) cache of source texts for verification        |
+| Path                                                 | Purpose                                                                                |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `content/docs/`                                      | MDX lessons and site pages                                                             |
+| `content/{competencies,assessments,tracks,sources}/` | Curriculum data (JSON)                                                                 |
+| `content/notation/`                                  | Shared define-once notation entries (Markdown)                                         |
+| `content/domain/`                                    | Pure financial and mathematical calculations (this course)                             |
+| `content/labs/`                                      | The course's interactive React explorers                                               |
+| `content/course.config.ts`                           | Course identity: title, sidebar sections, domains, conventions                         |
+| `src/content.config.ts`                              | Astro's content entry — re-exports the engine's Zod schemas                            |
+| `astro.config.mjs`, `scripts/`                       | The wiring layer: pass `courseConfig` + the manifest to the engine                     |
+| `packages/legend/src/compiler/`                      | The one manifest compiler + the `content` CLI                                          |
+| `packages/legend/src/curriculum/`                    | Curriculum graph and semantic validation                                               |
+| `packages/legend/src/reference/`                     | Notation parsing, registry, scoping, KaTeX adapters, the completeness gate             |
+| `packages/legend/src/components/`                    | Engine UI (notation layer, citations, glossary, examples, layout)                      |
+| `packages/legend/src/{progress,session,analytics}/`  | LMS / analytics / identity seams (no-op impls)                                         |
+| `packages/legend/dist/`                              | Engine build (`tsup` → ESM + `.d.ts`); git-ignored, regenerated by `pnpm build:engine` |
+| `build/`                                             | Compiled course output: `manifest.json` (git-ignored) + `resolution/`                  |
+| `tests/`                                             | Unit, property, curriculum, browser, accessibility tests                               |
+| `docs/`                                              | Architecture reference and ADRs                                                        |
+| `reference-library/`                                 | Local (git-ignored) cache of source texts for verification                             |
 
 ## Where things are documented
 

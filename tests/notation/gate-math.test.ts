@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { gateContentMath } from '../../src/reference/gate-math';
+import { gateContentMath } from '@danieltuzes/legend/reference/gate-math';
 import type {
   NotationLessonInput,
   SharedNotationDefinitionInput,
-} from '../../src/reference/types';
+} from '@danieltuzes/legend/reference/types';
 
 const shared = (
   key: string,

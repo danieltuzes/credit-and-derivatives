@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { extractNotationReferences } from '../../src/compiler/collections';
+import { extractNotationReferences } from '@danieltuzes/legend/compiler/collections';
 
 const pairs = (text: string) =>
   extractNotationReferences(text, 'lesson.md', undefined).map(

@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { courseConfig } from '../../content/course.config';
 
-import remarkNotation from '../../src/reference/remark-notation.mjs';
+import remarkNotation from '@danieltuzes/legend/reference/remark-notation.mjs';
 import {
   collectEquationLabels,
   parseEquationRef,
   scanEquationLabels,
   stripEquationLabels,
-} from '../../src/reference/equations.mjs';
-import { validateEquations } from '../../src/reference/equations-validate';
-import { compileManifest } from '../../src/compiler/manifest';
+} from '@danieltuzes/legend/reference/equations.mjs';
+import { validateEquations } from '@danieltuzes/legend/reference/equations-validate';
+import { compileManifest } from '@danieltuzes/legend/compiler/manifest';
 
 // --- pure helpers -----------------------------------------------------
 

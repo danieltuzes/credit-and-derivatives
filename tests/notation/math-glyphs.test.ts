@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import katex from 'katex';
-import { createNotationKatexOptions } from '../../src/reference/katex-options.mjs';
+import { createNotationKatexOptions } from '@danieltuzes/legend/reference/katex-options.mjs';
 import {
   GlyphResolutionError,
   SUPPORTED_KATEX_PARSE_VERSION,
   resolveMathGlyphs,
-} from '../../src/reference/math-glyphs.mjs';
+} from '@danieltuzes/legend/reference/math-glyphs.mjs';
 
 const definition = (key: string, notation: string) => ({ key, notation });
 

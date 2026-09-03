@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { loadCurriculumCatalog } from '../../src/compiler/collections';
+import { loadCurriculumCatalog } from '@danieltuzes/legend/compiler/collections';
 import {
   assertValidCurriculum,
   curriculumErrors,
@@ -8,7 +8,7 @@ import {
   type CompetencyDefinition,
   type CurriculumCatalog,
   type LessonDefinition,
-} from '../../src/curriculum/validation';
+} from '@danieltuzes/legend/curriculum/validation';
 
 const competency = (
   id: string,

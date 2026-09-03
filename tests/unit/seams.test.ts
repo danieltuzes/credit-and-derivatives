@@ -2,16 +2,17 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
-import { noopAnalyticsEmitter } from '../../src/analytics/AnalyticsEmitter';
+import { noopAnalyticsEmitter } from '@danieltuzes/legend/analytics/AnalyticsEmitter';
 import {
   EMPTY_PROGRESS,
   noopProgressRepository,
   type AssessmentAttempt,
-} from '../../src/progress/ProgressRepository';
-import { createMemoryPreferenceStore } from '../../src/session/PreferenceStore';
-import { anonymousUser, isAnonymous } from '../../src/session/user';
+} from '@danieltuzes/legend/progress/ProgressRepository';
+import { createMemoryPreferenceStore } from '@danieltuzes/legend/session/PreferenceStore';
+import { anonymousUser, isAnonymous } from '@danieltuzes/legend/session/user';
 
-const SRC = join(process.cwd(), 'src');
+// The engine source (Phase F2: the `@danieltuzes/legend` workspace package).
+const SRC = join(process.cwd(), 'packages', 'legend', 'src');
 
 function filesUnder(dir: string): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {

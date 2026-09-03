@@ -3,22 +3,22 @@ import { describe, expect, it } from 'vitest';
 import {
   compileManifest,
   MANIFEST_SCHEMA_VERSION,
-} from '../../src/compiler/manifest';
-import { buildResolutionReports } from '../../src/compiler/resolution-report';
+} from '@danieltuzes/legend/compiler/manifest';
+import { buildResolutionReports } from '@danieltuzes/legend/compiler/resolution-report';
 import {
   consistencyCounts,
   runConsistencyChecks,
   type ConsistencyCode,
-} from '../../src/reference/consistency';
-import { loadNotationSpecs } from '../../src/compiler/collections';
-import { parseLintIgnore } from '../../src/reference/lint-ignore';
+} from '@danieltuzes/legend/reference/consistency';
+import { loadNotationSpecs } from '@danieltuzes/legend/compiler/collections';
+import { parseLintIgnore } from '@danieltuzes/legend/reference/lint-ignore';
 import {
   offVocabularyTokens,
   unitsTokens,
-} from '../../src/reference/units-vocab';
-import { buildNotationRegistry } from '../../src/reference/registry';
-import { loadNotationRegistryInput } from '../../src/compiler/collections';
-import { loadCurriculumCatalog } from '../../src/compiler/collections';
+} from '@danieltuzes/legend/reference/units-vocab';
+import { buildNotationRegistry } from '@danieltuzes/legend/reference/registry';
+import { loadNotationRegistryInput } from '@danieltuzes/legend/compiler/collections';
+import { loadCurriculumCatalog } from '@danieltuzes/legend/compiler/collections';
 import { courseConfig } from '../../content/course.config';
 
 const NO_IGNORE = { entries: [], matches: () => false };

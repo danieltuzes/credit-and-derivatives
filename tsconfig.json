@@ -5,6 +5,15 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    // Workspace dev: resolve the engine package to its TypeScript source so
+    // `astro check` type-checks against `.ts`, not a built `.d.ts`. Runtime
+    // resolution (Vite / tsx / vitest) uses the package `exports` map.
+    "paths": {
+      "@danieltuzes/legend/content-config": [
+        "./packages/legend/src/content-config.ts"
+      ],
+      "@danieltuzes/legend/*": ["./packages/legend/src/*"]
+    }
   }
 }

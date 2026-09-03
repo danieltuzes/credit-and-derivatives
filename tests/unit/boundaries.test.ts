@@ -1,16 +1,22 @@
 /**
  * Dependency-boundary tests (Phase F).
  *
- * The repo is split into an engine (`src/`) and a course (`content/`):
+ * The repo is split into an engine (`packages/legend/`, the `@danieltuzes/legend`
+ * workspace package) and a course (`content/` + `astro.config.mjs` + `scripts/`):
  *
- *   - `core-not-course` — no engine module imports the course. Only the two
- *     wiring files (`src/content.config.ts`, `astro.config.mjs`) name `content/`.
+ *   - `core-not-course` — no engine module imports the course: not `content/…`,
+ *     not the course package. The engine reaches the content tree only through
+ *     `contentDir` conventions resolved at run time (loader `base:` strings and
+ *     `join(process.cwd(), 'content')`), never an import.
  *   - `domain-pure` — `content/domain/**` (the course's math) imports nothing
  *     but its own siblings: no engine, no React, no Astro, no browser API.
  *   - `course.config` is a plain data module — zero imports.
+ *   - `content.config` (the course's Astro entry) only re-exports the engine.
  *
- * These lock the split so a second course is a new `content/` folder, not a
- * detangle of the engine.
+ * These lock the split so a second course is a new `content/` + `course.config`
+ * against the published engine, not a detangle. (When the two halves become
+ * separate repos, `core-not-course` follows the engine and `domain-pure` the
+ * course.)
  */
 
 import { readFileSync, readdirSync } from 'node:fs';
@@ -18,6 +24,7 @@ import { join, relative } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const ROOT = process.cwd();
+const ENGINE_SRC = join(ROOT, 'packages', 'legend', 'src');
 
 function filesUnder(dir: string, exts: readonly string[]): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -46,50 +53,54 @@ function importSpecifiers(source: string): string[] {
 
 const CODE = ['.ts', '.tsx', '.mjs', '.astro'] as const;
 
-describe('core-not-course', () => {
-  const engineDirs = [
-    'reference',
-    'curriculum',
-    'compiler',
-    'components',
-    'progress',
-    'session',
-    'analytics',
-  ];
+/** A specifier that reaches the course: `content/…` or the course package. */
+function reachesCourse(specifier: string): boolean {
+  return (
+    /(^|\/)content\//.test(specifier) ||
+    specifier === 'credit-and-derivatives' ||
+    specifier.startsWith('credit-and-derivatives/') ||
+    specifier.endsWith('/course.config')
+  );
+}
 
-  it('no engine module statically imports from content/', () => {
+describe('core-not-course', () => {
+  it('no engine module imports the course', () => {
     const offenders: string[] = [];
-    for (const dir of engineDirs) {
-      for (const path of filesUnder(join(ROOT, 'src', dir), CODE)) {
-        for (const specifier of importSpecifiers(readFileSync(path, 'utf8'))) {
-          // A specifier reaching the course tree: `../content/…`,
-          // `../../content/…`, or an absolute-ish `content/…`.
-          if (/(^|\/)content\//.test(specifier)) {
-            offenders.push(`${relative(ROOT, path)} → ${specifier}`);
-          }
+    for (const path of filesUnder(ENGINE_SRC, CODE)) {
+      for (const specifier of importSpecifiers(readFileSync(path, 'utf8'))) {
+        if (reachesCourse(specifier)) {
+          offenders.push(`${relative(ROOT, path)} → ${specifier}`);
         }
       }
     }
     expect(offenders).toEqual([]);
   });
 
-  it('only the sanctioned wiring files import from content/', () => {
-    // The wiring layer may import the course config. `src/content.config.ts`
-    // names `content/` only as loader `base:` strings (data, not a code
-    // import), so in practice the sole import edge is astro.config.mjs.
-    const allowed = new Set(['src/content.config.ts', 'astro.config.mjs']);
-    const importers: string[] = [];
-    for (const path of [
-      ...filesUnder(join(ROOT, 'src'), CODE),
-      join(ROOT, 'astro.config.mjs'),
-    ]) {
-      const importsCourse = importSpecifiers(readFileSync(path, 'utf8')).some(
-        (s) => /(^|\/)content\//.test(s) || s.endsWith('/course.config'),
-      );
-      if (importsCourse) importers.push(relative(ROOT, path));
+  it('every non-relative engine import is a declared peer dependency', () => {
+    const enginePkg = JSON.parse(
+      readFileSync(join(ROOT, 'packages', 'legend', 'package.json'), 'utf8'),
+    ) as { peerDependencies?: Record<string, string> };
+    const declared = new Set(Object.keys(enginePkg.peerDependencies ?? {}));
+    const offenders: string[] = [];
+    for (const path of filesUnder(ENGINE_SRC, CODE)) {
+      for (const specifier of importSpecifiers(readFileSync(path, 'utf8'))) {
+        // Skip relative imports and anything that is not a plausible module
+        // specifier (the loose regex also catches `from '` inside data strings).
+        if (specifier.startsWith('.') || specifier.startsWith('node:'))
+          continue;
+        if (
+          !/^(@[a-z0-9-]+\/)?[a-z0-9][a-z0-9._-]*(\/[\w.-]+)*$/i.test(specifier)
+        )
+          continue;
+        if (specifier === 'astro:content') continue;
+        const pkg = specifier.startsWith('@')
+          ? specifier.split('/').slice(0, 2).join('/')
+          : specifier.split('/')[0];
+        if (declared.has(pkg)) continue;
+        offenders.push(`${relative(ROOT, path)} → ${specifier}`);
+      }
     }
-    expect(importers.filter((f) => !allowed.has(f))).toEqual([]);
-    expect(importers).toContain('astro.config.mjs');
+    expect(offenders).toEqual([]);
   });
 });
 
@@ -137,5 +148,14 @@ describe('course.config', () => {
       'utf8',
     );
     expect(importSpecifiers(source)).toEqual([]);
+  });
+});
+
+describe('content.config', () => {
+  it('only re-exports the engine', () => {
+    const source = readFileSync(join(ROOT, 'src', 'content.config.ts'), 'utf8');
+    for (const specifier of importSpecifiers(source)) {
+      expect(specifier).toBe('@danieltuzes/legend/content-config');
+    }
   });
 });

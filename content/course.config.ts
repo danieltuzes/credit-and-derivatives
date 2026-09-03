@@ -9,8 +9,8 @@
  * second course is a new `content/` folder plus a new `course.config.ts`.
  *
  * Deliberately zero imports — a plain data module. `CourseConfig` (the shape it
- * must satisfy) lives in `src/compiler/course-config.ts` and is applied at each
- * call site.
+ * must satisfy) is `@danieltuzes/legend/compiler/course-config` and is applied
+ * at each call site.
  */
 
 export const courseConfig = {

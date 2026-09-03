@@ -2,22 +2,22 @@ import { describe, expect, it } from 'vitest';
 import {
   loadCurriculumCatalog,
   loadNotationRegistryInput,
-} from '../../src/compiler/collections';
+} from '@danieltuzes/legend/compiler/collections';
 import type {
   CompetencyDefinition,
   CurriculumCatalog,
   LessonDefinition,
-} from '../../src/curriculum/validation';
+} from '@danieltuzes/legend/curriculum/validation';
 import {
   assertValidNotationAlignment,
   validateNotationAlignment,
-} from '../../src/reference/curriculum-alignment';
-import { buildNotationRegistry } from '../../src/reference/registry';
+} from '@danieltuzes/legend/reference/curriculum-alignment';
+import { buildNotationRegistry } from '@danieltuzes/legend/reference/registry';
 import type {
   NotationAlignment,
   NotationLessonInput,
   SharedNotationDefinitionInput,
-} from '../../src/reference/types';
+} from '@danieltuzes/legend/reference/types';
 
 type EditorialCompetency = CompetencyDefinition & {
   readonly editorialStatus: 'draft' | 'in-review' | 'reviewed';
