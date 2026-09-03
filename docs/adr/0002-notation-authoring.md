@@ -1,7 +1,23 @@
 # ADR 0002: Semantic notation authoring
 
-- Status: accepted
+- Status: accepted; syntax refined 2026-09-02/03 (see Update)
 - Date: 2026-08-28; consolidated 2026-09-01 (folds in the former ADR 0003)
+
+## Update (post-decision)
+
+The semantic-key principle below is unchanged, but the surface syntax and the
+scope model evolved after this ADR was written. For the current form see
+[`docs/architecture.md` §7](../architecture.md):
+
+- Prose / body references are `[[key]]`, not `\term\{key\}` / `\term{key}` (D3b).
+- A page's scope is `notation.local` + the shared keys it names with `[[key]]` /
+  `\explain` + the base library. `notation.uses` is retired (D3).
+- Bare-LaTeX resolution is a flat one-meaning-per-glyph page lookup
+  (`math-glyphs.mjs`), not the structural matcher this ADR implies (D4).
+- The two "Accepted, not yet built" items — the base notation library and the
+  per-lesson resolution report — are now built (D3, D6).
+- Shared entries live under `content/notation/` (Phase F1), not
+  `src/content/notation/`.
 
 ## Decision
 

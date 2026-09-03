@@ -1,7 +1,21 @@
 # ADR 0004: Inline source citations
 
-- Status: accepted
+- Status: accepted; syntax refined 2026-09-02/03 (see Update)
 - Date: 2026-08-31
+
+## Update (post-decision)
+
+The decision holds; two details changed. For the current form see
+[`docs/architecture.md` §8](../architecture.md):
+
+- The author syntax is `[@source-id]` / `[@source-id; locator]`, not
+  `\cite\{source-id\}` / `\cite\{source-id\}\{locator\}` (D3b). Both are
+  MDX-safe; the first `;` separates the id from the free-text locator.
+- `CitationLayer` no longer carries its own copy of the panel logic or a
+  serialized source blob — it and `NotationLayer` share the `createHoverPanel`
+  primitive and read from the marker `data-*` plus the on-page `#cite-n` list
+  (Phase E1).
+- `source-id` resolves against `content/sources/*.json` (Phase F1).
 
 ## Decision
 

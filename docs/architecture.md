@@ -27,8 +27,9 @@ state are machine-checked data, not prose conventions.
 Stack: Astro + Starlight (static shell, routing, search), MDX lessons, React
 islands for labs, pure TypeScript for calculations, build-time KaTeX for math,
 Observable Plot for charts, Vitest + fast-check for numerics, Playwright + axe
-for browser and accessibility checks, pnpm with an exact lockfile. Node version
-in `.nvmrc`.
+for browser and accessibility checks, pnpm with an exact lockfile. One exact
+Node version across `.nvmrc`, `.node-version`, `package.json` `engines`, and the
+CI / deploy workflows.
 
 Run `pnpm validate:content` for current counts; the corpus grows continuously.
 
@@ -61,16 +62,16 @@ Status: ✅ built · 🟡 partial · 🔵 seam only (interface exists, no implem
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ------ |
 | Static site shell               | Routing, sidebar, search, page layout                                                                                                                                                                                                                | `astro.config.mjs`, `src/components/starlight/*`                                                                             | ✅     |
 | Content collections             | Zod schemas for 6 collections (docs, competencies, assessments, tracks, sources, notation)                                                                                                                                                           | `src/content.config.ts`                                                                                                      | ✅     |
-| Curriculum validation           | ID / reference integrity, prerequisite graph + cycle detection, lesson & track ordering, assessment coverage, review-state consistency, `\cite`↔`sources:` sync                                                                                      | `src/curriculum/validation.ts`, `scripts/validate-curriculum.ts`                                                             | ✅     |
-| Shared notation                 | Define-once `.md` entries: semantic key, LaTeX, units/perspective, sources, `seeAlso`, curriculum alignment, review state                                                                                                                            | `content/notation/*.md`                                                                                                      | ✅     |
-| Notation registry               | In-memory build product: lexical resolution (local → shared), ~15 diagnostic codes, transitive page bundles, backlinks                                                                                                                               | `src/reference/registry.ts`, `references.ts`, `types.ts`                                                                     | ✅     |
-| Completeness gate               | Every identifier in rendered lesson math must resolve to a scoped key; unresolved → build fails with `file:line` + token                                                                                                                             | `src/reference/math-bindings.mjs`, `remark-notation.mjs`                                                                     | 🟡     |
+| Curriculum validation           | ID / reference integrity, prerequisite graph + cycle detection, lesson & track ordering, assessment coverage, review-state consistency, `[@id]`↔`sources` sync                                                                                       | `src/curriculum/validation.ts` (run by `scripts/compile-manifest.ts`)                                                        | ✅     |
+| Shared notation                 | Define-once `.md` entries: semantic key, LaTeX (`latex`), `meaning`, `units` or `dimensionless`, sources with locators, `seeAlso`, curriculum alignment, review state                                                                                | `content/notation/*.md`                                                                                                      | ✅     |
+| Notation registry               | In-memory build product: lexical resolution (page-local + shared keys named in prose), 5 diagnostic codes, transitive page bundles, backlinks                                                                                                        | `src/reference/registry.ts`, `references.ts`, `types.ts`                                                                     | ✅     |
+| Completeness gate               | Every identifier in **every** rendered-math context resolves to a scoped key; unresolved body math → build fails with `file:line` + token (`notation.formula` / assessment math are Tier-3 warnings)                                                 | `src/reference/math-glyphs.mjs`, `gate-math.ts`, `remark-notation.mjs`                                                       | ✅     |
 | KaTeX trust boundary            | Build-time HTML + MathML; trust callback accepts exactly one validated `data-notation-key`; recovered `.katex-error` markup is a fatal gate                                                                                                          | `src/reference/katex-options.mjs`, `rehype-fail-katex-errors.mjs`                                                            | ✅     |
 | Notation page layer             | Static `<details>` disclosure of resolved definitions (no-JS baseline) + optional browser highlight/hover/focus/pin                                                                                                                                  | `src/components/notation/NotationLayer.astro`                                                                                | ✅     |
 | Glossary                        | Generated `/glossary/` from the shared collection + lesson backlinks                                                                                                                                                                                 | `src/components/notation/NotationGlossary.astro`                                                                             | ✅     |
 | Notation ↔ curriculum alignment | Checks `introducedByCompetency` / `introducedInLesson`, introduction order, availability, review state                                                                                                                                               | `src/reference/curriculum-alignment.ts`                                                                                      | ✅     |
 | Lab math                        | Render KaTeX inside React labs against a notation scope                                                                                                                                                                                              | `src/reference/render-lab-math.ts`, `lab-math-scope.ts`                                                                      | ✅     |
-| Source citations                | `\cite\{id\}` / `\cite\{id\}\{locator\}` → numbered `[n]` marker + generated `## References` list + optional hover panel                                                                                                                             | `src/reference/remark-citation.mjs`, `citation-format.mjs`, `src/components/citation/CitationLayer.astro`                    | ✅     |
+| Source citations                | `[@id]` / `[@id; locator]` → numbered `[n]` marker + generated `## References` list + optional hover panel                                                                                                                                           | `src/reference/remark-citation.mjs`, `citation-format.mjs`, `src/components/citation/CitationLayer.astro`                    | ✅     |
 | Domain calculations             | Pure, typed, unit-explicit functions with numeric guards                                                                                                                                                                                             | `content/domain/*`                                                                                                           | ✅     |
 | Interactive labs                | Validated inputs → pure domain call → React view + text interpretation + data table                                                                                                                                                                  | `src/components/labs/*.tsx`                                                                                                  | ✅     |
 | Compact examples                | Collapsed native `<details>` → keyboard tabs with JS; all examples visible in print / no-JS                                                                                                                                                          | `src/components/examples/CompactExample*.astro`                                                                              | ✅     |
@@ -82,10 +83,12 @@ Status: ✅ built · 🟡 partial · 🔵 seam only (interface exists, no implem
 | Layout overrides                | Header, both sidebars, footer; desktop edge controls with hover preview and persisted collapsed rails                                                                                                                                                | `src/components/starlight/*`                                                                                                 | ✅     |
 | Reference library               | Local, git-ignored cache of copyrighted source PDFs/DjVu + `.txt` extractions for verifying claims; only README tracked                                                                                                                              | `reference-library/README.md`                                                                                                | ✅     |
 | Test suite                      | Unit/property (domain), curriculum, notation compiler/registry, e2e + axe                                                                                                                                                                            | `tests/**`                                                                                                                   | ✅     |
-| CI                              | One job runs `pnpm verify` on PR and push; minimal permissions                                                                                                                                                                                       | `.github/workflows/ci.yml`                                                                                                   | ✅     |
+| CI                              | One job runs `pnpm verify` on PR and push; read-only workflow permissions (deploy elevates only its deploy job)                                                                                                                                      | `.github/workflows/ci.yml`, `deploy.yml`                                                                                     | ✅     |
+| Engine / course split           | Course-specific files (`content/`, `content/domain/`, `content/labs/`, `content/course.config.ts`) are separate from the engine (`src/`); the compiler takes the course config as a parameter and names no content path                              | `content/course.config.ts`, `src/compiler/*`, `tests/unit/boundaries.test.ts`                                                | ✅     |
 
-**Accepted but not yet built** (ADR 0002): the base notation library of universal
-constants, and the per-lesson resolution report.
+**Built since ADR 0002 was written**: the base notation library of universal
+atoms (`src/reference/base-library.mjs`, Phase D3) and the per-lesson resolution
+report (committed under `build/resolution/`, Phase D6).
 
 **Rejected** (ADR 0002): inline `\def` / `\let` / `\group` / `\underbrace`
 binding macros, `:::equation{explains}` block attribute, the multi-level
@@ -105,7 +108,7 @@ notation Markdown ────────────────────�
                               (semantic rules)          (lexical scope, diagnostics, bundles)
                                                         │
 lesson body ─► remark-math ─► remarkNotation ─► remarkCitation ─► rehype-katex ─► rehypeFailKatexErrors
-              ( $…$ / $$…$$ )  (\term links,     (\cite → [n] +     (HTML+MathML,    (.katex-error =
+              ( $…$ / $$…$$ )  ([[key]] links,   ([@id] → [n] +     (HTML+MathML,    (.katex-error =
                                \explain markers,   References list)   trusted marker)  fatal)
                                completeness gate)
                                                         │
@@ -142,7 +145,7 @@ layout UI      → PreferenceStore seam → (browser) localStorage adapter
 | --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Domain**      | Numerical models are pure, typed, unit-explicit functions in `content/domain/`. Tests cover reference cases, identities, bounds, monotonicity, scaling, invalid inputs. `content/domain/` imports no React, Astro, content, or browser API.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | **Notation**    | Educational content, not calculation. Meaning ≠ displayed LaTeX. Shared meanings are `.md` entries; page-local meanings are schema-checked frontmatter. The notation layer never evaluates a financial formula. Semantic **keys**, not glyph strings, are the source of truth for symbol meaning.                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| **Citation**    | Same shape as notation: a small escaped author token, build-time resolution against a schema-checked collection, an accessible static baseline (real anchor links to an on-page list), an optional browser convenience layer.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| **Citation**    | Same shape as notation: a plain `[@id]` / `[@id; locator]` author token (MDX-safe, no escaping), build-time resolution against a schema-checked collection, an accessible static baseline (real anchor links to an on-page list), an optional browser convenience layer sharing the notation layer's hover-panel primitive.                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | **Interaction** | A lab = validated inputs + one pure model call + a stateful React view + a textual interpretation + a data-table alternative + focused tests. A default worked result is legible before hydration. Components hold no independent copy of a pricing formula.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | **Curriculum**  | Competency IDs — never sidebar order — are the source of truth for prerequisites. A lesson satisfies prerequisites only through its ordered `teaches`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | **Progress**    | Seam only (Phase H1). `src/progress/ProgressRepository.ts` + `src/analytics/AnalyticsEmitter.ts` define the interfaces; the static build ships only the no-op impls. `AssessmentRunner` calls `recordAttempt` / `emit` on every result and seeds from `load`, so a future host (SSR app, LMS importer, or the MCP server over `build/manifest.json`) supplies a real repository — a versioned browser-storage adapter first — without changing a component. The viewer is always `anonymousUser` (`src/session/user.ts`); a host injects identity through `SessionUserContext`. No lesson, assessment, or lab component calls `localStorage` — per-viewer UI preferences go through `src/session/PreferenceStore.ts`, the sole `localStorage` touch-point. |
@@ -155,19 +158,30 @@ layout UI      → PreferenceStore seam → (browser) localStorage adapter
 Six collections. Filename must equal `id` (or `key`) for every entry. IDs are
 lowercase, dot/dash-namespaced, case-sensitive: `rates.discount-factor.calculate`.
 
-| Entity         | Location                         | Schema                                    | Notes                                                                                                                                                                                                                                                                                                 |
-| -------------- | -------------------------------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Competency** | `content/competencies/<id>.json` | `content.config.ts` → `competencies`      | One atomic, observable outcome (verb-phrased). `prerequisites` form a DAG. `evidence` declares `minimumIndependentItems`, `requiresTransfer`, `requiresUnassistedPass`. Split any record that says "and".                                                                                             |
-| **Assessment** | `content/assessments/<id>.json`  | → `assessments`                           | `items[]` of `numeric` (`answer.value` + `tolerance`) or `single-choice` (`options` + `correctOptionId`). Each item: one `competencyId`, `evidenceKind` `direct`\|`transfer`. Numeric answers come from reviewed domain code or an independent calculation — never a prose answer copied into a test. |
-| **Source**     | `content/sources/<id>.json`      | → `sources`                               | Metadata only (`type`, `title`, `authors`/`organization`, `edition`, `year`, `isbn`/`url`, `locator`, `accessed`, `licenseNotes`). Never licensed body text. Prefer contractual/regulatory > original papers/official docs > textbooks > secondary.                                                   |
-| **Track**      | `content/tracks/<id>.json`       | → `tracks`                                | Ordered `lessons[]`. The validator walks the track and fails if a lesson precedes a taught prerequisite.                                                                                                                                                                                              |
-| **Notation**   | `content/notation/<key>.md`      | → `notation`                              | Frontmatter: `key`, `notation` (LaTeX), `title`, `summary`, `aliases`, `domain`, `units`\|`perspective`, `sources`, `seeAlso`, `alignment`, `editorialStatus`, `aiAssisted`. Body: prose + math; may `\term{key}` other shared entries. First paragraph doubles as the compact explanation.           |
-| **Lesson**     | `content/docs/<area>/<slug>.mdx` | → `docs` (extends Starlight `docsSchema`) | Frontmatter: `lessonId`, `editorialStatus`, `requires[]`, `teaches[]` (ordered), `assessments[]`, `sources[]`, `assumptions[]`, `notation.uses[]` + `notation.local[]`, `aiAssisted`.                                                                                                                 |
+| Entity         | Location                         | Schema                                    | Notes                                                                                                                                                                                                                                                                                                                             |
+| -------------- | -------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Competency** | `content/competencies/<id>.json` | `src/content.config.ts` → `competencies`  | One atomic, observable outcome (verb-phrased). `prerequisites` form a DAG. `evidence` declares `minimumIndependentItems`, `requiresTransfer`, `requiresUnassistedPass`. Split any record that says "and".                                                                                                                         |
+| **Assessment** | `content/assessments/<id>.json`  | → `assessments`                           | `items[]` of `numeric` (`answer.value` + `tolerance`) or `single-choice` (`options` + `correctOptionId`). Each item: one `competencyId`, `evidenceKind` `direct`\|`transfer`. Numeric answers come from reviewed domain code or an independent calculation — never a prose answer copied into a test.                             |
+| **Source**     | `content/sources/<id>.json`      | → `sources`                               | Metadata only (`type`, `title`, `authors`/`organization`, `edition`, `year`, `isbn`/`url`, `locator`, `accessed`, `licenseNotes`). Never licensed body text. Prefer contractual/regulatory > original papers/official docs > textbooks > secondary.                                                                               |
+| **Track**      | `content/tracks/<id>.json`       | → `tracks`                                | Ordered `lessons[]`. The validator walks the track and fails if a lesson precedes a taught prerequisite.                                                                                                                                                                                                                          |
+| **Notation**   | `content/notation/<key>.md`      | → `notation`                              | Frontmatter: `key`, `latex`, `meaning`, `formula?`, `units` or `dimensionless: true`, `seeAlso`, `sources` (`{id, locator}`), `alignment`, `label?`; shared-only extras `domain`, `aliases`, `editorialStatus`, `aiAssisted`, plus a Markdown body that may `[[key]]` other shared entries. `meaning` is the compact explanation. |
+| **Lesson**     | `content/docs/<area>/<slug>.mdx` | → `docs` (extends Starlight `docsSchema`) | Authored: `title`, `description`, `teaches[]` (ordered — the curriculum contract), `assumptions[]`, `notation.local[]`. Artifact flag: `editorialStatus`. Everything else is derived, never authored (see below).                                                                                                                 |
 
-`notation.local[]` entry: `key`, `notation`, `title`, `summary`, `details?`,
-`formula?`, `units?`, `sources[]`, `seeAlso[]`, `alignment`. Summaries and
-details are plain prose — no `\`, `$`, or backticks (schema-enforced); the symbol
-goes in `notation`, the maths in `formula`.
+Derived into the manifest, never in lesson frontmatter: `lessonId` (doc slug),
+`requires[]` (direct competency-DAG prerequisites of `teaches`, minus `teaches`),
+`sources[]` (from `[@id]` occurrences), `assessments[]` (colocated
+`<lesson>.checks.yml`), sidebar order (track order). `notation.uses[]` is
+retired (D3): a lesson pulls a shared key into scope by naming it — `[[key]]` in
+prose or `\explain{key}{…}` in math. `aiAssisted`, `lastReviewed`, `riskTier`,
+and `estimatedMinutes` were dropped (git history + `editorialStatus` +
+`NEEDS_SOURCE` carry provenance).
+
+`notation.local[]` entry (same `notationEntry` shape as a shared entry): `key`,
+`latex`, `meaning`, `formula?`, `units?` or `dimensionless: true`, `seeAlso[]`,
+`sources[]`, optional `alignment` (defaults to `general`), optional `label`.
+`meaning` is plain prose — no `\`, `$`, or backticks (schema-enforced) — and
+must be substantive (the C1b safeguard rejects a placeholder or a phrase under
+four words); the symbol goes in `latex`, the maths in `formula`.
 
 `alignment` is a discriminated union: `{kind: 'competency', introducedByCompetency,
 introducedInLesson}` or `{kind: 'general', rationale}`.
@@ -190,37 +204,44 @@ introducedInLesson}` or `{kind: 'general', rationale}`.
 
 ### Author syntax
 
-| Context                     | Syntax                                  | Becomes                                                                                   |
-| --------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------- |
-| MDX lesson prose            | `\term\{key\}` (braces escaped for MDX) | A titled link to the glossary / page anchor                                               |
-| Shared `.md` body           | `\term{key}` (no escape)                | same                                                                                      |
-| Lesson math `$…$` / `$$…$$` | ordinary LaTeX — `D(0,t)`               | Each identifier resolves to the unique in-scope key; the trusted marker is injected       |
-| Math, disambiguation only   | `\explain{key}{latex}`                  | Same marker, explicit key; use only when scope is ambiguous or the glyph is non-canonical |
+| Context                     | Syntax                    | Becomes                                                                                   |
+| --------------------------- | ------------------------- | ----------------------------------------------------------------------------------------- |
+| MDX lesson prose            | `[[key]]`                 | A titled link to the glossary / page anchor; also pulls the shared key into page scope    |
+| Shared `.md` body           | `[[key]]`                 | same                                                                                      |
+| Lesson math `$…$` / `$$…$$` | ordinary LaTeX — `D(0,t)` | Each identifier resolves to the unique in-scope key; the trusted marker is injected       |
+| Math, disambiguation only   | `\explain{key}{latex}`    | Same marker, explicit key; use only when scope is ambiguous or the glyph is non-canonical |
 
-Do **not** use `\(…\)` / `\[…\]` delimiters. Do not hand-author `\htmlData`,
-inline JS explanation dictionaries, MathJax, or a remote math script — all are
-rejected before or by KaTeX.
+`[[key]]` and `[@id]` are MDX-safe with no brace escaping (D3b). Do **not** use
+`\(…\)` / `\[…\]` delimiters. Do not hand-author `\htmlData`, inline JS
+explanation dictionaries, MathJax, or a remote math script — all are rejected
+before or by KaTeX.
 
 ### Resolution
 
-Lexical, two levels: **page-local definitions first, then explicit shared
-imports** (`notation.uses`). Raw-glyph matching and "most recently defined" are
-never used. Shared definition bodies resolve only against other shared
-definitions, so a shared meaning cannot change with the calling page. More than
-one candidate for an identifier is a build error, never a silent pick.
-`notation.uses` imports **shared** keys only; local keys are automatically in
-scope. `seeAlso` is navigation, not a dependency edge, but its targets are still
-scope-checked.
+A page's glyph scope is its `notation.local` entries **plus** the shared keys it
+names — `[[key]]` in prose or `\explain{key}{…}` in math — **plus** the base
+library (`d`, `e`, `i`, `\pi`). `notation.uses` is retired: a shared meaning is
+imported by referring to it. One meaning per glyph per page; raw-glyph matching
+and "most recently defined" are never used, and more than one candidate for an
+identifier is a build error, never a silent pick. Shared definition bodies
+resolve only against other shared definitions, so a shared meaning cannot change
+with the calling page. `seeAlso` is navigation, not a scope edge, but its
+targets are still checked.
 
-### Completeness gate (🟡)
+### Completeness gate (✅)
 
-`remarkNotation` parses each equation's KaTeX parse tree (`math-bindings.mjs`,
-pinned to KaTeX `0.16.47`), classifies identifier atoms against operators using
-MathML, and requires every identifier to resolve. Failure is fatal:
-`Unresolved notation in lesson math: "t" at offset 0`. Digits, operators,
-delimiters, primes, and the differential `d` are exempt. The gate currently runs
-on lesson-body math only; `notation.formula`, assessment prompts, and math in
-component slots are not yet gated.
+`math-glyphs.mjs` (pinned to KaTeX `0.16.47`) parses each `$…$` / `$$…$$`
+expression, matches every declared page glyph, and reports any leftover
+identifier atom. `gate-math.ts` runs that **same resolver** from
+`pnpm validate:content` over every rendered-math context — lesson body
+(component slots included), each `notation.local` `formula`, and any `$…$` in an
+assessment `prompt` / `explanation`. Body / component-slot math **blocks** the
+build (`remark-notation` enforces the same on the render path so the KaTeX trust
+callback never sees an unresolved glyph); `formula` and assessment math are
+Tier-3 warnings until content is brought into line. Failure names
+`file:line: "token"`: `Unresolved notation "t" in body math. …`. Digits,
+operators, delimiters, primes, the base library (`d`, `e`, `i`, `\pi`), and
+blackboard / calligraphic letters are exempt.
 
 ### KaTeX trust boundary
 
@@ -233,13 +254,16 @@ accessible representation. No financial formula is evaluated here.
 ### Progressive enhancement
 
 Static native `<details>` with a flat list of resolved definitions and canonical
-links is the keyboard / no-JS baseline. The optional browser adapter reads
+links is the keyboard / no-JS baseline. The optional browser adapter (the shared
+`createHoverPanel` primitive, `src/components/hover-panel.ts`, Phase E1) reads
 content already in the page and adds highlight, hover/focus explanation, pin, and
 Escape/outside-click close. It never renders math, resolves scope, mutates
 definitions, or calculates. If it fails, the equation, MathML, disclosure, and
 glossary still work.
 
-Details and rationale: [ADR 0002](adr/0002-notation-authoring.md).
+Details and rationale: [ADR 0002](adr/0002-notation-authoring.md) — its
+`\term\{…\}` / `notation.uses` syntax predates D3 / D3b; this section is
+current.
 
 ### Equation identity (D7)
 
@@ -275,20 +299,25 @@ lessonId, section }`.
 
 ## 8. Citations
 
-`\cite\{source-id\}` or `\cite\{source-id\}\{locator\}` in lesson prose (locator
-is plain text — section/equation numbers, `Table`, `Figure`; no Markdown or
-`$math$`, because earlier remark passes would split it).
+`[@source-id]` or `[@source-id; locator]` in lesson prose — brackets and `@`
+need no MDX escaping, and the first `;` separates the id from the free-text
+locator (section / equation numbers, `Table`, `Figure`; no Markdown or `$math$`,
+because earlier remark passes would split it).
 
 `remarkCitation` numbers each distinct `(source-id, locator)` pair by first
 appearance, renders `<a class="citation-ref" href="#cite-n">[n]</a>`, and appends
 a `## References` ordered list. `citation-format.mjs` holds the pure formatting,
 shared with the panel island. `src/curriculum/validation.ts` requires every
-`sources:` id to be cited at least once and every cited id to appear in
-`sources:`; an unknown id fails the build.
+`sources` id to be cited at least once and every cited id to appear in the
+lesson's derived `sources`; an unknown id fails the build.
 
-`CitationLayer.astro` adds a hover/pin panel over the same markup and currently
-duplicates `NotationLayer.astro`'s positioning logic. Details:
-[ADR 0004](adr/0004-source-citations.md).
+`CitationLayer.astro` and `NotationLayer.astro` are both built on the shared
+`createHoverPanel` primitive (`src/components/hover-panel.ts`, Phase E1), and no
+page serialises a second copy of the source records — the panel reads label,
+locator, status, and URL from the marker `data-*` and the page's own `#cite-n`
+list item. Details: [ADR 0004](adr/0004-source-citations.md) (its `\cite\{…\}`
+syntax and `CitationLayer` copy of the panel logic predate D3b / E1; this
+section is current).
 
 ---
 
@@ -364,14 +393,14 @@ The enforceable statement of this policy is [`AI_POLICY.md`](../AI_POLICY.md).
 `pnpm verify` = `format:check` → `validate:content` → `check` → `test` →
 `test:e2e` → `astro build`.
 
-| Gate              | Command                           | Owner                                                                                  | Catches                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| ----------------- | --------------------------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Formatting        | `prettier --check .`              | `prettier.config.mjs`                                                                  | Style drift                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| Content semantics | `tsx scripts/compile-manifest.ts` | `src/curriculum/validation.ts`, `src/reference/registry.ts`, `curriculum-alignment.ts` | Invalid/duplicate IDs; unknown/duplicate references; self-prerequisite; prerequisite cycles; lesson teaches before a prerequisite is available; lesson both requires and teaches X; track reaches a lesson early; assessment coverage (min items, transfer); reviewed lesson citing a non-reviewed source; `\cite`↔`sources:` mismatch; a quantitative lesson with no `assumptions`; notation invalid/duplicate/conflicting keys; undeclared/undefined/unused references; unused imports; notation reference cycles; alignment (unknown competency/lesson, introduction order, availability, review state) |
-| Types             | `astro check`                     | `tsconfig.json`                                                                        | TS + Astro diagnostics                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| Unit / property   | `vitest run`                      | `tests/unit`, `tests/curriculum`, `tests/notation`                                     | Domain reference cases + invariants (fast-check); registry / compiler / remark / KaTeX behaviour; **unresolved lesson-math identifier** (compiler test)                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| Browser + a11y    | `playwright test`                 | `tests/e2e/*`                                                                          | Every lesson route renders; KaTeX errors; notation keyboard/pin/no-JS; citation markers + panel + no-JS; compact-example tabs/keyboard/print; layout edge controls; **axe** on every lesson and pinned states                                                                                                                                                                                                                                                                                                                                                                                              |
-| Production build  | `astro build`                     | `astro.config.mjs`                                                                     | Full static render; `rehypeFailKatexErrors`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| Gate              | Command                           | Owner                                                                                                                    | Catches                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ----------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Formatting        | `prettier --check .`              | `prettier.config.mjs`                                                                                                    | Style drift                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| Content semantics | `tsx scripts/compile-manifest.ts` | `src/curriculum/validation.ts`, `src/reference/{registry,gate-math,consistency,equations-validate,curriculum-alignment}` | Invalid/duplicate IDs; unknown references; self-prerequisite; prerequisite cycles; lesson teaches before a prerequisite is available; lesson both requires and teaches X; track reaches a lesson early; assessment coverage (min items, transfer); reviewed lesson citing a non-reviewed source; `[@id]`↔`sources` mismatch; a quantitative lesson with no `assumptions`; notation invalid/duplicate/conflicting keys; undefined references; unused definitions; notation reference cycles; alignment (unknown competency/lesson, introduction order, availability, review state); unresolved identifier in any rendered-math context; `[[eq-key]]` ref/duplicate; corpus consistency (Tier-3 warnings); a stale committed `build/resolution/` file |
+| Types             | `astro check`                     | `tsconfig.json`                                                                                                          | TS + Astro diagnostics                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| Unit / property   | `vitest run`                      | `tests/unit`, `tests/curriculum`, `tests/notation`, `tests/content`                                                      | Domain reference cases + invariants (fast-check); registry / compiler / remark / KaTeX behaviour; **unresolved rendered-math identifier** (`gate-math` / compiler tests); engine⊥course + `domain-pure` boundaries; storage / seam boundaries; the `content` CLI                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| Browser + a11y    | `playwright test`                 | `tests/e2e/*`                                                                                                            | Every lesson route renders; KaTeX errors; notation keyboard/pin/no-JS; citation markers + panel + no-JS; compact-example tabs/keyboard/print; layout edge controls; **axe** on every lesson and pinned states                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Production build  | `astro build`                     | `astro.config.mjs`                                                                                                       | Full static render; `rehypeFailKatexErrors`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 
 CI runs exactly this as one job.
 
@@ -384,22 +413,22 @@ review guideline. When you add a rule, add its enforcement or the tag.
 
 | Rule                                                                                                                       | Enforced by                                                                                                                                 |
 | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| Filename = `id` / `key`                                                                                                    | `content/collections.ts` id/filename check; loader throws                                                                                   |
+| Filename = `id` / `key`                                                                                                    | `src/compiler/collections.ts` id/filename check; loader throws                                                                              |
 | IDs match the pattern; no duplicates                                                                                       | `validation.ts` `invalid-id` / `duplicate-id`                                                                                               |
 | Prerequisite graph is a DAG                                                                                                | `validation.ts` `cycle`, `self-prerequisite`                                                                                                |
 | A lesson never teaches a competency before its prerequisite is available                                                   | `validation.ts` `lesson-order`                                                                                                              |
 | A track never reaches a lesson before its `requires` are taught                                                            | `validation.ts` `track-order`                                                                                                               |
 | Every taught competency has enough direct + transfer evidence                                                              | `validation.ts` `assessment-coverage`                                                                                                       |
-| Every `sources:` id is cited; every `\cite` id is declared                                                                 | `validation.ts` `\cite`↔`sources:` check                                                                                                    |
+| Every cited `[@id]` is declared in the lesson's `sources`, and every declared source is cited                              | `validation.ts` `[@id]`↔`sources` check                                                                                                     |
 | A quantitative lesson declares `assumptions`                                                                               | `validation.ts` `review-state`                                                                                                              |
-| Every rendered notation reference resolves; scope is lexical; no ambiguous glyph                                           | `registry.ts` diagnostics; `remark-notation` compiler test                                                                                  |
-| Every identifier in lesson-body math resolves to a key                                                                     | `reference/math-glyphs.mjs` + `reference/gate-math.ts` + `tests/notation/compiler.test.ts`                                                  |
+| Every rendered notation reference resolves; scope is page-local + named shared keys; no ambiguous glyph                    | `registry.ts` diagnostics (`undefined-reference`, `reference-cycle`, …); `remark-notation` compiler test                                    |
+| Every identifier in any rendered-math context resolves to a key                                                            | `reference/math-glyphs.mjs` + `reference/gate-math.ts` + `tests/notation/{compiler,gate-math}.test.ts`                                      |
 | `\explain` marker is the only trusted HTML; no author `\htmlData`                                                          | `katex-options.mjs` trust callback + `tests/notation/katex-options.test.ts`                                                                 |
 | Recovered `.katex-error` markup fails the build                                                                            | `rehype-fail-katex-errors.mjs`                                                                                                              |
 | Notation ↔ curriculum alignment (introduction order, availability, review state)                                           | `curriculum-alignment.ts`                                                                                                                   |
 | Every `[[eq-key]]` / `[[slug#eq-key]]` resolves; an `eq:` key is unique per lesson                                         | `reference/equations-validate.ts` `eq-ref-resolves` / `eq-duplicate-key`; `remark-notation` on the render path                              |
 | Every notation entry has `units` or `dimensionless`; unit strings drawn from a controlled vocabulary                       | `reference/consistency.ts` `notation-units` / `units-vocab` (D6, Tier-3 warning)                                                            |
-| Every notation `sources` entry carries a non-empty locator                                                                 | `content.config.ts` schema + `reference/consistency.ts` `notation-source-locator` (D6)                                                      |
+| Every notation `sources` entry carries a non-empty locator                                                                 | `src/content.config.ts` schema + `reference/consistency.ts` `notation-source-locator` (D6)                                                  |
 | No component calls `localStorage` / `sessionStorage`; storage is only in `PreferenceStore`                                 | `tests/unit/seams.test.ts`                                                                                                                  |
 | Progress + analytics are seams with no static-build implementation; the viewer is always anonymous                         | `tests/unit/seams.test.ts`                                                                                                                  |
 | `content/domain/` imports no React/Astro/content/browser; the engine (`src/`) imports nothing from the course (`content/`) | `tests/unit/boundaries.test.ts` (`core-not-course`, `domain-pure`) — Phase F                                                                |
@@ -418,12 +447,14 @@ The `guideline-only` rows are the backlog for new checks.
 
 ## 13. Testing
 
-| Suite      | Path                 | Runner                              | Covers                                                                                                                                                        |
-| ---------- | -------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Domain     | `tests/unit/*`       | Vitest + fast-check                 | Reference values, identities, bounds, monotonicity, invalid inputs                                                                                            |
-| Curriculum | `tests/curriculum/*` | Vitest                              | `validateCurriculum` issue detection                                                                                                                          |
-| Notation   | `tests/notation/*`   | Vitest                              | registry, compiler, `remark-notation`, `remark-citation`, `math-bindings`, `katex-options`, `curriculum-alignment`, file loaders, lab/notation math rendering |
-| E2E + a11y | `tests/e2e/*`        | Playwright + `@axe-core/playwright` | Route rendering, notation interaction, citations, compact examples, layout — each with axe and no-JS fallbacks                                                |
+| Suite      | Path                 | Runner                              | Covers                                                                                                                                                                                                                     |
+| ---------- | -------------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Domain     | `tests/unit/*`       | Vitest + fast-check                 | Reference values, identities, bounds, monotonicity, invalid inputs                                                                                                                                                         |
+| Curriculum | `tests/curriculum/*` | Vitest                              | `validateCurriculum` issue detection                                                                                                                                                                                       |
+| Notation   | `tests/notation/*`   | Vitest                              | registry, compiler, `remark-notation`, `remark-citation`, `math-glyphs`, `gate-math`, `equations`, `consistency`, `katex-options`, `curriculum-alignment`, file loaders, lab/notation math rendering, manifest determinism |
+| Content    | `tests/content/*`    | Vitest                              | the `content` CLI (`status` / `context` / `check` / `new`), including `check` failing on a broken equation and an unknown `[[key]]`                                                                                        |
+| Unit seams | `tests/unit/*`       | Vitest                              | domain suites, plus `boundaries` (engine⊥course, `domain-pure`) and `seams` (no component touches browser storage; no-op progress / analytics; anonymous viewer)                                                           |
+| E2E + a11y | `tests/e2e/*`        | Playwright + `@axe-core/playwright` | Route rendering, notation interaction, citations, keyed-equation deep links, compact examples, layout — each with axe and no-JS fallbacks                                                                                  |
 
 Never change an implementation and its "independent" golden value in the same
 unreviewed step.
@@ -432,26 +463,28 @@ unreviewed step.
 
 ## 14. Known debt and direction
 
-A consolidation is planned; the maintainer keeps the working step list outside
-the repo. The main items:
+The in-place consolidation that produced this architecture (one content loader,
+one reference core, one hover-panel primitive, one manifest, the reduced
+frontmatter, the widened completeness gate, equation identity, the LMS/MCP
+seams, and the engine / course split) is complete. What remains:
 
-- **Three content-loading paths** (`scripts/curriculum-files.ts`,
-  `scripts/notation-files.ts`, and inline `readdirSync` in `astro.config.mjs`)
-  parse the same frontmatter three ways; collapse to one loader over the Astro
-  collections.
-- **Oversized notation modules** (`registry.ts`, `math-bindings.mjs`,
-  `remark-notation.mjs`, `NotationLayer.astro`); `math-bindings.mjs` depends on
-  KaTeX's private parse tree.
-- **Duplicated hover-panel logic** in `NotationLayer.astro` and
-  `CitationLayer.astro`; extract one primitive.
-- **Frontmatter** carries derivable fields (`requires`, `sources`, assessment
-  IDs) and inert ones (`riskTier`, `estimatedMinutes`, `lastReviewed`).
-- **The completeness gate** covers lesson-body math only; widen it to
-  `notation.formula`, `checks.yml`, assessment prompts, and component slots.
-- **"Toy model" / "playground" framing** still appears in ~15 lesson, notation,
-  and assessment entries. Removing it is an editorial pass (it touches lesson
-  prose and notation `summary`/`perspective` text), separate from this
-  consolidation.
+- **`"toy model"` / `"playground"` framing** still appears in a number of lesson,
+  notation, and assessment entries (and the homepage title / package name).
+  Removing it is a human editorial pass — it rewrites lesson prose and notation
+  `meaning` text — kept separate from tooling changes so no entry's editorial
+  status moves as a side effect.
+- **Tier-3 consistency findings** from `reference/consistency.ts` are recorded,
+  not fixed: `numerals-tagged` (numerals in `$…$` / result tables not tied to a
+  `content/domain/` call or a source locator), `notation-units` /
+  `units-vocab`, `glyph-unique-in-corpus`, `weak-local`. Each is an open
+  content pass; promotion to a blocking tier follows the content, not the code.
+- **Tier 2 / 4 / 5 checks** in the working spec's catalogue that are documented
+  but not yet coded (numeral reproduction, dimensional analysis, `axe`/​links
+  in CI, the append-only ID and hash-review guards that need the LMS).
+- **F2 — engine as a publishable package.** `src/` is already isolated from
+  `content/` (Phase F1); lifting it into a workspace package so a second course
+  is `npm i` + its own `content/` + `course.config.ts` is optional and not
+  started.
 
 ---
 
@@ -512,13 +545,14 @@ Deferred (Tier 5): `manifest-version-compat` — a client pins `schemaVersion`;
 `ids-append-only` and `hash-review-invalidation` consume `hashes.*` once an LMS
 exists.
 
-**Committed resolution report (D6).** `build/manifest.json` is git-ignored,
-so `scripts/compile-manifest.ts` also projects the per-lesson `notation.resolution`
-rows into `resolution/<lessonId>.notation.json` and the Tier-3 findings into
-`resolution/consistency-report.json` — small, diff-checkable, checked-in files.
-`pnpm validate:content` regenerates them and **fails if a committed file is
-stale**, so a drift between content and the report cannot pass CI. Suppressing a
-consistency finding needs a reviewed line in `lint-ignore.yml`
+**Committed resolution report (D6).** `build/manifest.json` is git-ignored, so
+`scripts/compile-manifest.ts` also projects the per-lesson `notation.resolution`
+rows into `build/resolution/<lessonId>.notation.json` and the Tier-3 findings
+into `build/resolution/consistency-report.json` — small, diff-checkable,
+checked-in files (`.gitignore` ignores `/build/*` but keeps
+`/build/resolution/`). `pnpm validate:content` regenerates them and **fails if a
+committed file is stale**, so a drift between content and the report cannot pass
+CI. Suppressing a consistency finding needs a reviewed line in `lint-ignore.yml`
 (`<code>[:<detail>] — <reason>`); there is no silent per-file pragma.
 
 ---

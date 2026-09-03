@@ -13,10 +13,10 @@ reviewed code or a cited source; conventions are consistent across lessons.
 
 ## Quick start
 
-Requirements: **Node.js `24.20.0`** (pinned in [`.nvmrc`](.nvmrc) /
-[`.node-version`](.node-version); `engines` requires `>=24 <25` and
-[`.npmrc`](.npmrc) sets `engine-strict`), **pnpm `11.24.0`** (pinned by
-`packageManager`), and Playwright's Chromium for the browser checks.
+Requirements: **Node.js `24.20.0`** (one exact version across [`.nvmrc`](.nvmrc),
+[`.node-version`](.node-version), `package.json` `engines`, and the CI / deploy
+workflows; [`.npmrc`](.npmrc) sets `engine-strict`), **pnpm `11.24.0`** (pinned
+by `packageManager`), and Playwright's Chromium for the browser checks.
 
 ```bash
 # 1. pnpm — standalone install bundles its own Node, so it works with no system Node:

@@ -1,6 +1,6 @@
 # Security policy
 
-This playground has no production secrets, accounts, live market connections,
+This repository has no production secrets, accounts, live market connections,
 or server runtime. Keep it that way unless a separately reviewed architecture
 change requires otherwise.
 

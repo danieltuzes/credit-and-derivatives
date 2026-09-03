@@ -7,9 +7,11 @@ reviewer, or approver.
 
 ## Always
 
-- Keep every AI-assisted entry `editorialStatus: draft` and `aiAssisted: true`.
-  Reviewed content returns to `draft` when materially changed unless the
-  responsible human re-approves the changed scope.
+- Keep every AI-assisted entry `editorialStatus: draft` (and `aiAssisted: true`
+  on a notation entry, which still carries that flag — lessons dropped it; git
+  history + `NEEDS_SOURCE` carry provenance). Reviewed content returns to
+  `draft` when materially changed unless the responsible human re-approves the
+  changed scope.
 - Never invent a citation, reviewer identity, market practice, contractual
   wording, or numerical answer. Unsupported claims are marked `NEEDS_SOURCE`.
 - Preserve the boundaries in `docs/architecture.md` §5: formulas live in
