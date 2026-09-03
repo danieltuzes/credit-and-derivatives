@@ -5,15 +5,18 @@ template: splash
 hero:
   tagline: Build intuition first, then verify it with models, exercises, and explicit prerequisites.
   actions:
+    # Relative links so they resolve under both the local root and the
+    # deploy base (`/equations/`). Starlight renders hero action links
+    # verbatim — a leading-slash path would not carry the base.
     - text: Start with cash-flow timelines
-      link: /equations/foundations/cash-flow-timelines/
+      link: foundations/cash-flow-timelines/
       icon: right-arrow
       variant: primary
     - text: View the curriculum map
-      link: /equations/curriculum-map/
+      link: curriculum-map/
       icon: open-book
     - text: Explore CDS legs
-      link: /equations/cds/premium-protection-legs-and-par-spread/
+      link: cds/premium-protection-legs-and-par-spread/
       icon: right-arrow
 editorialStatus: draft
 aiAssisted: true

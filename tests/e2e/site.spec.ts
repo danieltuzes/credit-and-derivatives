@@ -1,6 +1,34 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
+test('the splash homepage hero actions link to real pages', async ({
+  page,
+}) => {
+  await page.goto('/');
+
+  const heroActions = [
+    {
+      name: /Start with cash-flow timelines/i,
+      heading: /Cash-flow timelines/i,
+    },
+    { name: /View the curriculum map/i, heading: /Curriculum map/i },
+    { name: /Explore CDS legs/i, heading: /Premium.*protection legs/i },
+  ];
+
+  for (const action of heroActions) {
+    const link = page.getByRole('link', { name: action.name });
+    await expect(link).toBeVisible();
+    const href = await link.getAttribute('href');
+    // Relative, so the deploy base path is carried; never the hard-coded prefix.
+    expect(href, `${action.name} href`).not.toMatch(/^\/?equations\//);
+
+    const response = await page.goto(new URL(href!, page.url()).toString());
+    expect(response?.ok(), `${action.name} target`).toBe(true);
+    await expect(page.locator('main h1')).toContainText(action.heading);
+    await page.goBack();
+  }
+});
+
 test('renders and operates the bond lesson', async ({ page }) => {
   await page.goto('/bonds/price-yield-relationship/');
   await expect(
