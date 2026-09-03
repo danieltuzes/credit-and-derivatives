@@ -20,7 +20,7 @@ import { curriculumErrors } from '../src/curriculum/validation';
 const manifest = await compileManifest();
 writeManifest(manifest);
 
-const { curriculum, notation, alignment, math, consistency } =
+const { curriculum, notation, alignment, math, consistency, equations } =
   manifest.diagnostics;
 
 for (const warning of curriculum.filter(
@@ -32,6 +32,9 @@ for (const warning of notation.filter((d) => d.severity === 'warning')) {
   console.warn(`[${warning.code}] ${warning.message}`);
 }
 for (const warning of alignment.filter((d) => d.severity === 'warning')) {
+  console.warn(`[${warning.code}] ${warning.message}`);
+}
+for (const warning of equations.filter((d) => d.severity === 'warning')) {
   console.warn(`[${warning.code}] ${warning.message}`);
 }
 
@@ -85,6 +88,9 @@ for (const issue of alignment.filter((d) => d.severity === 'error')) {
 }
 for (const issue of math.filter((item) => item.severity === 'error')) {
   failures.push(formatMathIssue(issue));
+}
+for (const issue of equations.filter((d) => d.severity === 'error')) {
+  failures.push(`[${issue.code}] ${issue.message}`);
 }
 
 if (failures.length > 0) {

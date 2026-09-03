@@ -469,10 +469,10 @@
     },
     {
       "code": "numerals-tagged",
-      "count": 56,
+      "count": 54,
       "file": "src/content/docs/foundations/discount-factors.mdx",
       "lessonId": "foundations.discount-factors",
-      "message": "foundations.discount-factors: 56 numeral(s) in $…$ / result tables (44 in math, 12 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "foundations.discount-factors: 54 numeral(s) in $…$ / result tables (42 in math, 12 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {
@@ -485,10 +485,10 @@
     },
     {
       "code": "numerals-tagged",
-      "count": 31,
+      "count": 30,
       "file": "src/content/docs/foundations/present-value.mdx",
       "lessonId": "foundations.present-value",
-      "message": "foundations.present-value: 31 numeral(s) in $…$ / result tables (19 in math, 12 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "foundations.present-value: 30 numeral(s) in $…$ / result tables (18 in math, 12 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {
@@ -714,5 +714,5 @@
     }
   ],
   "generatedBy": "pnpm validate:content",
-  "schemaVersion": 2
+  "schemaVersion": 3
 }

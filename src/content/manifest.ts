@@ -47,6 +47,11 @@ import {
 } from '../reference/consistency';
 import { validateNotationAlignment } from '../reference/curriculum-alignment';
 import {
+  validateEquations,
+  type EquationDiagnostic,
+  type EquationLabelRecord,
+} from '../reference/equations-validate';
+import {
   gateContentMath,
   type MathGateDiagnostic,
 } from '../reference/gate-math';
@@ -81,8 +86,10 @@ import {
  *
  * v2 (D6): `lessons[].notation.resolution` (symbol → key → scope → span) and
  * `diagnostics.consistency` (Tier-3 corpus checks).
+ * v3 (D7): `equations` (labelled display equations + cross-page number table),
+ * `lessons[].equations`, and `diagnostics.equations`.
  */
-export const MANIFEST_SCHEMA_VERSION = 2;
+export const MANIFEST_SCHEMA_VERSION = 3;
 
 const REPOSITORY_ROOT = process.cwd();
 const CONTENT_ROOT = join(REPOSITORY_ROOT, 'src', 'content');
@@ -150,6 +157,11 @@ export interface ManifestLesson {
   readonly citations: readonly ManifestCitation[];
   /** Competency prerequisite edges this lesson introduces. */
   readonly prereqEdges: readonly PrereqEdge[];
+  /** Labelled display equations in appearance order (D7). */
+  readonly equations: readonly {
+    readonly key: string;
+    readonly number: string;
+  }[];
   readonly notation: {
     readonly bindings: readonly {
       readonly key: string;
@@ -179,6 +191,12 @@ export interface Manifest {
   readonly lessons: readonly ManifestLesson[];
   /** Full competency prerequisite graph. */
   readonly prereqEdges: readonly PrereqEdge[];
+  /** Equation identity (D7): every labelled display equation + the render-path lookup. */
+  readonly equations: {
+    readonly labels: readonly EquationLabelRecord[];
+    /** `slug -> { eqKey: number }` — passed to `remarkNotation` for `[[slug#eq:key]]`. */
+    readonly numbersBySlug: Record<string, Record<string, string>>;
+  };
   readonly diagnostics: {
     readonly curriculum: readonly CurriculumIssue[];
     readonly notation: readonly NotationDiagnostic[];
@@ -186,6 +204,8 @@ export interface Manifest {
     readonly math: readonly MathGateDiagnostic[];
     /** Tier-3 corpus consistency checks (D6). Warnings only. */
     readonly consistency: readonly ConsistencyDiagnostic[];
+    /** Equation-identity checks (D7): `eq-duplicate-key`, `eq-ref-resolves` (error); `eq-key-unused` (warning). */
+    readonly equations: readonly EquationDiagnostic[];
   };
   readonly hashes: {
     /** `sha256` of every content source file, keyed by repo-relative path. */
@@ -396,6 +416,21 @@ export async function compileManifest(): Promise<Manifest> {
   );
   const frontmatterById = lessonFrontmatterById();
 
+  const equationValidation = validateEquations(
+    notationInput.lessons.map((lesson) => ({
+      lessonId: lesson.lessonId,
+      slug: lesson.lessonId.replace(/\./g, '/'),
+      file: lesson.source.file,
+      body: lesson.body,
+    })),
+  );
+  const equationsBySlug = new Map(
+    Object.entries(equationValidation.numbersBySlug).map(([slug, table]) => [
+      slug,
+      Object.entries(table).map(([key, number]) => ({ key, number })),
+    ]),
+  );
+
   const lessons: ManifestLesson[] = [];
   for (const notationLesson of notationInput.lessons) {
     const id = notationLesson.lessonId;
@@ -419,6 +454,7 @@ export async function compileManifest(): Promise<Manifest> {
       assessments: [...meta.assessments],
       sources: deriveSources(notationLesson.body),
       citations: lessonCitations(notationLesson.body),
+      equations: equationsBySlug.get(id.replace(/\./g, '/')) ?? [],
       prereqEdges: sortEdges(
         teaches.flatMap((to) =>
           (prerequisitesById.get(to) ?? [])
@@ -479,12 +515,17 @@ export async function compileManifest(): Promise<Manifest> {
     sidebar,
     lessons,
     prereqEdges,
+    equations: {
+      labels: equationValidation.labels,
+      numbersBySlug: equationValidation.numbersBySlug,
+    },
     diagnostics: {
       curriculum: curriculumIssues,
       notation: registry.diagnostics,
       alignment: alignmentIssues,
       math: mathIssues,
       consistency: consistencyIssues,
+      equations: equationValidation.diagnostics,
     },
     hashes: contentHashes(),
   };

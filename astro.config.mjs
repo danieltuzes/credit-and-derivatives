@@ -46,7 +46,14 @@ export default defineConfig({
     processor: unified({
       remarkPlugins: [
         remarkMath,
-        [remarkNotation, { definitions: manifest.notation.raw, base }],
+        [
+          remarkNotation,
+          {
+            definitions: manifest.notation.raw,
+            equations: manifest.equations.numbersBySlug,
+            base,
+          },
+        ],
         [remarkCitation, { sources: manifest.sources }],
       ],
       rehypePlugins: [

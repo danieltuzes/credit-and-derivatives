@@ -64,7 +64,7 @@
       "definitionId": "page:foundations.discount-factors:discounted-unit-value",
       "key": "discounted-unit-value",
       "kind": "prose",
-      "line": 36,
+      "line": 37,
       "scope": "local",
       "symbol": "V_0(1_t)"
     },
@@ -73,10 +73,10 @@
       "definitionId": "shared:nominal-annual-rate",
       "key": "nominal-annual-rate",
       "kind": "prose",
-      "line": 50,
+      "line": 51,
       "scope": "shared",
       "symbol": "j^{(m)}"
     }
   ],
-  "schemaVersion": 2
+  "schemaVersion": 3
 }

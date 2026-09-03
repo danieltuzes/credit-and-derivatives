@@ -34,6 +34,7 @@ import type {
   SourceSpan,
 } from '../reference/types';
 import { isSubstantiveMeaning } from '../reference/prose';
+import { parseEquationRef } from '../reference/equations.mjs';
 import { resolveLabel } from '../reference/label';
 import {
   buildSidebar,
@@ -226,8 +227,12 @@ export function extractNotationReferences(
 
   for (const [pattern, referenceKind] of patterns) {
     for (const match of searchable.matchAll(pattern)) {
+      const key = (match[1] ?? '').trim();
+      // `[[eq:key]]` / `[[slug#eq:key]]` are equation references (D7), resolved
+      // by the remark pass and the manifest, not notation keys.
+      if (parseEquationRef(key)) continue;
       references.push({
-        key: (match[1] ?? '').trim(),
+        key,
         kind: referenceKind,
         source: sourceSpan(file, text, match.index),
       });

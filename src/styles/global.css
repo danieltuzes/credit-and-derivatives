@@ -663,3 +663,101 @@
     outline: 2px solid Highlight;
   }
 }
+
+/* Equation identity (D7): a keyed `$$…$$` is wrapped by the remark adapter in
+   `.keyed-equation` with an `id="eq-<key>"`, a `data-eq-number`, and a
+   focusable number link. Prose refers to it with `[[eq:key]]` →
+   `a.equation-ref`. The deep-link highlight is a pure-CSS `:target` animation
+   with a reduced-motion fallback; `EquationEnhancer.astro` only re-triggers it
+   on a repeated activation and moves focus. */
+.sl-markdown-content .keyed-equation {
+  position: relative;
+  scroll-margin-block-start: 5rem;
+  padding-inline-end: 3.5rem;
+  border-radius: 0.3rem;
+}
+
+.sl-markdown-content .keyed-equation > .katex-display {
+  margin-block: 0;
+}
+
+.sl-markdown-content a.keyed-equation__number {
+  position: absolute;
+  inset-inline-end: 0.25rem;
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-text-accent);
+  text-decoration: none;
+}
+
+.sl-markdown-content a.keyed-equation__number:hover,
+.sl-markdown-content a.keyed-equation__number:focus-visible {
+  text-decoration: underline;
+}
+
+.sl-markdown-content a.equation-ref {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  padding-inline: 0.1em;
+  border-radius: 0.2em;
+  color: var(--sl-color-text-accent);
+  white-space: nowrap;
+}
+
+.sl-markdown-content a.equation-ref:hover,
+.sl-markdown-content a.equation-ref:focus-visible {
+  background: var(--sl-color-accent-low);
+}
+
+@keyframes eq-flash {
+  from {
+    background: var(--sl-color-accent-low);
+    box-shadow: 0 0 0 0.35rem var(--sl-color-accent-low);
+  }
+  to {
+    background: transparent;
+    box-shadow: 0 0 0 0.35rem transparent;
+  }
+}
+
+.sl-markdown-content .keyed-equation:target {
+  animation: eq-flash 3s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl-markdown-content .keyed-equation:target {
+    animation: none;
+    background: var(--sl-color-accent-low);
+    outline: 2px solid var(--sl-color-accent);
+    outline-offset: 0.2rem;
+  }
+}
+
+@media (forced-colors: active) {
+  .sl-markdown-content .keyed-equation:target {
+    animation: none;
+    outline: 2px solid Highlight;
+    outline-offset: 0.2rem;
+  }
+  .sl-markdown-content a.equation-ref:hover,
+  .sl-markdown-content a.equation-ref:focus-visible {
+    outline: 2px solid Highlight;
+  }
+}
+
+@media print {
+  .sl-markdown-content a.keyed-equation__number {
+    position: static;
+    display: block;
+    transform: none;
+    text-align: end;
+    color: inherit;
+  }
+  .sl-markdown-content .keyed-equation {
+    padding-inline-end: 0;
+  }
+}

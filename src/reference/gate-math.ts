@@ -10,6 +10,7 @@
  * Every failure names `file:line: "token"` and the fix.
  */
 import { resolveMathGlyphs, GlyphResolutionError } from './math-glyphs.mjs';
+import { stripEquationLabels } from './equations.mjs';
 import type {
   NotationLessonInput,
   NotationRegistryInput,
@@ -80,7 +81,8 @@ function mathSpans(body: string): MathSpan[] {
     let match: RegExpExecArray | null;
     while ((match = pattern.exec(searchable))) {
       spans.push({
-        latex: match[1] ?? '',
+        // D7: `\label{eq:…}` is an identity marker, not math KaTeX parses.
+        latex: stripEquationLabels(match[1] ?? ''),
         line: lineOf(body, match.index),
       });
     }

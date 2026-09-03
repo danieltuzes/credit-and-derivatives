@@ -69,6 +69,9 @@ describe('content manifest (Phase D5)', () => {
     expect(
       manifest.diagnostics.math.filter((i) => i.severity === 'error'),
     ).toEqual([]);
+    expect(
+      manifest.diagnostics.equations.filter((i) => i.severity === 'error'),
+    ).toEqual([]);
     expect(Array.isArray(manifest.prereqEdges)).toBe(true);
   });
 });

@@ -34,6 +34,12 @@
 export const NOTATION_KEY_PATTERN = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 
 import { GlyphResolutionError, resolveMathGlyphs } from './math-glyphs.mjs';
+import {
+  EQ_LABEL_PATTERN,
+  collectEquationLabels,
+  parseEquationRef,
+  stripEquationLabels,
+} from './equations.mjs';
 
 const PROSE_SKIP_TYPES = new Set([
   'code',
@@ -300,7 +306,71 @@ function defaultHref(definition, key, base = '') {
   return `${base.replace(/\/$/, '')}/glossary/#notation-${key}`;
 }
 
-function proseNodes(value, resolve, file, node, references, base = '') {
+/**
+ * Wrap a keyed `$$…$$` `math` node so the container survives `rehype-katex`
+ * (which splices the inner `math-display` element out). The visible number is
+ * a focusable `<a>` sibling — never authored, never inside KaTeX — so it
+ * survives print and screen readers name it "Equation 2.4".
+ */
+function keyedEquationNode(mathNode, key, number) {
+  return {
+    type: 'paragraph',
+    data: {
+      hName: 'div',
+      hProperties: {
+        id: `eq-${key}`,
+        className: ['keyed-equation'],
+        'data-eq-key': key,
+        'data-eq-number': number,
+      },
+    },
+    children: [
+      mathNode,
+      {
+        type: 'link',
+        url: `#eq-${key}`,
+        children: [{ type: 'text', value: `(${number})` }],
+        data: {
+          hProperties: {
+            className: ['keyed-equation__number'],
+            'data-eq-number': number,
+            'aria-label': `Equation ${number}`,
+          },
+        },
+      },
+    ],
+  };
+}
+
+/** Resolve a `[[eq-key]]` / `[[slug#eq-key]]` reference to `{ number, href }`. */
+function resolveEquationRef(eqRef, eqCtx, file, node) {
+  if (eqRef.lesson) {
+    const number = eqCtx.crossPage?.[eqRef.lesson]?.[eqRef.key];
+    if (number === undefined) {
+      fail(
+        file,
+        `Unknown equation reference [[${eqRef.lesson}#eq-${eqRef.key}]]: lesson ${eqRef.lesson} has no display equation labelled eq:${eqRef.key}.`,
+        node,
+      );
+    }
+    return {
+      number,
+      href: `${eqCtx.base.replace(/\/$/, '')}/${eqRef.lesson}/#eq-${eqRef.key}`,
+    };
+  }
+  const number = eqCtx.pageLabels.get(eqRef.key);
+  if (number === undefined) {
+    fail(
+      file,
+      `Unknown equation reference [[eq-${eqRef.key}]]: no display equation on this page carries \\label{eq:${eqRef.key}}.`,
+      node,
+    );
+  }
+  return { number, href: `#eq-${eqRef.key}` };
+}
+
+function proseNodes(value, resolve, file, node, references, eqCtx) {
+  const base = eqCtx?.base ?? '';
   const strayExplain = firstUnescaped(value, EXPLAIN);
   if (strayExplain !== -1) {
     fail(
@@ -319,12 +389,36 @@ function proseNodes(value, resolve, file, node, references, base = '') {
     if (isEscaped(value, match.index)) continue;
 
     const key = match[1].trim();
-    if (!NOTATION_KEY_PATTERN.test(key)) {
+    const eqRef = eqCtx ? parseEquationRef(key) : undefined;
+    if (!eqRef && !NOTATION_KEY_PATTERN.test(key)) {
       fail(file, `Invalid notation key "${key}" in [[...]].`, node);
     }
 
     if (match.index > cursor) {
       output.push({ type: 'text', value: value.slice(cursor, match.index) });
+    }
+
+    if (eqRef) {
+      const { number, href } = resolveEquationRef(eqRef, eqCtx, file, node);
+      output.push({
+        type: 'link',
+        url: href,
+        children: [{ type: 'text', value: `(${number})` }],
+        data: {
+          hProperties: {
+            className: ['equation-ref'],
+            'data-eq-ref': eqRef.key,
+            ...(eqRef.lesson ? { 'data-eq-lesson': eqRef.lesson } : {}),
+          },
+        },
+      });
+      references.push({
+        key: eqRef.key,
+        kind: 'equation',
+        ...(eqRef.lesson ? { lesson: eqRef.lesson } : {}),
+      });
+      cursor = match.index + match[0].length;
+      continue;
     }
 
     const definition = resolve(key, 'prose', node);
@@ -456,6 +550,8 @@ function inspectExplainCalls(value, resolve, file, node, references) {
  *   definitions?: Map<string, object> | readonly object[] | Record<string, object> | (() => Map<string, object> | readonly object[] | Record<string, object>),
  *   resolve?: (key: string, context: object) => object | undefined,
  *   unknown?: 'error' | 'warn' | 'ignore',
+ *   base?: string,
+ *   equations?: Record<string, Record<string, string>>,
  * }} [options]
  */
 export default function remarkNotation(options = {}) {
@@ -480,6 +576,27 @@ export default function remarkNotation(options = {}) {
     );
     const references = [];
     const resolved = new Map();
+
+    // Equation identity (D7): assign every `\label{eq:…}` its section-scoped
+    // number before any math node is rewritten, so a `[[eq-key]]` earlier in
+    // the page still resolves.
+    const equationLabels = collectEquationLabels(tree);
+    const pageLabels = new Map();
+    for (const label of equationLabels) {
+      if (pageLabels.has(label.key)) {
+        fail(
+          file,
+          `Duplicate equation label eq:${label.key} on this page; an eq: key is unique per lesson.`,
+          label.node,
+        );
+      }
+      pageLabels.set(label.key, label.number);
+    }
+    const eqCtx = {
+      base: options.base ?? '',
+      pageLabels,
+      crossPage: options.equations ?? {},
+    };
 
     const resolve = (key, kind, node) => {
       const context = {
@@ -518,7 +635,23 @@ export default function remarkNotation(options = {}) {
       if (!node || typeof node !== 'object') return;
 
       if (node.type === 'math' || node.type === 'inlineMath') {
-        const value = String(node.value ?? '');
+        let value = String(node.value ?? '');
+
+        EQ_LABEL_PATTERN.lastIndex = 0;
+        const labelMatch = EQ_LABEL_PATTERN.exec(value);
+        if (labelMatch) {
+          if (node.type === 'inlineMath') {
+            fail(
+              file,
+              `\\label{eq:${labelMatch[1]}} is only valid in a $$…$$ display equation, not inline $…$.`,
+              node,
+            );
+          }
+          node.__eqKey = labelMatch[1];
+          value = stripEquationLabels(value);
+          replaceMathSource(node, value);
+        }
+
         inspectExplainCalls(value, resolve, file, node, references);
 
         const bindingScope = lessonId
@@ -583,7 +716,7 @@ export default function remarkNotation(options = {}) {
             file,
             child,
             references,
-            options.base ?? '',
+            eqCtx,
           );
           if (replacement) {
             node.children.splice(index, 1, ...replacement);
@@ -592,6 +725,15 @@ export default function remarkNotation(options = {}) {
           continue;
         }
         visit(child, false);
+        if (child && child.__eqKey) {
+          const key = child.__eqKey;
+          delete child.__eqKey;
+          node.children[index] = keyedEquationNode(
+            child,
+            key,
+            pageLabels.get(key),
+          );
+        }
       }
     };
 
@@ -599,5 +741,13 @@ export default function remarkNotation(options = {}) {
 
     file.data.notationReferences = references;
     file.data.notationResolved = Object.fromEntries(resolved);
+    file.data.equationLabels = equationLabels.map(
+      ({ key, number, section, indexInSection }) => ({
+        key,
+        number,
+        section,
+        indexInSection,
+      }),
+    );
   };
 }

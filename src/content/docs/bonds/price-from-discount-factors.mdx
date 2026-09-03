@@ -27,12 +27,15 @@ Use the [[bond-payment-index]] $k$ to select one of the
 [[bond-cash-flow]] as $CF_k^{\mathrm{bond}}$, its
 [[payment-time]] as $t_k$, and its matching [[discount-factor]] as
 $D(0,t_k)$. Write the [[bond-price]], which is the
-[[present-value]] at [[valuation-time]] $0$, as $P_0$.
+[[present-value]] at [[valuation-time]] $0$, as $P_0$; it is the schedule sum
+[[foundations/present-value#eq-present-value-sum]] specialised to a bond's
+promised payments.
 
 The pricing rule is
 
 $$
 P_0=\sum_{k=1}^{n}CF_k^{\mathrm{bond}}D(0,t_k).
+\label{eq:bond-price-from-factors}
 $$
 
 The semantic key for price is not overloaded with clean price, quoted price,
@@ -88,7 +91,8 @@ $$
 P_0=F D(0,T).
 $$
 
-This is the same pricing rule, not a separate exception.
+This is the same pricing rule [[eq-bond-price-from-factors]], not a separate
+exception.
 
   </CompactExample>
 </CompactExamples>
