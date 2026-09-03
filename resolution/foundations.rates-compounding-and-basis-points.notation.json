@@ -1,0 +1,118 @@
+{
+  "file": "src/content/docs/foundations/rates-compounding-and-basis-points.mdx",
+  "lesson": "foundations.rates-compounding-and-basis-points",
+  "localKeys": [
+    "number-of-compounding-periods"
+  ],
+  "references": [
+    {
+      "column": 48,
+      "definitionId": "shared:nominal-annual-rate",
+      "key": "nominal-annual-rate",
+      "kind": "prose",
+      "line": 17,
+      "scope": "shared",
+      "symbol": "j^{(m)}"
+    },
+    {
+      "column": 32,
+      "definitionId": "shared:compounding-frequency",
+      "key": "compounding-frequency",
+      "kind": "prose",
+      "line": 18,
+      "scope": "shared",
+      "symbol": "m"
+    },
+    {
+      "column": 11,
+      "definitionId": "shared:periodic-rate",
+      "key": "periodic-rate",
+      "kind": "prose",
+      "line": 19,
+      "scope": "shared",
+      "symbol": "r_m"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:payment-time",
+      "key": "payment-time",
+      "kind": "prose",
+      "line": 22,
+      "scope": "shared",
+      "symbol": "t_k"
+    },
+    {
+      "column": 23,
+      "definitionId": "shared:valuation-time",
+      "key": "valuation-time",
+      "kind": "prose",
+      "line": 22,
+      "scope": "shared",
+      "symbol": "0"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:foundations.rates-compounding-and-basis-points:number-of-compounding-periods",
+      "key": "number-of-compounding-periods",
+      "kind": "prose",
+      "line": 23,
+      "scope": "local",
+      "symbol": "N"
+    },
+    {
+      "column": 25,
+      "definitionId": "shared:accumulation-factor",
+      "key": "accumulation-factor",
+      "kind": "prose",
+      "line": 24,
+      "scope": "shared",
+      "symbol": "A(0,t)"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:foundations.rates-compounding-and-basis-points:number-of-compounding-periods",
+      "key": "number-of-compounding-periods",
+      "kind": "prose",
+      "line": 45,
+      "scope": "local",
+      "symbol": "N"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:accumulation-factor",
+      "key": "accumulation-factor",
+      "kind": "prose",
+      "line": 46,
+      "scope": "shared",
+      "symbol": "A(0,t)"
+    },
+    {
+      "column": 13,
+      "definitionId": "shared:valuation-time",
+      "key": "valuation-time",
+      "kind": "prose",
+      "line": 54,
+      "scope": "shared",
+      "symbol": "0"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:payment-time",
+      "key": "payment-time",
+      "kind": "prose",
+      "line": 55,
+      "scope": "shared",
+      "symbol": "t_k"
+    },
+    {
+      "column": 3,
+      "definitionId": "shared:basis-point",
+      "key": "basis-point",
+      "kind": "prose",
+      "line": 73,
+      "scope": "shared",
+      "symbol": "1\\,\\mathrm{bp}"
+    }
+  ],
+  "schemaVersion": 2
+}

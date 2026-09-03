@@ -41,23 +41,31 @@ import {
   validateCurriculum,
   type CurriculumIssue,
 } from '../curriculum/validation';
+import {
+  runConsistencyChecks,
+  type ConsistencyDiagnostic,
+} from '../reference/consistency';
 import { validateNotationAlignment } from '../reference/curriculum-alignment';
 import {
   gateContentMath,
   type MathGateDiagnostic,
 } from '../reference/gate-math';
+import { loadLintIgnore } from '../reference/lint-ignore';
 import { buildNotationRegistry } from '../reference/registry';
+import { resolveReferenceId } from '../reference/references';
 import type {
   EditorialStatus,
   NotationBacklink,
   NotationDefinitionRecord,
   NotationDiagnostic,
+  NotationLessonInput,
   NotationPageBundle,
 } from '../reference/types';
 import {
   loadCurriculumCatalog,
   loadNotationDefinitions,
   loadNotationRegistryInput,
+  loadNotationSpecs,
   loadSourceRecords,
 } from './collections';
 import {
@@ -70,8 +78,11 @@ import {
 /**
  * Bump when a consumer-visible shape changes. A client asserts against this
  * before trusting the document (`manifest-version-compat`, Tier 5).
+ *
+ * v2 (D6): `lessons[].notation.resolution` (symbol → key → scope → span) and
+ * `diagnostics.consistency` (Tier-3 corpus checks).
  */
-export const MANIFEST_SCHEMA_VERSION = 1;
+export const MANIFEST_SCHEMA_VERSION = 2;
 
 const REPOSITORY_ROOT = process.cwd();
 const CONTENT_ROOT = join(REPOSITORY_ROOT, 'src', 'content');
@@ -91,6 +102,21 @@ export interface ManifestCitation {
 export interface PrereqEdge {
   readonly from: string;
   readonly to: string;
+}
+
+/**
+ * One resolved notation reference occurrence — the row of the committed
+ * per-lesson resolution report (`resolution/<lessonId>.notation.json`).
+ */
+export interface ManifestNotationResolution {
+  /** The resolved definition's LaTeX glyph, or the raw key if unresolved. */
+  readonly symbol: string;
+  readonly key: string;
+  readonly scope: 'shared' | 'local' | 'unresolved';
+  readonly definitionId: string | null;
+  readonly kind: 'prose' | 'math' | 'definition';
+  readonly line: number | null;
+  readonly column: number | null;
 }
 
 /** One resolved notation entry, denormalized for the lesson footer. */
@@ -131,6 +157,8 @@ export interface ManifestLesson {
     }[];
     readonly definitionIds: readonly string[];
     readonly definitions: readonly ManifestLessonNotation[];
+    /** Every `[[key]]` / `\explain{key}` occurrence, resolved and located. */
+    readonly resolution: readonly ManifestNotationResolution[];
   };
 }
 
@@ -156,6 +184,8 @@ export interface Manifest {
     readonly notation: readonly NotationDiagnostic[];
     readonly alignment: readonly NotationDiagnostic[];
     readonly math: readonly MathGateDiagnostic[];
+    /** Tier-3 corpus consistency checks (D6). Warnings only. */
+    readonly consistency: readonly ConsistencyDiagnostic[];
   };
   readonly hashes: {
     /** `sha256` of every content source file, keyed by repo-relative path. */
@@ -215,9 +245,48 @@ function contentHashes(): {
   return { content, contentTree: `sha256:${tree.digest('hex')}` };
 }
 
+/**
+ * Every `[[key]]` / `\explain{key}` occurrence in a lesson, resolved by lexical
+ * scope (page-local first, then shared) and located. The rows of the committed
+ * resolution report (D6 (d)); order follows `references`, already sorted by
+ * (line, column, key).
+ */
+function lessonNotationResolution(
+  lesson: NotationLessonInput,
+  definitionsById: ReadonlyMap<string, NotationDefinitionRecord>,
+  availableDefinitionIds: ReadonlySet<string>,
+): ManifestNotationResolution[] {
+  const scope = { kind: 'page' as const, lessonId: lesson.lessonId };
+  return lesson.references.map((reference) => {
+    const definitionId = resolveReferenceId(
+      reference.key,
+      scope,
+      availableDefinitionIds,
+    );
+    const definition =
+      definitionId === undefined
+        ? undefined
+        : definitionsById.get(definitionId);
+    return {
+      symbol: definition?.notation ?? reference.key,
+      key: reference.key,
+      scope: definition
+        ? definition.kind === 'shared'
+          ? 'shared'
+          : 'local'
+        : 'unresolved',
+      definitionId: definitionId ?? null,
+      kind: reference.kind,
+      line: reference.source.line ?? null,
+      column: reference.source.column ?? null,
+    };
+  });
+}
+
 function lessonNotationBundle(
   bundle: NotationPageBundle | undefined,
   definitionsById: ReadonlyMap<string, NotationDefinitionRecord>,
+  resolution: readonly ManifestNotationResolution[],
 ): ManifestLesson['notation'] {
   const definitions: ManifestLessonNotation[] = [];
   for (const definitionId of bundle?.definitionIds ?? []) {
@@ -242,6 +311,7 @@ function lessonNotationBundle(
     bindings: [...(bundle?.bindings ?? [])].map((binding) => ({ ...binding })),
     definitionIds: [...(bundle?.definitionIds ?? [])],
     definitions,
+    resolution: [...resolution],
   };
 }
 
@@ -286,6 +356,7 @@ export async function compileManifest(): Promise<Manifest> {
   const definitionsById = new Map(
     registry.definitions.map((definition) => [definition.id, definition]),
   );
+  const availableDefinitionIds = new Set(definitionsById.keys());
   const bundlesByLesson = new Map(
     registry.bundles.map((bundle) => [bundle.lessonId, bundle]),
   );
@@ -355,10 +426,26 @@ export async function compileManifest(): Promise<Manifest> {
             .map((from) => ({ from, to })),
         ),
       ),
-      notation: lessonNotationBundle(bundlesByLesson.get(id), definitionsById),
+      notation: lessonNotationBundle(
+        bundlesByLesson.get(id),
+        definitionsById,
+        lessonNotationResolution(
+          notationLesson,
+          definitionsById,
+          availableDefinitionIds,
+        ),
+      ),
     });
   }
   lessons.sort((a, b) => a.id.localeCompare(b.id));
+
+  const consistencyIssues = runConsistencyChecks({
+    registry,
+    notationInput,
+    specs: loadNotationSpecs(),
+    catalog,
+    lintIgnore: loadLintIgnore(),
+  });
 
   const rawNotation = [...loadNotationDefinitions()].sort((a, b) =>
     String(a.key).localeCompare(String(b.key)),
@@ -397,6 +484,7 @@ export async function compileManifest(): Promise<Manifest> {
       notation: registry.diagnostics,
       alignment: alignmentIssues,
       math: mathIssues,
+      consistency: consistencyIssues,
     },
     hashes: contentHashes(),
   };

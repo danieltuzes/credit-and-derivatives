@@ -1,0 +1,92 @@
+{
+  "file": "src/content/docs/rates/discount-curve-and-forward-discounting.mdx",
+  "lesson": "rates.discount-curve-and-forward-discounting",
+  "localKeys": [
+    "forward-discount-end-time",
+    "forward-discount-start-time"
+  ],
+  "references": [
+    {
+      "column": 4,
+      "definitionId": "shared:valuation-time",
+      "key": "valuation-time",
+      "kind": "prose",
+      "line": 12,
+      "scope": "shared",
+      "symbol": "0"
+    },
+    {
+      "column": 36,
+      "definitionId": "shared:discount-factor",
+      "key": "discount-factor",
+      "kind": "prose",
+      "line": 12,
+      "scope": "shared",
+      "symbol": "D(0,t)"
+    },
+    {
+      "column": 30,
+      "definitionId": "shared:payment-time",
+      "key": "payment-time",
+      "kind": "prose",
+      "line": 13,
+      "scope": "shared",
+      "symbol": "t_k"
+    },
+    {
+      "column": 11,
+      "definitionId": "page:rates.discount-curve-and-forward-discounting:forward-discount-start-time",
+      "key": "forward-discount-start-time",
+      "kind": "prose",
+      "line": 28,
+      "scope": "local",
+      "symbol": "t"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:rates.discount-curve-and-forward-discounting:forward-discount-end-time",
+      "key": "forward-discount-end-time",
+      "kind": "prose",
+      "line": 29,
+      "scope": "local",
+      "symbol": "T"
+    },
+    {
+      "column": 40,
+      "definitionId": "shared:forward-discount-factor",
+      "key": "forward-discount-factor",
+      "kind": "prose",
+      "line": 29,
+      "scope": "shared",
+      "symbol": "Z(t,T)"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:forward-discount-factor",
+      "key": "forward-discount-factor",
+      "kind": "math",
+      "line": 32,
+      "scope": "shared",
+      "symbol": "Z(t,T)"
+    },
+    {
+      "column": 8,
+      "definitionId": "shared:discount-factor",
+      "key": "discount-factor",
+      "kind": "math",
+      "line": 33,
+      "scope": "shared",
+      "symbol": "D(0,t)"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:discount-factor",
+      "key": "discount-factor",
+      "kind": "math",
+      "line": 34,
+      "scope": "shared",
+      "symbol": "D(0,t)"
+    }
+  ],
+  "schemaVersion": 2
+}

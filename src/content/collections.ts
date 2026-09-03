@@ -460,32 +460,102 @@ export function loadSidebar(): SidebarGroup[] {
 }
 
 /**
+ * Flat view of every notation entry (shared + page-local) for the consistency
+ * checks (Step D6): the fields those checks read that the registry input drops
+ * or normalizes — the raw `dimensionless` marker and the per-source locator
+ * shape. One walk of the same files the loader already parses.
+ */
+export interface NotationSpec {
+  /** `shared:<key>` or `page:<lessonId>:<key>` — matches the registry id. */
+  readonly id: string;
+  readonly key: string;
+  readonly scope: 'shared' | 'local';
+  readonly lessonId?: string;
+  readonly file: string;
+  readonly latex: string;
+  readonly units?: string;
+  readonly dimensionless: boolean;
+  readonly formula?: string;
+  readonly sources: readonly {
+    readonly id: string;
+    readonly hasLocator: boolean;
+  }[];
+}
+
+function specSources(value: unknown): NotationSpec['sources'] {
+  if (!Array.isArray(value)) return [];
+  return value.map((entry) => {
+    if (typeof entry === 'string') return { id: entry, hasLocator: false };
+    const record = (entry ?? {}) as { id?: unknown; locator?: unknown };
+    return {
+      id: typeof record.id === 'string' ? record.id : '',
+      hasLocator:
+        typeof record.locator === 'string' && record.locator.trim().length > 0,
+    };
+  });
+}
+
+export function loadNotationSpecs(): NotationSpec[] {
+  const specs: NotationSpec[] = [];
+
+  for (const path of filesBelow(join(CONTENT_ROOT, 'notation'), ['.md'])) {
+    const { file, data } = parseDocument(path);
+    const key = typeof data.key === 'string' ? data.key : basename(path, '.md');
+    specs.push({
+      id: `shared:${key}`,
+      key,
+      scope: 'shared',
+      file,
+      latex: typeof data.latex === 'string' ? data.latex : '',
+      ...(typeof data.units === 'string' ? { units: data.units } : {}),
+      dimensionless: data.dimensionless === true,
+      ...(typeof data.formula === 'string' ? { formula: data.formula } : {}),
+      sources: specSources(data.sources),
+    });
+  }
+
+  for (const path of filesBelow(join(CONTENT_ROOT, 'docs'), ['.md', '.mdx'])) {
+    const slug = docSlug(path);
+    if (!isLessonSlug(slug)) continue;
+    const { file, data } = parseDocument(path);
+    const lessonId = lessonIdFromSlug(slug);
+    const local = (data as { notation?: { local?: unknown } }).notation?.local;
+    if (!Array.isArray(local)) continue;
+    for (const raw of local) {
+      const entry = (raw ?? {}) as Record<string, unknown>;
+      const key = typeof entry.key === 'string' ? entry.key : '';
+      specs.push({
+        id: `page:${lessonId}:${key}`,
+        key,
+        scope: 'local',
+        lessonId,
+        file,
+        latex: typeof entry.latex === 'string' ? entry.latex : '',
+        ...(typeof entry.units === 'string' ? { units: entry.units } : {}),
+        dimensionless: entry.dimensionless === true,
+        ...(typeof entry.formula === 'string'
+          ? { formula: entry.formula }
+          : {}),
+        sources: specSources(entry.sources),
+      });
+    }
+  }
+
+  return specs.sort((left, right) => left.id.localeCompare(right.id));
+}
+
+/**
  * Notation `sources` entries still written as a bare id rather than
- * `{ id, locator }` (Phase C1b shape). A locator is a per-claim citation that
- * must be verified against the text, so filling these is a separate reviewed
- * pass (D6 item g) — reported here as a warning, not an error.
+ * `{ id, locator }` (Phase C1b shape). Formalized as the `notation-source-locator`
+ * consistency check in Step D6; kept here for the CLI summary line.
  */
 export function notationSourceLocatorGaps(): { bare: number; total: number } {
   let bare = 0;
   let total = 0;
-  const count = (sources: unknown) => {
-    if (!Array.isArray(sources)) return;
-    for (const entry of sources) {
+  for (const spec of loadNotationSpecs()) {
+    for (const source of spec.sources) {
       total += 1;
-      if (typeof entry === 'string') bare += 1;
-    }
-  };
-  for (const path of filesBelow(join(CONTENT_ROOT, 'notation'), ['.md'])) {
-    count(parseDocument(path).data.sources);
-  }
-  for (const path of filesBelow(join(CONTENT_ROOT, 'docs'), ['.md', '.mdx'])) {
-    const local = (
-      parseDocument(path).data as { notation?: { local?: unknown } }
-    ).notation?.local;
-    if (Array.isArray(local)) {
-      for (const entry of local) {
-        count((entry as { sources?: unknown }).sources);
-      }
+      if (!source.hasLocator) bare += 1;
     }
   }
   return { bare, total };

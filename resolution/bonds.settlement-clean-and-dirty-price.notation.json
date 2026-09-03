@@ -1,0 +1,128 @@
+{
+  "file": "src/content/docs/bonds/settlement-clean-and-dirty-price.mdx",
+  "lesson": "bonds.settlement-clean-and-dirty-price",
+  "localKeys": [
+    "coupon-period-elapsed-days",
+    "coupon-period-total-days"
+  ],
+  "references": [
+    {
+      "column": 34,
+      "definitionId": "shared:clean-bond-price",
+      "key": "clean-bond-price",
+      "kind": "prose",
+      "line": 6,
+      "scope": "shared",
+      "symbol": "P^{\\mathrm{clean}}"
+    },
+    {
+      "column": 37,
+      "definitionId": "shared:dirty-bond-price",
+      "key": "dirty-bond-price",
+      "kind": "prose",
+      "line": 7,
+      "scope": "shared",
+      "symbol": "P^{\\mathrm{dirty}}"
+    },
+    {
+      "column": 45,
+      "definitionId": "shared:accrued-interest",
+      "key": "accrued-interest",
+      "kind": "prose",
+      "line": 8,
+      "scope": "shared",
+      "symbol": "AI"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:dirty-bond-price",
+      "key": "dirty-bond-price",
+      "kind": "math",
+      "line": 11,
+      "scope": "shared",
+      "symbol": "P^{\\mathrm{dirty}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:clean-bond-price",
+      "key": "clean-bond-price",
+      "kind": "math",
+      "line": 12,
+      "scope": "shared",
+      "symbol": "P^{\\mathrm{clean}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:accrued-interest",
+      "key": "accrued-interest",
+      "kind": "math",
+      "line": 13,
+      "scope": "shared",
+      "symbol": "AI"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:bonds.settlement-clean-and-dirty-price:coupon-period-elapsed-days",
+      "key": "coupon-period-elapsed-days",
+      "kind": "prose",
+      "line": 22,
+      "scope": "local",
+      "symbol": "n_{\\mathrm{elapsed}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:bonds.settlement-clean-and-dirty-price:coupon-period-total-days",
+      "key": "coupon-period-total-days",
+      "kind": "prose",
+      "line": 23,
+      "scope": "local",
+      "symbol": "n_{\\mathrm{period}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:coupon-payment",
+      "key": "coupon-payment",
+      "kind": "prose",
+      "line": 24,
+      "scope": "shared",
+      "symbol": "C"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:accrued-interest",
+      "key": "accrued-interest",
+      "kind": "math",
+      "line": 27,
+      "scope": "shared",
+      "symbol": "AI"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:coupon-payment",
+      "key": "coupon-payment",
+      "kind": "math",
+      "line": 28,
+      "scope": "shared",
+      "symbol": "C"
+    },
+    {
+      "column": 7,
+      "definitionId": "page:bonds.settlement-clean-and-dirty-price:coupon-period-elapsed-days",
+      "key": "coupon-period-elapsed-days",
+      "kind": "math",
+      "line": 29,
+      "scope": "local",
+      "symbol": "n_{\\mathrm{elapsed}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:bonds.settlement-clean-and-dirty-price:coupon-period-total-days",
+      "key": "coupon-period-total-days",
+      "kind": "math",
+      "line": 30,
+      "scope": "local",
+      "symbol": "n_{\\mathrm{period}}"
+    }
+  ],
+  "schemaVersion": 2
+}

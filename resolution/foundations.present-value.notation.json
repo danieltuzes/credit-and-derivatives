@@ -1,0 +1,130 @@
+{
+  "file": "src/content/docs/foundations/present-value.mdx",
+  "lesson": "foundations.present-value",
+  "localKeys": [
+    "discounting-lab-cash-flow",
+    "discounting-lab-rate",
+    "number-of-future-payments",
+    "present-value-payment-index"
+  ],
+  "references": [
+    {
+      "column": 15,
+      "definitionId": "page:foundations.present-value:present-value-payment-index",
+      "key": "present-value-payment-index",
+      "kind": "prose",
+      "line": 17,
+      "scope": "local",
+      "symbol": "k"
+    },
+    {
+      "column": 11,
+      "definitionId": "page:foundations.present-value:number-of-future-payments",
+      "key": "number-of-future-payments",
+      "kind": "prose",
+      "line": 18,
+      "scope": "local",
+      "symbol": "n"
+    },
+    {
+      "column": 29,
+      "definitionId": "shared:signed-cash-flow",
+      "key": "signed-cash-flow",
+      "kind": "prose",
+      "line": 19,
+      "scope": "shared",
+      "symbol": "CF_k"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:payment-time",
+      "key": "payment-time",
+      "kind": "prose",
+      "line": 20,
+      "scope": "shared",
+      "symbol": "t_k"
+    },
+    {
+      "column": 45,
+      "definitionId": "shared:discount-factor",
+      "key": "discount-factor",
+      "kind": "prose",
+      "line": 20,
+      "scope": "shared",
+      "symbol": "D(0,t)"
+    },
+    {
+      "column": 34,
+      "definitionId": "shared:present-value",
+      "key": "present-value",
+      "kind": "prose",
+      "line": 21,
+      "scope": "shared",
+      "symbol": "PV_0"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:valuation-time",
+      "key": "valuation-time",
+      "kind": "prose",
+      "line": 22,
+      "scope": "shared",
+      "symbol": "0"
+    },
+    {
+      "column": 27,
+      "definitionId": "shared:valuation-time",
+      "key": "valuation-time",
+      "kind": "prose",
+      "line": 46,
+      "scope": "shared",
+      "symbol": "0"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:discount-factor",
+      "key": "discount-factor",
+      "kind": "prose",
+      "line": 91,
+      "scope": "shared",
+      "symbol": "D(0,t)"
+    },
+    {
+      "column": 35,
+      "definitionId": "page:foundations.present-value:discounting-lab-rate",
+      "key": "discounting-lab-rate",
+      "kind": "prose",
+      "line": 91,
+      "scope": "local",
+      "symbol": "y"
+    },
+    {
+      "column": 37,
+      "definitionId": "page:foundations.present-value:discounting-lab-cash-flow",
+      "key": "discounting-lab-cash-flow",
+      "kind": "prose",
+      "line": 92,
+      "scope": "local",
+      "symbol": "C"
+    },
+    {
+      "column": 5,
+      "definitionId": "shared:present-value",
+      "key": "present-value",
+      "kind": "prose",
+      "line": 93,
+      "scope": "shared",
+      "symbol": "PV_0"
+    },
+    {
+      "column": 26,
+      "definitionId": "shared:valuation-time",
+      "key": "valuation-time",
+      "kind": "prose",
+      "line": 93,
+      "scope": "shared",
+      "symbol": "0"
+    }
+  ],
+  "schemaVersion": 2
+}

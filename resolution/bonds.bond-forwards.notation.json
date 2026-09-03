@@ -1,0 +1,100 @@
+{
+  "file": "src/content/docs/bonds/bond-forwards.mdx",
+  "lesson": "bonds.bond-forwards",
+  "localKeys": [
+    "predelivery-coupon-present-value"
+  ],
+  "references": [
+    {
+      "column": 47,
+      "definitionId": "shared:forward-delivery-price",
+      "key": "forward-delivery-price",
+      "kind": "prose",
+      "line": 6,
+      "scope": "shared",
+      "symbol": "K_{\\mathrm{fwd}}"
+    },
+    {
+      "column": 31,
+      "definitionId": "shared:forward-delivery-time",
+      "key": "forward-delivery-time",
+      "kind": "prose",
+      "line": 7,
+      "scope": "shared",
+      "symbol": "T_{\\mathrm{fwd}}"
+    },
+    {
+      "column": 4,
+      "definitionId": "shared:valuation-time",
+      "key": "valuation-time",
+      "kind": "prose",
+      "line": 13,
+      "scope": "shared",
+      "symbol": "0"
+    },
+    {
+      "column": 47,
+      "definitionId": "shared:dirty-bond-price",
+      "key": "dirty-bond-price",
+      "kind": "prose",
+      "line": 13,
+      "scope": "shared",
+      "symbol": "P^{\\mathrm{dirty}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:bonds.bond-forwards:predelivery-coupon-present-value",
+      "key": "predelivery-coupon-present-value",
+      "kind": "prose",
+      "line": 15,
+      "scope": "local",
+      "symbol": "I_0^{\\mathrm{pre}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:bond-forward-price",
+      "key": "bond-forward-price",
+      "kind": "prose",
+      "line": 18,
+      "scope": "shared",
+      "symbol": "F^{B}_{0,T_{\\mathrm{fwd}}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:bond-forward-price",
+      "key": "bond-forward-price",
+      "kind": "math",
+      "line": 21,
+      "scope": "shared",
+      "symbol": "F^{B}_{0,T_{\\mathrm{fwd}}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:dirty-bond-price",
+      "key": "dirty-bond-price",
+      "kind": "math",
+      "line": 23,
+      "scope": "shared",
+      "symbol": "P^{\\mathrm{dirty}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:bonds.bond-forwards:predelivery-coupon-present-value",
+      "key": "predelivery-coupon-present-value",
+      "kind": "math",
+      "line": 24,
+      "scope": "local",
+      "symbol": "I_0^{\\mathrm{pre}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:discount-factor",
+      "key": "discount-factor",
+      "kind": "math",
+      "line": 26,
+      "scope": "shared",
+      "symbol": "D(0,t)"
+    }
+  ],
+  "schemaVersion": 2
+}

@@ -12,13 +12,16 @@ import {
   MANIFEST_PATH,
   writeManifest,
 } from '../src/content/manifest';
+import { syncResolutionReports } from '../src/content/resolution-report';
 import { notationSourceLocatorGaps } from '../src/content/collections';
+import { consistencyCounts } from '../src/reference/consistency';
 import { curriculumErrors } from '../src/curriculum/validation';
 
 const manifest = await compileManifest();
 writeManifest(manifest);
 
-const { curriculum, notation, alignment, math } = manifest.diagnostics;
+const { curriculum, notation, alignment, math, consistency } =
+  manifest.diagnostics;
 
 for (const warning of curriculum.filter(
   (issue) => issue.severity === 'warning',
@@ -43,11 +46,34 @@ for (const issue of math.filter((item) => item.severity === 'warning')) {
 const locatorGaps = notationSourceLocatorGaps();
 if (locatorGaps.bare > 0) {
   console.warn(
-    `[notation-source-locator] ${locatorGaps.bare} of ${locatorGaps.total} notation source citations are bare ids without a { id, locator } (pending D6/g).`,
+    `[notation-source-locator] ${locatorGaps.bare} of ${locatorGaps.total} notation source citations lack a non-empty locator.`,
   );
 }
 
+// D6 Tier-3 corpus consistency checks — warnings only, detail in the manifest
+// and the committed resolution report.
+const consistencyByCode = consistencyCounts(consistency);
+const consistencyTotal = consistency.length;
+if (consistencyTotal > 0) {
+  console.warn(
+    `[consistency] ${consistencyTotal} Tier-3 finding(s): ` +
+      Object.entries(consistencyByCode)
+        .filter(([, count]) => count > 0)
+        .map(([code, count]) => `${code}=${count}`)
+        .join(', '),
+  );
+}
+
+// D6 (d) — the committed per-lesson resolution report must match the compile.
+const reports = syncResolutionReports(manifest);
+console.log(`Resolution report: ${reports.written} file(s) under resolution/.`);
+
 const failures: string[] = [];
+for (const stalePath of reports.stale) {
+  failures.push(
+    `[resolution-report] ${stalePath} is out of date — commit the regenerated resolution/ files`,
+  );
+}
 for (const issue of curriculumErrors(curriculum)) {
   failures.push(`[curriculum:${issue.kind}] ${issue.message}`);
 }

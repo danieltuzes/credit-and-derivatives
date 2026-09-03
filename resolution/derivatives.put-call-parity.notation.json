@@ -1,0 +1,92 @@
+{
+  "file": "src/content/docs/derivatives/put-call-parity.mdx",
+  "lesson": "derivatives.put-call-parity",
+  "localKeys": [
+    "parity-income-present-value",
+    "prepaid-forward-value"
+  ],
+  "references": [
+    {
+      "column": 14,
+      "definitionId": "shared:derivative-underlying-value",
+      "key": "derivative-underlying-value",
+      "kind": "prose",
+      "line": 14,
+      "scope": "shared",
+      "symbol": "S_t"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:option-strike-price",
+      "key": "option-strike-price",
+      "kind": "prose",
+      "line": 15,
+      "scope": "shared",
+      "symbol": "K"
+    },
+    {
+      "column": 34,
+      "definitionId": "shared:option-expiry-time",
+      "key": "option-expiry-time",
+      "kind": "prose",
+      "line": 15,
+      "scope": "shared",
+      "symbol": "T_{\\mathrm{opt}}"
+    },
+    {
+      "column": 11,
+      "definitionId": "page:derivatives.put-call-parity:parity-income-present-value",
+      "key": "parity-income-present-value",
+      "kind": "prose",
+      "line": 30,
+      "scope": "local",
+      "symbol": "I_0"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.put-call-parity:prepaid-forward-value",
+      "key": "prepaid-forward-value",
+      "kind": "prose",
+      "line": 31,
+      "scope": "local",
+      "symbol": "\\widetilde{F}_{0,T_{\\mathrm{opt}}}"
+    },
+    {
+      "column": 30,
+      "definitionId": "shared:call-option-value",
+      "key": "call-option-value",
+      "kind": "prose",
+      "line": 33,
+      "scope": "shared",
+      "symbol": "c_t"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:put-option-value",
+      "key": "put-option-value",
+      "kind": "prose",
+      "line": 34,
+      "scope": "shared",
+      "symbol": "p_t"
+    },
+    {
+      "column": 52,
+      "definitionId": "shared:discount-factor",
+      "key": "discount-factor",
+      "kind": "prose",
+      "line": 34,
+      "scope": "shared",
+      "symbol": "D(0,t)"
+    },
+    {
+      "column": 47,
+      "definitionId": "shared:forward-price",
+      "key": "forward-price",
+      "kind": "prose",
+      "line": 52,
+      "scope": "shared",
+      "symbol": "F_{t,T_{\\mathrm{fwd}}}"
+    }
+  ],
+  "schemaVersion": 2
+}

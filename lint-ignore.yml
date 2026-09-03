@@ -1,0 +1,17 @@
+# Reviewed suppression registry for the Step D6 consistency checks.
+#
+# One acknowledgement per line:
+#
+#   - <check-code>[:<detail>] — <reason>
+#
+# <detail> narrows the line to a single glyph (glyph-unique-in-corpus) or
+# notation key; omit it to acknowledge every finding of that code. Silent
+# suppression is not available anywhere else — a finding is a violation until a
+# reviewer records it here with a reason.
+#
+# Check codes: glyph-unique-in-corpus, notation-units, units-vocab,
+# convention-single-definition, numerals-tagged, weak-local,
+# notation-source-locator.
+#
+# Nothing is acknowledged yet: every D6 finding is an open item for a
+# human-quantitative-reviewed content pass.

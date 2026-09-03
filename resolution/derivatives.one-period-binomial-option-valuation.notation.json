@@ -1,0 +1,494 @@
+{
+  "file": "src/content/docs/derivatives/one-period-binomial-option-valuation.mdx",
+  "lesson": "derivatives.one-period-binomial-option-valuation",
+  "localKeys": [
+    "binomial-claim-value",
+    "binomial-down-claim-payoff",
+    "binomial-down-underlying-value",
+    "binomial-hedge-units",
+    "binomial-risk-free-expiry-cash",
+    "binomial-risk-neutral-up-weight",
+    "binomial-up-claim-payoff",
+    "binomial-up-underlying-value"
+  ],
+  "references": [
+    {
+      "column": 30,
+      "definitionId": "shared:derivative-underlying-value",
+      "key": "derivative-underlying-value",
+      "kind": "math",
+      "line": 14,
+      "scope": "shared",
+      "symbol": "S_t"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:valuation-time",
+      "key": "valuation-time",
+      "kind": "prose",
+      "line": 15,
+      "scope": "shared",
+      "symbol": "0"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-up-underlying-value",
+      "key": "binomial-up-underlying-value",
+      "kind": "prose",
+      "line": 16,
+      "scope": "local",
+      "symbol": "S^{\\mathrm{up}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-up-underlying-value",
+      "key": "binomial-up-underlying-value",
+      "kind": "math",
+      "line": 17,
+      "scope": "local",
+      "symbol": "S^{\\mathrm{up}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-down-underlying-value",
+      "key": "binomial-down-underlying-value",
+      "kind": "prose",
+      "line": 18,
+      "scope": "local",
+      "symbol": "S^{\\mathrm{down}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-down-underlying-value",
+      "key": "binomial-down-underlying-value",
+      "kind": "math",
+      "line": 19,
+      "scope": "local",
+      "symbol": "S^{\\mathrm{down}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:option-expiry-time",
+      "key": "option-expiry-time",
+      "kind": "prose",
+      "line": 20,
+      "scope": "shared",
+      "symbol": "T_{\\mathrm{opt}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-up-claim-payoff",
+      "key": "binomial-up-claim-payoff",
+      "kind": "prose",
+      "line": 21,
+      "scope": "local",
+      "symbol": "X^{\\mathrm{up}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-up-claim-payoff",
+      "key": "binomial-up-claim-payoff",
+      "kind": "math",
+      "line": 22,
+      "scope": "local",
+      "symbol": "X^{\\mathrm{up}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-down-claim-payoff",
+      "key": "binomial-down-claim-payoff",
+      "kind": "prose",
+      "line": 23,
+      "scope": "local",
+      "symbol": "X^{\\mathrm{down}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-down-claim-payoff",
+      "key": "binomial-down-claim-payoff",
+      "kind": "math",
+      "line": 24,
+      "scope": "local",
+      "symbol": "X^{\\mathrm{down}}"
+    },
+    {
+      "column": 11,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-hedge-units",
+      "key": "binomial-hedge-units",
+      "kind": "prose",
+      "line": 26,
+      "scope": "local",
+      "symbol": "\\Delta"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-hedge-units",
+      "key": "binomial-hedge-units",
+      "kind": "math",
+      "line": 29,
+      "scope": "local",
+      "symbol": "\\Delta"
+    },
+    {
+      "column": 8,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-up-claim-payoff",
+      "key": "binomial-up-claim-payoff",
+      "kind": "math",
+      "line": 30,
+      "scope": "local",
+      "symbol": "X^{\\mathrm{up}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-down-claim-payoff",
+      "key": "binomial-down-claim-payoff",
+      "kind": "math",
+      "line": 31,
+      "scope": "local",
+      "symbol": "X^{\\mathrm{down}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-up-underlying-value",
+      "key": "binomial-up-underlying-value",
+      "kind": "math",
+      "line": 32,
+      "scope": "local",
+      "symbol": "S^{\\mathrm{up}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-down-underlying-value",
+      "key": "binomial-down-underlying-value",
+      "kind": "math",
+      "line": 33,
+      "scope": "local",
+      "symbol": "S^{\\mathrm{down}}"
+    },
+    {
+      "column": 11,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-risk-free-expiry-cash",
+      "key": "binomial-risk-free-expiry-cash",
+      "kind": "prose",
+      "line": 36,
+      "scope": "local",
+      "symbol": "M_{T_{\\mathrm{opt}}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-risk-free-expiry-cash",
+      "key": "binomial-risk-free-expiry-cash",
+      "kind": "math",
+      "line": 39,
+      "scope": "local",
+      "symbol": "M_{T_{\\mathrm{opt}}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-down-claim-payoff",
+      "key": "binomial-down-claim-payoff",
+      "kind": "math",
+      "line": 40,
+      "scope": "local",
+      "symbol": "X^{\\mathrm{down}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-hedge-units",
+      "key": "binomial-hedge-units",
+      "kind": "math",
+      "line": 41,
+      "scope": "local",
+      "symbol": "\\Delta"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-down-underlying-value",
+      "key": "binomial-down-underlying-value",
+      "kind": "math",
+      "line": 42,
+      "scope": "local",
+      "symbol": "S^{\\mathrm{down}}"
+    },
+    {
+      "column": 24,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-claim-value",
+      "key": "binomial-claim-value",
+      "kind": "prose",
+      "line": 45,
+      "scope": "local",
+      "symbol": "V_0"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-claim-value",
+      "key": "binomial-claim-value",
+      "kind": "math",
+      "line": 49,
+      "scope": "local",
+      "symbol": "V_0"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-hedge-units",
+      "key": "binomial-hedge-units",
+      "kind": "math",
+      "line": 50,
+      "scope": "local",
+      "symbol": "\\Delta"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:derivative-underlying-value",
+      "key": "derivative-underlying-value",
+      "kind": "math",
+      "line": 51,
+      "scope": "shared",
+      "symbol": "S_t"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:discount-factor",
+      "key": "discount-factor",
+      "kind": "math",
+      "line": 52,
+      "scope": "shared",
+      "symbol": "D(0,t)"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-risk-free-expiry-cash",
+      "key": "binomial-risk-free-expiry-cash",
+      "kind": "math",
+      "line": 53,
+      "scope": "local",
+      "symbol": "M_{T_{\\mathrm{opt}}}"
+    },
+    {
+      "column": 37,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-risk-neutral-up-weight",
+      "key": "binomial-risk-neutral-up-weight",
+      "kind": "prose",
+      "line": 58,
+      "scope": "local",
+      "symbol": "q"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-risk-neutral-up-weight",
+      "key": "binomial-risk-neutral-up-weight",
+      "kind": "math",
+      "line": 62,
+      "scope": "local",
+      "symbol": "q"
+    },
+    {
+      "column": 8,
+      "definitionId": "shared:derivative-underlying-value",
+      "key": "derivative-underlying-value",
+      "kind": "math",
+      "line": 63,
+      "scope": "shared",
+      "symbol": "S_t"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-down-underlying-value",
+      "key": "binomial-down-underlying-value",
+      "kind": "math",
+      "line": 64,
+      "scope": "local",
+      "symbol": "S^{\\mathrm{down}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-up-underlying-value",
+      "key": "binomial-up-underlying-value",
+      "kind": "math",
+      "line": 65,
+      "scope": "local",
+      "symbol": "S^{\\mathrm{up}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-down-underlying-value",
+      "key": "binomial-down-underlying-value",
+      "kind": "math",
+      "line": 66,
+      "scope": "local",
+      "symbol": "S^{\\mathrm{down}}"
+    },
+    {
+      "column": 11,
+      "definitionId": "shared:risk-neutral-probability-measure",
+      "key": "risk-neutral-probability-measure",
+      "kind": "prose",
+      "line": 69,
+      "scope": "shared",
+      "symbol": "\\mathbb{Q}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-claim-value",
+      "key": "binomial-claim-value",
+      "kind": "math",
+      "line": 73,
+      "scope": "local",
+      "symbol": "V_0"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:discount-factor",
+      "key": "discount-factor",
+      "kind": "math",
+      "line": 74,
+      "scope": "shared",
+      "symbol": "D(0,t)"
+    },
+    {
+      "column": 7,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-risk-neutral-up-weight",
+      "key": "binomial-risk-neutral-up-weight",
+      "kind": "math",
+      "line": 75,
+      "scope": "local",
+      "symbol": "q"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-up-claim-payoff",
+      "key": "binomial-up-claim-payoff",
+      "kind": "math",
+      "line": 76,
+      "scope": "local",
+      "symbol": "X^{\\mathrm{up}}"
+    },
+    {
+      "column": 5,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-risk-neutral-up-weight",
+      "key": "binomial-risk-neutral-up-weight",
+      "kind": "math",
+      "line": 77,
+      "scope": "local",
+      "symbol": "q"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-down-claim-payoff",
+      "key": "binomial-down-claim-payoff",
+      "kind": "math",
+      "line": 78,
+      "scope": "local",
+      "symbol": "X^{\\mathrm{down}}"
+    },
+    {
+      "column": 6,
+      "definitionId": "shared:derivative-underlying-value",
+      "key": "derivative-underlying-value",
+      "kind": "math",
+      "line": 87,
+      "scope": "shared",
+      "symbol": "S_t"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-up-underlying-value",
+      "key": "binomial-up-underlying-value",
+      "kind": "math",
+      "line": 88,
+      "scope": "local",
+      "symbol": "S^{\\mathrm{up}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-down-underlying-value",
+      "key": "binomial-down-underlying-value",
+      "kind": "math",
+      "line": 89,
+      "scope": "local",
+      "symbol": "S^{\\mathrm{down}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:discount-factor",
+      "key": "discount-factor",
+      "kind": "math",
+      "line": 90,
+      "scope": "shared",
+      "symbol": "D(0,t)"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:option-strike-price",
+      "key": "option-strike-price",
+      "kind": "prose",
+      "line": 91,
+      "scope": "shared",
+      "symbol": "K"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:option-strike-price",
+      "key": "option-strike-price",
+      "kind": "math",
+      "line": 92,
+      "scope": "shared",
+      "symbol": "K"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-up-claim-payoff",
+      "key": "binomial-up-claim-payoff",
+      "kind": "math",
+      "line": 93,
+      "scope": "local",
+      "symbol": "X^{\\mathrm{up}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-down-claim-payoff",
+      "key": "binomial-down-claim-payoff",
+      "kind": "math",
+      "line": 94,
+      "scope": "local",
+      "symbol": "X^{\\mathrm{down}}"
+    },
+    {
+      "column": 7,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-hedge-units",
+      "key": "binomial-hedge-units",
+      "kind": "math",
+      "line": 96,
+      "scope": "local",
+      "symbol": "\\Delta"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-risk-free-expiry-cash",
+      "key": "binomial-risk-free-expiry-cash",
+      "kind": "math",
+      "line": 97,
+      "scope": "local",
+      "symbol": "M_{T_{\\mathrm{opt}}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-risk-neutral-up-weight",
+      "key": "binomial-risk-neutral-up-weight",
+      "kind": "math",
+      "line": 98,
+      "scope": "local",
+      "symbol": "q"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-claim-value",
+      "key": "binomial-claim-value",
+      "kind": "math",
+      "line": 101,
+      "scope": "local",
+      "symbol": "V_0"
+    }
+  ],
+  "schemaVersion": 2
+}

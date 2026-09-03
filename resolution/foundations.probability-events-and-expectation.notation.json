@@ -1,0 +1,160 @@
+{
+  "file": "src/content/docs/foundations/probability-events-and-expectation.mdx",
+  "lesson": "foundations.probability-events-and-expectation",
+  "localKeys": [
+    "probability-event",
+    "probability-event-index",
+    "probability-event-value",
+    "probability-expectation",
+    "probability-measure",
+    "probability-partition-size",
+    "probability-random-value"
+  ],
+  "references": [
+    {
+      "column": 44,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
+      "key": "probability-event",
+      "kind": "prose",
+      "line": 18,
+      "scope": "local",
+      "symbol": "A"
+    },
+    {
+      "column": 28,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-measure",
+      "key": "probability-measure",
+      "kind": "prose",
+      "line": 19,
+      "scope": "local",
+      "symbol": "\\mathbb{P}"
+    },
+    {
+      "column": 15,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-event-index",
+      "key": "probability-event-index",
+      "kind": "prose",
+      "line": 30,
+      "scope": "local",
+      "symbol": "j"
+    },
+    {
+      "column": 7,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-partition-size",
+      "key": "probability-partition-size",
+      "kind": "prose",
+      "line": 31,
+      "scope": "local",
+      "symbol": "m"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
+      "key": "probability-event",
+      "kind": "math",
+      "line": 47,
+      "scope": "local",
+      "symbol": "A"
+    },
+    {
+      "column": 13,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
+      "key": "probability-event",
+      "kind": "math",
+      "line": 48,
+      "scope": "local",
+      "symbol": "A"
+    },
+    {
+      "column": 17,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
+      "key": "probability-event",
+      "kind": "math",
+      "line": 52,
+      "scope": "local",
+      "symbol": "A"
+    },
+    {
+      "column": 24,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
+      "key": "probability-event",
+      "kind": "math",
+      "line": 53,
+      "scope": "local",
+      "symbol": "A"
+    },
+    {
+      "column": 13,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
+      "key": "probability-event",
+      "kind": "math",
+      "line": 54,
+      "scope": "local",
+      "symbol": "A"
+    },
+    {
+      "column": 9,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
+      "key": "probability-event",
+      "kind": "math",
+      "line": 58,
+      "scope": "local",
+      "symbol": "A"
+    },
+    {
+      "column": 9,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
+      "key": "probability-event",
+      "kind": "math",
+      "line": 59,
+      "scope": "local",
+      "symbol": "A"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
+      "key": "probability-event",
+      "kind": "math",
+      "line": 60,
+      "scope": "local",
+      "symbol": "A"
+    },
+    {
+      "column": 17,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
+      "key": "probability-event",
+      "kind": "math",
+      "line": 63,
+      "scope": "local",
+      "symbol": "A"
+    },
+    {
+      "column": 15,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-random-value",
+      "key": "probability-random-value",
+      "kind": "prose",
+      "line": 75,
+      "scope": "local",
+      "symbol": "X"
+    },
+    {
+      "column": 41,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-expectation",
+      "key": "probability-expectation",
+      "kind": "prose",
+      "line": 76,
+      "scope": "local",
+      "symbol": "\\mathbb{E}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-event-value",
+      "key": "probability-event-value",
+      "kind": "prose",
+      "line": 86,
+      "scope": "local",
+      "symbol": "x_j"
+    }
+  ],
+  "schemaVersion": 2
+}
