@@ -5,6 +5,8 @@ import DefaultHeader from '@astrojs/starlight/components/Header.astro';
 <DefaultHeader />
 
 <script>
+  import { createBrowserPreferenceStore } from '../../session/PreferenceStore';
+
   type LayoutRegion = 'navigation' | 'contents';
 
   const regions: Record<
@@ -38,20 +40,17 @@ import DefaultHeader from '@astrojs/starlight/components/Header.astro';
 
   const root = document.documentElement;
 
+  // The one seam for per-viewer UI preferences (Phase H1). This component never
+  // touches browser storage directly; a future SSR host swaps in a different
+  // PreferenceStore and nothing here changes.
+  const preferences = createBrowserPreferenceStore();
+
   function readPreference(storageKey: string): boolean {
-    try {
-      return localStorage.getItem(storageKey) === 'true';
-    } catch {
-      return false;
-    }
+    return preferences.get(storageKey) === 'true';
   }
 
   function writePreference(storageKey: string, hidden: boolean): void {
-    try {
-      localStorage.setItem(storageKey, String(hidden));
-    } catch {
-      // The controls still work when storage is unavailable or disabled.
-    }
+    preferences.set(storageKey, String(hidden));
   }
 
   function applyState(

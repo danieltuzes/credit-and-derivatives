@@ -1,4 +1,15 @@
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
+
+import {
+  noopAnalyticsEmitter,
+  type AnalyticsEmitter,
+} from '../../analytics/AnalyticsEmitter';
+import {
+  noopProgressRepository,
+  type AssessmentAttempt,
+  type ProgressRepository,
+} from '../../progress/ProgressRepository';
+import { useSessionUser } from '../../session/user-context';
 
 interface ChoiceOption {
   id: string;
@@ -7,6 +18,7 @@ interface ChoiceOption {
 
 interface AssessmentItemBase {
   id: string;
+  competencyId?: string;
   evidenceKind: 'direct' | 'transfer';
   prompt: string;
   explanation: string;
@@ -28,8 +40,17 @@ type Item = ChoiceItem | NumericItem;
 type Outcome = 'correct' | 'incorrect';
 
 interface Props {
+  /** Assessment collection id — scopes recorded attempts and analytics events. */
+  assessmentId: string;
   title: string;
   items: Item[];
+  /**
+   * Seams (Phase H1). Both default to the no-op implementations the static
+   * site ships; a future SSR/LMS host injects real ones without changing the
+   * component. Props exist so tests can observe the calls.
+   */
+  progress?: ProgressRepository;
+  analytics?: AnalyticsEmitter;
 }
 
 const evidenceLabel: Record<AssessmentItemBase['evidenceKind'], string> = {
@@ -193,23 +214,84 @@ function Question({ item, index, outcome, onResult, onReset }: QuestionProps) {
   );
 }
 
-export default function AssessmentRunner({ title, items }: Props) {
+export default function AssessmentRunner({
+  assessmentId,
+  title,
+  items,
+  progress = noopProgressRepository,
+  analytics = noopAnalyticsEmitter,
+}: Props) {
   const headingId = useId();
+  const user = useSessionUser();
   const [results, setResults] = useState<Record<string, Outcome>>({});
+
+  const itemById = new Map(items.map((item) => [item.id, item]));
+
+  // Seed from any previously recorded attempts. The no-op repository returns an
+  // empty snapshot, so this is inert in the static build.
+  useEffect(() => {
+    let live = true;
+    void Promise.resolve(progress.load(user)).then((snapshot) => {
+      if (!live) return;
+      const seeded: Record<string, Outcome> = {};
+      for (const attempt of snapshot.attempts) {
+        if (
+          attempt.assessmentId === assessmentId &&
+          itemById.has(attempt.itemId)
+        ) {
+          seeded[attempt.itemId] = attempt.outcome;
+        }
+      }
+      if (Object.keys(seeded).length > 0) setResults(seeded);
+    });
+    return () => {
+      live = false;
+    };
+    // `assessmentId` and the repository identity are the only real inputs.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [assessmentId, progress, user]);
 
   const answered = Object.keys(results).length;
   const correct = Object.values(results).filter(
     (value) => value === 'correct',
   ).length;
 
-  const report = (id: string, outcome: Outcome) =>
+  const report = (id: string, outcome: Outcome) => {
     setResults((prev) => ({ ...prev, [id]: outcome }));
-  const clear = (id: string) =>
+    const item = itemById.get(id);
+    const attempt: AssessmentAttempt = {
+      assessmentId,
+      itemId: id,
+      ...(item?.competencyId ? { competencyId: item.competencyId } : {}),
+      evidenceKind: item?.evidenceKind ?? 'direct',
+      outcome,
+      at: Date.now(),
+    };
+    void progress.recordAttempt(user, attempt);
+    analytics.emit({
+      name: 'assessment.attempt',
+      at: attempt.at,
+      props: {
+        assessmentId,
+        itemId: id,
+        outcome,
+        evidenceKind: attempt.evidenceKind,
+      },
+    });
+  };
+  const clear = (id: string) => {
     setResults((prev) => {
       const next = { ...prev };
       delete next[id];
       return next;
     });
+    void progress.reset(user, { assessmentId, itemId: id });
+    analytics.emit({
+      name: 'assessment.retry',
+      at: Date.now(),
+      props: { assessmentId, itemId: id },
+    });
+  };
 
   return (
     <section className="assessment-shell" aria-labelledby={headingId}>

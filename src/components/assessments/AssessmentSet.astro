@@ -46,6 +46,7 @@ const entries = ids.map((id) => {
   entries.map((entry) => (
     <AssessmentRunner
       client:visible
+      assessmentId={entry.data.id}
       title={entry.data.title}
       items={entry.data.items}
     />
