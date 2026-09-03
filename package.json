@@ -13,6 +13,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "validate:content": "tsx scripts/compile-manifest.ts",
+    "content": "tsx scripts/content.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
