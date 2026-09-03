@@ -1,12 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
-import { loadLessonChecks } from '../../content/collections';
+import { loadManifest } from '../../content/manifest';
 import AssessmentRunner from './AssessmentRunner';
 
 interface Props {
   /**
    * Explicit assessment id. Omitted in lesson bodies (Phase C2): the set is
-   * resolved from the route's colocated `<lesson>.checks.yml`.
+   * resolved from the route's colocated `<lesson>.checks.yml` via the manifest.
    */
   id?: string;
 }
@@ -19,7 +19,16 @@ const lessonId = Astro.url.pathname
   .replace(/\/$/, '')
   .replace(/\//g, '.');
 
-const ids = explicitId ? [explicitId] : loadLessonChecks(lessonId);
+let ids: string[];
+if (explicitId) {
+  ids = [explicitId];
+} else {
+  const manifest = await loadManifest();
+  ids = [
+    ...(manifest.lessons.find((lesson) => lesson.id === lessonId)
+      ?.assessments ?? []),
+  ];
+}
 
 const assessments = await getCollection('assessments');
 const entries = ids.map((id) => {

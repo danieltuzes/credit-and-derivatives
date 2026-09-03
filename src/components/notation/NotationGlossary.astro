@@ -9,12 +9,12 @@ import {
   isLessonSlug,
   lessonIdFromSlug,
 } from '../../content/lesson-derivation';
-import { loadNotationRegistryInput } from '../../content/collections';
-import { buildNotationRegistry } from '../../reference/registry';
+import { loadManifest } from '../../content/manifest';
 
-const [notationEntries, lessonEntries] = await Promise.all([
+const [notationEntries, lessonEntries, manifest] = await Promise.all([
   getCollection('notation'),
   getCollection('docs', ({ id }) => isLessonSlug(id)),
+  loadManifest(),
 ]);
 const labelOf = (data: { key: string; label?: string }) =>
   resolveLabel(data.key, data.label);
@@ -22,15 +22,14 @@ const notationLabelByKey = new Map(
   notationEntries.map((entry) => [entry.data.key, labelOf(entry.data)]),
 );
 
-// "Used directly in" comes from the resolved notation registry — each lesson's
-// direct `[[key]]` / `\explain` references — not an authored import list
-// (`notation.uses` is retired).
-const registry = buildNotationRegistry(await loadNotationRegistryInput());
+// "Used directly in" comes from the manifest's resolved backlinks — each
+// lesson's direct `[[key]]` / `\explain` references — not an authored import
+// list (`notation.uses` is retired) and not a page-time registry rebuild.
 const lessonById = new Map(
   lessonEntries.map((lesson) => [lessonIdFromSlug(lesson.id), lesson]),
 );
 const lessonsByNotationKey = new Map<string, typeof lessonEntries>();
-for (const backlink of registry.backlinks) {
+for (const backlink of manifest.notation.backlinks) {
   if (!backlink.direct) continue;
   const lesson = lessonById.get(backlink.lessonId);
   if (!lesson) continue;

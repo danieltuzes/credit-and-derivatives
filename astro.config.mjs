@@ -4,11 +4,7 @@ import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
-import {
-  loadNotationDefinitions,
-  loadSidebar,
-  loadSourceRecords,
-} from './src/content/collections.ts';
+import { loadManifest } from './src/content/manifest.ts';
 import { createNotationKatexOptions } from './src/reference/katex-options.mjs';
 import rehypeFailKatexErrors from './src/reference/rehype-fail-katex-errors.mjs';
 import remarkCitation from './src/reference/remark-citation.mjs';
@@ -18,6 +14,11 @@ import remarkNotation from './src/reference/remark-notation.mjs';
 // site serves from `/`); the GitHub Pages workflow sets `SITE_BASE=/equations`.
 // This is a temporary hosting detail, not an architectural invariant.
 const base = process.env.SITE_BASE || undefined;
+
+// The one compiler manifest (Phase D5). `pnpm validate:content` regenerates it
+// before every `astro check` / `astro build`; a cold `astro dev` compiles it
+// once here. Nothing in this config re-walks `src/content/`.
+const manifest = await loadManifest();
 
 export default defineConfig({
   output: 'static',
@@ -36,9 +37,8 @@ export default defineConfig({
         Sidebar: './src/components/starlight/LayoutSidebar.astro',
       },
       // Section groups are fixed; lesson order inside each is derived from the
-      // tracks (see `loadSidebar` / `buildSidebar`), not an authored
-      // `sidebar.order`.
-      sidebar: loadSidebar(),
+      // tracks (see the manifest `sidebar`), not an authored `sidebar.order`.
+      sidebar: manifest.sidebar,
     }),
     react(),
   ],
@@ -46,8 +46,8 @@ export default defineConfig({
     processor: unified({
       remarkPlugins: [
         remarkMath,
-        [remarkNotation, { definitions: loadNotationDefinitions, base }],
-        [remarkCitation, { sources: loadSourceRecords }],
+        [remarkNotation, { definitions: manifest.notation.raw, base }],
+        [remarkCitation, { sources: manifest.sources }],
       ],
       rehypePlugins: [
         [rehypeKatex, createNotationKatexOptions()],

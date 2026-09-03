@@ -1,23 +1,23 @@
 ---
 import { getCollection } from 'astro:content';
-import { loadCurriculumCatalog } from '../content/collections';
+import { loadManifest } from '../content/manifest';
 import { isLessonSlug, lessonIdFromSlug } from '../content/lesson-derivation';
 
-const [tracks, docs, competencies, catalog] = await Promise.all([
+const [tracks, docs, competencies, manifest] = await Promise.all([
   getCollection('tracks'),
   getCollection('docs'),
   getCollection('competencies'),
-  loadCurriculumCatalog(),
+  loadManifest(),
 ]);
-// `requires` / `assessments` are derived (Phase C2); read them from the
-// curriculum catalog, and the doc entry for title / description / slug.
+// `requires` / `assessments` are derived (Phase C2); read them from the one
+// compiler manifest, and the doc entry for title / description / slug.
 const docEntryById = new Map(
   docs
     .filter((entry) => isLessonSlug(entry.id))
     .map((entry) => [lessonIdFromSlug(entry.id), entry]),
 );
 const lessonById = new Map(
-  catalog.lessons.map((lesson) => [lesson.id, lesson]),
+  manifest.lessons.map((lesson) => [lesson.id, lesson]),
 );
 const competencyById = new Map(
   competencies.map((entry) => [entry.data.id, entry.data]),

@@ -12,7 +12,7 @@
     "build": "pnpm validate:content && astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "validate:content": "tsx scripts/validate-curriculum.ts",
+    "validate:content": "tsx scripts/compile-manifest.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",

@@ -4,17 +4,16 @@
  * page-notation layer and the source-citation layer ahead of Starlight's own
  * footer. Both layers are optional progressive enhancements over static
  * markup that the remark adapters and the content collections already emit.
+ *
+ * The resolved notation bundle comes from the one compiler manifest (Phase
+ * D5); this component never rebuilds the registry.
  */
 import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
-import { loadNotationRegistryInput } from '../../content/collections';
+import { loadManifest } from '../../content/manifest';
 import {
   isLessonSlug,
   lessonIdFromSlug,
 } from '../../content/lesson-derivation';
-import {
-  assertValidNotation,
-  buildNotationRegistry,
-} from '../../reference/registry';
 import NotationLayer, {
   type NotationLayerDefinition,
 } from '../notation/NotationLayer.astro';
@@ -26,36 +25,13 @@ const lessonId = isLessonSlug(routeSlug)
   ? lessonIdFromSlug(routeSlug)
   : undefined;
 
+const glossaryBase = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/glossary/`;
+
 const definitions: NotationLayerDefinition[] = [];
 if (lessonId) {
-  const registry = buildNotationRegistry(await loadNotationRegistryInput());
-  assertValidNotation(registry);
-
-  const bundle = registry.bundles.find(
-    (candidate) => candidate.lessonId === lessonId,
-  );
-  const definitionsById = new Map(
-    registry.definitions.map((definition) => [definition.id, definition]),
-  );
-  for (const definitionId of bundle?.definitionIds ?? []) {
-    const definition = definitionsById.get(definitionId);
-    if (!definition) continue;
-
-    if (definition.kind === 'shared') {
-      definitions.push({
-        key: definition.key,
-        notation: definition.notation,
-        label: definition.label,
-        summary: definition.summary,
-        units: definition.units,
-        seeAlso: definition.seeAlso,
-        editorialStatus: definition.status,
-        scope: 'shared',
-        href: `${import.meta.env.BASE_URL.replace(/\/$/, '')}/glossary/#notation-${definition.key}`,
-      });
-      continue;
-    }
-
+  const manifest = await loadManifest();
+  const lesson = manifest.lessons.find((entry) => entry.id === lessonId);
+  for (const definition of lesson?.notation.definitions ?? []) {
     definitions.push({
       key: definition.key,
       notation: definition.notation,
@@ -64,9 +40,12 @@ if (lessonId) {
       formula: definition.formula,
       units: definition.units,
       seeAlso: definition.seeAlso,
-      editorialStatus: definition.status,
-      scope: 'local',
-      href: `#notation-${definition.key}`,
+      editorialStatus: definition.editorialStatus,
+      scope: definition.scope,
+      href:
+        definition.scope === 'shared'
+          ? `${glossaryBase}#notation-${definition.key}`
+          : `#notation-${definition.key}`,
     });
   }
 }

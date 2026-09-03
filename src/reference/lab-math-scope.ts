@@ -1,4 +1,4 @@
-import { loadNotationRegistryInput } from '../content/collections';
+import { loadManifest } from '../content/manifest';
 import type { LabMathScopeDefinition } from './render-lab-math';
 
 interface LessonNotationFrontmatter {
@@ -17,6 +17,9 @@ const EXPLAIN_KEY = /\\explain\s*\{([a-z0-9]+(?:[.-][a-z0-9]+)*)\}/g;
  * `notation.local` plus the shared entries it names in the body with `[[key]]`
  * (or `\explain{key}{…}`). No transitive closure, so island math cannot
  * quietly reach beyond what the lesson introduces.
+ *
+ * Shared definitions are read from the one compiler manifest (Phase D5); this
+ * module never re-reads the content tree.
  */
 export async function labMathScope(
   notation: LessonNotationFrontmatter | undefined,
@@ -34,9 +37,11 @@ export async function labMathScope(
   }
 
   const localKeys = new Set(local.map((definition) => definition.key));
-  const { sharedDefinitions } = await loadNotationRegistryInput();
+  const manifest = await loadManifest();
   const sharedByKey = new Map(
-    sharedDefinitions.map((definition) => [definition.key, definition]),
+    manifest.notation.definitions
+      .filter((definition) => definition.kind === 'shared')
+      .map((definition) => [definition.key, definition]),
   );
 
   for (const key of referenced) {
