@@ -1,0 +1,67 @@
+---
+/**
+ * Shared hover/pin panel shell for the notation and citation layers.
+ *
+ * This component contributes only the fixed-position `<aside>` container and
+ * its base styling. The interaction engine — side selection, the sticky-header
+ * and article-column clamps, pin, Escape, and outside-close — lives once in
+ * `./hover-panel.ts` and is wired from each layer's island script. The panel's
+ * inner fields are slotted by the layer that owns them.
+ *
+ * Extra attributes (e.g. `data-notation-panel`, `data-citation-panel`) are
+ * forwarded to the `<aside>` so each layer keeps the hook its tests and pin
+ * controls already reference.
+ */
+export interface Props {
+  /** Element id — pin controls point `aria-controls` at it. */
+  id: string;
+  /** Accessible name for the region. */
+  label: string;
+  class?: string;
+}
+
+const { id, label, class: className, ...rest } = Astro.props;
+---
+
+<aside
+  class:list={['hover-panel', className]}
+  id={id}
+  role="region"
+  aria-label={label}
+  aria-live="polite"
+  aria-atomic="true"
+  hidden
+  {...rest}
+>
+  <slot />
+</aside>
+
+<style>
+  @layer starlight.components {
+    .hover-panel {
+      position: fixed;
+      z-index: 100;
+      /* The panel is an <aside> in the content flow; a stray cascade margin
+         would offset a position:fixed box from its computed `top`, so the
+         JS placement (which clears display equations) must start from zero. */
+      margin: 0;
+      width: min(23rem, calc(100vw - 1.5rem));
+      overflow: auto;
+      padding: 1rem;
+      border: 1px solid var(--sl-color-gray-5);
+      border-top: 0.25rem solid var(--sl-color-accent);
+      border-radius: 0.65rem;
+      color: var(--sl-color-text);
+      background: var(--sl-color-bg);
+      box-shadow: var(--sl-shadow-lg);
+      font-size: var(--sl-text-sm);
+    }
+
+    /* Slotted fields carry the owning layer's scope, not this component's, so
+       the descendant match must be global. */
+    .hover-panel :global(:focus-visible) {
+      outline: 3px solid var(--sl-color-accent);
+      outline-offset: 2px;
+    }
+  }
+</style>

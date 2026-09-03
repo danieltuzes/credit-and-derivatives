@@ -4,82 +4,47 @@
  * `remarkCitation` adapter emits. The markers are real anchor links to the
  * on-page "References" list and work with no JavaScript; this island only
  * adds a quick look at the source without leaving the reader's place.
+ *
+ * It reads everything it shows from the page's own static markup — the
+ * marker's `data-*` and the matching `#cite-n` reference-list item — so no
+ * page serializes a second copy of the source database. Positioning, pin,
+ * Escape, and outside-close come from the shared `HoverPanel` primitive.
  */
-import { getCollection } from 'astro:content';
-import {
-  formatReferenceText,
-  formatSourceLabel,
-} from '../../reference/citation-format.mjs';
-
-const sources = await getCollection('sources');
-
-const records = Object.fromEntries(
-  sources.map((entry) => [
-    entry.data.id,
-    {
-      label: formatSourceLabel(entry.data),
-      reference: formatReferenceText(entry.data, undefined),
-      url: typeof entry.data.url === 'string' ? entry.data.url : '',
-      status: entry.data.editorialStatus,
-    },
-  ]),
-);
+import HoverPanel from '../HoverPanel.astro';
 ---
 
-<aside
-  class="citation-panel"
-  id="citation-panel"
-  data-citation-panel
-  role="region"
-  aria-label="Source citation"
-  aria-live="polite"
-  aria-atomic="true"
-  hidden
->
-  <p class="citation-panel-label" data-panel-label></p>
-  <p class="citation-panel-locator" data-panel-locator hidden></p>
-  <p class="citation-panel-status" data-panel-status hidden></p>
-  <a class="citation-panel-link" data-panel-link hidden>Open source link</a>
-  <a class="citation-panel-jump" data-panel-jump>See it in the reference list</a
-  >
-  <button
-    class="citation-panel-pin"
-    type="button"
-    data-panel-pin
-    aria-pressed="false"
-  >
-    Pin
-  </button>
-</aside>
-
-<script
-  is:inline
-  type="application/json"
-  data-citation-records
-  set:html={JSON.stringify(records)}
-/>
+<HoverPanel id="citation-panel" label="Source citation" data-citation-panel>
+  <div class="citation-panel-body">
+    <p class="citation-panel-label" data-panel-label></p>
+    <p class="citation-panel-locator" data-panel-locator hidden></p>
+    <p class="citation-panel-status" data-panel-status hidden></p>
+    <a class="citation-panel-link" data-panel-link hidden>Open source link</a>
+    <a class="citation-panel-jump" data-panel-jump
+      >See it in the reference list</a
+    >
+    <button
+      class="citation-panel-pin"
+      type="button"
+      data-panel-pin
+      aria-pressed="false"
+    >
+      Pin
+    </button>
+  </div>
+</HoverPanel>
 
 <script>
-  interface CitationRecord {
-    label: string;
-    reference: string;
-    url: string;
-    status: 'draft' | 'in-review' | 'reviewed';
+  import { createHoverPanel, closestElement } from '../hover-panel';
+  import { referenceLabelFromText } from '../../reference/citation-format.mjs';
+
+  function setText(element: HTMLElement, value: string) {
+    element.textContent = value;
+    element.hidden = value.length === 0;
   }
 
   function setup() {
-    const dataNode = document.querySelector<HTMLScriptElement>(
-      '[data-citation-records]',
-    );
     const panel = document.querySelector<HTMLElement>('[data-citation-panel]');
-    if (!dataNode || !panel || panel.dataset.ready === 'true') return;
-
-    let records: Record<string, CitationRecord>;
-    try {
-      records = JSON.parse(dataNode.textContent ?? '{}');
-    } catch {
-      return;
-    }
+    if (!panel || panel.dataset.hoverPanelReady === 'true') return;
 
     const markers = Array.from(
       document.querySelectorAll<HTMLAnchorElement>(
@@ -87,7 +52,7 @@ const records = Object.fromEntries(
       ),
     );
     if (markers.length === 0) return;
-    panel.dataset.ready = 'true';
+    const markerSet = new Set<HTMLElement>(markers);
 
     const label = panel.querySelector<HTMLElement>('[data-panel-label]')!;
     const locator = panel.querySelector<HTMLElement>('[data-panel-locator]')!;
@@ -96,133 +61,63 @@ const records = Object.fromEntries(
     const jump = panel.querySelector<HTMLAnchorElement>('[data-panel-jump]')!;
     const pin = panel.querySelector<HTMLButtonElement>('[data-panel-pin]')!;
 
-    let activeAnchor: HTMLElement | null = null;
-    let pinned = false;
-
-    const place = () => {
-      if (panel.hidden || !activeAnchor) return;
-      const edge = 12;
-      const gap = 8;
-      const rect = activeAnchor.getBoundingClientRect();
-      panel.style.maxHeight = '';
-      const panelRect = panel.getBoundingClientRect();
-      const below = window.innerHeight - rect.bottom - gap - edge;
-      const placeBelow = below >= panelRect.height || below >= rect.top;
-      let top = placeBelow
-        ? rect.bottom + gap
-        : rect.top - gap - panelRect.height;
-      let left = rect.left + rect.width / 2 - panelRect.width / 2;
-
-      // Keep the panel within the article column so it never lands under the
-      // navigation rail or the page sidebar.
-      const article = document.querySelector<HTMLElement>(
-        '.sl-markdown-content',
+    const markerFrom = (node: EventTarget | null) => {
+      const candidate = closestElement(
+        node,
+        'a.citation-ref[data-citation-id]',
       );
-      const bounds = article?.getBoundingClientRect();
-      const minLeft = Math.max(edge, bounds?.left ?? edge);
-      const maxLeft = Math.min(
-        window.innerWidth - edge,
-        bounds?.right ?? window.innerWidth - edge,
-      );
-      left =
-        maxLeft - minLeft >= panelRect.width
-          ? Math.max(minLeft, Math.min(left, maxLeft - panelRect.width))
-          : Math.max(
-              edge,
-              Math.min(left, window.innerWidth - panelRect.width - edge),
-            );
-
-      const headerBottom =
-        document
-          .querySelector<HTMLElement>('header.header')
-          ?.getBoundingClientRect().bottom ?? 0;
-      top = Math.max(
-        Math.max(edge, headerBottom + edge),
-        Math.min(top, window.innerHeight - panelRect.height - edge),
-      );
-      panel.style.top = `${Math.round(top)}px`;
-      panel.style.left = `${Math.round(left)}px`;
+      return candidate && markerSet.has(candidate) ? candidate : null;
     };
 
-    const show = (anchor: HTMLElement) => {
-      const id = anchor.dataset.citationId ?? '';
-      const record = records[id];
-      if (!record) return;
-      activeAnchor = anchor;
+    // Fill the panel from the marker plus its `#cite-n` reference-list item —
+    // never from a serialized source table.
+    const render = (marker: HTMLElement, number: string) => {
+      const item = document.getElementById(`cite-${number}`);
+      if (!item) return false;
 
-      label.textContent = record.label;
+      // The reference list is a tight list, so the `<li>` has no `<p>`
+      // wrapper: clone it and drop the trailing link/status chrome.
+      const line = item.cloneNode(true) as HTMLElement;
+      for (const extra of line.querySelectorAll(
+        '.citation-url, .citation-status, .citation-backref',
+      )) {
+        extra.remove();
+      }
+      const referenceText = line.textContent ?? '';
+      const loc = marker.dataset.citationLocator ?? '';
 
-      const loc = anchor.dataset.citationLocator ?? '';
-      locator.textContent = loc;
-      locator.hidden = loc.length === 0;
+      label.textContent = referenceLabelFromText(referenceText, loc);
+      setText(locator, loc);
 
-      const showStatus = record.status && record.status !== 'reviewed';
-      status.textContent = showStatus ? `Source record: ${record.status}` : '';
-      status.hidden = !showStatus;
+      const sourceStatus = item
+        .querySelector('.citation-status')
+        ?.textContent?.trim();
+      setText(status, sourceStatus ? `Source record: ${sourceStatus}` : '');
 
-      if (record.url) {
-        link.href = record.url;
+      const sourceUrl = item.querySelector<HTMLAnchorElement>('a.citation-url');
+      if (sourceUrl) {
+        link.href = sourceUrl.href;
         link.hidden = false;
       } else {
         link.hidden = true;
       }
 
-      jump.href = anchor.getAttribute('href') ?? '#references';
-
-      panel.style.visibility = 'hidden';
-      panel.hidden = false;
-      place();
-      panel.style.visibility = 'visible';
+      jump.href = marker.getAttribute('href') ?? '#references';
+      return true;
     };
 
-    const close = () => {
-      panel.hidden = true;
-      activeAnchor = null;
-      pinned = false;
-      pin.setAttribute('aria-pressed', 'false');
-      pin.textContent = 'Pin';
-    };
-
-    const hideUnlessPinned = () => {
-      window.requestAnimationFrame(() => {
-        if (pinned) return;
-        if (panel.matches(':hover') || activeAnchor?.matches(':hover')) return;
-        if (panel.contains(document.activeElement)) return;
-        panel.hidden = true;
-        activeAnchor = null;
-      });
-    };
-
-    for (const marker of markers) {
-      marker.addEventListener('pointerenter', () => {
-        if (!pinned) show(marker);
-      });
-      marker.addEventListener('pointerleave', hideUnlessPinned);
-      marker.addEventListener('focus', () => show(marker));
-      marker.addEventListener('blur', hideUnlessPinned);
-    }
-
-    panel.addEventListener('pointerleave', hideUnlessPinned);
-    pin.addEventListener('click', () => {
-      pinned = !pinned;
-      pin.setAttribute('aria-pressed', String(pinned));
-      pin.textContent = pinned ? 'Unpin' : 'Pin';
-      if (!pinned) hideUnlessPinned();
+    createHoverPanel({
+      panel,
+      triggerFrom: markerFrom,
+      keyFor: (element) => element.dataset.citationNumber ?? null,
+      render,
+      pinControlFrom: (node) => closestElement(node, '[data-panel-pin]'),
+      onSync: ({ pinnedKey }) => {
+        const isPinned = pinnedKey !== null;
+        pin.setAttribute('aria-pressed', String(isPinned));
+        pin.textContent = isPinned ? 'Unpin' : 'Pin';
+      },
     });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !panel.hidden) close();
-    });
-    document.addEventListener('pointerdown', (event) => {
-      if (!pinned || panel.hidden) return;
-      const target = event.target;
-      if (target instanceof Node && panel.contains(target)) return;
-      if (target instanceof Element && target.closest('a.citation-ref')) return;
-      close();
-    });
-
-    window.addEventListener('resize', place, { passive: true });
-    window.addEventListener('scroll', place, { passive: true, capture: true });
   }
 
   setup();
@@ -231,21 +126,7 @@ const records = Object.fromEntries(
 
 <style>
   @layer starlight.components {
-    .citation-panel {
-      position: fixed;
-      z-index: 100;
-      width: min(22rem, calc(100vw - 1.5rem));
-      padding: 0.9rem 1rem;
-      border: 1px solid var(--sl-color-gray-5);
-      border-top: 0.25rem solid var(--sl-color-accent);
-      border-radius: 0.6rem;
-      background: var(--sl-color-bg);
-      color: var(--sl-color-text);
-      box-shadow: var(--sl-shadow-lg);
-      font-size: var(--sl-text-sm);
-    }
-
-    .citation-panel p {
+    .citation-panel-body p {
       margin: 0 0 0.5rem;
       line-height: 1.5;
     }
@@ -287,11 +168,6 @@ const records = Object.fromEntries(
     .citation-panel-pin[aria-pressed='true'] {
       border-color: var(--sl-color-accent);
       background: var(--sl-color-accent-low);
-    }
-
-    .citation-panel :focus-visible {
-      outline: 3px solid var(--sl-color-accent);
-      outline-offset: 2px;
     }
   }
 </style>

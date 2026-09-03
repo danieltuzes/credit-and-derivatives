@@ -37,6 +37,7 @@ export interface Props {
 }
 
 import NotationMath from './NotationMath.astro';
+import HoverPanel from '../HoverPanel.astro';
 
 const {
   definitions,
@@ -169,35 +170,26 @@ const panelId = `${id}-panel`;
         </p>
       )}
 
-      <aside
-        class="notation-panel"
-        id={panelId}
-        data-notation-panel
-        role="region"
-        aria-label="Notation explanation"
-        aria-live="polite"
-        aria-atomic="true"
-        hidden
-      >
-        <header class="notation-panel-heading">
-          <span class="notation-panel-symbol" data-panel-symbol />
-          <h3 data-panel-title />
-        </header>
-        <p data-panel-summary />
-        <div data-panel-formula hidden />
-        <p data-panel-units hidden />
-        <a data-panel-link>Open the full definition</a>
-      </aside>
+      <HoverPanel id={panelId} label="Notation explanation" data-notation-panel>
+        <div class="notation-panel-body">
+          <header class="notation-panel-heading">
+            <span class="notation-panel-symbol" data-panel-symbol />
+            <h3 data-panel-title />
+          </header>
+          <p data-panel-summary />
+          <div data-panel-formula hidden />
+          <p data-panel-units hidden />
+          <a data-panel-link>Open the full definition</a>
+        </div>
+      </HoverPanel>
     </section>
   )
 }
 
 <script>
-  const triggerSelector = '[data-notation-key]';
+  import { createHoverPanel, closestElement } from '../hover-panel';
 
-  function closestElement(node: EventTarget | null, selector: string) {
-    return node instanceof Element ? node.closest<HTMLElement>(selector) : null;
-  }
+  const triggerSelector = '[data-notation-key]';
 
   function setOptionalText(element: HTMLElement, value: string) {
     element.textContent = value;
@@ -271,10 +263,6 @@ const panelId = `${id}-panel`;
     const help = root.querySelector<HTMLElement>('[data-notation-help]');
     if (help) help.hidden = false;
 
-    let activeKey: string | null = null;
-    let activeAnchor: HTMLElement | null = null;
-    let pinned: { key: string; anchor: HTMLElement } | null = null;
-
     const keyFor = (element: HTMLElement | null) =>
       element?.dataset.notationKey ??
       element?.dataset.notationControl ??
@@ -293,115 +281,23 @@ const panelId = `${id}-panel`;
 
     const controlFrom = (node: EventTarget | null) => {
       const candidate = closestElement(node, '[data-notation-control]');
-      return candidate && root.contains(candidate)
-        ? (candidate as HTMLButtonElement)
-        : null;
+      return candidate && root.contains(candidate) ? candidate : null;
     };
 
     const staticLinkFrom = (node: EventTarget | null) => {
       const candidate = closestElement(node, '[data-notation-link]');
-      return candidate && root.contains(candidate)
-        ? (candidate as HTMLAnchorElement)
-        : null;
+      return candidate && root.contains(candidate) ? candidate : null;
     };
 
-    const interactiveFrom = (node: EventTarget | null) =>
+    const triggerFrom = (node: EventTarget | null) =>
       controlFrom(node) ??
       staticLinkFrom(node) ??
       externalTriggerFrom(node) ??
       symbolTriggerFrom(node);
 
-    const updateControls = () => {
-      for (const control of controls) {
-        const selected = control.dataset.notationControl === pinned?.key;
-        control.setAttribute('aria-pressed', String(selected));
-        control.setAttribute(
-          'aria-expanded',
-          String(selected && panel.hidden === false),
-        );
-        control.textContent = selected
-          ? 'Unpin explanation'
-          : 'Pin explanation';
-      }
-    };
-
-    const position = () => {
-      if (panel.hidden || !activeAnchor) return;
-
-      const edge = 12;
-      const gap = 10;
-      const displayEquation =
-        activeAnchor.closest<HTMLElement>('.katex-display');
-      const safeRegion = displayEquation ?? activeAnchor;
-      const regionRect = safeRegion.getBoundingClientRect();
-      const anchorRect = activeAnchor.getBoundingClientRect();
-
-      // The usable band is bounded by the sticky header, not the raw viewport
-      // edge. Decide the side against that real space so a clamp against the
-      // header can never push the panel back down over the equation.
-      const headerBottom =
-        document.querySelector<HTMLElement>('.header')?.getBoundingClientRect()
-          .bottom ?? 0;
-      const verticalStart = Math.max(edge, headerBottom + edge);
-      const verticalEnd = window.innerHeight - edge;
-      const spaceAbove = regionRect.top - gap - verticalStart;
-      const spaceBelow = verticalEnd - regionRect.bottom - gap;
-
-      // Measure the panel in the roomier band, then keep it on whichever side
-      // actually clears the safe region; shrink only when neither side fits.
-      panel.style.maxHeight = `${Math.max(spaceAbove, spaceBelow, 0)}px`;
-      let panelRect = panel.getBoundingClientRect();
-      const placeBelow =
-        spaceBelow >= panelRect.height || spaceBelow >= spaceAbove;
-      panel.style.maxHeight = `${Math.max(placeBelow ? spaceBelow : spaceAbove, 0)}px`;
-      panelRect = panel.getBoundingClientRect();
-
-      let top = placeBelow
-        ? regionRect.bottom + gap
-        : regionRect.top - gap - panelRect.height;
-      let left = anchorRect.left + anchorRect.width / 2 - panelRect.width / 2;
-
-      const article = root
-        .closest<HTMLElement>('.main-pane')
-        ?.querySelector<HTMLElement>('.sl-markdown-content');
-      const articleRect = article?.getBoundingClientRect();
-      const horizontalStart = Math.max(edge, articleRect?.left ?? edge);
-      const horizontalEnd = Math.min(
-        window.innerWidth - edge,
-        articleRect?.right ?? window.innerWidth - edge,
-      );
-
-      top = Math.max(
-        verticalStart,
-        Math.min(top, verticalEnd - panelRect.height),
-      );
-      left =
-        horizontalEnd - horizontalStart >= panelRect.width
-          ? Math.max(
-              horizontalStart,
-              Math.min(left, horizontalEnd - panelRect.width),
-            )
-          : Math.max(
-              edge,
-              Math.min(left, window.innerWidth - panelRect.width - edge),
-            );
-
-      panel.style.top = `${Math.round(top)}px`;
-      panel.style.left = `${Math.round(left)}px`;
-    };
-
-    const show = (key: string, anchor: HTMLElement) => {
+    const render = (_anchor: HTMLElement, key: string) => {
       const entry = entries.get(key);
-      if (!entry) return;
-
-      activeKey = key;
-      activeAnchor = anchor;
-      for (const trigger of highlightTargets) {
-        trigger.classList.toggle(
-          'is-notation-active',
-          trigger.dataset.notationKey === key,
-        );
-      }
+      if (!entry) return false;
 
       const sourceSymbol = entry.querySelector<HTMLElement>('.notation-symbol');
       panelSymbol.replaceChildren(
@@ -431,124 +327,43 @@ const panelId = `${id}-panel`;
           ?.textContent?.trim() ?? '',
       );
       panelLink.href = entry.dataset.notationHref ?? `#notation-${key}`;
-
-      panel.style.visibility = 'hidden';
-      panel.hidden = false;
-      panel.dataset.activeNotationKey = key;
-      position();
-      panel.style.visibility = 'visible';
-      updateControls();
+      return true;
     };
 
-    const close = () => {
-      activeKey = null;
-      activeAnchor = null;
-      panel.hidden = true;
-      delete panel.dataset.activeNotationKey;
-      for (const trigger of highlightTargets) {
-        trigger.classList.remove('is-notation-active');
+    const updateControls = (pinnedKey: string | null, visible: boolean) => {
+      for (const control of controls) {
+        const selected = control.dataset.notationControl === pinnedKey;
+        control.setAttribute('aria-pressed', String(selected));
+        control.setAttribute('aria-expanded', String(selected && visible));
+        control.textContent = selected
+          ? 'Unpin explanation'
+          : 'Pin explanation';
       }
-      updateControls();
     };
 
-    const restorePinnedOrClose = () => {
-      window.requestAnimationFrame(() => {
-        const focused = interactiveFrom(document.activeElement);
-        if (focused && keyFor(focused) === activeKey) return;
-        if (pinned) {
-          show(pinned.key, pinned.anchor);
-          return;
+    createHoverPanel({
+      panel,
+      root,
+      triggerFrom,
+      keyFor,
+      render,
+      pinControlFrom: controlFrom,
+      onShow: (key) => {
+        for (const trigger of highlightTargets) {
+          trigger.classList.toggle(
+            'is-notation-active',
+            trigger.dataset.notationKey === key,
+          );
         }
-        if (
-          activeAnchor?.matches(':hover') ||
-          panel.matches(':hover') ||
-          panel.contains(document.activeElement)
-        ) {
-          return;
+        panel.dataset.activeNotationKey = key;
+      },
+      onClose: () => {
+        delete panel.dataset.activeNotationKey;
+        for (const trigger of highlightTargets) {
+          trigger.classList.remove('is-notation-active');
         }
-        close();
-      });
-    };
-
-    const togglePin = (key: string, anchor: HTMLElement) => {
-      if (pinned?.key === key && pinned.anchor === anchor) {
-        pinned = null;
-        close();
-        return;
-      }
-      pinned = { key, anchor };
-      show(key, anchor);
-    };
-
-    document.addEventListener('pointerover', (event) => {
-      if (event.pointerType === 'touch' || pinned) return;
-      const anchor = interactiveFrom(event.target);
-      const key = keyFor(anchor);
-      if (anchor && key && anchor !== interactiveFrom(event.relatedTarget)) {
-        show(key, anchor);
-      }
-    });
-
-    document.addEventListener('pointerout', (event) => {
-      if (event.pointerType === 'touch') return;
-      const anchor = interactiveFrom(event.target);
-      if (!anchor || anchor === interactiveFrom(event.relatedTarget)) return;
-      if (
-        event.relatedTarget instanceof Node &&
-        panel.contains(event.relatedTarget)
-      ) {
-        return;
-      }
-      restorePinnedOrClose();
-    });
-
-    document.addEventListener('focusin', (event) => {
-      const anchor = interactiveFrom(event.target);
-      const key = keyFor(anchor);
-      if (anchor && key) show(key, anchor);
-    });
-    document.addEventListener('focusout', restorePinnedOrClose);
-
-    document.addEventListener('click', (event) => {
-      const control = controlFrom(event.target);
-      if (control) {
-        const key = keyFor(control);
-        if (key) togglePin(key, control);
-        return;
-      }
-
-      const trigger =
-        externalTriggerFrom(event.target) ?? symbolTriggerFrom(event.target);
-      if (!trigger || trigger.closest('a')) return;
-      const key = keyFor(trigger);
-      if (!key) return;
-      event.preventDefault();
-      togglePin(key, trigger);
-    });
-
-    document.addEventListener('pointerdown', (event) => {
-      if (!pinned) return;
-      if (
-        interactiveFrom(event.target) ||
-        (event.target instanceof Node && panel.contains(event.target))
-      ) {
-        return;
-      }
-      pinned = null;
-      close();
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key !== 'Escape' || (!activeKey && !pinned)) return;
-      pinned = null;
-      close();
-    });
-
-    panel.addEventListener('pointerleave', restorePinnedOrClose);
-    window.addEventListener('resize', position, { passive: true });
-    window.addEventListener('scroll', position, {
-      passive: true,
-      capture: true,
+      },
+      onSync: ({ pinnedKey, visible }) => updateControls(pinnedKey, visible),
     });
   }
 
@@ -699,24 +514,8 @@ const panelId = `${id}-panel`;
       font-size: var(--sl-text-xs);
     }
 
-    .notation-panel {
-      position: fixed;
-      z-index: 100;
-      /* The panel is an <aside> in the content flow; a stray cascade margin
-         would offset a position:fixed box from its computed `top`, so the
-         JS placement (which clears display equations) must start from zero. */
-      margin: 0;
-      width: min(23rem, calc(100vw - 1.5rem));
-      overflow: auto;
-      padding: 1rem;
-      border: 1px solid var(--sl-color-gray-5);
-      border-top: 0.25rem solid var(--sl-color-accent);
-      border-radius: 0.65rem;
-      color: var(--sl-color-text);
-      background: var(--sl-color-bg);
-      box-shadow: var(--sl-shadow-lg);
-    }
-
+    /* The fixed-position shell is `HoverPanel`; these rules style only the
+       notation-owned fields slotted into it. */
     .notation-panel-heading {
       display: flex;
       align-items: baseline;
@@ -724,7 +523,7 @@ const panelId = `${id}-panel`;
     }
 
     .notation-panel-heading h3,
-    .notation-panel p {
+    .notation-panel-body p {
       margin: 0;
     }
 
@@ -732,14 +531,14 @@ const panelId = `${id}-panel`;
       font-size: var(--sl-text-base);
     }
 
-    .notation-panel p {
+    .notation-panel-body p {
       margin-block: 0.65rem;
       color: var(--sl-color-gray-2);
       font-size: var(--sl-text-sm);
       line-height: 1.5;
     }
 
-    .notation-panel [data-panel-formula] {
+    .notation-panel-body [data-panel-formula] {
       overflow-x: auto;
       margin-block: 0.65rem;
       color: var(--sl-color-text);
@@ -749,8 +548,7 @@ const panelId = `${id}-panel`;
       color: var(--sl-color-accent-high);
     }
 
-    .notation-layer :focus-visible,
-    .notation-panel :focus-visible {
+    .notation-layer :focus-visible {
       outline: 3px solid var(--sl-color-accent);
       outline-offset: 2px;
     }

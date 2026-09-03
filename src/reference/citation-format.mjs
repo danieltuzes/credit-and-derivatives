@@ -90,6 +90,31 @@ export function formatReferenceText(record, locator) {
 }
 
 /**
+ * Recover the source label (authors + title, no locator) from a rendered
+ * reference-list line — the inverse of the ". <locator>." tail
+ * `formatReferenceText` appends. Lets the citation hover panel read its
+ * heading off the page's own "References" list instead of a second serialized
+ * copy of the source database. Falls back to the whole line if the tail is
+ * not where it is expected.
+ *
+ * @param {string} referenceText  text of the `#cite-n` list item
+ * @param {string | undefined} locator  the marker's `data-citation-locator`
+ * @returns {string}
+ */
+export function referenceLabelFromText(referenceText, locator) {
+  const text = String(referenceText ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const trimmedLocator = stripTrailingPeriod(String(locator ?? '').trim());
+  if (trimmedLocator.length === 0) return stripTrailingPeriod(text);
+
+  const tail = `. ${trimmedLocator}.`;
+  return stripTrailingPeriod(
+    text.endsWith(tail) ? text.slice(0, -tail.length) : text,
+  );
+}
+
+/**
  * The compact "Tuckman & Serrat, Fixed Income Securities (4th ed., 2022)"
  * shown as the panel heading, without the locator.
  *
