@@ -5,10 +5,9 @@ on:
     branches: [master]
   workflow_dispatch:
 
+# Read-only by default; the deploy job below elevates only what it needs.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -37,6 +36,9 @@ jobs:
 
   deploy:
     needs: build
+    permissions:
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     environment:
       name: github-pages

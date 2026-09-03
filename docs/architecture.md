@@ -448,8 +448,6 @@ the repo. The main items:
   IDs) and inert ones (`riskTier`, `estimatedMinutes`, `lastReviewed`).
 - **The completeness gate** covers lesson-body math only; widen it to
   `notation.formula`, `checks.yml`, assessment prompts, and component slots.
-- **Dead prototype** `src/pages/test_equation.astro` (MathJax + CDN) still routes.
-- **Node version drift** between the pin files and the runtime CI uses.
 - **"Toy model" / "playground" framing** still appears in ~15 lesson, notation,
   and assessment entries. Removing it is an editorial pass (it touches lesson
   prose and notation `summary`/`perspective` text), separate from this

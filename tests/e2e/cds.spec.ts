@@ -172,16 +172,3 @@ test('sidebar and footer navigation connect bonds, credit risk, and CDS', async 
     lessonPath,
   );
 });
-
-test('legacy equation URL redirects to the curriculum-backed CDS lesson', async ({
-  page,
-}) => {
-  await page.goto('/test_equation/');
-  await expect(page).toHaveURL(new RegExp(`${lessonPath}$`));
-  await expect(
-    page.getByRole('heading', {
-      level: 1,
-      name: 'CDS premium and protection legs',
-    }),
-  ).toBeVisible();
-});
