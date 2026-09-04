@@ -21,6 +21,8 @@ export interface HoverPanelState {
 export interface HoverPanelConfig {
   /** The `<aside data-hover-panel>` element. */
   panel: HTMLElement;
+  /** Exclusivity group (see the `activeSurface` note below `HoverPanelState`). */
+  groupId: string;
   /**
    * Element used only to locate the enclosing article column for the
    * horizontal clamp. Defaults to the panel itself.
@@ -50,28 +52,33 @@ function closestElement(node: EventTarget | null, selector: string) {
 }
 
 /**
- * The notation layer and the citation layer each run their own
- * `createHoverPanel` instance, positioned only against their own triggers and
- * their own equation. Neither knows the other exists, so a pinned citation
- * and a hovered notation glyph — or the reverse — can each be individually
- * correct and still land on top of each other, or on top of the equation the
- * other one is explaining. Rather than teach every positioning calculation
- * about every other panel that might exist, at most one hover panel is ever
- * shown at a time, page-wide: showing one closes whichever other one was
- * open. A pin is not exempt — the reader's attention already moved.
+ * The notation layer and the citation layer each own their explanations —
+ * the notation layer through its own popup stack (`./popup-stack.ts`), the
+ * citation layer through this module's `createHoverPanel`. Neither knows the
+ * other exists, so a pinned citation and an open notation popup — or the
+ * reverse — can each be individually correct and still land on top of each
+ * other, or on top of the equation the other one is explaining. Rather than
+ * teach every positioning calculation about every other surface that might
+ * exist, the two are mutually exclusive *groups*: opening the first popup in
+ * one group closes whatever the other group had open. Within a group,
+ * surfaces manage their own overlap (the citation panel is a singleton; the
+ * notation stack positions its own popups against each other). A pin is not
+ * exempt — the reader's attention already moved to the other group.
  */
-let activePanel: {
-  readonly panel: HTMLElement;
+let activeSurface: {
+  readonly groupId: string;
   readonly close: () => void;
 } | null = null;
 
-function claimActivePanel(panel: HTMLElement, close: () => void): void {
-  if (activePanel && activePanel.panel !== panel) activePanel.close();
-  activePanel = { panel, close };
+export function claimActiveSurface(groupId: string, close: () => void): void {
+  if (activeSurface && activeSurface.groupId !== groupId) {
+    activeSurface.close();
+  }
+  activeSurface = { groupId, close };
 }
 
-function releaseActivePanel(panel: HTMLElement): void {
-  if (activePanel?.panel === panel) activePanel = null;
+export function releaseActiveSurface(groupId: string): void {
+  if (activeSurface?.groupId === groupId) activeSurface = null;
 }
 
 export function createHoverPanel(config: HoverPanelConfig) {
@@ -170,7 +177,7 @@ export function createHoverPanel(config: HoverPanelConfig) {
     if (!key) return;
     if (config.render(anchor, key) === false) return;
 
-    claimActivePanel(panel, forceClose);
+    claimActiveSurface(config.groupId, forceClose);
 
     activeKey = key;
     activeAnchor = anchor;
@@ -188,7 +195,7 @@ export function createHoverPanel(config: HoverPanelConfig) {
     activeAnchor = null;
     panel.hidden = true;
     config.onClose?.();
-    releaseActivePanel(panel);
+    releaseActiveSurface(config.groupId);
     sync();
   };
 
@@ -276,11 +283,29 @@ export function createHoverPanel(config: HoverPanelConfig) {
     }
 
     const trigger = config.triggerFrom(event.target);
-    if (!trigger || trigger.closest('a')) return;
-    const key = config.keyFor(trigger);
-    if (!key) return;
-    event.preventDefault();
-    togglePin(key, trigger);
+    if (trigger && !trigger.closest('a')) {
+      const key = config.keyFor(trigger);
+      if (key) {
+        event.preventDefault();
+        togglePin(key, trigger);
+        return;
+      }
+    }
+    if (trigger) return; // a real link trigger: let it navigate.
+
+    // Anywhere else inside the panel collapses it, same as the corner "×" —
+    // its own body is never a trigger, so a click there can only mean "I'm
+    // done with this." A real link (e.g. "Open source link") is excluded so
+    // it still navigates instead of being swallowed.
+    if (
+      !panel.hidden &&
+      event.target instanceof Node &&
+      panel.contains(event.target) &&
+      !closestElement(event.target, 'a')
+    ) {
+      pinned = null;
+      close();
+    }
   });
 
   document.addEventListener('pointerdown', (event) => {

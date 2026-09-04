@@ -46,7 +46,6 @@ export interface Props {
 
 import NotationMath from './NotationMath.astro';
 import NotationFormula from './NotationFormula.astro';
-import HoverPanel from '../HoverPanel.astro';
 import type { GlyphScopeEntry, ResolvedGloss } from '../../reference/gloss';
 
 const {
@@ -103,8 +102,6 @@ for (const gloss of glossItems) {
   }
   seen.add(gloss.key);
 }
-
-const panelId = `${id}-panel`;
 ---
 
 {
@@ -185,7 +182,6 @@ const panelId = `${id}-panel`;
                   class="notation-pin"
                   type="button"
                   data-notation-control={definition.key}
-                  aria-controls={panelId}
                   aria-expanded="false"
                   aria-pressed="false"
                   hidden
@@ -219,40 +215,48 @@ const panelId = `${id}-panel`;
       {!panelOnly && (
         <p class="notation-enhancement-help" data-notation-help hidden>
           Point to a marked symbol for a quick explanation, or use the list
-          above. Select “Pin explanation” to keep one open; press Escape to
-          close it.
+          above — pointing at a symbol inside an open card explains that one
+          too, alongside it. Click a symbol, or select “Pin explanation”, to
+          keep a card open; click the card (or its “×”) to close it, or press
+          Escape.
         </p>
       )}
 
-      <HoverPanel id={panelId} label="Notation explanation" data-notation-panel>
-        <div class="notation-panel-body">
-          <nav class="notation-panel-trail" data-panel-trail hidden>
-            <button
-              class="notation-panel-back"
-              type="button"
-              data-panel-back
-              aria-controls={panelId}
-            >
-              <span aria-hidden="true">←</span> Back
-            </button>
-            <span class="notation-panel-crumb" data-panel-crumb />
-          </nav>
-          <header class="notation-panel-heading">
-            <span class="notation-panel-symbol" data-panel-symbol />
-            <h3 data-panel-title />
-          </header>
-          <p data-panel-summary hidden />
-          <div data-panel-formula hidden />
-          <p data-panel-units hidden />
-          <a data-panel-link>Open the full definition</a>
-        </div>
-      </HoverPanel>
+      <template data-notation-popup-template>
+        <aside
+          class="notation-popup"
+          role="region"
+          aria-atomic="true"
+          tabindex="-1"
+        >
+          <button
+            class="notation-popup-close"
+            type="button"
+            data-popup-close
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="notation-panel-body">
+            <header class="notation-panel-heading">
+              <span class="notation-panel-symbol" data-slot-symbol />
+              <h3 data-slot-title />
+            </header>
+            <p data-slot-summary hidden />
+            <div data-slot-formula hidden />
+            <p class="notation-units" data-slot-units hidden />
+            <a data-slot-link hidden>
+              Open the full definition
+            </a>
+          </div>
+        </aside>
+      </template>
     </section>
   )
 }
 
 <script>
-  import { createHoverPanel, closestElement } from '../hover-panel';
+  import { createPopupStack, closestElement } from '../popup-stack';
 
   const triggerSelector = '[data-notation-key]';
 
@@ -274,36 +278,24 @@ const panelId = `${id}-panel`;
     entries.delete('');
     if (entries.size === 0) return;
 
-    const panel = root.querySelector<HTMLElement>('[data-notation-panel]');
-    const panelSymbol = root.querySelector<HTMLElement>('[data-panel-symbol]');
-    const panelTitle = root.querySelector<HTMLElement>('[data-panel-title]');
-    const panelSummary = root.querySelector<HTMLElement>(
-      '[data-panel-summary]',
+    const template = root.querySelector<HTMLTemplateElement>(
+      '[data-notation-popup-template]',
     );
-    const panelFormula = root.querySelector<HTMLElement>(
-      '[data-panel-formula]',
-    );
-    const panelUnits = root.querySelector<HTMLElement>('[data-panel-units]');
-    const panelLink =
-      root.querySelector<HTMLAnchorElement>('[data-panel-link]');
-    const panelTrail = root.querySelector<HTMLElement>('[data-panel-trail]');
-    const panelCrumb = root.querySelector<HTMLElement>('[data-panel-crumb]');
-    if (
-      !panel ||
-      !panelSymbol ||
-      !panelTitle ||
-      !panelSummary ||
-      !panelFormula ||
-      !panelUnits ||
-      !panelLink
-    ) {
-      return;
-    }
+    if (!template) return;
 
     const controls = Array.from(
       root.querySelectorAll<HTMLButtonElement>('[data-notation-control]'),
     );
-    const triggers = Array.from(
+
+    // Static triggers, computed once: markers embedded in prose or an
+    // equation, and the symbol glyphs in the "Notation used on this page"
+    // list. These get the always-on `.notation-trigger` cursor/hover
+    // treatment. Symbols that appear *inside a popup* (a card's own formula,
+    // D15) are not in this list — there's no bound on how many of those can
+    // exist — but they still work as triggers: `triggerFrom` below finds
+    // them live, and the shared `[data-notation-key]:hover` rule (declared
+    // `:global`, further down) already paints them the same way.
+    const externalTriggers = Array.from(
       document.querySelectorAll<HTMLElement>(triggerSelector),
     ).filter(
       (element) =>
@@ -311,17 +303,10 @@ const panelId = `${id}-panel`;
         !element.closest('.katex-mathml') &&
         entries.has(element.dataset.notationKey ?? ''),
     );
-    const triggerSet = new Set(triggers);
-
-    // Symbol glyphs rendered inside the page-notation list. They live within
-    // `root`, so the external-marker filter above deliberately excludes them;
-    // wire them as their own trigger set so pointing at a listed symbol opens
-    // the same explanation as pointing at one embedded in prose or an equation.
     const symbolTriggers = Array.from(
       root.querySelectorAll<HTMLElement>('[data-notation-symbol-trigger]'),
     ).filter((element) => entries.has(element.dataset.notationKey ?? ''));
-    const symbolTriggerSet = new Set(symbolTriggers);
-    const highlightTargets = [...triggers, ...symbolTriggers];
+    const highlightTargets = [...externalTriggers, ...symbolTriggers];
 
     for (const trigger of highlightTargets) {
       trigger.classList.add('notation-trigger');
@@ -336,16 +321,6 @@ const panelId = `${id}-panel`;
       element?.dataset.notationLink ??
       null;
 
-    const externalTriggerFrom = (node: EventTarget | null) => {
-      const candidate = closestElement(node, triggerSelector);
-      return candidate && triggerSet.has(candidate) ? candidate : null;
-    };
-
-    const symbolTriggerFrom = (node: EventTarget | null) => {
-      const candidate = closestElement(node, '[data-notation-symbol-trigger]');
-      return candidate && symbolTriggerSet.has(candidate) ? candidate : null;
-    };
-
     const controlFrom = (node: EventTarget | null) => {
       const candidate = closestElement(node, '[data-notation-control]');
       return candidate && root.contains(candidate) ? candidate : null;
@@ -356,58 +331,59 @@ const panelId = `${id}-panel`;
       return candidate && root.contains(candidate) ? candidate : null;
     };
 
-    const triggerFrom = (node: EventTarget | null) =>
-      controlFrom(node) ??
-      staticLinkFrom(node) ??
-      externalTriggerFrom(node) ??
-      symbolTriggerFrom(node);
+    // A symbol trigger, wherever it lives: prose, the equation, the visible
+    // list, or — the D15 case this exists for — inside an already-open
+    // popup's own formula. Unlike the static sets above, this has to be
+    // live: a popup's content doesn't exist until the reader opens it.
+    const symbolFrom = (node: EventTarget | null) => {
+      const candidate = closestElement(node, triggerSelector);
+      if (!candidate || candidate.closest('.katex-mathml')) return null;
+      return entries.has(candidate.dataset.notationKey ?? '')
+        ? candidate
+        : null;
+    };
 
-    // The reader's path through the panel. A card's formula carries live
-    // symbols (D15), so pointing at one and clicking it pushes a frame instead
-    // of replacing the panel outright; the trail is how they get back. The
-    // stack is unbounded because it costs nothing, and in practice it bottoms
-    // out after one hop: glosses terminate — they have no formula of their own.
-    const trail: string[] = [];
-    let trailRoot: string | null = null;
+    const triggerFrom = (node: EventTarget | null) =>
+      controlFrom(node) ?? staticLinkFrom(node) ?? symbolFrom(node);
 
     const labelOf = (entry: HTMLElement, key: string) =>
       entry
         .querySelector<HTMLElement>('[data-notation-link]')
         ?.textContent?.trim() ?? key;
 
-    const renderTrail = () => {
-      if (!panelTrail || !panelCrumb) return;
-      panelTrail.hidden = trail.length === 0;
-      const from = trail.at(-1);
-      const entry = from ? entries.get(from) : undefined;
-      panelCrumb.textContent = entry ? labelOf(entry, from ?? '') : '';
-    };
-
-    const renderKey = (key: string) => {
+    const createPopup = (key: string, _trigger: HTMLElement) => {
       const entry = entries.get(key);
-      if (!entry) return false;
+      if (!entry) return null;
 
-      // A card's formula is itself clickable (D15): the reader's click lands
-      // on a glyph inside `panelFormula`, which is about to be replaced —
-      // possibly with nothing at all, when the new entry has no formula of
-      // its own (every gloss). Removing a focused node drops focus to
-      // nothing, which the shared hover engine's `focusout` handler reads as
-      // "the reader left" and closes the panel it was just asked to update.
-      // Move focus somewhere stable inside the panel first, so it never
-      // leaves the panel as a side effect of the panel repainting itself.
-      if (panel.contains(document.activeElement)) {
-        panel.focus({ preventScroll: true });
+      const fragment = template.content.cloneNode(true) as DocumentFragment;
+      const el = fragment.querySelector<HTMLElement>('.notation-popup');
+      const symbolHost =
+        fragment.querySelector<HTMLElement>('[data-slot-symbol]');
+      const title = fragment.querySelector<HTMLElement>('[data-slot-title]');
+      const summary = fragment.querySelector<HTMLElement>(
+        '[data-slot-summary]',
+      );
+      const formulaHost = fragment.querySelector<HTMLElement>(
+        '[data-slot-formula]',
+      );
+      const units = fragment.querySelector<HTMLElement>('[data-slot-units]');
+      const link =
+        fragment.querySelector<HTMLAnchorElement>('[data-slot-link]');
+      if (!el || !symbolHost || !title || !summary || !formulaHost || !units) {
+        return null;
       }
 
+      el.setAttribute('aria-label', `Notation: ${labelOf(entry, key)}`);
+
       const sourceSymbol = entry.querySelector<HTMLElement>('.notation-symbol');
-      panelSymbol.replaceChildren(
+      symbolHost.replaceChildren(
         ...(sourceSymbol
           ? [sourceSymbol.cloneNode(true)]
           : [document.createTextNode(entry.dataset.notationEntry ?? key)]),
       );
-      panelTitle.textContent = labelOf(entry, key);
+      title.textContent = labelOf(entry, key);
       setOptionalText(
-        panelSummary,
+        summary,
         entry
           .querySelector<HTMLElement>('[data-notation-summary]')
           ?.textContent?.trim() ?? '',
@@ -415,102 +391,65 @@ const panelId = `${id}-panel`;
       const sourceFormula = entry.querySelector<HTMLElement>(
         '[data-notation-formula]',
       );
-      panelFormula.replaceChildren(
+      formulaHost.replaceChildren(
         ...(sourceFormula ? [sourceFormula.cloneNode(true)] : []),
       );
-      panelFormula.hidden = sourceFormula === null;
+      formulaHost.hidden = sourceFormula === null;
       setOptionalText(
-        panelUnits,
+        units,
         entry
           .querySelector<HTMLElement>('[data-notation-units]')
           ?.textContent?.trim() ?? '',
       );
 
-      // A gloss has no card to open. Its own entry block is the whole of it.
+      // A gloss has no card to open. Its own popup is the whole of it.
       const href = entry.dataset.notationHref;
-      panelLink.hidden = href === undefined;
-      if (href !== undefined) panelLink.href = href;
-
-      panel.dataset.panelKey = key;
-      renderTrail();
-      return true;
-    };
-
-    // `createHoverPanel` re-shows a pinned explanation whenever focus moves —
-    // and a click inside the panel moves focus, because the formula region and
-    // the back control are both focusable. Treat a re-show of the entry the
-    // reader is already inside as idempotent, or every step into a symbol is
-    // undone by the frame that follows it.
-    const render = (_anchor: HTMLElement, key: string) => {
-      if (!panel.hidden && key === trailRoot) return entries.has(key);
-      trailRoot = key;
-      trail.length = 0;
-      return renderKey(key);
-    };
-
-    const navigateTo = (key: string) => {
-      const from = panel.dataset.panelKey;
-      if (!from || from === key || !entries.has(key)) return;
-      trail.push(from);
-      renderKey(key);
-    };
-
-    // A symbol inside the panel is a clone, so it is in none of the trigger
-    // sets the hover engine watches; the panel owns these two interactions.
-    panel.addEventListener('click', (event) => {
-      const back = closestElement(event.target, '[data-panel-back]');
-      if (back) {
-        const previous = trail.pop();
-        if (previous) renderKey(previous);
-        else renderTrail();
-        return;
+      if (link) {
+        link.hidden = href === undefined;
+        if (href !== undefined) link.href = href;
       }
 
-      const symbol = closestElement(event.target, triggerSelector);
-      const key = symbol?.dataset.notationKey;
-      if (!symbol || !key || symbol.closest('.katex-mathml')) return;
-      event.preventDefault();
-      navigateTo(key);
-    });
+      return el;
+    };
 
-    const updateControls = (pinnedKey: string | null, visible: boolean) => {
+    const updateControls = (
+      open: ReadonlySet<string>,
+      pinned: ReadonlySet<string>,
+    ) => {
       for (const control of controls) {
-        const selected = control.dataset.notationControl === pinnedKey;
+        const key = control.dataset.notationControl ?? '';
+        const selected = pinned.has(key);
         control.setAttribute('aria-pressed', String(selected));
-        control.setAttribute('aria-expanded', String(selected && visible));
+        control.setAttribute('aria-expanded', String(open.has(key)));
         control.textContent = selected
           ? 'Unpin explanation'
           : 'Pin explanation';
       }
     };
 
-    createHoverPanel({
-      panel,
-      root,
+    createPopupStack({
+      // Popups are `position: fixed` and float above everything regardless
+      // of DOM placement — *except* z-index only ever wins within its own
+      // stacking context. Nesting them under the article risked landing
+      // inside a stacking context an ancestor happens to establish (found
+      // live: the Starlight right sidebar then ate their clicks even though
+      // its own z-index is far lower). Mounting on `<body>` sidesteps that
+      // entirely.
+      container: document.body,
+      groupId: 'notation',
       triggerFrom,
       keyFor,
-      render,
+      createPopup,
       pinControlFrom: controlFrom,
-      onShow: (key) => {
+      onChange: (open, pinned) => {
         for (const trigger of highlightTargets) {
           trigger.classList.toggle(
             'is-notation-active',
-            trigger.dataset.notationKey === key,
+            open.has(trigger.dataset.notationKey ?? ''),
           );
         }
-        panel.dataset.activeNotationKey = key;
+        updateControls(open, pinned);
       },
-      onClose: () => {
-        trail.length = 0;
-        trailRoot = null;
-        delete panel.dataset.panelKey;
-        renderTrail();
-        delete panel.dataset.activeNotationKey;
-        for (const trigger of highlightTargets) {
-          trigger.classList.remove('is-notation-active');
-        }
-      },
-      onSync: ({ pinnedKey, visible }) => updateControls(pinnedKey, visible),
     });
   }
 
@@ -661,54 +600,62 @@ const panelId = `${id}-panel`;
       font-size: var(--sl-text-xs);
     }
 
-    /* The fixed-position shell is `HoverPanel`; these rules style only the
-       notation-owned fields slotted into it. */
-    /* `display: flex` outranks the UA `[hidden]` rule, so the trail has to
-       opt back out explicitly or a closed stack still shows its chrome. */
-    .notation-panel-trail[hidden] {
-      display: none;
-    }
-
-    .notation-panel-trail {
-      display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
-      margin-block-end: 0.6rem;
-      padding-block-end: 0.5rem;
-      border-bottom: 1px solid var(--sl-color-gray-5);
-      color: var(--sl-color-gray-3);
-      font-size: var(--sl-text-xs);
-    }
-
-    .notation-panel-back {
-      padding: 0.1rem 0.4rem;
+    /* Each open explanation is its own floating card — see `popup-stack.ts`.
+       They're mounted on `<body>`, not here (a stacking-context trap found
+       live: an ancestor of this section could otherwise cap how high a
+       popup's own z-index reaches). `.notation-panel-body` and its
+       descendants below style the fields common to both this static list
+       and a popup's cloned content. */
+    .notation-popup {
+      position: fixed;
+      z-index: 100;
+      margin: 0;
+      width: min(23rem, calc(100vw - 1.5rem));
+      overflow: auto;
+      padding: 1rem;
+      padding-inline-end: 2.4rem;
       border: 1px solid var(--sl-color-gray-5);
-      border-radius: 0.3rem;
-      color: var(--sl-color-text-accent);
+      border-top: 0.25rem solid var(--sl-color-accent);
+      border-radius: 0.65rem;
+      color: var(--sl-color-text);
       background: var(--sl-color-bg);
-      font: inherit;
+      box-shadow: var(--sl-shadow-lg);
+      font-size: var(--sl-text-sm);
+    }
+
+    .notation-popup-close {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      width: 1.6rem;
+      height: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: 0;
+      border-radius: 0.35rem;
+      color: var(--sl-color-gray-3);
+      background: transparent;
+      font-size: 1.15rem;
+      line-height: 1;
       cursor: pointer;
     }
 
-    .notation-panel-back:hover {
-      border-color: var(--sl-color-accent);
-      background: var(--sl-color-accent-low);
+    .notation-popup-close:hover {
+      color: var(--sl-color-text);
+      background: var(--sl-color-gray-6);
     }
 
-    .notation-panel-crumb {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    /* Symbols inside the panel's formula are the click-through targets. */
-    .notation-panel-body [data-panel-formula] :global([data-notation-key]) {
+    /* Symbols inside a card's formula are click/hover-through triggers for
+       another card — the D15 case this whole file exists for. */
+    .notation-panel-body [data-slot-formula] :global([data-notation-key]) {
       border-radius: 0.16em;
       cursor: pointer;
     }
 
     .notation-panel-body
-      [data-panel-formula]
+      [data-slot-formula]
       :global([data-notation-key]:hover) {
       background: var(--sl-color-accent-low);
       box-shadow: 0 0 0 0.12em var(--sl-color-accent-low);
@@ -736,7 +683,7 @@ const panelId = `${id}-panel`;
       line-height: 1.5;
     }
 
-    .notation-panel-body [data-panel-formula] {
+    .notation-panel-body [data-slot-formula] {
       overflow-x: auto;
       margin-block: 0.65rem;
       color: var(--sl-color-text);

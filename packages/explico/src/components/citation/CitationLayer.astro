@@ -108,6 +108,7 @@ import HoverPanel from '../HoverPanel.astro';
 
     createHoverPanel({
       panel,
+      groupId: 'citation',
       triggerFrom: markerFrom,
       keyFor: (element) => element.dataset.citationNumber ?? null,
       render,

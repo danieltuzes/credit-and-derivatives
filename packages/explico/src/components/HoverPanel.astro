@@ -42,6 +42,14 @@ const { id, label, class: className, ...rest } = Astro.props;
   tabindex="-1"
   {...rest}
 >
+  <button
+    class="hover-panel-close"
+    type="button"
+    data-hover-panel-close
+    aria-label="Close"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
   <slot />
 </aside>
 
@@ -57,6 +65,7 @@ const { id, label, class: className, ...rest } = Astro.props;
       width: min(23rem, calc(100vw - 1.5rem));
       overflow: auto;
       padding: 1rem;
+      padding-inline-end: 2.4rem;
       border: 1px solid var(--sl-color-gray-5);
       border-top: 0.25rem solid var(--sl-color-accent);
       border-radius: 0.65rem;
@@ -64,6 +73,30 @@ const { id, label, class: className, ...rest } = Astro.props;
       background: var(--sl-color-bg);
       box-shadow: var(--sl-shadow-lg);
       font-size: var(--sl-text-sm);
+    }
+
+    .hover-panel-close {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      width: 1.6rem;
+      height: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: 0;
+      border-radius: 0.35rem;
+      color: var(--sl-color-gray-3);
+      background: transparent;
+      font-size: 1.15rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .hover-panel-close:hover {
+      color: var(--sl-color-text);
+      background: var(--sl-color-gray-6);
     }
 
     /* Slotted fields carry the owning layer's scope, not this component's, so
