@@ -1,5 +1,14 @@
-import { readFileSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
+/**
+ * Installed-engine seam smoke tests (H1).
+ *
+ * The engine ships LMS / analytics / identity as framework-free no-op seams; a
+ * host swaps in real implementations without touching a component. These check
+ * that the seams the course consumes from the published `explico` package are
+ * wired and behave as no-ops. The source-level invariants — the one sanctioned
+ * browser-storage touch-point, the seam modules staying framework-free — live
+ * in the `explico` repo alongside the code they guard.
+ */
+
 import { describe, expect, it } from 'vitest';
 
 import { noopAnalyticsEmitter } from 'explico/analytics/AnalyticsEmitter';
@@ -10,17 +19,6 @@ import {
 } from 'explico/progress/ProgressRepository';
 import { createMemoryPreferenceStore } from 'explico/session/PreferenceStore';
 import { anonymousUser, isAnonymous } from 'explico/session/user';
-
-// The engine source (Phase F2: the `explico` workspace package).
-const SRC = join(process.cwd(), 'packages', 'explico', 'src');
-
-function filesUnder(dir: string): string[] {
-  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
-    const path = join(dir, entry.name);
-    if (entry.isDirectory()) return filesUnder(path);
-    return entry.isFile() ? [path] : [];
-  });
-}
 
 describe('viewer identity seam (H1)', () => {
   it('is always anonymous with a null id', () => {
@@ -81,51 +79,5 @@ describe('preference store seam (H1)', () => {
     expect(store.get('layout:nav')).toBeNull();
     store.set('layout:nav', 'true');
     expect(store.get('layout:nav')).toBe('true');
-  });
-});
-
-describe('browser-storage boundary (H1)', () => {
-  const sources = filesUnder(SRC).filter((path) =>
-    /\.(ts|tsx|astro|mjs)$/.test(path),
-  );
-  // A real access — `localStorage.getItem`, `sessionStorage[`, `document.cookie`
-  // — not a prose mention in a doc comment.
-  const STORAGE_ACCESS =
-    /(?:localStorage|sessionStorage|indexedDB)\s*[.[]|document\s*\.\s*cookie/;
-
-  it('no component reaches for browser storage directly', () => {
-    const offenders = filesUnder(join(SRC, 'components')).filter(
-      (path) =>
-        /\.(ts|tsx|astro|mjs)$/.test(path) &&
-        STORAGE_ACCESS.test(readFileSync(path, 'utf8')),
-    );
-    expect(offenders).toEqual([]);
-  });
-
-  it('a browser-storage access appears only in the PreferenceStore adapter', () => {
-    const matches = sources.filter((path) =>
-      STORAGE_ACCESS.test(readFileSync(path, 'utf8')),
-    );
-    expect(matches).toEqual([join(SRC, 'session', 'PreferenceStore.ts')]);
-  });
-});
-
-describe('seam modules are framework-free (H1)', () => {
-  // The PreferenceStore browser adapter is deliberately excluded — it is the
-  // one sanctioned `window.localStorage` touch-point.
-  const modules = [
-    'progress/ProgressRepository.ts',
-    'analytics/AnalyticsEmitter.ts',
-    'session/user.ts',
-  ];
-
-  it('import no React, Astro, content, or browser API', () => {
-    for (const relPath of modules) {
-      const source = readFileSync(join(SRC, relPath), 'utf8');
-      expect(source).not.toMatch(/from ['"](react|astro|astro:)/);
-      expect(source).not.toMatch(
-        /(?:localStorage|sessionStorage)\s*[.[]|\bwindow\s*\.\s*\w/,
-      );
-    }
   });
 });

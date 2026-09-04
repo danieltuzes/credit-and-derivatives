@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
 
 # Read-only by default; the deploy job below elevates only what it needs.
@@ -30,9 +30,10 @@ jobs:
           # withastro/action runs the package.json "build" script when present,
           # i.e. `pnpm validate:content && astro check && astro build`.
         env:
-          # Serve under danieltuzes.github.io/equations/. The only place the
-          # base path is set; local dev, `pnpm verify`, and e2e build at `/`.
-          SITE_BASE: /equations
+          # Serve under danieltuzes.github.io/credit-and-derivatives/. The only
+          # place the base path is set; local dev, `pnpm verify`, and e2e build
+          # at `/`.
+          SITE_BASE: /credit-and-derivatives
 
   deploy:
     needs: build

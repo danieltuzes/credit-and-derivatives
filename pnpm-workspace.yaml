@@ -1,5 +1,4 @@
-packages:
-  - packages/*
-
 allowBuilds:
   esbuild: false
+minimumReleaseAgeExclude:
+  - explico@0.2.0

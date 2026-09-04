@@ -4,7 +4,7 @@ import starlight from '@astrojs/starlight';
 import { defineConfig } from 'astro/config';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
-import { loadManifest } from 'explico/compiler/manifest.ts';
+import { loadManifest } from 'explico/compiler/manifest';
 import { createNotationKatexOptions } from 'explico/reference/katex-options.mjs';
 import rehypeFailKatexErrors from 'explico/reference/rehype-fail-katex-errors.mjs';
 import rehypeHeadingAnchors from 'explico/reference/rehype-heading-anchors.mjs';
@@ -13,7 +13,7 @@ import remarkNotation from 'explico/reference/remark-notation.mjs';
 import { courseConfig } from './content/course.config.ts';
 
 // The deployment base path. Empty for local dev, `pnpm verify`, and e2e (the
-// site serves from `/`); the GitHub Pages workflow sets `SITE_BASE=/equations`.
+// site serves from `/`); the GitHub Pages workflow sets `SITE_BASE=/credit-and-derivatives`.
 // This is a temporary hosting detail, not an architectural invariant.
 const base = process.env.SITE_BASE || undefined;
 

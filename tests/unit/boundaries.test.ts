@@ -1,22 +1,19 @@
 /**
  * Dependency-boundary tests (Phase F).
  *
- * The repo is split into an engine (`packages/explico/`, the `explico`
- * workspace package) and a course (`content/` + `astro.config.mjs` + `scripts/`):
+ * The build-time engine lives in its own package, `explico` (repo
+ * `danieltuzes/explico`); this repo is the course — `content/`,
+ * `astro.config.mjs`, `scripts/` — and depends on it as a published version.
+ * These tests lock the course side of that seam so a second course is a new
+ * `content/` + `course.config` against the engine, not a detangle:
  *
- *   - `core-not-course` — no engine module imports the course: not `content/…`,
- *     not the course package. The engine reaches the content tree only through
- *     `contentDir` conventions resolved at run time (loader `base:` strings and
- *     `join(process.cwd(), 'content')`), never an import.
  *   - `domain-pure` — `content/domain/**` (the course's math) imports nothing
  *     but its own siblings: no engine, no React, no Astro, no browser API.
  *   - `course.config` is a plain data module — zero imports.
  *   - `content.config` (the course's Astro entry) only re-exports the engine.
  *
- * These lock the split so a second course is a new `content/` + `course.config`
- * against the published engine, not a detangle. (When the two halves become
- * separate repos, `core-not-course` follows the engine and `domain-pure` the
- * course.)
+ * The mirror-image checks — no engine module imports a course, every engine
+ * import is a declared peer dependency — live in the `explico` repo.
  */
 
 import { readFileSync, readdirSync } from 'node:fs';
@@ -24,7 +21,6 @@ import { join, relative } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const ROOT = process.cwd();
-const ENGINE_SRC = join(ROOT, 'packages', 'explico', 'src');
 
 function filesUnder(dir: string, exts: readonly string[]): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -52,57 +48,6 @@ function importSpecifiers(source: string): string[] {
 }
 
 const CODE = ['.ts', '.tsx', '.mjs', '.astro'] as const;
-
-/** A specifier that reaches the course: `content/…` or the course package. */
-function reachesCourse(specifier: string): boolean {
-  return (
-    /(^|\/)content\//.test(specifier) ||
-    specifier === 'credit-and-derivatives' ||
-    specifier.startsWith('credit-and-derivatives/') ||
-    specifier.endsWith('/course.config')
-  );
-}
-
-describe('core-not-course', () => {
-  it('no engine module imports the course', () => {
-    const offenders: string[] = [];
-    for (const path of filesUnder(ENGINE_SRC, CODE)) {
-      for (const specifier of importSpecifiers(readFileSync(path, 'utf8'))) {
-        if (reachesCourse(specifier)) {
-          offenders.push(`${relative(ROOT, path)} → ${specifier}`);
-        }
-      }
-    }
-    expect(offenders).toEqual([]);
-  });
-
-  it('every non-relative engine import is a declared peer dependency', () => {
-    const enginePkg = JSON.parse(
-      readFileSync(join(ROOT, 'packages', 'explico', 'package.json'), 'utf8'),
-    ) as { peerDependencies?: Record<string, string> };
-    const declared = new Set(Object.keys(enginePkg.peerDependencies ?? {}));
-    const offenders: string[] = [];
-    for (const path of filesUnder(ENGINE_SRC, CODE)) {
-      for (const specifier of importSpecifiers(readFileSync(path, 'utf8'))) {
-        // Skip relative imports and anything that is not a plausible module
-        // specifier (the loose regex also catches `from '` inside data strings).
-        if (specifier.startsWith('.') || specifier.startsWith('node:'))
-          continue;
-        if (
-          !/^(@[a-z0-9-]+\/)?[a-z0-9][a-z0-9._-]*(\/[\w.-]+)*$/i.test(specifier)
-        )
-          continue;
-        if (specifier === 'astro:content') continue;
-        const pkg = specifier.startsWith('@')
-          ? specifier.split('/').slice(0, 2).join('/')
-          : specifier.split('/')[0];
-        if (declared.has(pkg)) continue;
-        offenders.push(`${relative(ROOT, path)} → ${specifier}`);
-      }
-    }
-    expect(offenders).toEqual([]);
-  });
-});
 
 describe('domain-pure', () => {
   const domainRoot = join(ROOT, 'content', 'domain');
