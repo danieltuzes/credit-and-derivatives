@@ -7,6 +7,7 @@ import remarkMath from 'remark-math';
 import { loadManifest } from 'explico/compiler/manifest.ts';
 import { createNotationKatexOptions } from 'explico/reference/katex-options.mjs';
 import rehypeFailKatexErrors from 'explico/reference/rehype-fail-katex-errors.mjs';
+import rehypeHeadingAnchors from 'explico/reference/rehype-heading-anchors.mjs';
 import remarkCitation from 'explico/reference/remark-citation.mjs';
 import remarkNotation from 'explico/reference/remark-notation.mjs';
 import { courseConfig } from './content/course.config.ts';
@@ -60,6 +61,7 @@ export default defineConfig({
       rehypePlugins: [
         [rehypeKatex, createNotationKatexOptions()],
         rehypeFailKatexErrors,
+        rehypeHeadingAnchors,
       ],
     }),
   },

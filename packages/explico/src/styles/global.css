@@ -690,11 +690,40 @@
   font-size: var(--sl-text-sm);
   color: var(--sl-color-text-accent);
   text-decoration: none;
+  /* Hardly visible until you look for it (F3): transparent by default, so it
+     never competes with the equation, and — being `opacity:0`, not `hidden` —
+     still announced to assistive tech and revealed on hover/focus/deep-link.
+     A partial opacity would fail the WCAG contrast check, so it is all or
+     nothing, mirroring Starlight's own heading anchor links. */
+  opacity: 0;
+  transition: opacity 120ms ease-out;
 }
 
-.sl-markdown-content a.keyed-equation__number:hover,
+@media (hover: none) {
+  /* No hover to reveal it on touch, so keep the number legible there. */
+  .sl-markdown-content a.keyed-equation__number {
+    opacity: 1;
+  }
+}
+
+.sl-markdown-content .keyed-equation:hover a.keyed-equation__number,
+.sl-markdown-content .keyed-equation:focus-within a.keyed-equation__number,
+.sl-markdown-content .keyed-equation:target a.keyed-equation__number,
 .sl-markdown-content a.keyed-equation__number:focus-visible {
+  opacity: 1;
   text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl-markdown-content a.keyed-equation__number {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .sl-markdown-content a.keyed-equation__number {
+    opacity: 1;
+  }
 }
 
 .sl-markdown-content a.equation-ref {
@@ -759,5 +788,60 @@
   }
   .sl-markdown-content .keyed-equation {
     padding-inline-end: 0;
+  }
+}
+
+/* Deep-linkable content headings (F3). The wrapper + anchor-link markup and its
+   hover/focus reveal come from Starlight's bundled `anchor-links.css`; these
+   rules add the sticky-header scroll offset and the `:target` flash, mirroring
+   the keyed-equation deep-link treatment. `HeadingAnchorEnhancer.astro` adds
+   the JS-only niceties (repeat-activation re-trigger, smooth scroll,
+   `history.pushState`, and a brief highlight of the section body). */
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6),
+.sl-markdown-content .sl-heading-wrapper {
+  scroll-margin-block-start: 5rem;
+}
+
+@keyframes heading-flash {
+  from {
+    background: var(--sl-color-accent-low);
+    box-shadow: 0 0 0 0.3rem var(--sl-color-accent-low);
+  }
+  to {
+    background: transparent;
+    box-shadow: 0 0 0 0.3rem transparent;
+  }
+}
+
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6):target,
+.sl-markdown-content .sl-heading-wrapper:has(> :target),
+.sl-markdown-content .deep-link-section-flash {
+  border-radius: 0.3rem;
+  animation: heading-flash 3s ease-out both;
+}
+
+.sl-markdown-content .deep-link-section-flash {
+  animation-duration: 2.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl-markdown-content :is(h1, h2, h3, h4, h5, h6):target,
+  .sl-markdown-content .sl-heading-wrapper:has(> :target) {
+    animation: none;
+    background: var(--sl-color-accent-low);
+    outline: 2px solid var(--sl-color-accent);
+    outline-offset: 0.2rem;
+  }
+  .sl-markdown-content .deep-link-section-flash {
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .sl-markdown-content :is(h1, h2, h3, h4, h5, h6):target,
+  .sl-markdown-content .sl-heading-wrapper:has(> :target) {
+    animation: none;
+    outline: 2px solid Highlight;
+    outline-offset: 0.2rem;
   }
 }

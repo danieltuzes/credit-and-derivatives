@@ -36,7 +36,9 @@ export const NOTATION_KEY_PATTERN = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 import { GlyphResolutionError, resolveMathGlyphs } from './math-glyphs.mjs';
 import {
   EQ_LABEL_PATTERN,
+  collectDisplayEquations,
   collectEquationLabels,
+  equationAnchorId,
   parseEquationRef,
   stripEquationLabels,
 } from './equations.mjs';
@@ -307,28 +309,31 @@ function defaultHref(definition, key, base = '') {
 }
 
 /**
- * Wrap a keyed `$$…$$` `math` node so the container survives `rehype-katex`
- * (which splices the inner `math-display` element out). The visible number is
- * a focusable `<a>` sibling — never authored, never inside KaTeX — so it
- * survives print and screen readers name it "Equation 2.4".
+ * Wrap a display `$$…$$` `math` node so the container survives `rehype-katex`
+ * (which splices the inner `math-display` element out). Every display equation
+ * in a lesson is numbered; a keyed one anchors at `#eq-<key>`, an unkeyed one
+ * at its positional `#eq-<section>-<index>`. The visible number is a focusable
+ * `<a>` sibling — never authored, never inside KaTeX — so it survives print and
+ * screen readers name it "Equation 2.4".
  */
-function keyedEquationNode(mathNode, key, number) {
+function equationNode(mathNode, { key, number }) {
+  const id = equationAnchorId({ key, number });
+  const hProperties = {
+    id,
+    className: ['keyed-equation'],
+    'data-eq-number': number,
+  };
+  if (key) hProperties['data-eq-key'] = key;
+  else hProperties['data-eq-auto'] = '';
+
   return {
     type: 'paragraph',
-    data: {
-      hName: 'div',
-      hProperties: {
-        id: `eq-${key}`,
-        className: ['keyed-equation'],
-        'data-eq-key': key,
-        'data-eq-number': number,
-      },
-    },
+    data: { hName: 'div', hProperties },
     children: [
       mathNode,
       {
         type: 'link',
-        url: `#eq-${key}`,
+        url: `#${id}`,
         children: [{ type: 'text', value: `(${number})` }],
         data: {
           hProperties: {
@@ -598,6 +603,14 @@ export default function remarkNotation(options = {}) {
       crossPage: options.equations ?? {},
     };
 
+    // Number and anchor every display equation on a lesson page, keyed or
+    // not (F3). Non-lesson pages (notation registry, stray docs) keep the
+    // keyed-only behaviour so their body math is left untouched.
+    const displayEquations = lessonId ? collectDisplayEquations(tree) : [];
+    const equationByNode = new Map(
+      displayEquations.map((equation) => [equation.node, equation]),
+    );
+
     const resolve = (key, kind, node) => {
       const context = {
         file,
@@ -647,7 +660,6 @@ export default function remarkNotation(options = {}) {
               node,
             );
           }
-          node.__eqKey = labelMatch[1];
           value = stripEquationLabels(value);
           replaceMathSource(node, value);
         }
@@ -725,14 +737,8 @@ export default function remarkNotation(options = {}) {
           continue;
         }
         visit(child, false);
-        if (child && child.__eqKey) {
-          const key = child.__eqKey;
-          delete child.__eqKey;
-          node.children[index] = keyedEquationNode(
-            child,
-            key,
-            pageLabels.get(key),
-          );
+        if (child && child.type === 'math' && equationByNode.has(child)) {
+          node.children[index] = equationNode(child, equationByNode.get(child));
         }
       }
     };

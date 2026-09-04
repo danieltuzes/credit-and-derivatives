@@ -337,20 +337,29 @@ Details and rationale: [ADR 0002](adr/0002-notation-authoring.md) — its
 `\term\{…\}` / `notation.uses` syntax predates D3 / D3b; this section is
 current.
 
-### Equation identity (D7)
+### Equation identity (D7, extended F3)
 
-Same principle as notation — the glyph is not the identity. An author marks a
-display equation with a trailing `\label{eq:<key>}` inside its `$$…$$` block
-(the `:` is safe there; it is inside math). The compiler
-(`reference/equations.mjs`) assigns the **visible number** from appearance order,
-scoped to the enclosing `##` section (`(2.4)` = fourth keyed equation under the
-second section); the number is never authored, and an unkeyed display equation
-renders clean and un-referenceable. `remark-notation` strips the label, wraps
-the equation in `div.keyed-equation` with `id="eq-<key>"` and
-`data-eq-number`, and appends a focusable `a.keyed-equation__number` (outside
-KaTeX, so it survives print and screen readers name it "Equation 2.4").
+Same principle as notation — the glyph is not the identity. **Every top-level
+display equation in a lesson body is numbered**, from appearance order scoped to
+the enclosing `##` section (`(2.4)` = fourth display equation under the second
+section); the number is never authored. `remark-notation` wraps each one in
+`div.keyed-equation` with a `data-eq-number` and a focusable
+`a.keyed-equation__number` (outside KaTeX, so it survives print and screen
+readers name it "Equation 2.4"). The number is transparent until the row is
+hovered, focused, or deep-linked — a partial opacity fails the WCAG contrast
+check, so it is all or nothing, matching Starlight's heading anchor links. A
+`$$…$$` nested in an MDX component (a `<CompactExample>`, an `<Aside>`) is
+illustrative, not part of the sequence, and stays unnumbered
+(`reference/equations.mjs` counts only the document root's own children;
+`scanEquationLabels` blanks component bodies to match).
 
-Prose refers to an equation with the reserved `eq-` prefix (a bare `:` in
+An author additionally marks an equation with a trailing `\label{eq:<key>}`
+inside its `$$…$$` block (the `:` is safe there; it is inside math) to give it a
+**stable** anchor that survives edits and cross-page references. `remark-notation`
+strips the label and anchors the equation at `id="eq-<key>"` (an unkeyed one
+anchors at its positional `id="eq-<section>-<index>"`, e.g. `#eq-2-4`).
+
+Prose refers to a _keyed_ equation with the reserved `eq-` prefix (a bare `:` in
 `[[…]]` prose is eaten by `remark-directive`): `[[eq-<key>]]` on the same page,
 `[[<lesson-slug>#eq-<key>]]` across pages — the cross-page number comes from
 `manifest.equations.numbersBySlug`. Both render `(2.4)` linked to the anchor; a
@@ -364,8 +373,22 @@ activation, smooth-scrolls, and moves focus onto the equation.
 
 Checks (`reference/equations-validate.ts`, in `compileManifest()`):
 `eq-duplicate-key` and `eq-ref-resolves` block (Tier 1); `eq-key-unused` is a
-Tier-3 warning. `manifest.equations.labels` records every `{ key, number,
+Tier-3 warning. `manifest.equations.labels` records every keyed `{ key, number,
 lessonId, section }`.
+
+### Heading deep links (F3)
+
+The lesson Markdown `processor` (`astro.config.mjs`) bypasses Starlight's own
+heading-link pass, so `reference/rehype-heading-anchors.mjs` restores it with the
+_same_ markup Starlight emits — `div.sl-heading-wrapper > hN + a.sl-anchor-link`
+(icon + visually-hidden label) — so Starlight's bundled `anchor-links.css`
+(shipped globally because `markdown.headingLinks` defaults on) styles it,
+including the hover/focus reveal of an otherwise invisible anchor. It runs
+`rehypeHeadingIds` from `@astrojs/markdown-remark` first (idempotent) because
+heading `id`s are assigned after the user rehype plugins. `global.css` adds the
+`:target` flash and sticky-header `scroll-margin`; `HeadingAnchorEnhancer.astro`
+(lessons only) mirrors `EquationEnhancer` — repeat-activation re-trigger, smooth
+scroll, `history.pushState`, focus, and a brief highlight of the section body.
 
 ---
 

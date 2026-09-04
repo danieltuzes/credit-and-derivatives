@@ -1,0 +1,113 @@
+---
+/**
+ * Progressive enhancement for content-heading deep links (Step F3), the sibling
+ * of `EquationEnhancer.astro`.
+ *
+ * The no-JS baseline is complete: `rehype-heading-anchors` emits Starlight's
+ * `.sl-heading-wrapper` + `a.sl-anchor-link` markup, its bundled
+ * `anchor-links.css` does the hover/focus reveal, and `global.css` does the
+ * `:target` flash (with a `prefers-reduced-motion` fallback) and the
+ * sticky-header `scroll-margin`.
+ *
+ * This script only adds what CSS and anchors cannot:
+ *  - re-triggering the highlight when the same `#…` is activated again;
+ *  - a smooth, header-aware scroll on an in-page jump;
+ *  - a brief highlight of the section body (the heading's following siblings up
+ *    to the next heading of equal or higher rank), so a deep link lands the
+ *    reader on the whole passage, not just the title;
+ *  - moving keyboard focus onto the heading so screen-reader users land on it.
+ *
+ * Everything here is gated on `prefers-reduced-motion` and degrades to the
+ * native anchor behaviour if it throws.
+ */
+---
+
+<script>
+  (() => {
+    const root = document.querySelector('.sl-markdown-content');
+    if (!root) return;
+
+    const HEADINGS = 'h1, h2, h3, h4, h5, h6';
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const isContentHeading = (el: Element | null): el is HTMLElement =>
+      !!el && el.matches(HEADINGS) && root.contains(el);
+
+    const headingForId = (raw: string): HTMLElement | null => {
+      if (!raw) return null;
+      let id = raw;
+      try {
+        id = decodeURIComponent(raw);
+      } catch {
+        /* keep the raw value */
+      }
+      const el = document.getElementById(id);
+      return isContentHeading(el) ? el : null;
+    };
+
+    const flash = (el: Element | null) => {
+      if (!el || reduce.matches) return;
+      el.classList.remove('deep-link-section-flash');
+      void (el as HTMLElement).offsetWidth;
+      el.classList.add('deep-link-section-flash');
+      window.setTimeout(
+        () => el.classList.remove('deep-link-section-flash'),
+        2600,
+      );
+    };
+
+    const sectionParts = (heading: HTMLElement): Element[] => {
+      const wrapper = heading.closest('.sl-heading-wrapper') ?? heading;
+      const rank = Number(heading.tagName[1]);
+      const parts: Element[] = [wrapper];
+      let node = wrapper.nextElementSibling;
+      while (node) {
+        const inner = node.matches(HEADINGS)
+          ? node
+          : node.querySelector(HEADINGS);
+        if (inner && Number(inner.tagName[1]) <= rank) break;
+        parts.push(node);
+        node = node.nextElementSibling;
+      }
+      return parts;
+    };
+
+    const activate = (heading: HTMLElement | null, doScroll: boolean) => {
+      if (!heading) return;
+      const parts = sectionParts(heading);
+      if (doScroll) {
+        parts[0].scrollIntoView({
+          behavior: reduce.matches ? 'auto' : 'smooth',
+          block: 'start',
+        });
+      }
+      for (const part of parts) flash(part);
+      heading.setAttribute('tabindex', '-1');
+      try {
+        heading.focus({ preventScroll: true });
+      } catch {
+        heading.focus();
+      }
+    };
+
+    root.addEventListener('click', (event) => {
+      const origin = event.target instanceof Element ? event.target : null;
+      const link = origin?.closest('a.sl-anchor-link');
+      if (!link) return;
+      const href = link.getAttribute('href') || '';
+      if (!href.startsWith('#')) return;
+      const heading = headingForId(href.slice(1));
+      if (!heading) return;
+      event.preventDefault();
+      if (location.hash !== href) history.pushState(null, '', href);
+      activate(heading, true);
+    });
+
+    window.addEventListener('hashchange', () => {
+      activate(headingForId(location.hash.slice(1)), false);
+    });
+
+    const initial = headingForId(location.hash.slice(1));
+    if (initial) activate(initial, true);
+  })();
+</script>
