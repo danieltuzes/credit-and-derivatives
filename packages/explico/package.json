@@ -4,6 +4,12 @@
   "description": "Build-time engine for prerequisite-aware, notation-rigorous course content: one validated content model, a semantic notation/citation/equation system with a completeness gate, and a deterministic JSON manifest.",
   "type": "module",
   "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danieltuzes/explico.git"
+  },
+  "homepage": "https://github.com/danieltuzes/explico#readme",
+  "bugs": "https://github.com/danieltuzes/explico/issues",
   "sideEffects": [
     "*.css"
   ],
