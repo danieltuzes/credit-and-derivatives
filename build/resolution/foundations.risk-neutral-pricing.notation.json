@@ -113,7 +113,7 @@
       "definitionId": "shared:discount-factor",
       "key": "discount-factor",
       "kind": "prose",
-      "line": 72,
+      "line": 73,
       "scope": "shared",
       "symbol": "D(0,t)"
     },
@@ -122,7 +122,7 @@
       "definitionId": "shared:present-value",
       "key": "present-value",
       "kind": "prose",
-      "line": 73,
+      "line": 74,
       "scope": "shared",
       "symbol": "PV_0"
     }

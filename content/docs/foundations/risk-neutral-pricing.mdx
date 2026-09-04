@@ -139,6 +139,7 @@ $$
 q_j\ge 0,
 \qquad
 \sum_{j=1}^{m}q_j=1.
+\label{eq:risk-neutral-expected-payoff}
 $$
 
 This expected payoff is measured in future USD at $T$. It is not yet a
@@ -150,6 +151,7 @@ PV_0
 =\mathbb{E}^{\mathbb{Q}}\!\left[D(0,T)X_T\right]
 =D(0,T)\mathbb{E}^{\mathbb{Q}}[X_T]
 =D(0,T)\sum_{j=1}^{m}x_jq_j.
+\label{eq:risk-neutral-present-value}
 $$
 
 The second equality uses this lesson's assumption that $D(0,T)$ is
@@ -166,7 +168,8 @@ Suppose $D(0,T)=0.95$ and the claim has two disjoint, exhaustive outcomes:
 |            1 |                           0.25 |                      120 |                             30.00 |
 |            2 |                           0.75 |                       40 |                             30.00 |
 
-The risk-neutral expected payoff and time-zero value are
+The risk-neutral expected payoff [[eq-risk-neutral-expected-payoff]] and
+time-zero value [[eq-risk-neutral-present-value]] are
 
 $$
 \mathbb{E}^{\mathbb{Q}}[X_T]

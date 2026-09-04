@@ -526,3 +526,91 @@ test('keeps the formula and every gloss name readable without JavaScript', async
 
   await context.close();
 });
+
+/**
+ * A card's formula carries live glyphs inside the shared hover/pin panel
+ * (D15), and a lesson page runs the citation layer alongside the notation
+ * layer — two independent `createHoverPanel` instances on one page. Both
+ * traps below were found live on `/foundations/risk-neutral-pricing/`:
+ * navigating into a symbol closed the panel it had just repainted, and a
+ * pinned citation and a hovered notation glyph could both stay visible at
+ * once, landing on top of each other.
+ */
+const riskNeutralPricingPath = '/foundations/risk-neutral-pricing/';
+
+test('clicking into a gloss inside the lesson panel navigates without closing it', async ({
+  page,
+}) => {
+  await page.goto(riskNeutralPricingPath);
+
+  const layer = page.locator('[data-notation-layer]');
+  await layer.locator('details.notation-list > summary').click();
+
+  const panel = layer.locator('[data-notation-panel]');
+  const dtIcon = page.locator(
+    'dt [data-notation-symbol-trigger][data-notation-key="expectation"]',
+  );
+  await dtIcon.hover();
+  await expect(panel).toBeVisible();
+  await expect(panel.locator('[data-panel-title]')).toHaveText('Expectation');
+
+  // A gloss (here: the random variable X) has no formula of its own, so
+  // navigating into it empties the panel's formula region entirely. That
+  // content removal must not read as "the reader left" and close the panel.
+  const panelGlyph = panel
+    .locator(
+      '[data-panel-formula] [data-notation-key="expectation.random-variable"]',
+    )
+    .first();
+  await panelGlyph.click();
+  await expect(panel).toBeVisible();
+  await expect(panel.locator('[data-panel-title]')).toHaveText(
+    'random variable',
+  );
+  await expect(panel.locator('[data-panel-link]')).toBeHidden();
+
+  await page.locator('[data-panel-back]').click();
+  await expect(panel.locator('[data-panel-title]')).toHaveText('Expectation');
+  await expect(panel).toBeVisible();
+});
+
+test('a hovered notation glyph closes and unpins a pinned citation, never overlapping it', async ({
+  page,
+}) => {
+  await page.goto(riskNeutralPricingPath);
+
+  const citationPanel = page.locator('[data-citation-panel]');
+  const notationPanel = page.locator('[data-notation-panel]');
+
+  const citationMarker = page
+    .locator('a.citation-ref[data-citation-id]')
+    .first();
+  await citationMarker.scrollIntoViewIfNeeded();
+  await citationMarker.hover();
+  await expect(citationPanel).toBeVisible();
+  await citationPanel.locator('[data-panel-pin]').click();
+  await expect(citationPanel.locator('[data-panel-pin]')).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+
+  const expectationTrigger = page
+    .locator('.katex-html [data-notation-key="expectation"]')
+    .first();
+  await expectationTrigger.scrollIntoViewIfNeeded();
+  await expectationTrigger.hover();
+
+  // At most one hover panel is ever shown page-wide: the notation glyph took
+  // over, so the pinned citation must be gone — not lurking underneath,
+  // and not one stray blur event away from popping back on top of it.
+  await expect(notationPanel).toBeVisible();
+  await expect(citationPanel).toBeHidden();
+  await expect(citationPanel.locator('[data-panel-pin]')).toHaveAttribute(
+    'aria-pressed',
+    'false',
+  );
+
+  await page.mouse.move(2, 2);
+  await expect(notationPanel).toBeHidden();
+  await expect(citationPanel).toBeHidden();
+});

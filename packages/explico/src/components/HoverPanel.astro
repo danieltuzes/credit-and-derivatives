@@ -11,6 +11,14 @@
  * Extra attributes (e.g. `data-notation-panel`, `data-citation-panel`) are
  * forwarded to the `<aside>` so each layer keeps the hook its tests and pin
  * controls already reference.
+ *
+ * `tabindex="-1"`: never in the tab order, but a valid target for
+ * `panel.focus()`. A layer that lets the reader click deeper into the panel's
+ * own content (D15's in-panel navigation) needs somewhere stable to move
+ * focus to before it replaces whatever the reader just clicked — otherwise
+ * removing the focused node drops focus to nothing, and the shared
+ * `focusout` handler in `./hover-panel.ts` reads that as "the reader left"
+ * and closes the panel it was just asked to update.
  */
 export interface Props {
   /** Element id — pin controls point `aria-controls` at it. */
@@ -31,6 +39,7 @@ const { id, label, class: className, ...rest } = Astro.props;
   aria-live="polite"
   aria-atomic="true"
   hidden
+  tabindex="-1"
   {...rest}
 >
   <slot />

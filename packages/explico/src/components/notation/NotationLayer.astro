@@ -387,6 +387,18 @@ const panelId = `${id}-panel`;
       const entry = entries.get(key);
       if (!entry) return false;
 
+      // A card's formula is itself clickable (D15): the reader's click lands
+      // on a glyph inside `panelFormula`, which is about to be replaced —
+      // possibly with nothing at all, when the new entry has no formula of
+      // its own (every gloss). Removing a focused node drops focus to
+      // nothing, which the shared hover engine's `focusout` handler reads as
+      // "the reader left" and closes the panel it was just asked to update.
+      // Move focus somewhere stable inside the panel first, so it never
+      // leaves the panel as a side effect of the panel repainting itself.
+      if (panel.contains(document.activeElement)) {
+        panel.focus({ preventScroll: true });
+      }
+
       const sourceSymbol = entry.querySelector<HTMLElement>('.notation-symbol');
       panelSymbol.replaceChildren(
         ...(sourceSymbol

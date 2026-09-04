@@ -49,6 +49,31 @@ function closestElement(node: EventTarget | null, selector: string) {
   return node instanceof Element ? node.closest<HTMLElement>(selector) : null;
 }
 
+/**
+ * The notation layer and the citation layer each run their own
+ * `createHoverPanel` instance, positioned only against their own triggers and
+ * their own equation. Neither knows the other exists, so a pinned citation
+ * and a hovered notation glyph — or the reverse — can each be individually
+ * correct and still land on top of each other, or on top of the equation the
+ * other one is explaining. Rather than teach every positioning calculation
+ * about every other panel that might exist, at most one hover panel is ever
+ * shown at a time, page-wide: showing one closes whichever other one was
+ * open. A pin is not exempt — the reader's attention already moved.
+ */
+let activePanel: {
+  readonly panel: HTMLElement;
+  readonly close: () => void;
+} | null = null;
+
+function claimActivePanel(panel: HTMLElement, close: () => void): void {
+  if (activePanel && activePanel.panel !== panel) activePanel.close();
+  activePanel = { panel, close };
+}
+
+function releaseActivePanel(panel: HTMLElement): void {
+  if (activePanel?.panel === panel) activePanel = null;
+}
+
 export function createHoverPanel(config: HoverPanelConfig) {
   const { panel } = config;
   if (panel.dataset.hoverPanelReady === 'true') return;
@@ -145,6 +170,8 @@ export function createHoverPanel(config: HoverPanelConfig) {
     if (!key) return;
     if (config.render(anchor, key) === false) return;
 
+    claimActivePanel(panel, forceClose);
+
     activeKey = key;
     activeAnchor = anchor;
     config.onShow?.(key, anchor);
@@ -161,7 +188,21 @@ export function createHoverPanel(config: HoverPanelConfig) {
     activeAnchor = null;
     panel.hidden = true;
     config.onClose?.();
+    releaseActivePanel(panel);
     sync();
+  };
+
+  // A plain `close()` deliberately leaves `pinned` set — a stray pointerout or
+  // focusout elsewhere on the page must not kill a pin the reader placed on
+  // purpose, and `restorePinnedOrClose` below relies on `pinned` surviving a
+  // transient close to bring the panel back. Being displaced by a DIFFERENT
+  // panel taking over (`claimActivePanel`) is not transient, though: without
+  // clearing the pin here, the very next stray blur anywhere on the page finds
+  // `pinned` still truthy and restores this panel — undoing the takeover a
+  // frame later and fighting the other panel for the screen.
+  const forceClose = () => {
+    pinned = null;
+    close();
   };
 
   const restorePinnedOrClose = () => {

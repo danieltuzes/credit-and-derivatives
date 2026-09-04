@@ -238,6 +238,8 @@ describe('manifest equation identity (D7)', () => {
       'bond-price-from-factors',
       'discount-factor-def',
       'present-value-sum',
+      'risk-neutral-expected-payoff',
+      'risk-neutral-present-value',
     ]);
     expect(
       manifest.equations.numbersBySlug['foundations/present-value'],
