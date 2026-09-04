@@ -321,9 +321,9 @@ function lessonNotationBundle(
       editorialStatus: definition.status,
       seeAlso: [...definition.seeAlso],
       ...(definition.units === undefined ? {} : { units: definition.units }),
-      ...(definition.kind === 'local' && definition.formula !== undefined
-        ? { formula: definition.formula }
-        : {}),
+      ...(definition.formula === undefined
+        ? {}
+        : { formula: definition.formula }),
     });
   }
   return {

@@ -5,7 +5,6 @@
     "probability-event",
     "probability-event-index",
     "probability-event-value",
-    "probability-expectation",
     "probability-measure",
     "probability-partition-size",
     "probability-random-value"
@@ -138,12 +137,12 @@
       "symbol": "X"
     },
     {
-      "column": 41,
-      "definitionId": "page:foundations.probability-events-and-expectation:probability-expectation",
-      "key": "probability-expectation",
+      "column": 35,
+      "definitionId": "shared:expectation",
+      "key": "expectation",
       "kind": "prose",
       "line": 76,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "\\mathbb{E}"
     },
     {
@@ -151,7 +150,7 @@
       "definitionId": "page:foundations.probability-events-and-expectation:probability-event-value",
       "key": "probability-event-value",
       "kind": "prose",
-      "line": 86,
+      "line": 88,
       "scope": "local",
       "symbol": "x_j"
     }

@@ -1,4 +1,4 @@
-# @danieltuzes/legend
+# explico
 
 A build-time engine for **prerequisite-aware, notation-rigorous course
 content**. It turns a folder of MDX lessons and JSON collections into a
@@ -39,7 +39,7 @@ validates it (DAG, ordering, coverage, orphans) rather than inferring it.
 ## Install
 
 ```bash
-pnpm add -D @danieltuzes/legend
+pnpm add -D explico
 ```
 
 Peer dependencies (the course provides them, pinned): `astro`,
@@ -53,21 +53,21 @@ A course provides `content/` (the six collections + `content/domain/` +
 
 ```ts
 // src/content.config.ts — Astro's content entry
-export { collections } from '@danieltuzes/legend/content-config';
+export { collections } from 'explico/content-config';
 ```
 
 ```js
 // astro.config.mjs
-import { loadManifest } from '@danieltuzes/legend/compiler/manifest.js';
-import remarkNotation from '@danieltuzes/legend/reference/remark-notation.mjs';
-import remarkCitation from '@danieltuzes/legend/reference/remark-citation.mjs';
-import { createNotationKatexOptions } from '@danieltuzes/legend/reference/katex-options.mjs';
-import rehypeFailKatexErrors from '@danieltuzes/legend/reference/rehype-fail-katex-errors.mjs';
+import { loadManifest } from 'explico/compiler/manifest.js';
+import remarkNotation from 'explico/reference/remark-notation.mjs';
+import remarkCitation from 'explico/reference/remark-citation.mjs';
+import { createNotationKatexOptions } from 'explico/reference/katex-options.mjs';
+import rehypeFailKatexErrors from 'explico/reference/rehype-fail-katex-errors.mjs';
 import { courseConfig } from './content/course.config.ts';
 
 const manifest = await loadManifest(courseConfig);
-// … starlight({ customCss: ['@danieltuzes/legend/styles/global.css'],
-//               components: { Footer: '@danieltuzes/legend/components/starlight/LessonFooter.astro', … } })
+// … starlight({ customCss: ['explico/styles/global.css'],
+//               components: { Footer: 'explico/components/starlight/LessonFooter.astro', … } })
 // … markdown.remarkPlugins / rehypePlugins from the manifest
 ```
 

@@ -366,6 +366,7 @@ function sharedNotationEntries(): SharedNotationDefinitionInput[] {
       throw new Error(`${file} declares key ${key}; expected ${filenameKey}`);
     }
     const units = optionalString(data.units, `${file} units`);
+    const formula = optionalString(data.formula, `${file} formula`);
     const meaning = meaningText(data.meaning, `${file} meaning`);
     return {
       key,
@@ -382,6 +383,7 @@ function sharedNotationEntries(): SharedNotationDefinitionInput[] {
       body,
       references: extractNotationReferences(body, file, undefined),
       source: { file },
+      ...(formula === undefined ? {} : { formula }),
       ...(units === undefined ? {} : { units }),
     };
   });

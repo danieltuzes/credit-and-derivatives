@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isSubstantiveMeaning } from '@danieltuzes/legend/reference/prose';
+import { isSubstantiveMeaning } from 'explico/reference/prose';
 
 describe('notation meaning safeguard (C1b)', () => {
   it('accepts a real one-line definition', () => {

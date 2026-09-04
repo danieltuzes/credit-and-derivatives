@@ -34,6 +34,7 @@ export interface SharedNotationDefinitionInput {
   readonly summary: string;
   readonly aliases: readonly string[];
   readonly domain: string;
+  readonly formula?: string;
   readonly units?: string;
   readonly sources: readonly string[];
   readonly seeAlso: readonly string[];
@@ -134,6 +135,7 @@ export interface SharedNotationDefinitionRecord extends NotationDefinitionRecord
   readonly summary: string;
   readonly aliases: readonly string[];
   readonly domain: string;
+  readonly formula?: string;
   readonly units?: string;
   readonly sources: readonly string[];
   readonly aiAssisted: boolean;

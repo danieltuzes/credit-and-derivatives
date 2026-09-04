@@ -8,8 +8,8 @@ import {
   lessonIdFromSlug,
   mergeTrackOrder,
   parseCheckList,
-} from '@danieltuzes/legend/compiler/lesson-derivation';
-import { loadCurriculumCatalog } from '@danieltuzes/legend/compiler/collections';
+} from 'explico/compiler/lesson-derivation';
+import { loadCurriculumCatalog } from 'explico/compiler/collections';
 
 describe('lessonIdFromSlug / isLessonSlug', () => {
   it('maps a section slug to a dotted id', () => {
@@ -147,7 +147,7 @@ describe('derived curriculum catalog (real content)', () => {
 
   it('keeps every track prerequisite-valid with derived requires', async () => {
     const { validateCurriculum } =
-      await import('@danieltuzes/legend/curriculum/validation');
+      await import('explico/curriculum/validation');
     const catalog = await loadCurriculumCatalog();
     const blocking = validateCurriculum(catalog).filter(
       (issue) => issue.severity !== 'warning',

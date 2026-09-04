@@ -4,7 +4,7 @@ import {
   compileManifest,
   MANIFEST_SCHEMA_VERSION,
   serializeManifest,
-} from '@danieltuzes/legend/compiler/manifest';
+} from 'explico/compiler/manifest';
 
 describe('content manifest (Phase D5)', () => {
   it('compiles deterministically — two runs are byte-identical', async () => {

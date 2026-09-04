@@ -3,7 +3,7 @@ import {
   formatReferenceText,
   formatSourceLabel,
   referenceLabelFromText,
-} from '@danieltuzes/legend/reference/citation-format.mjs';
+} from 'explico/reference/citation-format.mjs';
 
 const tuckman = {
   id: 'tuckman-serrat-fixed-income',

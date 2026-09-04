@@ -56,19 +56,28 @@
     },
     {
       "column": 18,
-      "definitionId": "shared:risk-neutral-expectation",
-      "key": "risk-neutral-expectation",
+      "definitionId": "shared:expectation",
+      "key": "expectation",
       "kind": "prose",
       "line": 53,
       "scope": "shared",
-      "symbol": "\\mathbb{E}^{\\mathbb{Q}}"
+      "symbol": "\\mathbb{E}"
     },
     {
       "column": 1,
+      "definitionId": "shared:risk-neutral-probability-measure",
+      "key": "risk-neutral-probability-measure",
+      "kind": "prose",
+      "line": 54,
+      "scope": "shared",
+      "symbol": "\\mathbb{Q}"
+    },
+    {
+      "column": 7,
       "definitionId": "page:foundations.risk-neutral-pricing:risk-neutral-scenario-index",
       "key": "risk-neutral-scenario-index",
       "kind": "prose",
-      "line": 54,
+      "line": 56,
       "scope": "local",
       "symbol": "j"
     },
@@ -77,7 +86,7 @@
       "definitionId": "page:foundations.risk-neutral-pricing:risk-neutral-scenario-count",
       "key": "risk-neutral-scenario-count",
       "kind": "prose",
-      "line": 55,
+      "line": 57,
       "scope": "local",
       "symbol": "m"
     },
@@ -86,7 +95,7 @@
       "definitionId": "page:foundations.risk-neutral-pricing:risk-neutral-scenario-payoff",
       "key": "risk-neutral-scenario-payoff",
       "kind": "prose",
-      "line": 56,
+      "line": 58,
       "scope": "local",
       "symbol": "x_j"
     },
@@ -95,7 +104,7 @@
       "definitionId": "page:foundations.risk-neutral-pricing:risk-neutral-scenario-probability",
       "key": "risk-neutral-scenario-probability",
       "kind": "prose",
-      "line": 57,
+      "line": 59,
       "scope": "local",
       "symbol": "q_j"
     },
@@ -104,7 +113,7 @@
       "definitionId": "shared:discount-factor",
       "key": "discount-factor",
       "kind": "prose",
-      "line": 70,
+      "line": 72,
       "scope": "shared",
       "symbol": "D(0,t)"
     },
@@ -113,7 +122,7 @@
       "definitionId": "shared:present-value",
       "key": "present-value",
       "kind": "prose",
-      "line": 71,
+      "line": 73,
       "scope": "shared",
       "symbol": "PV_0"
     }

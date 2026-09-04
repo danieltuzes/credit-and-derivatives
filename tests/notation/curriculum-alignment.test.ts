@@ -2,22 +2,22 @@ import { describe, expect, it } from 'vitest';
 import {
   loadCurriculumCatalog,
   loadNotationRegistryInput,
-} from '@danieltuzes/legend/compiler/collections';
+} from 'explico/compiler/collections';
 import type {
   CompetencyDefinition,
   CurriculumCatalog,
   LessonDefinition,
-} from '@danieltuzes/legend/curriculum/validation';
+} from 'explico/curriculum/validation';
 import {
   assertValidNotationAlignment,
   validateNotationAlignment,
-} from '@danieltuzes/legend/reference/curriculum-alignment';
-import { buildNotationRegistry } from '@danieltuzes/legend/reference/registry';
+} from 'explico/reference/curriculum-alignment';
+import { buildNotationRegistry } from 'explico/reference/registry';
 import type {
   NotationAlignment,
   NotationLessonInput,
   SharedNotationDefinitionInput,
-} from '@danieltuzes/legend/reference/types';
+} from 'explico/reference/types';
 
 type EditorialCompetency = CompetencyDefinition & {
   readonly editorialStatus: 'draft' | 'in-review' | 'reviewed';

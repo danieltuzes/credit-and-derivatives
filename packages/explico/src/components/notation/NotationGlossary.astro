@@ -180,12 +180,29 @@ const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
                 ))}
               </p>
             )}
-            <p>
-              <strong>Source records:</strong>{' '}
-              {entry.data.sources.length > 0
-                ? entry.data.sources.map((source) => <code>{source}</code>)
-                : 'None declared.'}
-            </p>
+            {entry.data.sources.length > 0 ? (
+              <div class="source-records">
+                <strong>Source records:</strong>
+                <ul>
+                  {entry.data.sources.map((source) => {
+                    const { id, locator } =
+                      typeof source === 'string'
+                        ? { id: source, locator: null }
+                        : source;
+                    return (
+                      <li>
+                        <code>{id}</code>
+                        {locator && <span> — {locator}</span>}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ) : (
+              <p>
+                <strong>Source records:</strong> None declared.
+              </p>
+            )}
           </footer>
         </article>
       );
@@ -367,6 +384,19 @@ const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
 
   article > footer code + code {
     margin-inline-start: 0.35rem;
+  }
+
+  .source-records {
+    margin-block: 0.4rem;
+  }
+
+  .source-records ul {
+    margin-block: 0.2rem 0;
+    padding-inline-start: 1.2rem;
+  }
+
+  .source-records li {
+    margin-block: 0.15rem;
   }
 
   @media (max-width: 36rem) {

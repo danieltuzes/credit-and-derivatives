@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { renderLabMath } from '@danieltuzes/legend/reference/render-lab-math';
+import { renderLabMath } from 'explico/reference/render-lab-math';
 
 const scope = [
   { key: 'discount-factor', notation: 'D(0,t)' },

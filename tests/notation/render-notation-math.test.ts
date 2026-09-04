@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   renderNotationMath,
   type SafeMathNode,
-} from '@danieltuzes/legend/components/notation/render-notation-math';
+} from 'explico/components/notation/render-notation-math';
 
 function elements(
   nodes: readonly SafeMathNode[],

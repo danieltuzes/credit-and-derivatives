@@ -11,11 +11,11 @@ import {
   compileManifest,
   MANIFEST_PATH,
   writeManifest,
-} from '@danieltuzes/legend/compiler/manifest';
-import { syncResolutionReports } from '@danieltuzes/legend/compiler/resolution-report';
-import { notationSourceLocatorGaps } from '@danieltuzes/legend/compiler/collections';
-import { consistencyCounts } from '@danieltuzes/legend/reference/consistency';
-import { curriculumErrors } from '@danieltuzes/legend/curriculum/validation';
+} from 'explico/compiler/manifest';
+import { syncResolutionReports } from 'explico/compiler/resolution-report';
+import { notationSourceLocatorGaps } from 'explico/compiler/collections';
+import { consistencyCounts } from 'explico/reference/consistency';
+import { curriculumErrors } from 'explico/curriculum/validation';
 import { courseConfig } from '../content/course.config';
 
 const manifest = await compileManifest(courseConfig);

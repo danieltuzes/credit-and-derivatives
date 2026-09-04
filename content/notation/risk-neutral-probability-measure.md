@@ -16,7 +16,7 @@ sources:
     locator: 'Ch. 27 §§27.3-27.4, printed pp. 635-637, Eqs. 27.14-27.20 (equivalent martingale measures, numeraires, and the traditional risk-neutral measure).'
 seeAlso:
   - real-world-probability-measure
-  - risk-neutral-expectation
+  - expectation
 alignment:
   kind: competency
   introducedByCompetency: finance.risk-neutral-measure.interpret
@@ -26,8 +26,19 @@ aiAssisted: true
 ---
 
 The risk-neutral probability measure $\mathbb{Q}$ supplies the scenario weights
-used by the stated no-arbitrage pricing model.
+used by the stated no-arbitrage pricing model. It is equivalent to the
+real-world measure $\mathbb{P}$ — the two agree on which outcomes are
+possible — but assigns those outcomes different weights.
 
-Relative to the chosen numeraire, discounted traded prices are martingales
-under $\mathbb{Q}$. The name does not mean that outcomes are risk-free, that
-volatility vanishes, or that all investors are indifferent to risk.
+**What holds under $\mathbb{Q}$.** Relative to the chosen numeraire (here the
+cash account), every discounted traded price is a $\mathbb{Q}$-martingale: its
+value today equals the $\mathbb{Q}$-weighted [[expectation]] of its discounted
+future value. A claim's time-zero price is therefore the [[expectation]], taken
+under $\mathbb{Q}$, of its discounted payoff; when the discount factor is
+deterministic it factors out of that expectation. The superscript in
+$\mathbb{E}^{\mathbb{Q}}$ records that the weights are $\mathbb{Q}$'s.
+
+Changing from $\mathbb{P}$ to $\mathbb{Q}$ reweights the modeled outcomes; it
+does not change the payoff in any scenario. The name does not mean that
+outcomes are risk-free, that volatility vanishes, or that all investors are
+indifferent to risk.

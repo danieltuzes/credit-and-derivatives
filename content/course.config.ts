@@ -9,7 +9,7 @@
  * second course is a new `content/` folder plus a new `course.config.ts`.
  *
  * Deliberately zero imports — a plain data module. `CourseConfig` (the shape it
- * must satisfy) is `@danieltuzes/legend/compiler/course-config` and is applied
+ * must satisfy) is `explico/compiler/course-config` and is applied
  * at each call site.
  */
 

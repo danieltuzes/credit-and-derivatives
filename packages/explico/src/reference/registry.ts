@@ -154,7 +154,12 @@ export function buildNotationRegistry(
     edgeIndex.set(
       candidate.id,
       uniqueSorted(
-        candidate.resolvedReferences.map((reference) => reference.definitionId),
+        candidate.resolvedReferences
+          // A definition may name its own symbol in its worked math
+          // (`\explain{key}{…}` in the entry's own body); that self-reference
+          // is not a dependency cycle.
+          .map((reference) => reference.definitionId)
+          .filter((definitionId) => definitionId !== candidate.id),
       ),
     );
   }
@@ -500,6 +505,7 @@ function toDefinitionRecord(
       body: input.body,
       source: input.source,
       resolvedReferences: candidate.resolvedReferences,
+      ...(input.formula === undefined ? {} : { formula: input.formula }),
       ...(input.units === undefined ? {} : { units: input.units }),
     };
     return record;

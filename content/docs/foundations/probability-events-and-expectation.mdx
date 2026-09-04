@@ -75,7 +75,7 @@ notation:
         - id: shreve-stochastic-calculus-finance-ii
           locator: 'Ch. 1 §1.2, printed pp. 7-8, Def. 1.2.1 (a random variable as a numerical quantity determined by the experiment outcome).'
       seeAlso:
-        - probability-expectation
+        - expectation
       alignment:
         kind: competency
         introducedByCompetency: probability.expectation-by-partition.calculate
@@ -93,24 +93,11 @@ notation:
         kind: competency
         introducedByCompetency: probability.expectation-by-partition.calculate
         introducedInLesson: foundations.probability-events-and-expectation
-    - key: probability-expectation
-      latex: '\mathbb{E}'
-      meaning: 'Forms a probability-weighted average of a finite random value. Its output has the same unit as the random value being averaged.'
-      sources:
-        - id: shreve-stochastic-calculus-finance-ii
-          locator: 'Ch. 1 §1.3, printed pp. 17-18, Def. 1.3.3 and Thm. 1.3.4(i) (expectation and the finite-valued probability-weighted sum).'
-      seeAlso:
-        - probability-measure
-        - probability-random-value
-      alignment:
-        kind: competency
-        introducedByCompetency: probability.expectation-by-partition.calculate
-        introducedInLesson: foundations.probability-events-and-expectation
 ---
 
-import CompactExample from '@danieltuzes/legend/components/examples/CompactExample.astro';
-import CompactExamples from '@danieltuzes/legend/components/examples/CompactExamples.astro';
-import AssessmentSet from '@danieltuzes/legend/components/assessments/AssessmentSet.astro';
+import CompactExample from 'explico/components/examples/CompactExample.astro';
+import CompactExamples from 'explico/components/examples/CompactExamples.astro';
+import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
 
 ## What you will be able to do
 
@@ -182,9 +169,11 @@ or event retained by the condition[@shreve-stochastic-calculus-finance-ii; Ch. 2
 ## Expectation from disjoint events
 
 Use the local [[probability-random-value]] $X$ for a numerical value
-determined by the outcome and the local [[probability-expectation]]
-$\mathbb{E}$ for its probability-weighted average. The expectation has the
-same unit as $X$; a random USD payment has an expected value in USD, not in
+determined by the outcome and the [[expectation]] operator $\mathbb{E}$ for
+its probability-weighted average. In this lesson every random value is constant
+on each event of a finite partition, so the general integral definition of
+$\mathbb{E}$ reduces to the weighted sum below. The expectation has the same
+unit as $X$; a random USD payment has an expected value in USD, not in
 percent.
 
 There are two related formulas, and their difference matters.

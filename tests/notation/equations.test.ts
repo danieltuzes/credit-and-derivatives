@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import { courseConfig } from '../../content/course.config';
 
-import remarkNotation from '@danieltuzes/legend/reference/remark-notation.mjs';
+import remarkNotation from 'explico/reference/remark-notation.mjs';
 import {
   collectEquationLabels,
   parseEquationRef,
   scanEquationLabels,
   stripEquationLabels,
-} from '@danieltuzes/legend/reference/equations.mjs';
-import { validateEquations } from '@danieltuzes/legend/reference/equations-validate';
-import { compileManifest } from '@danieltuzes/legend/compiler/manifest';
+} from 'explico/reference/equations.mjs';
+import { validateEquations } from 'explico/reference/equations-validate';
+import { compileManifest } from 'explico/compiler/manifest';
 
 // --- pure helpers -----------------------------------------------------
 

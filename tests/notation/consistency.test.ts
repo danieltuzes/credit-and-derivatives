@@ -3,22 +3,22 @@ import { describe, expect, it } from 'vitest';
 import {
   compileManifest,
   MANIFEST_SCHEMA_VERSION,
-} from '@danieltuzes/legend/compiler/manifest';
-import { buildResolutionReports } from '@danieltuzes/legend/compiler/resolution-report';
+} from 'explico/compiler/manifest';
+import { buildResolutionReports } from 'explico/compiler/resolution-report';
 import {
   consistencyCounts,
   runConsistencyChecks,
   type ConsistencyCode,
-} from '@danieltuzes/legend/reference/consistency';
-import { loadNotationSpecs } from '@danieltuzes/legend/compiler/collections';
-import { parseLintIgnore } from '@danieltuzes/legend/reference/lint-ignore';
+} from 'explico/reference/consistency';
+import { loadNotationSpecs } from 'explico/compiler/collections';
+import { parseLintIgnore } from 'explico/reference/lint-ignore';
 import {
   offVocabularyTokens,
   unitsTokens,
-} from '@danieltuzes/legend/reference/units-vocab';
-import { buildNotationRegistry } from '@danieltuzes/legend/reference/registry';
-import { loadNotationRegistryInput } from '@danieltuzes/legend/compiler/collections';
-import { loadCurriculumCatalog } from '@danieltuzes/legend/compiler/collections';
+} from 'explico/reference/units-vocab';
+import { buildNotationRegistry } from 'explico/reference/registry';
+import { loadNotationRegistryInput } from 'explico/compiler/collections';
+import { loadCurriculumCatalog } from 'explico/compiler/collections';
 import { courseConfig } from '../../content/course.config';
 
 const NO_IGNORE = { entries: [], matches: () => false };

@@ -2,7 +2,7 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { courseConfig } from '../../content/course.config';
 
-import { compileManifest } from '@danieltuzes/legend/compiler/manifest';
+import { compileManifest } from 'explico/compiler/manifest';
 import {
   ContentCliError,
   contentCheck,
@@ -14,7 +14,7 @@ import {
   renderLesson,
   scaffoldLesson,
   scaffoldTerm,
-} from '@danieltuzes/legend/compiler/cli';
+} from 'explico/compiler/cli';
 
 const manifest = await compileManifest(courseConfig);
 const DOCS = join(process.cwd(), 'content', 'docs');

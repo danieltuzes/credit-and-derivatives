@@ -12,7 +12,7 @@ sources:
   - id: tuckman-serrat-fixed-income
     locator: 'Ch. 7 §7.3, printed pp. 182-184, eqs. 7.7-7.8 (risk-neutral probabilities that recover market prices by expected discounted value).'
 seeAlso:
-  - risk-neutral-expectation
+  - expectation
   - present-value
 alignment:
   kind: competency
@@ -22,8 +22,9 @@ editorialStatus: draft
 aiAssisted: true
 ---
 
-The terminal random payoff $X_T$ is the signed amount delivered by a claim at
-the stated future horizon before the outcome is known.
+The terminal random payoff $\explain{terminal-random-payoff}{X_T}$ is the signed
+amount delivered by a claim at the stated future horizon before the outcome is
+known.
 
 Its realized value may differ across scenarios. Positive amounts are receipts
 and negative amounts are payments from the stated claim-holder perspective.

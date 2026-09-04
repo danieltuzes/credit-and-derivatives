@@ -1,7 +1,7 @@
 /**
  * Dependency-boundary tests (Phase F).
  *
- * The repo is split into an engine (`packages/legend/`, the `@danieltuzes/legend`
+ * The repo is split into an engine (`packages/explico/`, the `explico`
  * workspace package) and a course (`content/` + `astro.config.mjs` + `scripts/`):
  *
  *   - `core-not-course` — no engine module imports the course: not `content/…`,
@@ -24,7 +24,7 @@ import { join, relative } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const ROOT = process.cwd();
-const ENGINE_SRC = join(ROOT, 'packages', 'legend', 'src');
+const ENGINE_SRC = join(ROOT, 'packages', 'explico', 'src');
 
 function filesUnder(dir: string, exts: readonly string[]): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -78,7 +78,7 @@ describe('core-not-course', () => {
 
   it('every non-relative engine import is a declared peer dependency', () => {
     const enginePkg = JSON.parse(
-      readFileSync(join(ROOT, 'packages', 'legend', 'package.json'), 'utf8'),
+      readFileSync(join(ROOT, 'packages', 'explico', 'package.json'), 'utf8'),
     ) as { peerDependencies?: Record<string, string> };
     const declared = new Set(Object.keys(enginePkg.peerDependencies ?? {}));
     const offenders: string[] = [];
@@ -155,7 +155,7 @@ describe('content.config', () => {
   it('only re-exports the engine', () => {
     const source = readFileSync(join(ROOT, 'src', 'content.config.ts'), 'utf8');
     for (const specifier of importSpecifiers(source)) {
-      expect(specifier).toBe('@danieltuzes/legend/content-config');
+      expect(specifier).toBe('explico/content-config');
     }
   });
 });

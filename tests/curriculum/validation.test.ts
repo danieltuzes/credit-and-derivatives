@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { loadCurriculumCatalog } from '@danieltuzes/legend/compiler/collections';
+import { loadCurriculumCatalog } from 'explico/compiler/collections';
 import {
   assertValidCurriculum,
   curriculumErrors,
@@ -8,7 +8,7 @@ import {
   type CompetencyDefinition,
   type CurriculumCatalog,
   type LessonDefinition,
-} from '@danieltuzes/legend/curriculum/validation';
+} from 'explico/curriculum/validation';
 
 const competency = (
   id: string,

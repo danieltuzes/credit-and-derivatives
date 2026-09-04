@@ -126,13 +126,13 @@
       "symbol": "Y"
     },
     {
-      "column": 1,
-      "definitionId": "shared:risk-neutral-expectation",
-      "key": "risk-neutral-expectation",
+      "column": 25,
+      "definitionId": "page:cds.premium-protection-legs-and-par-spread:cds-event-payoff",
+      "key": "cds-event-payoff",
       "kind": "math",
       "line": 51,
-      "scope": "shared",
-      "symbol": "\\mathbb{E}^{\\mathbb{Q}}"
+      "scope": "local",
+      "symbol": "Y"
     },
     {
       "column": 1,
@@ -162,13 +162,22 @@
       "symbol": "G_i"
     },
     {
-      "column": 1,
-      "definitionId": "shared:risk-neutral-expectation",
-      "key": "risk-neutral-expectation",
+      "column": 20,
+      "definitionId": "shared:expectation",
+      "key": "expectation",
+      "kind": "prose",
+      "line": 58,
+      "scope": "shared",
+      "symbol": "\\mathbb{E}"
+    },
+    {
+      "column": 25,
+      "definitionId": "page:cds.premium-protection-legs-and-par-spread:cds-event-payoff",
+      "key": "cds-event-payoff",
       "kind": "math",
       "line": 63,
-      "scope": "shared",
-      "symbol": "\\mathbb{E}^{\\mathbb{Q}}"
+      "scope": "local",
+      "symbol": "Y"
     },
     {
       "column": 1,
@@ -189,13 +198,22 @@
       "symbol": "G_i"
     },
     {
-      "column": 1,
-      "definitionId": "shared:risk-neutral-expectation",
-      "key": "risk-neutral-expectation",
+      "column": 27,
+      "definitionId": "page:cds.premium-protection-legs-and-par-spread:cds-event-payoff",
+      "key": "cds-event-payoff",
       "kind": "math",
       "line": 67,
-      "scope": "shared",
-      "symbol": "\\mathbb{E}^{\\mathbb{Q}}"
+      "scope": "local",
+      "symbol": "Y"
+    },
+    {
+      "column": 60,
+      "definitionId": "page:cds.premium-protection-legs-and-par-spread:cds-default-event",
+      "key": "cds-default-event",
+      "kind": "math",
+      "line": 67,
+      "scope": "local",
+      "symbol": "G_i"
     },
     {
       "column": 14,

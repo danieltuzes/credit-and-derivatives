@@ -72,7 +72,7 @@ notation:
         introducedInLesson: foundations.risk-neutral-pricing
 ---
 
-import AssessmentSet from '@danieltuzes/legend/components/assessments/AssessmentSet.astro';
+import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
 
 ## What you will be able to do
 
@@ -123,8 +123,10 @@ condition and its discounted-payoff consequence
 construction in a finite-state fixed-income setting
 [@tuckman-serrat-fixed-income; Ch. 7 §7.3, printed pp. 182-184, eqs. 7.7-7.8].
 
-To calculate the [[risk-neutral-expectation]], use the local
-[[risk-neutral-scenario-index]] $j$ and
+To calculate the [[expectation]] under the
+[[risk-neutral-probability-measure]] — written $\mathbb{E}^{\mathbb{Q}}$, the
+same averaging operator taken with $\mathbb{Q}$'s pricing weights — use the
+local [[risk-neutral-scenario-index]] $j$ and
 [[risk-neutral-scenario-count]] $m$. Let $x_j$ be the local
 [[risk-neutral-scenario-payoff]], in USD at $T$, and let $q_j$ be its
 dimensionless [[risk-neutral-scenario-probability]]. For disjoint,

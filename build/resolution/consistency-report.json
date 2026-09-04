@@ -3,7 +3,7 @@
     "convention-single-definition": 0,
     "glyph-unique-in-corpus": 15,
     "notation-source-locator": 0,
-    "notation-units": 28,
+    "notation-units": 27,
     "numerals-tagged": 25,
     "units-vocab": 14,
     "weak-local": 10
@@ -273,14 +273,6 @@
       "key": "probability-event-value",
       "lessonId": "foundations.probability-events-and-expectation",
       "message": "notation probability-event-value (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/probability-events-and-expectation.mdx",
-      "key": "probability-expectation",
-      "lessonId": "foundations.probability-events-and-expectation",
-      "message": "notation probability-expectation (local) declares neither units nor dimensionless",
       "severity": "warning"
     },
     {
@@ -567,6 +559,13 @@
     },
     {
       "code": "units-vocab",
+      "file": "content/notation/expectation.md",
+      "key": "expectation",
+      "message": "notation expectation units \"same units as the quantity inside the expectation\" use non-vocabulary token(s): same, inside, expectation",
+      "severity": "warning"
+    },
+    {
+      "code": "units-vocab",
       "file": "content/notation/forward-contract-value.md",
       "key": "forward-contract-value",
       "message": "notation forward-contract-value units \"stated currency at model time t\" use non-vocabulary token(s): t",
@@ -605,13 +604,6 @@
       "file": "content/notation/put-option-value.md",
       "key": "put-option-value",
       "message": "notation put-option-value units \"stated currency at model time t\" use non-vocabulary token(s): t",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/risk-neutral-expectation.md",
-      "key": "risk-neutral-expectation",
-      "message": "notation risk-neutral-expectation units \"same units as the quantity inside the expectation\" use non-vocabulary token(s): same, inside, expectation",
       "severity": "warning"
     },
     {

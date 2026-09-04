@@ -24,7 +24,8 @@ editorialStatus: draft
 aiAssisted: true
 ---
 
-Yield to maturity $y^{(m_{\mathrm B})}$ is the single nominal annual rate,
+Yield to maturity $y^{(\explain{bond-payment-frequency}{m_{\mathrm B}})}$ is the
+single nominal annual rate,
 compounded at the stated [[bond-payment-frequency]], that reproduces the toy
 [[bond-price]] from its promised cash flows.
 
@@ -32,7 +33,7 @@ In this slice it appears in
 
 $$
 P_0=\sum_{k=1}^{n}\frac{CF_k^{\mathrm{bond}}}
-{\left(1+y^{(m_{\mathrm B})}/m_{\mathrm B}\right)^k}.
+{\left(1+y^{(\explain{bond-payment-frequency}{m_{\mathrm B}})}/\explain{bond-payment-frequency}{m_{\mathrm B}}\right)^k}.
 $$
 
 It is not silently treated as the coupon rate, a spot rate, an effective annual

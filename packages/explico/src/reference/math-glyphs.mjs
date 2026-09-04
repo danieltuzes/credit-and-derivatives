@@ -27,16 +27,56 @@ export const SUPPORTED_KATEX_PARSE_VERSION = '0.16.47';
 const KEY_PATTERN = /^[a-z0-9]+(?:[.-][a-z0-9]+)*$/;
 const EXPLAIN_COMMAND = String.raw`\explain`;
 
-// Letters inside these fonts are upright roman labels (`\mathrm{B}`) or
-// universal set / operator symbols (`\mathbb{N}`, `\mathcal{F}`), not bindable
-// identifier atoms. They are treated like the base library.
-const IGNORED_FONTS = new Set([
-  'mathrm',
-  'mathbb',
-  'mathcal',
-  'mathfrak',
-  'mathscr',
+// `\mathrm{…}` always wraps an upright roman label (`\mathrm{opt}`,
+// `\mathrm{PV}`), never a bindable identifier atom, so its body is skipped whole.
+const ROMAN_LABEL_FONT = 'mathrm';
+
+// The only blackboard-bold / script tokens treated like the base library: the
+// universal number systems. This is an explicit token list, not a font class —
+// `\mathbb{E}`, `\mathbb{P}`, and `\mathbb{Q}` are ordinary identifiers that
+// must resolve to a semantic key. (`\mathbb{Q}` is the risk-neutral measure in
+// this corpus, not the rationals; a lesson that needs the rationals reaches for
+// `\explain`.)
+const IGNORED_MATH_TOKENS = new Set([
+  '\\mathbb{N}',
+  '\\mathbb{Z}',
+  '\\mathbb{R}',
+  '\\mathbb{C}',
 ]);
+
+// KaTeX font ids mapped back to their LaTeX command, so a single-letter font
+// node can be reconstructed as its source token (`\mathbb{N}`).
+const FONT_COMMANDS = new Map([
+  ['mathbb', '\\mathbb'],
+  ['mathcal', '\\mathcal'],
+  ['mathfrak', '\\mathfrak'],
+  ['mathscr', '\\mathscr'],
+  ['mathrm', '\\mathrm'],
+  ['mathbf', '\\mathbf'],
+  ['mathit', '\\mathit'],
+]);
+
+function fontBodyText(value) {
+  if (Array.isArray(value)) {
+    const parts = value.map(fontBodyText);
+    return parts.every((part) => part !== undefined)
+      ? parts.join('')
+      : undefined;
+  }
+  if (!isNode(value)) return undefined;
+  if (value.type === 'ordgroup') return fontBodyText(value.body);
+  if (value.type === 'mathord' || value.type === 'textord') return value.text;
+  return undefined;
+}
+
+/** Reconstruct the source token of a font node, e.g. `\mathbb{N}`. */
+function fontTokenText(node) {
+  if (!isNode(node) || node.type !== 'font') return undefined;
+  const command = FONT_COMMANDS.get(node.font);
+  if (command === undefined) return undefined;
+  const letters = fontBodyText(node.body);
+  return letters === undefined ? undefined : `${command}{${letters}}`;
+}
 const SOURCE_CHILD_KEYS = new Set([
   'above',
   'base',
@@ -379,7 +419,8 @@ function collectSourceStructure(tree) {
       value.type === 'text' ||
       value.type === 'op' ||
       value.type === 'operatorname' ||
-      (value.type === 'font' && IGNORED_FONTS.has(value.font));
+      (value.type === 'font' && value.font === ROMAN_LABEL_FONT) ||
+      IGNORED_MATH_TOKENS.has(fontTokenText(value));
 
     if (!ignored && isIdentifierNode(value)) {
       const span = nodeSpan(value);
@@ -459,6 +500,26 @@ function unwrapEnclosingGroupSpan(latex, span) {
     end = group.contentEnd;
   }
   return { start, end };
+}
+
+const FONT_WRAPPER_OPEN =
+  /\\(?:mathbb|mathcal|mathfrak|mathscr|mathrm|mathbf|mathit)\{$/;
+
+/**
+ * KaTeX puts no `loc` on a `\mathbb{…}` font node, so a span derived from one
+ * begins at the inner letter. When a matched span sits exactly inside a
+ * single-letter font command, widen it to wrap the whole `\mathbb{E}` token so
+ * the injected `\explain{…}{…}` stays brace-balanced.
+ */
+function expandFontWrapperSpan(latex, span) {
+  const open = latex.slice(0, span.start).match(FONT_WRAPPER_OPEN);
+  if (!open) return span;
+  const group = readBracedGroup(latex, span.start - 1);
+  if (!group || group.contentEnd - group.contentStart !== 1) return span;
+  return {
+    start: span.start - open[0].length,
+    end: Math.max(span.end, group.end),
+  };
 }
 
 /** A nested symbol may still be marked when it sits inside a script group. */
@@ -571,7 +632,10 @@ function matchCanonicalForms(latex, containers, glyphs) {
         if (key === undefined) continue;
         const rawSpan = sequenceSpan(nodes);
         if (!rawSpan) continue;
-        const span = unwrapEnclosingGroupSpan(latex, rawSpan);
+        const span = expandFontWrapperSpan(
+          latex,
+          unwrapEnclosingGroupSpan(latex, rawSpan),
+        );
         step = length;
         if (
           claimed.some(
@@ -605,6 +669,19 @@ function matchCanonicalForms(latex, containers, glyphs) {
 function matchBaseGlyphs(latex, identifiers, canonical, glyphs, scriptSpans) {
   const bindings = [];
   for (const identifier of identifiers) {
+    // An atom inside a region the author wrapped in an explicit `\explain{key}{…}`
+    // is already accounted for by that call; never re-flag or re-bind it, even
+    // when it also sits in a script inside a larger canonical match. (To bind a
+    // nested glyph separately, wrap it in its own nested `\explain`.)
+    if (
+      canonical.some(
+        (binding) =>
+          binding.level === 'explicit' && contains(binding, identifier),
+      )
+    ) {
+      continue;
+    }
+
     const cover = canonical.find((binding) => contains(binding, identifier));
     if (cover && !isSafeScriptNesting(identifier, cover, scriptSpans)) continue;
 
@@ -678,7 +755,16 @@ function unresolvedIdentifiers(latex, identifiers, bindings) {
         !bindings.some((binding) => contains(binding, identifier))
       );
     })
-    .map(({ start, end }) => ({ token: latex.slice(start, end), start, end }))
+    .map(({ start, end }) => {
+      // Report `\mathbb{E}`, not a bare `E`, so the fix hint points at the
+      // whole token the author has to wrap in `\explain`.
+      const wrapped = expandFontWrapperSpan(latex, { start, end });
+      return {
+        token: latex.slice(wrapped.start, wrapped.end),
+        start: wrapped.start,
+        end: wrapped.end,
+      };
+    })
     .sort((left, right) => left.start - right.start || left.end - right.end);
 }
 

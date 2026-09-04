@@ -8,7 +8,7 @@ sources:
   - id: hull-options-futures
     locator: 'Ch. 12 §12.3, printed pp. 259-261, Eqs. 12.5 and 12.7-12.10 (node-by-node backward induction from successor values).'
 seeAlso:
-  - risk-neutral-expectation
+  - expectation
   - discount-factor
 alignment:
   kind: competency

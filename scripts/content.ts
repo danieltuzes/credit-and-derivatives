@@ -19,7 +19,7 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
-import { compileManifest } from '@danieltuzes/legend/compiler/manifest';
+import { compileManifest } from 'explico/compiler/manifest';
 import {
   ContentCliError,
   contentCheck,
@@ -28,7 +28,7 @@ import {
   scaffoldLesson,
   scaffoldTerm,
   type Scaffold,
-} from '@danieltuzes/legend/compiler/cli';
+} from 'explico/compiler/cli';
 import { courseConfig } from '../content/course.config';
 
 const USAGE = `Usage:

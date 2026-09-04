@@ -5,7 +5,7 @@ import {
   createNotationKatexOptions,
   notationKatexOptions,
   trustNotationMarker,
-} from '@danieltuzes/legend/reference/katex-options.mjs';
+} from 'explico/reference/katex-options.mjs';
 
 describe('notation KaTeX options', () => {
   it('renders the explain macro as one inert semantic data marker', () => {

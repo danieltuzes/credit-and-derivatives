@@ -2,14 +2,14 @@ import { describe, expect, it } from 'vitest';
 import {
   assertValidNotation,
   buildNotationRegistry,
-} from '@danieltuzes/legend/reference/registry';
+} from 'explico/reference/registry';
 import type {
   LocalNotationDefinitionInput,
   NotationDiagnosticCode,
   NotationLessonInput,
   NotationReferenceInput,
   SharedNotationDefinitionInput,
-} from '@danieltuzes/legend/reference/types';
+} from 'explico/reference/types';
 
 const reference = (
   key: string,

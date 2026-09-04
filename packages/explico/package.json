@@ -1,5 +1,5 @@
 {
-  "name": "@danieltuzes/legend",
+  "name": "explico",
   "version": "0.1.0",
   "description": "Build-time engine for prerequisite-aware, notation-rigorous course content: one validated content model, a semantic notation/citation/equation system with a completeness gate, and a deterministic JSON manifest.",
   "type": "module",
