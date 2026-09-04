@@ -219,6 +219,7 @@ introducedInLesson}` or `{kind: 'general', rationale}`.
 | Shared `.md` body           | `[[key]]`                 | same                                                                                      |
 | Lesson math `$…$` / `$$…$$` | ordinary LaTeX — `D(0,t)` | Each identifier resolves to the unique in-scope key; the trusted marker is injected       |
 | Math, disambiguation only   | `\explain{key}{latex}`    | Same marker, explicit key; use only when scope is ambiguous or the glyph is non-canonical |
+| A card's own `formula`      | `glosses:` frontmatter    | Symbol + name (+ optional units) for a letter the formula needs; no card, no edge (D15)   |
 
 `[[key]]` and `[@id]` are MDX-safe with no brace escaping (D3b). Do **not** use
 `\(…\)` / `\[…\]` delimiters. Do not hand-author `\htmlData`, inline JS
@@ -237,17 +238,75 @@ resolve only against other shared definitions, so a shared meaning cannot change
 with the calling page. `seeAlso` is navigation, not a scope edge, but its
 targets are still checked.
 
+### Two-tier vocabulary: cards and glosses (D15)
+
+A **card** is a notation entry as described above — `content/notation/*.md` or
+`notation.local` — with a description, units, sources, curriculum alignment, and
+review state. It gets a glossary card and is a node in the curriculum graph.
+
+A **gloss** is declared on a card, in that card's `glosses:` list, and carries a
+symbol, a name, and optionally a bare units string:
+
+```yaml
+formula: '\mathbb{E}[X]=\int_{\Omega} X(\omega)\,d\mathbb{P}(\omega)'
+glosses:
+  - latex: '\Omega'
+    name: 'sample space'
+  - latex: '\mathbb{P}'
+    name: 'probability measure'
+    units: 'dimensionless probability weights between zero and one'
+```
+
+It exists so a card's rigorous `formula` can name its own letters. It has no
+description, no sources, no alignment, no review state, and no glossary card;
+its key is **derived** as `<card key>.<slug(name)>` (`expectation.sample-space`),
+never authored, so it is entry-scoped and two cards may each gloss `T`.
+
+The load-bearing property is that **a gloss creates no edge**. A card that
+references another card drags it into the lesson bundle of every lesson that
+uses the referrer, and a foundations lesson then fails `alignment-introduction`
+on a symbol introduced later in the track. A letter a definition needs in order
+to be stated is not a curriculum prerequisite — see
+[ADR 0002](adr/0002-notation-authoring.md), the D15 update, for the worked
+failure this reasoning comes from.
+
+**Formula scope.** A card's `formula` resolves against an entry-scoped table
+(`reference/gloss.ts`, `formulaGlyphScope`): the card, its glosses, and any card
+the formula names with `\explain{key}{latex}`, plus the base library. That is
+narrower than a lesson page's scope, and narrower than the registry-wide table a
+card's _body_ math still uses. `\explain{key}` in a formula widens the table
+without becoming a reference edge; the key's existence is checked by
+`gate-math.ts`, so a marker naming no card is reported.
+
+**Promotion / demotion.** Because a formula spells LaTeX and never a key,
+promoting a gloss is: delete the gloss line, add `content/notation/<key>.md`.
+Nothing else in the corpus changes. `gloss-collides-with-card` blocks (Tier 1)
+if both are left in place; `gloss-wants-promoting` (one gloss on three or more
+entries) and `card-wants-demoting` (a card with no formula, no sources, a stub
+body, and no lesson using it) are Tier-3 warnings.
+
+**Rendering.** The glossary shows `meaning`, then the resolved `formula` with
+live glyphs, then the body. Under the formula is the gloss list — a gloss has no
+card, so that list is where its name lives with JavaScript off. The hover panel
+adds a back stack and a breadcrumb over it, and bottoms out after one hop
+because glosses terminate. `render-notation-math.ts` admits exactly one marker
+attribute, `data-notation-key`, re-validated at the component boundary against
+`NOTATION_KEY_PATTERN` — as narrow as the KaTeX trust callback itself.
+
 ### Completeness gate (✅)
 
 `math-glyphs.mjs` (pinned to KaTeX `0.16.47`) parses each `$…$` / `$$…$$`
 expression, matches every declared page glyph, and reports any leftover
 identifier atom. `gate-math.ts` runs that **same resolver** from
 `pnpm validate:content` over every rendered-math context — lesson body
-(component slots included), each `notation.local` `formula`, and any `$…$` in an
-assessment `prompt` / `explanation`. Body / component-slot math **blocks** the
+(component slots included), each `notation.local` `formula`, each shared card's
+`formula` against its entry scope (D15), and any `$…$` in an assessment
+`prompt` / `explanation`. Body / component-slot math **blocks** the
 build (`remark-notation` enforces the same on the render path so the KaTeX trust
-callback never sees an unresolved glyph); `formula` and assessment math are
-Tier-3 warnings until content is brought into line. Failure names
+callback never sees an unresolved glyph). `formula` **blocks** too since D15,
+now that a formula's glyphs are rendered live and explorable — an unresolved one
+is a hole the reader can see; the corpus was brought to zero when the tier was
+promoted. Assessment math stays a Tier-3 warning until its own content pass. Failure names
 `file:line: "token"`: `Unresolved notation "t" in body math. …`. Digits,
 operators, delimiters, primes, the base library (`d`, `e`, `i`, `\pi`),
 `\mathrm{…}` roman labels, and an explicit list of number-system tokens
@@ -442,6 +501,9 @@ review guideline. When you add a rule, add its enforcement or the tag.
 | Every `[[eq-key]]` / `[[slug#eq-key]]` resolves; an `eq:` key is unique per lesson                                         | `reference/equations-validate.ts` `eq-ref-resolves` / `eq-duplicate-key`; `remark-notation` on the render path                              |
 | Every notation entry has `units` or `dimensionless`; unit strings drawn from a controlled vocabulary                       | `reference/consistency.ts` `notation-units` / `units-vocab` (D6, Tier-3 warning)                                                            |
 | Every notation `sources` entry carries a non-empty locator                                                                 | `src/content.config.ts` schema + `reference/consistency.ts` `notation-source-locator` (D6)                                                  |
+| A gloss key never doubles as a card key                                                                                    | `registry.ts` `gloss-collides-with-card` (D15, Tier 1)                                                                                      |
+| A gloss repeated across entries is promoted; a card that is only a name is demoted                                         | `reference/consistency.ts` `gloss-wants-promoting` / `card-wants-demoting` (D15, Tier-3 warning)                                            |
+| A gloss name is a noun phrase, not a description; the symbol lives in `latex`                                              | `content-config.ts` schema (blocks LaTeX in a name) + `reference/consistency.ts` `gloss-name-shape` (D15, Tier-3 warning)                   |
 | No component calls `localStorage` / `sessionStorage`; storage is only in `PreferenceStore`                                 | `tests/unit/seams.test.ts`                                                                                                                  |
 | Progress + analytics are seams with no static-build implementation; the viewer is always anonymous                         | `tests/unit/seams.test.ts`                                                                                                                  |
 | `content/domain/` imports no React/Astro/content/browser; the engine (`src/`) imports nothing from the course (`content/`) | `tests/unit/boundaries.test.ts` (`core-not-course`, `domain-pure`) — Phase F                                                                |
@@ -490,8 +552,10 @@ seams, the engine / course split, and packaging the engine as
 - **Tier-3 consistency findings** from `reference/consistency.ts` are recorded,
   not fixed: `numerals-tagged` (numerals in `$…$` / result tables not tied to a
   `content/domain/` call or a source locator), `notation-units` /
-  `units-vocab`, `glyph-unique-in-corpus`, `weak-local`. Each is an open
-  content pass; promotion to a blocking tier follows the content, not the code.
+  `units-vocab`, `glyph-unique-in-corpus`, `weak-local`,
+  `gloss-wants-promoting`, `card-wants-demoting`, `gloss-name-shape`. Each is an
+  open content pass;
+  promotion to a blocking tier follows the content, not the code.
 - **Tier 2 / 4 / 5 checks** in the working spec's catalogue that are documented
   but not yet coded (numeral reproduction, dimensional analysis, `axe`/​links
   in CI, the append-only ID and hash-review guards that need the LMS).

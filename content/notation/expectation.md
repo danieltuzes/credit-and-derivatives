@@ -2,6 +2,16 @@
 key: expectation
 latex: '\mathbb{E}'
 formula: '\mathbb{E}[X]=\int_{\Omega} X(\omega)\,d\mathbb{P}(\omega)'
+glosses:
+  - latex: 'X'
+    name: 'random variable'
+  - latex: '\Omega'
+    name: 'sample space'
+  - latex: '\omega'
+    name: 'outcome'
+  - latex: '\mathbb{P}'
+    name: 'probability measure'
+    units: 'dimensionless probability weights between zero and one'
 meaning: 'Operator returning the average of a random quantity, each outcome weighted by its probability under a stated measure; a superscript names that measure when more than one is in play.'
 aliases:
   - expected value

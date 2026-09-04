@@ -37,6 +37,7 @@ const sharedDefinition = (
   aiAssisted: false,
   body: '',
   references: [],
+  glosses: [],
   source: { file: `notation/${key}.md` },
   ...overrides,
 });
@@ -57,6 +58,7 @@ const localDefinition = (
     rationale: 'Test fixture with page-local meaning.',
   },
   references: [],
+  glosses: [],
   source: { file: `lessons/${lessonId}.mdx` },
   ...overrides,
 });

@@ -22,6 +22,7 @@ const shared = (
   aiAssisted: false,
   body: '',
   references: [],
+  glosses: [],
   source: { file: `src/content/notation/${key}.md` },
 });
 
@@ -58,6 +59,7 @@ describe('completeness gate — every rendered-math context', () => {
                 seeAlso: [],
                 alignment: { kind: 'general', rationale: 'Local.' },
                 references: [],
+                glosses: [],
                 source: { file: 'src/content/docs/foundations/clean.mdx' },
               },
             ],
@@ -144,7 +146,7 @@ describe('completeness gate — every rendered-math context', () => {
     });
   });
 
-  it('warns on an unresolved right-hand-side variable in a notation.local formula', () => {
+  it('blocks an unresolved right-hand-side variable in a notation.local formula', () => {
     const diagnostics = gateContentMath({
       notationInput: {
         sharedDefinitions: [discountFactor],
@@ -163,6 +165,7 @@ describe('completeness gate — every rendered-math context', () => {
                 seeAlso: [],
                 alignment: { kind: 'general', rationale: 'Local.' },
                 references: [],
+                glosses: [],
                 source: {
                   file: 'src/content/docs/foundations/formula.mdx',
                 },
@@ -178,7 +181,9 @@ describe('completeness gate — every rendered-math context', () => {
     expect(diagnostics).toHaveLength(1);
     expect(diagnostics[0]).toMatchObject({
       context: 'formula',
-      severity: 'warning',
+      // D15: a formula's glyphs are rendered live, so an unresolved one is a
+      // hole the reader can see — Tier 1, not a warning.
+      severity: 'error',
       file: 'src/content/docs/foundations.formula.mdx',
       token: 'h',
     });

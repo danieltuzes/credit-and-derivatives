@@ -80,6 +80,7 @@ const alignedDefinition = (
   aiAssisted: false,
   body: '',
   references: [],
+  glosses: [],
   source: { file: 'notation/discount-factor.md' },
   ...overrides,
 });

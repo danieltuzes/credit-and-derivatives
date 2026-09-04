@@ -1,10 +1,13 @@
 ---
 import { getCollection, render } from 'astro:content';
 import NotationMath from './NotationMath.astro';
+import NotationFormula from './NotationFormula.astro';
 import NotationLayer, {
   type NotationLayerDefinition,
 } from './NotationLayer.astro';
 import { resolveLabel } from '../../reference/label';
+import { formulaGlyphScope, resolveGlosses } from '../../reference/gloss';
+import type { GlyphScopeEntry, ResolvedGloss } from '../../reference/gloss';
 import {
   isLessonSlug,
   lessonIdFromSlug,
@@ -38,6 +41,35 @@ for (const backlink of manifest.notation.backlinks) {
   lessonsByNotationKey.set(backlink.key, current);
 }
 
+// The two-tier vocabulary (D15). Every card is a node here; its glosses are
+// not — they are symbol-and-name entries owned by the card whose `formula`
+// needs them, kept out of the registry so a definitional letter never becomes
+// a curriculum edge.
+const cardsByKey = new Map<string, GlyphScopeEntry>(
+  notationEntries.map((entry) => [
+    entry.data.key,
+    { key: entry.data.key, notation: entry.data.latex },
+  ]),
+);
+const glossesByKey = new Map<string, ResolvedGloss[]>(
+  notationEntries.map((entry) => [
+    entry.data.key,
+    resolveGlosses(entry.data.key, entry.data.glosses),
+  ]),
+);
+const formulaScopeByKey = new Map<string, GlyphScopeEntry[]>(
+  notationEntries.map((entry) => [
+    entry.data.key,
+    formulaGlyphScope({
+      key: entry.data.key,
+      notation: entry.data.latex,
+      formula: entry.data.formula,
+      glosses: glossesByKey.get(entry.data.key) ?? [],
+      cardsByKey,
+    }),
+  ]),
+);
+
 const renderedEntries = await Promise.all(
   notationEntries
     .sort(
@@ -60,6 +92,9 @@ const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
     notation: entry.data.latex,
     label: labelOf(entry.data),
     summary: entry.data.meaning,
+    formula: entry.data.formula,
+    formulaScope: formulaScopeByKey.get(entry.data.key),
+    glosses: glossesByKey.get(entry.data.key),
     units: entry.data.units,
     seeAlso: entry.data.seeAlso,
     editorialStatus: entry.data.editorialStatus,
@@ -148,6 +183,19 @@ const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
               </div>
             )}
           </dl>
+
+          <p class="glossary-meaning">{entry.data.meaning}</p>
+
+          {entry.data.formula && (
+            <div class="glossary-formula">
+              <NotationFormula
+                formula={entry.data.formula}
+                scope={formulaScopeByKey.get(entry.data.key) ?? []}
+                glosses={glossesByKey.get(entry.data.key)}
+                entryLabel={labelOf(entry.data)}
+              />
+            </div>
+          )}
 
           <div class="glossary-definition">
             <Content />
@@ -362,6 +410,18 @@ const panelDefinitions: NotationLayerDefinition[] = notationEntries.map(
 
   .glossary-metadata dd {
     margin: 0;
+  }
+
+  .glossary-meaning {
+    margin-block: 0 1rem;
+  }
+
+  .glossary-formula {
+    margin-block: 1rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+    background: var(--sl-color-bg);
   }
 
   .see-also {

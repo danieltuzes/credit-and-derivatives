@@ -42,7 +42,10 @@ export type ConsistencyCode =
   | 'convention-single-definition'
   | 'numerals-tagged'
   | 'weak-local'
-  | 'notation-source-locator';
+  | 'notation-source-locator'
+  | 'gloss-wants-promoting'
+  | 'card-wants-demoting'
+  | 'gloss-name-shape';
 
 export interface ConsistencyDiagnostic {
   readonly code: ConsistencyCode;
@@ -325,6 +328,150 @@ function checkNotationSourceLocator(
   }
 }
 
+/**
+ * The two-tier vocabulary needs both directions kept honest (D15).
+ *
+ * A gloss is cheap on purpose, and cheapness invites copying: the same symbol
+ * and name glossed on three cards is a shared meaning that should be a card,
+ * reviewed once, with sources and a curriculum home. `GLOSS_PROMOTION_LIMIT`
+ * is where "a letter this formula needs" stops being a plausible reading.
+ */
+const GLOSS_PROMOTION_LIMIT = 3;
+
+function checkGlossWantsPromoting(
+  input: ConsistencyInput,
+  out: ConsistencyDiagnostic[],
+): void {
+  const owners = new Map<string, { label: string; keys: Set<string> }>();
+  const record = (
+    ownerKey: string,
+    gloss: { notation: string; label: string },
+  ) => {
+    const id = `${gloss.notation}\u0000${gloss.label.toLowerCase()}`;
+    const current = owners.get(id) ?? { label: gloss.label, keys: new Set() };
+    current.keys.add(ownerKey);
+    owners.set(id, current);
+  };
+
+  for (const definition of input.notationInput.sharedDefinitions) {
+    for (const gloss of definition.glosses) record(definition.key, gloss);
+  }
+  for (const lesson of input.notationInput.lessons) {
+    for (const definition of lesson.localDefinitions) {
+      for (const gloss of definition.glosses) record(definition.key, gloss);
+    }
+  }
+
+  for (const [id, { label, keys }] of [...owners].sort(([a], [b]) =>
+    a.localeCompare(b),
+  )) {
+    if (keys.size < GLOSS_PROMOTION_LIMIT) continue;
+    const glyph = id.split('\u0000')[0] ?? '';
+    if (input.lintIgnore.matches('gloss-wants-promoting', glyph)) continue;
+    out.push({
+      code: 'gloss-wants-promoting',
+      severity: 'warning',
+      glyph,
+      message: `gloss ${JSON.stringify(glyph)} (${label}) is declared on ${keys.size} entries (${[...keys].sort().join(', ')}); a meaning reused this widely wants promoting to a card`,
+    });
+  }
+}
+
+/**
+ * The other direction: a card that never grew past its name is carrying the
+ * full weight of the card tier — a glossary entry, a curriculum node, a review
+ * obligation — for something a gloss would say as well.
+ */
+const CARD_BODY_MINIMUM_WORDS = 25;
+
+function checkCardWantsDemoting(
+  input: ConsistencyInput,
+  out: ConsistencyDiagnostic[],
+): void {
+  const used = new Set(
+    input.registry.backlinks.map((backlink) => backlink.key),
+  );
+
+  for (const definition of input.notationInput.sharedDefinitions) {
+    if (definition.formula !== undefined) continue;
+    if (definition.sources.length > 0) continue;
+    if (used.has(definition.key)) continue;
+    const words = stripCode(definition.body)
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length;
+    if (words >= CARD_BODY_MINIMUM_WORDS) continue;
+    if (input.lintIgnore.matches('card-wants-demoting', definition.key)) {
+      continue;
+    }
+    out.push({
+      code: 'card-wants-demoting',
+      severity: 'warning',
+      key: definition.key,
+      file: definition.source.file,
+      count: words,
+      message: `notation card ${definition.key} has no formula, no sources, a ${words}-word body, and no lesson uses it; it carries no more than a name — a gloss on the entry that needs it may be the right home`,
+    });
+  }
+}
+
+/**
+ * A gloss `name` is the name of a symbol, not a description of it — the
+ * description tier is the card. The schema already blocks the unambiguous
+ * failure (LaTeX in the name); this catches the softer drift toward prose.
+ *
+ * The word limit is measured, not guessed: across the 62 shared cards the
+ * longest name is six words (`cds protection buyer net present value`), and
+ * that is the most complicated quantity in the course. A gloss names a *letter*
+ * inside one formula, so it should be shorter still. Seven or more words means
+ * the author is describing rather than naming — a warning, never a block,
+ * because a genuinely complicated quantity may earn the exception through
+ * `lint-ignore.yml`.
+ */
+const GLOSS_NAME_WORD_LIMIT = 6;
+const GLOSS_NAME_PROSE = /[.;]|\b(?:which|whose|that is|such that)\b/i;
+
+function checkGlossNameShape(
+  input: ConsistencyInput,
+  out: ConsistencyDiagnostic[],
+): void {
+  const check = (
+    gloss: { key: string; label: string },
+    file: string,
+    lessonId?: string,
+  ) => {
+    const words = gloss.label.trim().split(/\s+/).filter(Boolean);
+    const reason =
+      words.length > GLOSS_NAME_WORD_LIMIT
+        ? `${words.length} words`
+        : GLOSS_NAME_PROSE.test(gloss.label)
+          ? 'sentence punctuation or a relative clause'
+          : undefined;
+    if (reason === undefined) return;
+    if (input.lintIgnore.matches('gloss-name-shape', gloss.key)) return;
+    out.push({
+      code: 'gloss-name-shape',
+      severity: 'warning',
+      key: gloss.key,
+      file,
+      ...(lessonId ? { lessonId } : {}),
+      message: `gloss ${gloss.key} is named ${JSON.stringify(gloss.label)} (${reason}); a gloss name is a short noun phrase naming the symbol, not a description of it`,
+    });
+  };
+
+  for (const definition of input.notationInput.sharedDefinitions) {
+    for (const gloss of definition.glosses) {
+      check(gloss, definition.source.file);
+    }
+  }
+  for (const lesson of input.notationInput.lessons) {
+    for (const definition of lesson.localDefinitions) {
+      for (const gloss of definition.glosses) {
+        check(gloss, definition.source.file, lesson.lessonId);
+      }
+    }
+  }
+}
+
 const CHECKS: ((
   input: ConsistencyInput,
   out: ConsistencyDiagnostic[],
@@ -335,6 +482,9 @@ const CHECKS: ((
   checkNumeralsTagged,
   checkWeakLocal,
   checkNotationSourceLocator,
+  checkGlossWantsPromoting,
+  checkCardWantsDemoting,
+  checkGlossNameShape,
 ];
 
 /**
@@ -369,6 +519,9 @@ export function consistencyCounts(
     'numerals-tagged': 0,
     'weak-local': 0,
     'notation-source-locator': 0,
+    'gloss-wants-promoting': 0,
+    'card-wants-demoting': 0,
+    'gloss-name-shape': 0,
   } satisfies Record<ConsistencyCode, number>;
   for (const diagnostic of diagnostics) counts[diagnostic.code] += 1;
   return counts;

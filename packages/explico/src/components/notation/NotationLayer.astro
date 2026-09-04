@@ -11,8 +11,16 @@ export interface NotationLayerDefinition {
   key: string;
   notation: string;
   label: string;
-  summary: string;
+  /** A card's `meaning`. Absent on a gloss, which is a symbol and a name. */
+  summary?: string;
   formula?: string;
+  /**
+   * Entry-scoped glyph table for `formula` (D15). Without it the formula
+   * renders inert, as it did before the two-tier vocabulary.
+   */
+  formulaScope?: readonly GlyphScopeEntry[];
+  /** Symbols the formula names that have no card of their own. */
+  glosses?: readonly ResolvedGloss[];
   units?: string;
   seeAlso?: readonly string[];
   alignment?: NotationAlignment;
@@ -37,7 +45,9 @@ export interface Props {
 }
 
 import NotationMath from './NotationMath.astro';
+import NotationFormula from './NotationFormula.astro';
 import HoverPanel from '../HoverPanel.astro';
+import type { GlyphScopeEntry, ResolvedGloss } from '../../reference/gloss';
 
 const {
   definitions,
@@ -77,6 +87,22 @@ const items = definitions.map((definition) => {
 
   return { ...definition, scope, href };
 });
+
+// Glosses (D15) have no card and no anchor, so they need a data source for the
+// panel. Their names are already visible under the formula they belong to
+// (`NotationFormula` renders that list, and it is the no-JS baseline), so these
+// blocks are hidden and exist only for the enhancement to read.
+const glossItems = items.flatMap((definition) => definition.glosses ?? []);
+
+for (const gloss of glossItems) {
+  if (!keyPattern.test(gloss.key)) {
+    throw new Error(`Unsafe notation gloss key: ${gloss.key}`);
+  }
+  if (seen.has(gloss.key)) {
+    throw new Error(`Duplicate notation key in NotationLayer: ${gloss.key}`);
+  }
+  seen.add(gloss.key);
+}
 
 const panelId = `${id}-panel`;
 ---
@@ -134,12 +160,22 @@ const panelId = `${id}-panel`;
                   )}
               </dt>
               <dd>
-                <p data-notation-summary>{definition.summary}</p>
-                {definition.formula && (
-                  <span class="notation-formula" data-notation-formula>
-                    <NotationMath latex={definition.formula} />
-                  </span>
+                {definition.summary && (
+                  <p data-notation-summary>{definition.summary}</p>
                 )}
+                {definition.formula &&
+                  (definition.formulaScope ? (
+                    <NotationFormula
+                      formula={definition.formula}
+                      scope={definition.formulaScope}
+                      glosses={definition.glosses}
+                      entryLabel={definition.label}
+                    />
+                  ) : (
+                    <span class="notation-formula" data-notation-formula>
+                      <NotationMath latex={definition.formula} />
+                    </span>
+                  ))}
                 {definition.units && (
                   <p class="notation-units" data-notation-units>
                     <strong>Units:</strong> {definition.units}
@@ -160,6 +196,24 @@ const panelId = `${id}-panel`;
             </div>
           ))}
         </dl>
+
+        {glossItems.map((gloss) => (
+          <div
+            class="notation-gloss-source"
+            data-notation-entry={gloss.key}
+            hidden
+          >
+            <span class="notation-symbol-trigger" data-notation-key={gloss.key}>
+              <NotationMath class="notation-symbol" latex={gloss.notation} />
+            </span>
+            <span data-notation-link={gloss.key}>{gloss.label}</span>
+            {gloss.units && (
+              <span data-notation-units>
+                <strong>Units:</strong> {gloss.units}
+              </span>
+            )}
+          </div>
+        ))}
       </details>
 
       {!panelOnly && (
@@ -172,11 +226,22 @@ const panelId = `${id}-panel`;
 
       <HoverPanel id={panelId} label="Notation explanation" data-notation-panel>
         <div class="notation-panel-body">
+          <nav class="notation-panel-trail" data-panel-trail hidden>
+            <button
+              class="notation-panel-back"
+              type="button"
+              data-panel-back
+              aria-controls={panelId}
+            >
+              <span aria-hidden="true">←</span> Back
+            </button>
+            <span class="notation-panel-crumb" data-panel-crumb />
+          </nav>
           <header class="notation-panel-heading">
             <span class="notation-panel-symbol" data-panel-symbol />
             <h3 data-panel-title />
           </header>
-          <p data-panel-summary />
+          <p data-panel-summary hidden />
           <div data-panel-formula hidden />
           <p data-panel-units hidden />
           <a data-panel-link>Open the full definition</a>
@@ -221,6 +286,8 @@ const panelId = `${id}-panel`;
     const panelUnits = root.querySelector<HTMLElement>('[data-panel-units]');
     const panelLink =
       root.querySelector<HTMLAnchorElement>('[data-panel-link]');
+    const panelTrail = root.querySelector<HTMLElement>('[data-panel-trail]');
+    const panelCrumb = root.querySelector<HTMLElement>('[data-panel-crumb]');
     if (
       !panel ||
       !panelSymbol ||
@@ -295,7 +362,28 @@ const panelId = `${id}-panel`;
       externalTriggerFrom(node) ??
       symbolTriggerFrom(node);
 
-    const render = (_anchor: HTMLElement, key: string) => {
+    // The reader's path through the panel. A card's formula carries live
+    // symbols (D15), so pointing at one and clicking it pushes a frame instead
+    // of replacing the panel outright; the trail is how they get back. The
+    // stack is unbounded because it costs nothing, and in practice it bottoms
+    // out after one hop: glosses terminate — they have no formula of their own.
+    const trail: string[] = [];
+    let trailRoot: string | null = null;
+
+    const labelOf = (entry: HTMLElement, key: string) =>
+      entry
+        .querySelector<HTMLElement>('[data-notation-link]')
+        ?.textContent?.trim() ?? key;
+
+    const renderTrail = () => {
+      if (!panelTrail || !panelCrumb) return;
+      panelTrail.hidden = trail.length === 0;
+      const from = trail.at(-1);
+      const entry = from ? entries.get(from) : undefined;
+      panelCrumb.textContent = entry ? labelOf(entry, from ?? '') : '';
+    };
+
+    const renderKey = (key: string) => {
       const entry = entries.get(key);
       if (!entry) return false;
 
@@ -305,14 +393,13 @@ const panelId = `${id}-panel`;
           ? [sourceSymbol.cloneNode(true)]
           : [document.createTextNode(entry.dataset.notationEntry ?? key)]),
       );
-      panelTitle.textContent =
-        entry
-          .querySelector<HTMLAnchorElement>('[data-notation-link]')
-          ?.textContent?.trim() ?? key;
-      panelSummary.textContent =
+      panelTitle.textContent = labelOf(entry, key);
+      setOptionalText(
+        panelSummary,
         entry
           .querySelector<HTMLElement>('[data-notation-summary]')
-          ?.textContent?.trim() ?? '';
+          ?.textContent?.trim() ?? '',
+      );
       const sourceFormula = entry.querySelector<HTMLElement>(
         '[data-notation-formula]',
       );
@@ -326,9 +413,53 @@ const panelId = `${id}-panel`;
           .querySelector<HTMLElement>('[data-notation-units]')
           ?.textContent?.trim() ?? '',
       );
-      panelLink.href = entry.dataset.notationHref ?? `#notation-${key}`;
+
+      // A gloss has no card to open. Its own entry block is the whole of it.
+      const href = entry.dataset.notationHref;
+      panelLink.hidden = href === undefined;
+      if (href !== undefined) panelLink.href = href;
+
+      panel.dataset.panelKey = key;
+      renderTrail();
       return true;
     };
+
+    // `createHoverPanel` re-shows a pinned explanation whenever focus moves —
+    // and a click inside the panel moves focus, because the formula region and
+    // the back control are both focusable. Treat a re-show of the entry the
+    // reader is already inside as idempotent, or every step into a symbol is
+    // undone by the frame that follows it.
+    const render = (_anchor: HTMLElement, key: string) => {
+      if (!panel.hidden && key === trailRoot) return entries.has(key);
+      trailRoot = key;
+      trail.length = 0;
+      return renderKey(key);
+    };
+
+    const navigateTo = (key: string) => {
+      const from = panel.dataset.panelKey;
+      if (!from || from === key || !entries.has(key)) return;
+      trail.push(from);
+      renderKey(key);
+    };
+
+    // A symbol inside the panel is a clone, so it is in none of the trigger
+    // sets the hover engine watches; the panel owns these two interactions.
+    panel.addEventListener('click', (event) => {
+      const back = closestElement(event.target, '[data-panel-back]');
+      if (back) {
+        const previous = trail.pop();
+        if (previous) renderKey(previous);
+        else renderTrail();
+        return;
+      }
+
+      const symbol = closestElement(event.target, triggerSelector);
+      const key = symbol?.dataset.notationKey;
+      if (!symbol || !key || symbol.closest('.katex-mathml')) return;
+      event.preventDefault();
+      navigateTo(key);
+    });
 
     const updateControls = (pinnedKey: string | null, visible: boolean) => {
       for (const control of controls) {
@@ -358,6 +489,10 @@ const panelId = `${id}-panel`;
         panel.dataset.activeNotationKey = key;
       },
       onClose: () => {
+        trail.length = 0;
+        trailRoot = null;
+        delete panel.dataset.panelKey;
+        renderTrail();
         delete panel.dataset.activeNotationKey;
         for (const trigger of highlightTargets) {
           trigger.classList.remove('is-notation-active');
@@ -516,6 +651,57 @@ const panelId = `${id}-panel`;
 
     /* The fixed-position shell is `HoverPanel`; these rules style only the
        notation-owned fields slotted into it. */
+    /* `display: flex` outranks the UA `[hidden]` rule, so the trail has to
+       opt back out explicitly or a closed stack still shows its chrome. */
+    .notation-panel-trail[hidden] {
+      display: none;
+    }
+
+    .notation-panel-trail {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-block-end: 0.6rem;
+      padding-block-end: 0.5rem;
+      border-bottom: 1px solid var(--sl-color-gray-5);
+      color: var(--sl-color-gray-3);
+      font-size: var(--sl-text-xs);
+    }
+
+    .notation-panel-back {
+      padding: 0.1rem 0.4rem;
+      border: 1px solid var(--sl-color-gray-5);
+      border-radius: 0.3rem;
+      color: var(--sl-color-text-accent);
+      background: var(--sl-color-bg);
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .notation-panel-back:hover {
+      border-color: var(--sl-color-accent);
+      background: var(--sl-color-accent-low);
+    }
+
+    .notation-panel-crumb {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Symbols inside the panel's formula are the click-through targets. */
+    .notation-panel-body [data-panel-formula] :global([data-notation-key]) {
+      border-radius: 0.16em;
+      cursor: pointer;
+    }
+
+    .notation-panel-body
+      [data-panel-formula]
+      :global([data-notation-key]:hover) {
+      background: var(--sl-color-accent-low);
+      box-shadow: 0 0 0 0.12em var(--sl-color-accent-low);
+    }
+
     .notation-panel-heading {
       display: flex;
       align-items: baseline;

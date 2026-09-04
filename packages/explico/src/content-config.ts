@@ -3,6 +3,7 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { docsSchema } from '@astrojs/starlight/schema';
 import { isSubstantiveMeaning } from './reference/prose';
+import { glossKeySegment } from './reference/gloss';
 
 // Phase F: content lives in the top-level `content/` folder, not `src/content/`.
 // `docsLoader()` is hard-wired to `<srcDir>/content/docs`, so the `docs`
@@ -71,6 +72,42 @@ const notationSource = z.union([
  * `label` is authored only where that reads wrong. The `notationProse`
  * refinement rejects an under-specified `meaning`.
  */
+/**
+ * A **gloss** on a notation card: a symbol the card's own `formula` needs in
+ * order to be written down, carrying a name and nothing else (D15).
+ *
+ * A gloss is deliberately cheaper than a card. It has no description, no
+ * sources, no curriculum alignment, no review state, and no glossary card of
+ * its own; it is not a node in the curriculum graph and never creates a
+ * reference edge. Its key is derived, not authored — `<card key>.<slug(name)>`
+ * — so a gloss is scoped to the card that declares it and two cards may each
+ * gloss `T`. Because a formula spells LaTeX and never a key, **promoting** a
+ * gloss is exactly: delete this line, add `content/notation/<key>.md`.
+ *
+ * `units` is optional and stays a bare unit string: "T — time" is ambiguous in
+ * a corpus with several `T`s, "T — time, years from valuation" is not, and it
+ * is still one line. Prose belongs on a card.
+ */
+const notationGloss = z.object({
+  latex: z.string().min(1),
+  name: z
+    .string()
+    .min(1)
+    .refine((value) => glossKeySegment(value) !== undefined, {
+      message:
+        'A gloss name must contain letters or digits so a key can be derived from it.',
+    })
+    // The symbol goes in `latex`, the name names it. A name carrying LaTeX is
+    // the one unambiguous way to get this field wrong, so it blocks; a name
+    // that is merely long is a Tier-3 `gloss-name-shape` warning instead,
+    // because a complicated quantity may honestly need several words.
+    .refine((value) => !/[\\$`\n]/.test(value), {
+      message:
+        'A gloss name is a plain noun phrase; put the symbol in `latex`, not in the name.',
+    }),
+  units: z.string().min(1).optional(),
+});
+
 const notationEntryShape = z.object({
   key: id,
   latex: z.string().min(1),
@@ -82,6 +119,7 @@ const notationEntryShape = z.object({
   sources: z.array(notationSource).default([]),
   alignment: notationAlignmentDefault,
   label: z.string().min(1).optional(),
+  glosses: z.array(notationGloss).default([]),
 });
 
 const localNotationDefinition = notationEntryShape;

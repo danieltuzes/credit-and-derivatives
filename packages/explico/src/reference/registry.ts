@@ -58,6 +58,8 @@ export function buildNotationRegistry(
   );
   const availableDefinitionIds = new Set(definitions.keys());
 
+  validateGlossKeys(definitions, diagnostics);
+
   // `notation.uses` is retired (D1 decision): a lesson pulls a shared key into
   // scope by referencing it (`[[key]]`/`\explain`), and every reference resolves
   // directly against page-local then shared definitions.
@@ -411,6 +413,43 @@ function normalizeLocalDefinition(
   };
 }
 
+/**
+ * A gloss key is derived as `<card key>.<slug(name)>`, so it is entry-scoped
+ * and cannot clash with another card's glosses. It can still collide with a
+ * **card** whose own key happens to take that shape — and a colliding key
+ * would make the same string mean two things in the flat glyph table, which
+ * is exactly what the semantic-key design exists to prevent. Tier 1.
+ *
+ * This is also the promotion boundary: promoting a gloss means deleting the
+ * gloss line *and* adding the card. Leaving both in place fails here rather
+ * than resolving to whichever the table saw first.
+ */
+function validateGlossKeys(
+  definitions: ReadonlyMap<string, DefinitionCandidate>,
+  diagnostics: NotationDiagnostic[],
+): void {
+  const cardKeys = new Set(
+    [...definitions.values()].map((candidate) => candidate.input.key),
+  );
+
+  for (const candidate of definitions.values()) {
+    for (const gloss of candidate.input.glosses) {
+      if (!cardKeys.has(gloss.key)) continue;
+      diagnostics.push(
+        diagnostic({
+          code: 'gloss-collides-with-card',
+          message: `${candidate.id} glosses ${JSON.stringify(gloss.label)} as ${gloss.key}, which is also a notation card; delete the gloss or rename it`,
+          key: gloss.key,
+          lessonId:
+            candidate.kind === 'local' ? candidate.lesson.lessonId : undefined,
+          definitionId: candidate.id,
+          source: candidate.input.source,
+        }),
+      );
+    }
+  }
+}
+
 function validateReferenceKey(
   reference: NotationReferenceInput,
   owner: DefinitionCandidate,
@@ -503,6 +542,7 @@ function toDefinitionRecord(
       status: input.status,
       aiAssisted: input.aiAssisted,
       body: input.body,
+      glosses: input.glosses,
       source: input.source,
       resolvedReferences: candidate.resolvedReferences,
       ...(input.formula === undefined ? {} : { formula: input.formula }),
@@ -525,6 +565,7 @@ function toDefinitionRecord(
     seeAlso: input.seeAlso,
     alignment: input.alignment,
     status: candidate.lesson.status,
+    glosses: input.glosses,
     source: input.source,
     resolvedReferences: candidate.resolvedReferences,
     ...(input.formula === undefined ? {} : { formula: input.formula }),
@@ -570,6 +611,7 @@ function definitionFingerprint(candidate: DefinitionCandidate): string {
       status: input.status,
       aiAssisted: input.aiAssisted,
       body: normalizeText(input.body),
+      glosses: input.glosses,
       references,
     });
   }
@@ -586,6 +628,7 @@ function definitionFingerprint(candidate: DefinitionCandidate): string {
     sources: [...input.sources].sort(),
     seeAlso: [...input.seeAlso].sort(),
     alignment,
+    glosses: input.glosses,
     references,
   });
 }

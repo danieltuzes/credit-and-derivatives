@@ -1,6 +1,9 @@
 {
   "counts": {
+    "card-wants-demoting": 0,
     "convention-single-definition": 0,
+    "gloss-name-shape": 0,
+    "gloss-wants-promoting": 0,
     "glyph-unique-in-corpus": 15,
     "notation-source-locator": 0,
     "notation-units": 27,

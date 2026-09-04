@@ -57,7 +57,10 @@ import {
 } from '../reference/gate-math';
 import { loadLintIgnore } from '../reference/lint-ignore';
 import { buildNotationRegistry } from '../reference/registry';
+import { formulaGlyphScope } from '../reference/gloss';
+import type { GlyphScopeEntry } from '../reference/gloss';
 import { resolveReferenceId } from '../reference/references';
+import type { NotationGlossEntry } from '../reference/types';
 import type {
   EditorialStatus,
   NotationBacklink,
@@ -137,6 +140,14 @@ export interface ManifestLessonNotation {
   readonly seeAlso: readonly string[];
   readonly units?: string;
   readonly formula?: string;
+  /** Symbols the formula names that have no card of their own (D15). */
+  readonly glosses: readonly NotationGlossEntry[];
+  /**
+   * Entry-scoped glyph table for `formula` — the entry, its glosses, and any
+   * card the formula names. Precomputed here because the whole card set lives
+   * in the compiler, not in the page component.
+   */
+  readonly formulaScope: readonly GlyphScopeEntry[];
 }
 
 export interface ManifestLesson {
@@ -306,6 +317,7 @@ function lessonNotationBundle(
   bundle: NotationPageBundle | undefined,
   definitionsById: ReadonlyMap<string, NotationDefinitionRecord>,
   resolution: readonly ManifestNotationResolution[],
+  cardsByKey: ReadonlyMap<string, GlyphScopeEntry>,
 ): ManifestLesson['notation'] {
   const definitions: ManifestLessonNotation[] = [];
   for (const definitionId of bundle?.definitionIds ?? []) {
@@ -320,6 +332,16 @@ function lessonNotationBundle(
       summary: definition.summary,
       editorialStatus: definition.status,
       seeAlso: [...definition.seeAlso],
+      glosses: [...definition.glosses],
+      formulaScope: formulaGlyphScope({
+        key: definition.key,
+        notation: definition.notation,
+        glosses: definition.glosses,
+        cardsByKey,
+        ...(definition.formula === undefined
+          ? {}
+          : { formula: definition.formula }),
+      }),
       ...(definition.units === undefined ? {} : { units: definition.units }),
       ...(definition.formula === undefined
         ? {}
@@ -379,6 +401,14 @@ export async function compileManifest(
   ]);
 
   const registry = buildNotationRegistry(notationInput);
+  // Cards a `formula` may name with `\explain{key}` (D15). Shared entries
+  // only: a page-local symbol is not addressable from another entry.
+  const cardsByKey = new Map<string, GlyphScopeEntry>(
+    notationInput.sharedDefinitions.map((definition) => [
+      definition.key,
+      { key: definition.key, notation: definition.notation },
+    ]),
+  );
   const definitionsById = new Map(
     registry.definitions.map((definition) => [definition.id, definition]),
   );
@@ -476,6 +506,7 @@ export async function compileManifest(
           definitionsById,
           availableDefinitionIds,
         ),
+        cardsByKey,
       ),
     });
   }

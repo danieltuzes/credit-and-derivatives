@@ -1,5 +1,8 @@
 import rehypeKatex from 'rehype-katex';
 import { createNotationKatexOptions } from '../../reference/katex-options.mjs';
+import { NOTATION_KEY_PATTERN } from '../../reference/remark-notation.mjs';
+import { resolveMathGlyphs } from '../../reference/math-glyphs.mjs';
+import type { GlyphScopeEntry } from '../../reference/gloss';
 
 interface HastText {
   type: 'text';
@@ -122,6 +125,20 @@ function safeProperties(
       continue;
     }
 
+    // The one marker attribute this renderer emits, and the only one KaTeX's
+    // trust callback lets through: `\explain{key}{latex}` expands to
+    // `\htmlData{notation-key=key}{latex}` so a resolved `formula` carries
+    // live, hoverable glyphs. Re-validate the key here rather than trusting
+    // the upstream check — this is the boundary that decides what reaches the
+    // page, and it must stay exactly as narrow as `trustNotationMarker`.
+    if (name === 'dataNotationKey') {
+      if (typeof value !== 'string' || !NOTATION_KEY_PATTERN.test(value)) {
+        throw new Error('Unsafe KaTeX notation key.');
+      }
+      properties['data-notation-key'] = value;
+      continue;
+    }
+
     if (name === 'encoding' && value === 'application/x-tex') {
       properties.encoding = value;
       continue;
@@ -220,4 +237,42 @@ export function renderNotationMath(latex: string): readonly SafeMathNode[] {
 
   transform(root as unknown as Parameters<typeof transform>[0], file);
   return Object.freeze(root.children.map(sanitizeNode));
+}
+
+/**
+ * Render a notation entry's `formula` with its glyphs bound to keys, so every
+ * symbol in a rigorous definition is itself explainable (D15).
+ *
+ * `scope` is the entry-scoped table from `reference/gloss.ts` — the entry, its
+ * glosses, and the cards its formula names — not the registry-wide table a
+ * card's body math uses. Resolution is best-effort by design: an unresolved
+ * glyph renders inert rather than breaking the page, and is reported instead
+ * by the `formula` completeness gate (Tier 3) and by the CI test that holds
+ * the corpus at zero. A scope error degrades all the way to today's behaviour,
+ * an inert but correct equation.
+ */
+export function renderNotationFormula(
+  formula: string,
+  scope: readonly GlyphScopeEntry[],
+): {
+  readonly nodes: readonly SafeMathNode[];
+  readonly unresolved: readonly string[];
+} {
+  let bound = formula;
+  let unresolved: string[] = [];
+  try {
+    const result = resolveMathGlyphs(formula, [...scope]);
+    bound = result.latex;
+    unresolved = result.unresolved.map(({ token }: { token: string }) => token);
+  } catch {
+    bound = formula;
+  }
+
+  try {
+    return { nodes: renderNotationMath(bound), unresolved };
+  } catch {
+    // A marker that KaTeX or the sanitizer rejects must not cost the reader
+    // the equation itself.
+    return { nodes: renderNotationMath(formula), unresolved };
+  }
 }

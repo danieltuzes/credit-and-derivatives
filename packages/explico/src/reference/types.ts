@@ -21,6 +21,20 @@ export type NotationAlignment =
 
 export type NotationReferenceKind = 'prose' | 'math' | 'definition';
 
+/**
+ * A gloss resolved by the loader (D15). Declared on a card, keyed
+ * `<card key>.<slug(name)>`, and deliberately absent from the registry: a
+ * gloss is never a definition record, never a reference target, and never a
+ * curriculum node. See `reference/gloss.ts`.
+ */
+export interface NotationGlossEntry {
+  readonly key: string;
+  readonly notation: string;
+  readonly label: string;
+  readonly units?: string;
+  readonly ownerKey: string;
+}
+
 export interface NotationReferenceInput {
   readonly key: string;
   readonly kind: NotationReferenceKind;
@@ -44,6 +58,8 @@ export interface SharedNotationDefinitionInput {
   readonly body: string;
   /** References harvested from the Markdown body. */
   readonly references: readonly NotationReferenceInput[];
+  /** Symbols this entry's `formula` names but does not make cards of. */
+  readonly glosses: readonly NotationGlossEntry[];
   readonly source: SourceSpan;
 }
 
@@ -59,6 +75,8 @@ export interface LocalNotationDefinitionInput {
   readonly alignment: NotationAlignment;
   /** References harvested from summary content. */
   readonly references: readonly NotationReferenceInput[];
+  /** Symbols this entry's `formula` names but does not make cards of. */
+  readonly glosses: readonly NotationGlossEntry[];
   readonly source: SourceSpan;
 }
 
@@ -90,7 +108,8 @@ export type NotationDiagnosticCode =
   | 'alignment-unknown-lesson'
   | 'alignment-introduction'
   | 'alignment-unavailable'
-  | 'alignment-review-state';
+  | 'alignment-review-state'
+  | 'gloss-collides-with-card';
 
 export type DiagnosticSeverity = 'error' | 'warning';
 
@@ -120,6 +139,12 @@ export interface ResolvedNotationReference {
 interface NotationDefinitionRecordBase {
   readonly id: string;
   readonly key: string;
+  /**
+   * Symbols this entry's `formula` names but does not make cards of (D15).
+   * Carried on the record so the manifest can build the entry-scoped formula
+   * table; deliberately **not** a definition, a reference target, or an edge.
+   */
+  readonly glosses: readonly NotationGlossEntry[];
   readonly scope: NotationDefinitionScope;
   readonly notation: string;
   readonly label: string;

@@ -26,7 +26,7 @@ notation:
     - key: price-change
       latex: '\Delta P'
       meaning: 'New toy-model price minus old toy-model price for a stated yield shock. This finite change is not yet a duration or convexity approximation.'
-      formula: '\Delta P=P(y+\Delta y)-P(y)'
+      formula: '\Delta P=\explain{price-yield-curve}{P}(y+\Delta y)-P(y)'
       seeAlso:
         - bond-price
         - price-yield-curve

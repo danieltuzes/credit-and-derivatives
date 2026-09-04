@@ -32,10 +32,12 @@ import type {
   NotationRegistryInput,
   SharedNotationDefinitionInput,
   SourceSpan,
+  NotationGlossEntry,
 } from '../reference/types';
 import { isSubstantiveMeaning } from '../reference/prose';
 import { parseEquationRef } from '../reference/equations.mjs';
 import { resolveLabel } from '../reference/label';
+import { resolveGlosses } from '../reference/gloss';
 import {
   deriveRequires,
   deriveSources,
@@ -322,6 +324,42 @@ export async function loadCurriculumCatalog(): Promise<CurriculumCatalog> {
 
 // --- notation registry input -------------------------------------------
 
+/**
+ * A card's authored `glosses:` list (D15). Keys are derived from the names, so
+ * a gloss is entry-scoped and promoting one to a card needs no reference
+ * rewrite anywhere in the corpus — see `reference/gloss.ts`.
+ */
+function glossEntries(
+  raw: unknown,
+  ownerKey: string,
+  at: string,
+): NotationGlossEntry[] {
+  if (raw === undefined) return [];
+  if (!Array.isArray(raw)) throw new Error(`${at} must be an array`);
+
+  const authored = raw.map((value, index) => {
+    const data = record(value, `${at}[${index}]`);
+    const units = optionalString(data.units, `${at}[${index}].units`);
+    return {
+      latex: string(data.latex, `${at}[${index}].latex`),
+      name: string(data.name, `${at}[${index}].name`),
+      ...(units === undefined ? {} : { units }),
+    };
+  });
+
+  const glosses = resolveGlosses(ownerKey, authored);
+  const seen = new Set<string>();
+  for (const gloss of glosses) {
+    if (seen.has(gloss.key)) {
+      throw new Error(
+        `${at} declares two glosses named ${JSON.stringify(gloss.label)}`,
+      );
+    }
+    seen.add(gloss.key);
+  }
+  return glosses;
+}
+
 function localDefinition(
   raw: unknown,
   file: string,
@@ -350,6 +388,7 @@ function localDefinition(
         ? { kind: 'general', rationale: 'Lesson-local symbol.' }
         : alignment(data.alignment, `${at}.alignment`),
     references: extractNotationReferences(definitionText, file, 'definition'),
+    glosses: glossEntries(data.glosses, key, `${at}.glosses`),
     source: { file },
     ...(formula === undefined ? {} : { formula }),
     ...(units === undefined ? {} : { units }),
@@ -382,6 +421,7 @@ function sharedNotationEntries(): SharedNotationDefinitionInput[] {
       aiAssisted: boolean(data.aiAssisted, `${file} aiAssisted`),
       body,
       references: extractNotationReferences(body, file, undefined),
+      glosses: glossEntries(data.glosses, key, `${file} glosses`),
       source: { file },
       ...(formula === undefined ? {} : { formula }),
       ...(units === undefined ? {} : { units }),

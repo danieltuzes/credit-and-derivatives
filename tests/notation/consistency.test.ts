@@ -151,7 +151,10 @@ describe('manifest D6 additions', () => {
     const codes = Object.keys(counts) as ConsistencyCode[];
     expect(codes.sort()).toEqual(
       [
+        'card-wants-demoting',
         'convention-single-definition',
+        'gloss-name-shape',
+        'gloss-wants-promoting',
         'glyph-unique-in-corpus',
         'notation-source-locator',
         'notation-units',

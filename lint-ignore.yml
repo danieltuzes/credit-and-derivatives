@@ -11,7 +11,8 @@
 #
 # Check codes: glyph-unique-in-corpus, notation-units, units-vocab,
 # convention-single-definition, numerals-tagged, weak-local,
-# notation-source-locator.
+# notation-source-locator, gloss-wants-promoting, card-wants-demoting,
+# gloss-name-shape.
 #
 # Nothing is acknowledged yet: every D6 finding is an open item for a
 # human-quantitative-reviewed content pass.
