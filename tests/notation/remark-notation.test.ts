@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import remarkNotation from '../../src/notation/remark-notation.mjs';
+import remarkNotation from 'explico/reference/remark-notation.mjs';
 
 interface TestNode {
   type: string;
@@ -60,7 +60,7 @@ describe('remark notation authoring adapter', () => {
       children: [
         {
           type: 'paragraph',
-          children: [{ type: 'text', value: 'Use \\term{first-definition}.' }],
+          children: [{ type: 'text', value: 'Use [[first-definition]].' }],
         },
       ],
     };
@@ -78,9 +78,7 @@ describe('remark notation authoring adapter', () => {
       children: [
         {
           type: 'paragraph',
-          children: [
-            { type: 'text', value: 'Use \\term{added-after-startup}.' },
-          ],
+          children: [{ type: 'text', value: 'Use [[added-after-startup]].' }],
         },
       ],
     };
@@ -92,10 +90,16 @@ describe('remark notation authoring adapter', () => {
     ]);
   });
 
-  it('binds pure CF_k LaTeX from lesson scope so the rendered token is hoverable', () => {
+  it('binds pure CF_k LaTeX from page glyph scope so the rendered token is hoverable', () => {
     const tree: TestNode = {
       type: 'root',
       children: [
+        {
+          type: 'paragraph',
+          children: [
+            { type: 'text', value: 'The [[signed-cash-flow]] at row k.' },
+          ],
+        },
         {
           type: 'inlineMath',
           value: 'CF_k',
@@ -118,7 +122,6 @@ describe('remark notation authoring adapter', () => {
         frontmatter: {
           lessonId: 'foundations.cash-flow-timelines',
           notation: {
-            uses: ['signed-cash-flow'],
             local: [
               {
                 key: 'payment-index',
@@ -141,16 +144,17 @@ describe('remark notation authoring adapter', () => {
       },
     ]);
 
-    expect(tree.children?.[0]?.value).toBe(
+    expect(tree.children?.[1]?.value).toBe(
       '\\explain{signed-cash-flow}{CF_{\\explain{payment-index}{k}}}',
     );
-    expect(tree.children?.[0]?.data?.hChildren).toEqual([
+    expect(tree.children?.[1]?.data?.hChildren).toEqual([
       {
         type: 'text',
         value: '\\explain{signed-cash-flow}{CF_{\\explain{payment-index}{k}}}',
       },
     ]);
     expect(file.data.notationReferences).toEqual([
+      { key: 'signed-cash-flow', kind: 'prose' },
       { key: 'signed-cash-flow', kind: 'math' },
       { key: 'payment-index', kind: 'math' },
     ]);
@@ -162,7 +166,7 @@ describe('remark notation authoring adapter', () => {
       astro: {
         frontmatter: {
           lessonId: 'lesson.unresolved',
-          notation: { uses: [], local: [] },
+          notation: { local: [] },
         },
       },
     };
@@ -176,7 +180,7 @@ describe('remark notation authoring adapter', () => {
         file,
         [],
       ),
-    ).toThrow(/Unresolved notation in lesson math: "z" at offset 0/);
+    ).toThrow(/Unresolved notation in lesson math: lesson\.mdx: "z"/);
   });
 
   it('turns prose terms into semantic links while leaving literal code alone', () => {
@@ -186,8 +190,8 @@ describe('remark notation authoring adapter', () => {
         {
           type: 'paragraph',
           children: [
-            { type: 'text', value: 'Use \\term{discount-factor} here.' },
-            { type: 'inlineCode', value: '\\term{discount-factor}' },
+            { type: 'text', value: 'Use [[discount-factor]] here.' },
+            { type: 'inlineCode', value: '[[discount-factor]]' },
           ],
         },
       ],
@@ -216,7 +220,7 @@ describe('remark notation authoring adapter', () => {
         },
       }),
       { type: 'text', value: ' here.' },
-      { type: 'inlineCode', value: '\\term{discount-factor}' },
+      { type: 'inlineCode', value: '[[discount-factor]]' },
     ]);
     expect(file.data.notationReferences).toEqual([
       { key: 'discount-factor', kind: 'prose' },
@@ -228,14 +232,14 @@ describe('remark notation authoring adapter', () => {
       {
         type: 'mdxJsxAttribute',
         name: 'label',
-        value: String.raw`literal \term{not-in-scope} and $z$`,
+        value: String.raw`literal [[not-in-scope]] and $z$`,
       },
       {
         type: 'mdxJsxAttribute',
         name: 'computed',
         value: {
           type: 'mdxJsxAttributeValueExpression',
-          value: String.raw`String.raw\`\term{not-in-scope}\``,
+          value: String.raw`String.raw\`[[not-in-scope]]\``,
         },
       },
     ];
@@ -243,7 +247,7 @@ describe('remark notation authoring adapter', () => {
       {
         type: 'mdxJsxAttribute',
         name: 'title',
-        value: String.raw`literal \term{also-not-in-scope}`,
+        value: String.raw`literal [[also-not-in-scope]]`,
       },
     ];
     const tree: TestNode = {
@@ -255,7 +259,7 @@ describe('remark notation authoring adapter', () => {
           children: [
             {
               type: 'mdxFlowExpression',
-              value: String.raw`String.raw\`\term{not-in-scope}\``,
+              value: String.raw`String.raw\`[[not-in-scope]]\``,
             },
             {
               type: 'paragraph',
@@ -266,7 +270,7 @@ describe('remark notation authoring adapter', () => {
                   children: [
                     {
                       type: 'text',
-                      value: 'Use \\term{signed-cash-flow}.',
+                      value: 'Use [[signed-cash-flow]].',
                     },
                     {
                       type: 'inlineMath',
@@ -275,7 +279,7 @@ describe('remark notation authoring adapter', () => {
                     },
                     {
                       type: 'mdxTextExpression',
-                      value: String.raw`String.raw\`\term{not-in-scope}\``,
+                      value: String.raw`String.raw\`[[not-in-scope]]\``,
                     },
                   ],
                 },
@@ -323,7 +327,7 @@ describe('remark notation authoring adapter', () => {
     const paragraph = component?.children?.[1];
     const textComponent = paragraph?.children?.[0];
     expect(component?.attributes).toBe(flowAttributes);
-    expect(flowExpression?.value).toContain('\\term{not-in-scope}');
+    expect(flowExpression?.value).toContain('[[not-in-scope]]');
     expect(textComponent?.attributes).toBe(textAttributes);
     expect(textComponent?.children?.[1]).toMatchObject({
       type: 'link',
@@ -332,9 +336,7 @@ describe('remark notation authoring adapter', () => {
     expect(textComponent?.children?.[3]?.value).toBe(
       '\\explain{signed-cash-flow}{CF_{\\explain{payment-index}{k}}}',
     );
-    expect(textComponent?.children?.[4]?.value).toContain(
-      '\\term{not-in-scope}',
-    );
+    expect(textComponent?.children?.[4]?.value).toContain('[[not-in-scope]]');
     expect(file.data.notationReferences).toEqual([
       { key: 'signed-cash-flow', kind: 'prose' },
       { key: 'signed-cash-flow', kind: 'math' },
@@ -348,7 +350,7 @@ describe('remark notation authoring adapter', () => {
       children: [
         {
           type: 'paragraph',
-          children: [{ type: 'text', value: '\\term{rate}' }],
+          children: [{ type: 'text', value: '[[rate]]' }],
         },
         {
           type: 'math',
@@ -388,32 +390,39 @@ describe('remark notation authoring adapter', () => {
     });
   });
 
-  it('requires lesson prose to import shared definitions', () => {
+  it('pulls a shared key into page scope from its [[key]] use alone (no notation.uses)', () => {
     const file = testFile();
     file.data = {
       astro: {
         frontmatter: {
           lessonId: 'lesson.imports',
-          notation: { uses: [], local: [] },
+          notation: { local: [] },
         },
       },
     };
 
-    expect(() =>
-      transform(
+    const tree: TestNode = {
+      type: 'root',
+      children: [
         {
-          type: 'root',
-          children: [
-            {
-              type: 'paragraph',
-              children: [{ type: 'text', value: '\\term{known}' }],
-            },
-          ],
+          type: 'paragraph',
+          children: [{ type: 'text', value: 'Recall [[known]] here.' }],
         },
-        file,
-        [{ key: 'known', title: 'known' }],
-      ),
-    ).toThrow(/not imported by notation\.uses/);
+        { type: 'inlineMath', value: 'K' },
+      ],
+    };
+
+    transform(tree, file, [{ key: 'known', notation: 'K', title: 'known' }]);
+
+    expect(tree.children?.[0]?.children?.[1]).toMatchObject({
+      type: 'link',
+      url: '/glossary/#notation-known',
+    });
+    expect(tree.children?.[1]?.value).toBe('\\explain{known}{K}');
+    expect(file.data.notationReferences).toEqual([
+      { key: 'known', kind: 'prose' },
+      { key: 'known', kind: 'math' },
+    ]);
   });
 
   it('rejects unknown, malformed, and legacy inline definitions', () => {
@@ -426,7 +435,7 @@ describe('remark notation authoring adapter', () => {
           children: [
             {
               type: 'paragraph',
-              children: [{ type: 'text', value: '\\term{missing}' }],
+              children: [{ type: 'text', value: '[[missing]]' }],
             },
           ],
         },
@@ -566,7 +575,7 @@ describe('remark notation authoring adapter', () => {
         registryFile('src/content/notation/mystery.md') as never,
       ),
     ).toThrow(
-      /Unresolved notation in notation definition math: "w" at offset 0/,
+      /Unresolved notation in notation definition math: src\/content\/notation\/mystery\.md: "w"/,
     );
   });
 

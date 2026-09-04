@@ -1,0 +1,60 @@
+---
+/**
+ * Starlight only allows one `Footer` override, so this component composes the
+ * page-notation layer and the source-citation layer ahead of Starlight's own
+ * footer. Both layers are optional progressive enhancements over static
+ * markup that the remark adapters and the content collections already emit.
+ *
+ * The resolved notation bundle comes from the one compiler manifest (Phase
+ * D5); this component never rebuilds the registry.
+ */
+import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
+import { loadManifest } from '../../compiler/manifest';
+import {
+  isLessonSlug,
+  lessonIdFromSlug,
+} from '../../compiler/lesson-derivation';
+import NotationLayer, {
+  type NotationLayerDefinition,
+} from '../notation/NotationLayer.astro';
+import CitationLayer from '../citation/CitationLayer.astro';
+import EquationEnhancer from './EquationEnhancer.astro';
+
+// `lessonId` is no longer authored (Phase C2); derive it from the route.
+const routeSlug = Astro.locals.starlightRoute.entry.id;
+const lessonId = isLessonSlug(routeSlug)
+  ? lessonIdFromSlug(routeSlug)
+  : undefined;
+
+const glossaryBase = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/glossary/`;
+
+const definitions: NotationLayerDefinition[] = [];
+if (lessonId) {
+  const manifest = await loadManifest();
+  const lesson = manifest.lessons.find((entry) => entry.id === lessonId);
+  for (const definition of lesson?.notation.definitions ?? []) {
+    definitions.push({
+      key: definition.key,
+      notation: definition.notation,
+      label: definition.label,
+      summary: definition.summary,
+      formula: definition.formula,
+      formulaScope: definition.formulaScope,
+      glosses: definition.glosses,
+      units: definition.units,
+      seeAlso: definition.seeAlso,
+      editorialStatus: definition.editorialStatus,
+      scope: definition.scope,
+      href:
+        definition.scope === 'shared'
+          ? `${glossaryBase}#notation-${definition.key}`
+          : `#notation-${definition.key}`,
+    });
+  }
+}
+---
+
+<NotationLayer definitions={definitions} />
+{lessonId && <CitationLayer />}
+{lessonId && <EquationEnhancer />}
+<DefaultFooter />

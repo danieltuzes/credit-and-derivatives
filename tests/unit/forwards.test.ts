@@ -5,7 +5,7 @@ import {
   longForwardContractValue,
   prepaidForwardPrice,
   shortForwardContractValue,
-} from '../../src/domain/derivatives/forwards';
+} from '../../content/domain/derivatives/forwards';
 
 describe('forward contracts', () => {
   it('prices no-income and known-income forwards from cash and carry', () => {

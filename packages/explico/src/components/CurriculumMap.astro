@@ -1,0 +1,208 @@
+---
+import { getCollection } from 'astro:content';
+import { loadManifest } from '../compiler/manifest';
+import { isLessonSlug, lessonIdFromSlug } from '../compiler/lesson-derivation';
+
+const [tracks, docs, competencies, manifest] = await Promise.all([
+  getCollection('tracks'),
+  getCollection('docs'),
+  getCollection('competencies'),
+  loadManifest(),
+]);
+// `requires` / `assessments` are derived (Phase C2); read them from the one
+// compiler manifest, and the doc entry for title / description / slug.
+const docEntryById = new Map(
+  docs
+    .filter((entry) => isLessonSlug(entry.id))
+    .map((entry) => [lessonIdFromSlug(entry.id), entry]),
+);
+const lessonById = new Map(
+  manifest.lessons.map((lesson) => [lesson.id, lesson]),
+);
+const competencyById = new Map(
+  competencies.map((entry) => [entry.data.id, entry.data]),
+);
+---
+
+{
+  tracks.map(({ data: track }) => (
+    <section class="track" aria-labelledby={`track-${track.id}`}>
+      <header>
+        <h2 id={`track-${track.id}`}>{track.title}</h2>
+        <p>{track.description}</p>
+        <p>
+          <strong>Audience:</strong> {track.audience}
+        </p>
+        <div class="entry-assumptions">
+          <strong>Entry assumptions:</strong>
+          <ul>
+            {track.entryAssumptions.map((assumption) => (
+              <li>{assumption}</li>
+            ))}
+          </ul>
+        </div>
+      </header>
+
+      <ol class="lesson-sequence">
+        {track.lessons.map((lessonId, index) => {
+          const lesson = lessonById.get(lessonId);
+          const entry = docEntryById.get(lessonId);
+          if (!lesson || !entry) return null;
+          return (
+            <li>
+              <article>
+                <p class="step">Lesson {index + 1}</p>
+                <h3>
+                  <a
+                    href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/${entry.id}/`}
+                  >
+                    {entry.data.title}
+                  </a>
+                </h3>
+                <code>{lessonId}</code>
+                <p>{entry.data.description}</p>
+
+                <dl>
+                  <div>
+                    <dt>Requires</dt>
+                    <dd>
+                      {lesson.requires.length > 0
+                        ? lesson.requires.map((id) => (
+                            <span title={competencyById.get(id)?.title}>
+                              <code>{id}</code>
+                            </span>
+                          ))
+                        : 'Track entry assumptions only'}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Teaches</dt>
+                    <dd>
+                      {lesson.teaches.map((id) => (
+                        <span title={competencyById.get(id)?.title}>
+                          <code>{id}</code>
+                        </span>
+                      ))}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Evidence</dt>
+                    <dd>
+                      {lesson.assessments.map((id) => (
+                        <code>{id}</code>
+                      ))}
+                    </dd>
+                  </div>
+                </dl>
+              </article>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  ))
+}
+
+<section aria-labelledby="competency-catalog">
+  <h2 id="competency-catalog">Atomic competency catalog</h2>
+  <p>
+    Each competency has an explicit prerequisite list and an evidence policy.
+    The build rejects unknown references, cycles, invalid lesson ordering, and
+    insufficient assessment coverage.
+  </p>
+  <ol class="competency-map">
+    {
+      competencies
+        .sort((left, right) => left.data.id.localeCompare(right.data.id))
+        .map(({ data }) => (
+          <li>
+            <strong>{data.title}</strong>
+            <br />
+            <code>{data.id}</code>
+            <p>{data.outcome}</p>
+            {data.prerequisites.length > 0 ? (
+              <small>
+                Requires: <code>{data.prerequisites.join(', ')}</code>
+              </small>
+            ) : (
+              <small>Entry competency: no declared prerequisites.</small>
+            )}
+          </li>
+        ))
+    }
+  </ol>
+</section>
+
+<style>
+  .track > header {
+    margin-block-end: 1.25rem;
+  }
+
+  .entry-assumptions ul {
+    margin-block: 0.35rem 0;
+  }
+
+  .lesson-sequence,
+  .competency-map {
+    display: grid;
+    gap: 1rem;
+    padding-inline-start: 1.5rem;
+  }
+
+  .lesson-sequence > li::marker {
+    color: var(--sl-color-accent-high);
+    font-weight: 700;
+  }
+
+  .lesson-sequence article,
+  .competency-map li {
+    padding: 1rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.55rem;
+    background: var(--sl-color-gray-7);
+  }
+
+  .lesson-sequence h3,
+  .lesson-sequence p,
+  .competency-map p {
+    margin-block: 0.4rem;
+  }
+
+  .step {
+    color: var(--sl-color-gray-3);
+    font-size: var(--sl-text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .lesson-sequence dl {
+    display: grid;
+    gap: 0.7rem;
+    margin-block: 1rem 0;
+  }
+
+  .lesson-sequence dl div {
+    display: grid;
+    grid-template-columns: minmax(5rem, 0.25fr) 1fr;
+    gap: 0.75rem;
+  }
+
+  .lesson-sequence dt {
+    font-weight: 700;
+  }
+
+  .lesson-sequence dd {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.6rem;
+    margin: 0;
+  }
+
+  @media (max-width: 36rem) {
+    .lesson-sequence dl div {
+      grid-template-columns: 1fr;
+      gap: 0.1rem;
+    }
+  }
+</style>

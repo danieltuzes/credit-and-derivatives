@@ -1,0 +1,89 @@
+{
+  "file": "content/docs/bonds/yield-to-maturity.mdx",
+  "lesson": "bonds.yield-to-maturity",
+  "localKeys": [],
+  "references": [
+    {
+      "column": 9,
+      "definitionId": "shared:bond-payment-index",
+      "key": "bond-payment-index",
+      "kind": "prose",
+      "line": 16,
+      "scope": "shared",
+      "symbol": "k"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:number-of-bond-payments",
+      "key": "number-of-bond-payments",
+      "kind": "prose",
+      "line": 17,
+      "scope": "shared",
+      "symbol": "n"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:bond-cash-flow",
+      "key": "bond-cash-flow",
+      "kind": "prose",
+      "line": 18,
+      "scope": "shared",
+      "symbol": "CF_k^{\\mathrm{bond}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:bond-price",
+      "key": "bond-price",
+      "kind": "prose",
+      "line": 19,
+      "scope": "shared",
+      "symbol": "P_0"
+    },
+    {
+      "column": 33,
+      "definitionId": "shared:bond-payment-frequency",
+      "key": "bond-payment-frequency",
+      "kind": "prose",
+      "line": 19,
+      "scope": "shared",
+      "symbol": "m_{\\mathrm B}"
+    },
+    {
+      "column": 7,
+      "definitionId": "shared:yield-to-maturity",
+      "key": "yield-to-maturity",
+      "kind": "prose",
+      "line": 22,
+      "scope": "shared",
+      "symbol": "y^{(m_{\\mathrm B})}"
+    },
+    {
+      "column": 38,
+      "definitionId": "shared:coupon-payment",
+      "key": "coupon-payment",
+      "kind": "prose",
+      "line": 39,
+      "scope": "shared",
+      "symbol": "C"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:face-value",
+      "key": "face-value",
+      "kind": "prose",
+      "line": 44,
+      "scope": "shared",
+      "symbol": "F"
+    },
+    {
+      "column": 21,
+      "definitionId": "shared:maturity-time",
+      "key": "maturity-time",
+      "kind": "prose",
+      "line": 90,
+      "scope": "shared",
+      "symbol": "T"
+    }
+  ],
+  "schemaVersion": 3
+}

@@ -5,7 +5,7 @@ import {
   fixedCouponCashFlows,
   macaulayDuration,
   priceFixedCouponBond,
-} from '../../src/domain/bonds/fixed-coupon-bond';
+} from '../../content/domain/bonds/fixed-coupon-bond';
 
 function expectRelativeClose(
   actual: number,

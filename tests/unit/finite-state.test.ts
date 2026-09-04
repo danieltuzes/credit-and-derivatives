@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   finiteStateRiskNeutralValue,
   onePeriodBinomialClaimValue,
-} from '../../src/domain/valuation/finite-state';
+} from '../../content/domain/valuation/finite-state';
 
 describe('finite-state valuation', () => {
   it('discounts a signed risk-neutral expected payoff', () => {

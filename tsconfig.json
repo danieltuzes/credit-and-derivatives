@@ -1,10 +1,17 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist"],
+  "exclude": ["dist", "build"],
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "react",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    // Workspace dev: resolve the engine package to its TypeScript source so
+    // `astro check` type-checks against `.ts`, not a built `.d.ts`. Runtime
+    // resolution (Vite / tsx / vitest) uses the package `exports` map.
+    "paths": {
+      "explico/content-config": ["./packages/explico/src/content-config.ts"],
+      "explico/*": ["./packages/explico/src/*"]
+    }
   }
 }

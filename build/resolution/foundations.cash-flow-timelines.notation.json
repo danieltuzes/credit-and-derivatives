@@ -1,0 +1,46 @@
+{
+  "file": "content/docs/foundations/cash-flow-timelines.mdx",
+  "lesson": "foundations.cash-flow-timelines",
+  "localKeys": [
+    "payment-index"
+  ],
+  "references": [
+    {
+      "column": 1,
+      "definitionId": "shared:valuation-time",
+      "key": "valuation-time",
+      "kind": "prose",
+      "line": 17,
+      "scope": "shared",
+      "symbol": "0"
+    },
+    {
+      "column": 22,
+      "definitionId": "page:foundations.cash-flow-timelines:payment-index",
+      "key": "payment-index",
+      "kind": "prose",
+      "line": 18,
+      "scope": "local",
+      "symbol": "k"
+    },
+    {
+      "column": 46,
+      "definitionId": "shared:signed-cash-flow",
+      "key": "signed-cash-flow",
+      "kind": "prose",
+      "line": 19,
+      "scope": "shared",
+      "symbol": "CF_k"
+    },
+    {
+      "column": 16,
+      "definitionId": "shared:payment-time",
+      "key": "payment-time",
+      "kind": "prose",
+      "line": 20,
+      "scope": "shared",
+      "symbol": "t_k"
+    }
+  ],
+  "schemaVersion": 3
+}

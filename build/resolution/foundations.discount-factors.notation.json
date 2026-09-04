@@ -1,0 +1,82 @@
+{
+  "file": "content/docs/foundations/discount-factors.mdx",
+  "lesson": "foundations.discount-factors",
+  "localKeys": [
+    "discounted-unit-value"
+  ],
+  "references": [
+    {
+      "column": 1,
+      "definitionId": "shared:payment-time",
+      "key": "payment-time",
+      "kind": "prose",
+      "line": 17,
+      "scope": "shared",
+      "symbol": "t_k"
+    },
+    {
+      "column": 42,
+      "definitionId": "shared:valuation-time",
+      "key": "valuation-time",
+      "kind": "prose",
+      "line": 17,
+      "scope": "shared",
+      "symbol": "0"
+    },
+    {
+      "column": 11,
+      "definitionId": "shared:compounding-frequency",
+      "key": "compounding-frequency",
+      "kind": "prose",
+      "line": 18,
+      "scope": "shared",
+      "symbol": "m"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:periodic-rate",
+      "key": "periodic-rate",
+      "kind": "prose",
+      "line": 19,
+      "scope": "shared",
+      "symbol": "r_m"
+    },
+    {
+      "column": 33,
+      "definitionId": "shared:accumulation-factor",
+      "key": "accumulation-factor",
+      "kind": "prose",
+      "line": 19,
+      "scope": "shared",
+      "symbol": "A(0,t)"
+    },
+    {
+      "column": 19,
+      "definitionId": "shared:discount-factor",
+      "key": "discount-factor",
+      "kind": "prose",
+      "line": 20,
+      "scope": "shared",
+      "symbol": "D(0,t)"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:foundations.discount-factors:discounted-unit-value",
+      "key": "discounted-unit-value",
+      "kind": "prose",
+      "line": 37,
+      "scope": "local",
+      "symbol": "V_0(1_t)"
+    },
+    {
+      "column": 9,
+      "definitionId": "shared:nominal-annual-rate",
+      "key": "nominal-annual-rate",
+      "kind": "prose",
+      "line": 51,
+      "scope": "shared",
+      "symbol": "j^{(m)}"
+    }
+  ],
+  "schemaVersion": 3
+}

@@ -1,21 +1,23 @@
 import { describe, expect, it } from 'vitest';
-import { loadCurriculumCatalog } from '../../scripts/curriculum-files';
-import { loadNotationRegistryInput } from '../../scripts/notation-files';
+import {
+  loadCurriculumCatalog,
+  loadNotationRegistryInput,
+} from 'explico/compiler/collections';
 import type {
   CompetencyDefinition,
   CurriculumCatalog,
   LessonDefinition,
-} from '../../src/curriculum/validation';
+} from 'explico/curriculum/validation';
 import {
   assertValidNotationAlignment,
   validateNotationAlignment,
-} from '../../src/notation/curriculum-alignment';
-import { buildNotationRegistry } from '../../src/notation/registry';
+} from 'explico/reference/curriculum-alignment';
+import { buildNotationRegistry } from 'explico/reference/registry';
 import type {
   NotationAlignment,
   NotationLessonInput,
   SharedNotationDefinitionInput,
-} from '../../src/notation/types';
+} from 'explico/reference/types';
 
 type EditorialCompetency = CompetencyDefinition & {
   readonly editorialStatus: 'draft' | 'in-review' | 'reviewed';
@@ -67,7 +69,7 @@ const alignedDefinition = (
 ): SharedNotationDefinitionInput => ({
   key: 'discount-factor',
   notation: 'D(0,t)',
-  title: 'Discount factor',
+  label: 'Discount factor',
   summary: 'A test discount factor.',
   aliases: [],
   domain: 'rates',
@@ -78,6 +80,7 @@ const alignedDefinition = (
   aiAssisted: false,
   body: '',
   references: [],
+  glosses: [],
   source: { file: 'notation/discount-factor.md' },
   ...overrides,
 });
@@ -88,7 +91,6 @@ const notationLesson = (
 ): NotationLessonInput => ({
   lessonId,
   status: 'draft',
-  uses: [key],
   localDefinitions: [],
   references: [
     {

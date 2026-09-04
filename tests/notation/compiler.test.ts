@@ -2,9 +2,9 @@ import { createMarkdownProcessor } from '@astrojs/markdown-remark';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
-import { createNotationKatexOptions } from '../../src/notation/katex-options.mjs';
-import rehypeFailKatexErrors from '../../src/notation/rehype-fail-katex-errors.mjs';
-import remarkNotation from '../../src/notation/remark-notation.mjs';
+import { createNotationKatexOptions } from 'explico/reference/katex-options.mjs';
+import rehypeFailKatexErrors from 'explico/reference/rehype-fail-katex-errors.mjs';
+import remarkNotation from 'explico/reference/remark-notation.mjs';
 
 const sharedDefinitions = [
   {
@@ -42,13 +42,6 @@ const sharedDefinitions = [
 const validFrontmatter = {
   lessonId: 'compiler.notation-fixture',
   notation: {
-    uses: [
-      'signed-cash-flow',
-      'payment-time',
-      'nominal-annual-rate',
-      'compounding-frequency',
-      'periodic-rate',
-    ],
     local: [
       {
         key: 'payment-index',
@@ -80,7 +73,7 @@ describe('Astro lesson-math compiler integration', () => {
 
   it('compiles pure CF_k and concrete t_1 through remark, rehype, and KaTeX', async () => {
     const result = await compiler.render(
-      String.raw`The \term\{signed-cash-flow\} is $CF_k$. Its concrete \term\{payment-time\} can be $t_1=0.5$ years.
+      String.raw`The [[signed-cash-flow]] is $CF_k$. Its concrete [[payment-time]] can be $t_1=0.5$ years.
 
 $$
 CF_k \quad\text{occurs at}\quad t_k.
@@ -100,7 +93,7 @@ $$`,
 
   it('compiles the periodic-rate fraction without a recovered KaTeX error', async () => {
     const result = await compiler.render(
-      String.raw`Under the stated nominal-rate convention, the periodic rate is $r_m=\frac{j^{(m)}}{m}$.`,
+      String.raw`The [[periodic-rate]], [[nominal-annual-rate]], and [[compounding-frequency]] satisfy $r_m=\frac{j^{(m)}}{m}$.`,
       {
         frontmatter: validFrontmatter,
         fileURL: new URL('file:///compiler-periodic-rate-fixture.mdx'),
@@ -139,11 +132,47 @@ $$`,
         compiler.render('An unbound variable is $t$.', {
           frontmatter: {
             lessonId: 'compiler.unresolved-fixture',
-            notation: { uses: [], local: [] },
+            notation: { local: [] },
           },
           fileURL: new URL('file:///compiler-unresolved-fixture.mdx'),
         }),
-      ).rejects.toThrow(/Unresolved notation in lesson math: "t" at offset 0/);
+      ).rejects.toThrow(
+        /Unresolved notation in lesson math: [^:]+:\d+:\d+: "t"/,
+      );
+    } finally {
+      consoleError.mockRestore();
+    }
+  });
+
+  it('gates math inside a component slot at file:line:token', async () => {
+    const consoleError = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+    try {
+      await expect(
+        compiler.render(
+          [
+            'The [[signed-cash-flow]] recurs.',
+            '',
+            '<CompactExample label="x">',
+            '',
+            '$$',
+            'CF_k + w',
+            '$$',
+            '',
+            '</CompactExample>',
+          ].join('\n'),
+          {
+            frontmatter: {
+              lessonId: 'compiler.slot-fixture',
+              notation: { local: [] },
+            },
+            fileURL: new URL('file:///compiler-slot-fixture.mdx'),
+          },
+        ),
+      ).rejects.toThrow(
+        /Unresolved notation in lesson math: [^:]+:\d+:\d+: "w"/,
+      );
     } finally {
       consoleError.mockRestore();
     }

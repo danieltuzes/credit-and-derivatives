@@ -1,0 +1,97 @@
+---
+title: Multi-period lattice valuation
+description: Extend one-period risk-neutral valuation to node-by-node backward induction with local discount factors.
+editorialStatus: draft
+teaches:
+  - finance.backward-induction.calculate
+assumptions:
+  - A caller-supplied recombining pricing lattice with two successor nodes from each current node
+  - Strictly positive one-period discount factors and risk-neutral up weights between zero and one inclusive
+  - Terminal values and any next-date cash flows share one currency and holder sign convention
+  - No claim that the supplied lattice has been calibrated or is complete outside its modeled states
+notation:
+  local:
+    - key: lattice-node-discount-factor
+      latex: 'd_{i,j}'
+      meaning: Currency at node i,j per one unit of currency at either successor node one step later.
+      units: current-node currency per next-time currency
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eq. 12.5 and Eqs. 12.7-12.10 (one-step discounting in backward induction).'
+      alignment:
+        kind: competency
+        introducedByCompetency: finance.backward-induction.calculate
+        introducedInLesson: derivatives.multiperiod-lattice-valuation
+    - key: lattice-node-up-weight
+      latex: 'q_{i,j}'
+      meaning: Pricing probability assigned to the up successor conditional on the current node.
+      units: probability between zero and one
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eq. 12.6 and Eqs. 12.7-12.10 (risk-neutral up weight in backward induction).'
+      seeAlso:
+        - risk-neutral-probability-measure
+      alignment:
+        kind: competency
+        introducedByCompetency: finance.backward-induction.calculate
+        introducedInLesson: derivatives.multiperiod-lattice-valuation
+    - key: lattice-next-cash-flow
+      latex: 'CF_{i+1,j}'
+      meaning: Signed cash paid at a successor node immediately before its continuation value is measured.
+      units: stated currency at the successor time
+      sources:
+        - id: hull-options-futures
+          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eqs. 12.7-12.10 (backward induction from successor claim values and terminal payoffs).'
+      alignment:
+        kind: competency
+        introducedByCompetency: finance.backward-induction.calculate
+        introducedInLesson: derivatives.multiperiod-lattice-valuation
+---
+
+import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
+
+## Repeat the one-period argument backward
+
+The one-period binomial lesson valued two terminal payoffs. A multi-period
+lattice applies the same pricing step at every node, beginning with the last
+row and moving backward to [[valuation-time]].
+
+At node [[lattice-time-index]] $i$, [[lattice-state-index]] $j$, let local [[lattice-node-up-weight]] be $q_{i,j}$ and local
+[[lattice-node-discount-factor]] be $d_{i,j}$. With local next-date cash
+flow $\explain{lattice-next-cash-flow}{CF_{i+1,j}}$ paid just before the successor continuation value, the
+[[lattice-node-value]] recursion is
+
+$$
+\explain{lattice-node-value}{V_{i,j}}
+=\explain{lattice-node-discount-factor}{d_{i,j}}
+\left[
+(1-\explain{lattice-node-up-weight}{q_{i,j}})
+\left(\explain{lattice-next-cash-flow}{CF_{i+1,j}}
++\explain{lattice-node-value}{V_{i+1,j}}\right)
++\explain{lattice-node-up-weight}{q_{i,j}}
+\left(\explain{lattice-next-cash-flow}{CF_{i+1,j+1}}
++\explain{lattice-node-value}{V_{i+1,j+1}}\right)
+\right].
+$$
+
+The implementation stores node $j$ and node $j+1$ as the two successors. The
+labels “up” and “down” are conventions; the supplied probabilities and values
+must use the same ordering.
+
+## Timing is part of the model
+
+This recursion treats the next-date cash flow as paid before the successor
+continuation value is observed. A coupon-bond value at a node is therefore
+ex-coupon after the cash flow at that node. Changing the exercise/coupon order
+changes the contract and potentially its option payoff.
+
+## Check your understanding
+
+<AssessmentSet />
+
+## Sources
+
+The replication, risk-neutral weighting, and backward-induction construction
+follow Hull, Chapter 12 §§12.1–12.3 [@hull-options-futures]. The supplied node
+factors are model inputs here; calibration and short-rate dynamics are outside
+this slice.

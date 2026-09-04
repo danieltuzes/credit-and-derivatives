@@ -1,0 +1,173 @@
+---
+/**
+ * Optional hover/pin panel for the inline `[n]` citation markers that the
+ * `remarkCitation` adapter emits. The markers are real anchor links to the
+ * on-page "References" list and work with no JavaScript; this island only
+ * adds a quick look at the source without leaving the reader's place.
+ *
+ * It reads everything it shows from the page's own static markup — the
+ * marker's `data-*` and the matching `#cite-n` reference-list item — so no
+ * page serializes a second copy of the source database. Positioning, pin,
+ * Escape, and outside-close come from the shared `HoverPanel` primitive.
+ */
+import HoverPanel from '../HoverPanel.astro';
+---
+
+<HoverPanel id="citation-panel" label="Source citation" data-citation-panel>
+  <div class="citation-panel-body">
+    <p class="citation-panel-label" data-panel-label></p>
+    <p class="citation-panel-locator" data-panel-locator hidden></p>
+    <p class="citation-panel-status" data-panel-status hidden></p>
+    <a class="citation-panel-link" data-panel-link hidden>Open source link</a>
+    <a class="citation-panel-jump" data-panel-jump
+      >See it in the reference list</a
+    >
+    <button
+      class="citation-panel-pin"
+      type="button"
+      data-panel-pin
+      aria-pressed="false"
+    >
+      Pin
+    </button>
+  </div>
+</HoverPanel>
+
+<script>
+  import { createHoverPanel, closestElement } from '../hover-panel';
+  import { referenceLabelFromText } from '../../reference/citation-format.mjs';
+
+  function setText(element: HTMLElement, value: string) {
+    element.textContent = value;
+    element.hidden = value.length === 0;
+  }
+
+  function setup() {
+    const panel = document.querySelector<HTMLElement>('[data-citation-panel]');
+    if (!panel || panel.dataset.hoverPanelReady === 'true') return;
+
+    const markers = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>(
+        '.sl-markdown-content a.citation-ref[data-citation-id]',
+      ),
+    );
+    if (markers.length === 0) return;
+    const markerSet = new Set<HTMLElement>(markers);
+
+    const label = panel.querySelector<HTMLElement>('[data-panel-label]')!;
+    const locator = panel.querySelector<HTMLElement>('[data-panel-locator]')!;
+    const status = panel.querySelector<HTMLElement>('[data-panel-status]')!;
+    const link = panel.querySelector<HTMLAnchorElement>('[data-panel-link]')!;
+    const jump = panel.querySelector<HTMLAnchorElement>('[data-panel-jump]')!;
+    const pin = panel.querySelector<HTMLButtonElement>('[data-panel-pin]')!;
+
+    const markerFrom = (node: EventTarget | null) => {
+      const candidate = closestElement(
+        node,
+        'a.citation-ref[data-citation-id]',
+      );
+      return candidate && markerSet.has(candidate) ? candidate : null;
+    };
+
+    // Fill the panel from the marker plus its `#cite-n` reference-list item —
+    // never from a serialized source table.
+    const render = (marker: HTMLElement, number: string) => {
+      const item = document.getElementById(`cite-${number}`);
+      if (!item) return false;
+
+      // The reference list is a tight list, so the `<li>` has no `<p>`
+      // wrapper: clone it and drop the trailing link/status chrome.
+      const line = item.cloneNode(true) as HTMLElement;
+      for (const extra of line.querySelectorAll(
+        '.citation-url, .citation-status, .citation-backref',
+      )) {
+        extra.remove();
+      }
+      const referenceText = line.textContent ?? '';
+      const loc = marker.dataset.citationLocator ?? '';
+
+      label.textContent = referenceLabelFromText(referenceText, loc);
+      setText(locator, loc);
+
+      const sourceStatus = item
+        .querySelector('.citation-status')
+        ?.textContent?.trim();
+      setText(status, sourceStatus ? `Source record: ${sourceStatus}` : '');
+
+      const sourceUrl = item.querySelector<HTMLAnchorElement>('a.citation-url');
+      if (sourceUrl) {
+        link.href = sourceUrl.href;
+        link.hidden = false;
+      } else {
+        link.hidden = true;
+      }
+
+      jump.href = marker.getAttribute('href') ?? '#references';
+      return true;
+    };
+
+    createHoverPanel({
+      panel,
+      triggerFrom: markerFrom,
+      keyFor: (element) => element.dataset.citationNumber ?? null,
+      render,
+      pinControlFrom: (node) => closestElement(node, '[data-panel-pin]'),
+      onSync: ({ pinnedKey }) => {
+        const isPinned = pinnedKey !== null;
+        pin.setAttribute('aria-pressed', String(isPinned));
+        pin.textContent = isPinned ? 'Unpin' : 'Pin';
+      },
+    });
+  }
+
+  setup();
+  document.addEventListener('astro:page-load', setup);
+</script>
+
+<style>
+  @layer starlight.components {
+    .citation-panel-body p {
+      margin: 0 0 0.5rem;
+      line-height: 1.5;
+    }
+
+    .citation-panel-label {
+      font-weight: 600;
+    }
+
+    .citation-panel-locator {
+      color: var(--sl-color-gray-2);
+    }
+
+    .citation-panel-status {
+      color: var(--sl-color-gray-3);
+      font-size: var(--sl-text-xs);
+      text-transform: lowercase;
+    }
+
+    .citation-panel-link,
+    .citation-panel-jump {
+      display: inline-block;
+      margin-inline-end: 0.9rem;
+      font-size: var(--sl-text-xs);
+    }
+
+    .citation-panel-pin {
+      display: block;
+      margin-top: 0.6rem;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid var(--sl-color-gray-5);
+      border-radius: 0.35rem;
+      background: var(--sl-color-bg);
+      color: var(--sl-color-text-accent);
+      font: inherit;
+      font-size: var(--sl-text-xs);
+      cursor: pointer;
+    }
+
+    .citation-panel-pin[aria-pressed='true'] {
+      border-color: var(--sl-color-accent);
+      background: var(--sl-color-accent-low);
+    }
+  }
+</style>

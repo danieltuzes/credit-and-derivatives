@@ -1,6 +1,6 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { valueRiskyPromisedPaymentWithRecoveryAtMaturity } from '../../src/domain/credit/risky-promised-payment';
+import { valueRiskyPromisedPaymentWithRecoveryAtMaturity } from '../../content/domain/credit/risky-promised-payment';
 
 function expectRelativeClose(
   actual: number,

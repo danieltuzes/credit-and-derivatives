@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   valueDefaultKnockoutBondOption,
   type DefaultKnockoutBondOptionInput,
-} from '../../src/domain/bonds/default-knockout-option';
+} from '../../content/domain/bonds/default-knockout-option';
 
 const baseInput: DefaultKnockoutBondOptionInput = {
   timesYears: [0, 1, 2, 3],

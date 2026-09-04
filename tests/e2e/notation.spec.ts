@@ -96,7 +96,7 @@ test('renders a hovered CF_k label with MathML and a smaller subscript', async (
     'signed-cash-flow',
   );
   await expect(explanationPanel.locator('[data-panel-title]')).toHaveText(
-    'Signed cash-flow amount',
+    'Signed cash flow',
   );
   await expect(explanationPanel.locator('[data-panel-summary]')).toContainText(
     'Amount received or paid at one event',
@@ -357,9 +357,7 @@ test('explains notation on hover from the standalone glossary', async ({
   await symbol.hover();
   await expect(panel).toBeVisible();
   await expect(panel).toHaveAttribute('data-active-notation-key', 'bond-price');
-  await expect(panel.locator('[data-panel-title]')).toHaveText(
-    'Bond price at valuation time',
-  );
+  await expect(panel.locator('[data-panel-title]')).toHaveText('Bond price');
 
   // Clicking pins it open until dismissed.
   await symbol.click();
@@ -421,4 +419,110 @@ test('glossary hover panel has no detectable accessibility violations', async ({
 
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);
+});
+
+/**
+ * The two-tier vocabulary (D15): a card's rigorous formula is visible on the
+ * glossary, its symbols are live, and a symbol with no card of its own — a
+ * gloss — still has somewhere to say its name.
+ */
+test('explores a rigorous formula and its glosses from the glossary', async ({
+  page,
+}) => {
+  await page.goto('/glossary/#notation-expectation');
+
+  const article = page.locator('article#notation-expectation');
+  const panel = page.locator('[data-notation-panel]');
+
+  // The formula is rendered on the card, not hidden behind the panel.
+  const formula = article.locator('.glossary-formula');
+  await expect(formula).toBeVisible();
+
+  // A card symbol inside the formula explains itself.
+  const cardGlyph = formula
+    .locator('.katex-html [data-notation-key="expectation"]')
+    .first();
+  await cardGlyph.scrollIntoViewIfNeeded();
+  await cardGlyph.hover();
+  await expect(panel).toBeVisible();
+  await expect(panel.locator('[data-panel-title]')).toHaveText('Expectation');
+
+  await page.mouse.move(2, 2);
+  await expect(panel).toBeHidden();
+
+  // A gloss inside the same formula explains itself too — symbol and name,
+  // and no "open the full definition" link, because it has no card.
+  const glossGlyph = formula
+    .locator('.katex-html [data-notation-key="expectation.sample-space"]')
+    .first();
+  await glossGlyph.scrollIntoViewIfNeeded();
+  await glossGlyph.hover();
+  await expect(panel).toBeVisible();
+  await expect(panel.locator('[data-panel-title]')).toHaveText('sample space');
+  await expect(panel.locator('[data-panel-link]')).toBeHidden();
+  await expect(panel.locator('[data-panel-summary]')).toBeHidden();
+
+  await page.mouse.move(2, 2);
+  await expect(panel).toBeHidden();
+});
+
+test('walks into a symbol from inside the panel and back out again', async ({
+  page,
+}) => {
+  await page.goto('/glossary/#notation-expectation');
+
+  const panel = page.locator('[data-notation-panel]');
+  const trail = panel.locator('[data-panel-trail]');
+
+  const symbol = page.locator(
+    'article#notation-expectation .glossary-symbol-trigger',
+  );
+  await symbol.scrollIntoViewIfNeeded();
+  await symbol.click();
+  await expect(panel).toBeVisible();
+  await expect(panel.locator('[data-panel-title]')).toHaveText('Expectation');
+  await expect(trail).toBeHidden();
+
+  // The panel carries the card's formula, and its glyphs are the way down.
+  const panelGlyph = panel
+    .locator('[data-panel-formula] [data-notation-key="expectation.outcome"]')
+    .first();
+  await panelGlyph.click();
+  await expect(panel.locator('[data-panel-title]')).toHaveText('outcome');
+  await expect(trail).toBeVisible();
+  await expect(panel.locator('[data-panel-crumb]')).toHaveText('Expectation');
+
+  // And back out to where the reader came from.
+  await panel.locator('[data-panel-back]').click();
+  await expect(panel.locator('[data-panel-title]')).toHaveText('Expectation');
+  await expect(trail).toBeHidden();
+
+  await page.keyboard.press('Escape');
+  await expect(panel).toBeHidden();
+});
+
+test('keeps the formula and every gloss name readable without JavaScript', async ({
+  browser,
+}) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto('/glossary/#notation-expectation');
+
+  const article = page.locator('article#notation-expectation');
+  await expect(article.locator('.glossary-meaning')).toBeVisible();
+  await expect(
+    article.locator('.glossary-formula .notation-formula-math .katex').first(),
+  ).toBeVisible();
+
+  // A gloss has no card, so this list is the whole of it with JS off.
+  const glosses = article.locator('[data-notation-gloss-list]');
+  await expect(glosses).toBeVisible();
+  await expect(
+    glosses.locator('[data-notation-gloss="expectation.sample-space"]'),
+  ).toContainText('sample space');
+  await expect(
+    glosses.locator('[data-notation-gloss="expectation.probability-measure"]'),
+  ).toContainText('dimensionless probability weights between zero and one');
+
+  await context.close();
 });

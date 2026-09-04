@@ -1,6 +1,6 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { constantHazardSurvivalProbability } from '../../src/domain/credit/survival';
+import { constantHazardSurvivalProbability } from '../../content/domain/credit/survival';
 
 function expectRelativeClose(
   actual: number,

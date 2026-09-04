@@ -1,0 +1,94 @@
+{
+  "file": "content/docs/derivatives/european-option-contracts-and-payoffs.mdx",
+  "lesson": "derivatives.european-option-contracts-and-payoffs",
+  "localKeys": [
+    "long-call-expiry-payoff",
+    "long-put-expiry-payoff",
+    "option-holder-expiry-profit",
+    "option-premium-paid"
+  ],
+  "references": [
+    {
+      "column": 32,
+      "definitionId": "shared:option-strike-price",
+      "key": "option-strike-price",
+      "kind": "prose",
+      "line": 15,
+      "scope": "shared",
+      "symbol": "K"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:option-expiry-time",
+      "key": "option-expiry-time",
+      "kind": "prose",
+      "line": 16,
+      "scope": "shared",
+      "symbol": "T_{\\mathrm{opt}}"
+    },
+    {
+      "column": 9,
+      "definitionId": "shared:derivative-underlying-value",
+      "key": "derivative-underlying-value",
+      "kind": "prose",
+      "line": 23,
+      "scope": "shared",
+      "symbol": "S_t"
+    },
+    {
+      "column": 35,
+      "definitionId": "page:derivatives.european-option-contracts-and-payoffs:long-call-expiry-payoff",
+      "key": "long-call-expiry-payoff",
+      "kind": "prose",
+      "line": 24,
+      "scope": "local",
+      "symbol": "\\Pi_{T_{\\mathrm{opt}}}^{\\mathrm{call}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:derivatives.european-option-contracts-and-payoffs:long-put-expiry-payoff",
+      "key": "long-put-expiry-payoff",
+      "kind": "prose",
+      "line": 25,
+      "scope": "local",
+      "symbol": "\\Pi_{T_{\\mathrm{opt}}}^{\\mathrm{put}}"
+    },
+    {
+      "column": 5,
+      "definitionId": "shared:call-option-value",
+      "key": "call-option-value",
+      "kind": "prose",
+      "line": 47,
+      "scope": "shared",
+      "symbol": "c_t"
+    },
+    {
+      "column": 36,
+      "definitionId": "shared:put-option-value",
+      "key": "put-option-value",
+      "kind": "prose",
+      "line": 47,
+      "scope": "shared",
+      "symbol": "p_t"
+    },
+    {
+      "column": 7,
+      "definitionId": "page:derivatives.european-option-contracts-and-payoffs:option-premium-paid",
+      "key": "option-premium-paid",
+      "kind": "prose",
+      "line": 49,
+      "scope": "local",
+      "symbol": "\\pi_0"
+    },
+    {
+      "column": 45,
+      "definitionId": "page:derivatives.european-option-contracts-and-payoffs:option-holder-expiry-profit",
+      "key": "option-holder-expiry-profit",
+      "kind": "prose",
+      "line": 52,
+      "scope": "local",
+      "symbol": "G_{T_{\\mathrm{opt}}}"
+    }
+  ],
+  "schemaVersion": 3
+}

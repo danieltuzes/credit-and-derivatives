@@ -1,0 +1,72 @@
+---
+/**
+ * Progressive enhancement for keyed equations (Step D7).
+ *
+ * The no-JS baseline is complete: `remark-notation` emits a real `id="eq-<key>"`
+ * container, a focusable number `<a>`, and `[[eq:key]]` renders a plain anchor;
+ * `global.css` does the `:target` deep-link highlight (with a
+ * `prefers-reduced-motion` fallback) and the sticky-header scroll offset via
+ * `scroll-margin`.
+ *
+ * This script only adds what CSS and anchors cannot:
+ *  - re-triggering the highlight when the same `#eq-…` is activated again;
+ *  - a smooth, header-aware scroll on an in-page jump;
+ *  - moving keyboard focus onto the equation so screen-reader users land on it.
+ *
+ * Everything here is gated on `prefers-reduced-motion` and degrades to the
+ * native anchor behaviour if it throws.
+ */
+---
+
+<script>
+  (() => {
+    const root = document.querySelector('.sl-markdown-content');
+    if (!root) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const activate = (target: HTMLElement | null, doScroll: boolean) => {
+      if (!target) return;
+      if (!reduce.matches) {
+        // Restart the CSS `:target` animation even when the hash is unchanged.
+        target.style.animation = 'none';
+        void target.offsetWidth;
+        target.style.removeProperty('animation');
+      }
+      if (doScroll) {
+        target.scrollIntoView({
+          behavior: reduce.matches ? 'auto' : 'smooth',
+          block: 'start',
+        });
+      }
+      target.setAttribute('tabindex', '-1');
+      try {
+        target.focus({ preventScroll: true });
+      } catch {
+        target.focus();
+      }
+    };
+
+    root.addEventListener('click', (event) => {
+      const origin = event.target instanceof Element ? event.target : null;
+      const link = origin?.closest('a.equation-ref, a.keyed-equation__number');
+      if (!link) return;
+      const href = link.getAttribute('href') || '';
+      if (!href.startsWith('#eq-')) return; // cross-page: let the browser navigate
+      const target = document.getElementById(href.slice(1));
+      if (!target) return;
+      event.preventDefault();
+      if (location.hash !== href) history.pushState(null, '', href);
+      activate(target, true);
+    });
+
+    window.addEventListener('hashchange', () => {
+      if (!location.hash.startsWith('#eq-')) return;
+      activate(document.getElementById(location.hash.slice(1)), false);
+    });
+
+    if (location.hash.startsWith('#eq-')) {
+      activate(document.getElementById(location.hash.slice(1)), true);
+    }
+  })();
+</script>

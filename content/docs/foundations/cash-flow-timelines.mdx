@@ -1,0 +1,111 @@
+---
+title: Cash-flow timelines and perspective
+description: Place signed payments on one clock before trying to value them.
+editorialStatus: draft
+teaches:
+  - finance.cash-flow-timeline.interpret
+  - finance.cash-flow-perspective.apply
+assumptions:
+  - All examples use synthetic USD amounts
+  - Time is measured in years from a stated valuation date
+  - Positive means received and negative means paid by the named holder
+notation:
+  local:
+    - key: payment-index
+      latex: k
+      meaning: 'Labels one row in the ordered cash-flow schedule. The index is an ordering label; the associated payment time is measured in years.'
+      formula: 'k \in \{0,1,2,\ldots\}'
+      seeAlso:
+        - payment-time
+        - signed-cash-flow
+      alignment:
+        kind: general
+        rationale: Finite sequence indexing is part of the track entry assumptions.
+---
+
+import CompactExample from 'explico/components/examples/CompactExample.astro';
+import CompactExamples from 'explico/components/examples/CompactExamples.astro';
+import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- read an ordered schedule of payment amounts and times;
+- state the unit and clock used by a timeline;
+- apply a consistent sign convention from a named perspective.
+
+## Start with events, not formulas
+
+A financial calculation begins with a list of events. The
+[[valuation-time]], written $0$, is the common origin for the page's
+clock. Use the local [[payment-index]] $k$ to identify one row; it is not
+itself a time or date. At row $k$, write the [[signed-cash-flow]] as
+$CF_k$ and its [[payment-time]] as $t_k$.
+
+$$
+CF_k \quad\text{occurs at}\quad t_k.
+$$
+
+The shared subscript connects each amount to its matching time while preserving
+the distinct meanings of amount, time, and row index.
+
+<CompactExamples summary="Worked examples (3)">
+  <CompactExample label="Read a timeline">
+
+Suppose, in a simplified primary-issuance example, a bondholder pays an issuer
+USD 980 now, receives USD 30 after one year, and receives USD 1,030 after two
+years.
+
+| Payment index $k$ | Payment time $t_k$, years from time 0 | Signed cash flow $CF_k$, USD | Event                         |
+| ----------------: | ------------------------------------: | ---------------------------: | ----------------------------- |
+|                 0 |                                     0 |                         -980 | Purchase price paid           |
+|                 1 |                                     1 |                          +30 | Coupon received               |
+|                 2 |                                     2 |                       +1,030 | Coupon and principal received |
+
+This table does **not** say whether USD 980 is a fair price. It only describes
+who exchanges what, and when.
+
+  </CompactExample>
+  <CompactExample label="Reverse the perspective">
+
+From that issuer's perspective, every amount above changes sign:
+
+|    Time | Bondholder |     Issuer |
+| ------: | ---------: | ---------: |
+| 0 years |   USD -980 |   USD +980 |
+|  1 year |    USD +30 |    USD -30 |
+| 2 years | USD +1,030 | USD -1,030 |
+
+Changing perspective does not move the dates or change absolute amounts.
+Adding cash flows from opposite perspectives without first reconciling their
+signs would mix two different models.
+
+  </CompactExample>
+  <CompactExample label="Same amount, different time">
+
+USD +100 at $t_1=0.5$ years and USD +100 at $t_2=2$ years are two distinct
+events. The amounts match; the times do not. A later lesson introduces the
+discount factors needed to compare them at time zero.
+
+  </CompactExample>
+</CompactExamples>
+
+## Check your understanding
+
+These direct and transfer items cover reading a schedule and reversing
+perspective. Each question stays collapsed until you open it; answers and
+explanations appear once you check.
+
+<AssessmentSet />
+
+## Model boundary and review note
+
+The year-valued times here are already supplied. Real schedules require
+calendar dates, business-day adjustments, and year-fraction conventions; none
+is inferred in this lesson.
+
+The dated-schedule and timeline treatment here follows Tuckman &
+Serrat[@tuckman-serrat-fixed-income; §1.1, the dated coupon schedule in Table 1.1; §1.6 and Figure 1.3, a timeline of dated events and day-count intervals]. Reversing the holder's perspective flips every sign by a
+bookkeeping convention, not a claim tied to one page. The lesson stays `draft`
+pending human confirmation of the printed locators.

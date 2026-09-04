@@ -5,9 +5,13 @@ export default defineConfig({
     include: ['tests/**/*.test.ts'],
     coverage: {
       include: [
-        'src/domain/**/*.ts',
+        'content/domain/**/*.ts',
         'src/curriculum/**/*.ts',
-        'src/notation/**/*.{ts,mjs}',
+        'src/reference/**/*.{ts,mjs}',
+        'src/compiler/**/*.ts',
+        'src/progress/**/*.ts',
+        'src/analytics/**/*.ts',
+        'src/session/**/*.ts',
       ],
     },
   },

@@ -7,9 +7,9 @@ import {
   type AccruedOnDefaultAssumption,
   type CdsLegModelInput,
   type CdsPeriod,
-} from '../../src/domain/cds/cds-legs';
-import { constantHazardSurvivalProbability } from '../../src/domain/credit/survival';
-import { periodicDiscountFactor } from '../../src/domain/present-value';
+} from '../../content/domain/cds/cds-legs';
+import { constantHazardSurvivalProbability } from '../../content/domain/credit/survival';
+import { periodicDiscountFactor } from '../../content/domain/present-value';
 
 function expectRelativeClose(
   actual: number,

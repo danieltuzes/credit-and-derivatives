@@ -1,0 +1,61 @@
+{
+  "name": "explico",
+  "version": "0.1.0",
+  "description": "Build-time engine for prerequisite-aware, notation-rigorous course content: one validated content model, a semantic notation/citation/equation system with a completeness gate, and a deterministic JSON manifest.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danieltuzes/explico.git"
+  },
+  "homepage": "https://github.com/danieltuzes/explico#readme",
+  "bugs": "https://github.com/danieltuzes/explico/issues",
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    "./package.json": "./package.json",
+    "./content-config": "./src/content-config.ts",
+    "./*": "./src/*"
+  },
+  "publishConfig": {
+    "exports": {
+      "./package.json": "./package.json",
+      "./content-config": "./src/content-config.ts",
+      "./components/*": "./src/components/*",
+      "./styles/*": "./src/styles/*",
+      "./reference/*.mjs": "./dist/reference/*.mjs",
+      "./*": {
+        "types": "./dist/*.d.ts",
+        "default": "./dist/*.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup && node scripts/copy-assets.mjs",
+    "prepublishOnly": "pnpm run build"
+  },
+  "peerDependencies": {
+    "@astrojs/markdown-remark": "7.2.4",
+    "@astrojs/react": "6.0.4",
+    "@astrojs/starlight": "0.41.9",
+    "astro": "7.2.7",
+    "katex": "0.16.47",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "rehype-katex": "7.0.1",
+    "remark-math": "6.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.3",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.5",
+    "tsup": "8.5.1",
+    "typescript": "6.0.2"
+  }
+}

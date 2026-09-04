@@ -1,0 +1,92 @@
+---
+title: Settlement, accrued interest, and clean versus dirty price
+description: Calculate actual/actual coupon-period accrual and keep quoted and cash bond prices on one basis.
+editorialStatus: draft
+teaches:
+  - bonds.clean-dirty-price.calculate
+assumptions:
+  - One regular coupon period with previous coupon date less than or equal to settlement and settlement strictly before the next coupon date
+  - Actual/actual coupon-period convention using unadjusted UTC calendar dates
+  - No business-day adjustment, ex-coupon period, settlement lag, stub, holiday calendar, tax, or quote-per-100 conversion
+notation:
+  local:
+    - key: coupon-period-elapsed-days
+      latex: 'n_{\mathrm{elapsed}}'
+      meaning: Actual calendar days from the previous coupon date through settlement under the lesson convention.
+      units: days
+      sources:
+        - id: tuckman-serrat-fixed-income
+          locator: 'Ch. 1 §1.6, printed pp. 60-61 and Fig. 1.3 (actual days from the previous coupon date through settlement and actual days in the coupon period).'
+      alignment:
+        kind: competency
+        introducedByCompetency: bonds.clean-dirty-price.calculate
+        introducedInLesson: bonds.settlement-clean-and-dirty-price
+    - key: coupon-period-total-days
+      latex: 'n_{\mathrm{period}}'
+      meaning: Actual calendar days from the previous coupon date to the next coupon date.
+      units: days
+      sources:
+        - id: tuckman-serrat-fixed-income
+          locator: 'Ch. 1 §1.6, printed pp. 60-61 and Fig. 1.3 (actual days from the previous coupon date through settlement and actual days in the coupon period).'
+      alignment:
+        kind: competency
+        introducedByCompetency: bonds.clean-dirty-price.calculate
+        introducedInLesson: bonds.settlement-clean-and-dirty-price
+---
+
+import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
+
+## The price paid is not always the price quoted
+
+A bond screen commonly shows the [[clean-bond-price]], also called the flat
+or quoted price. The buyer pays the [[dirty-bond-price]], also called the
+full, cash, or invoice price. The bridge is [[accrued-interest]]:
+
+$$
+\explain{dirty-bond-price}{P^{\mathrm{dirty}}}
+=\explain{clean-bond-price}{P^{\mathrm{clean}}}
++\explain{accrued-interest}{AI}.
+$$
+
+On a coupon date, accrued interest is zero and the two prices coincide. That
+is why the earlier coupon-date bond model could use one bond-price symbol.
+
+## Actual/actual within one coupon period
+
+Under this lesson's narrow convention, let the local
+[[coupon-period-elapsed-days]] be $n_{\mathrm{elapsed}}$ and the local
+[[coupon-period-total-days]] be $n_{\mathrm{period}}$. For one
+[[coupon-payment]] $C$,
+
+$$
+\explain{accrued-interest}{AI}
+=\explain{coupon-payment}{C}
+\frac{\explain{coupon-period-elapsed-days}{n_{\mathrm{elapsed}}}}
+{\explain{coupon-period-total-days}{n_{\mathrm{period}}}}.
+$$
+
+For the dated example February 15, 2021 to August 15, 2021, settlement on
+May 17 is 91 actual days into a 181-day period. A USD 31.25 coupon therefore
+has accrued interest USD $31.25\times91/181=15.71132597$.
+
+The software validates ISO dates and counts UTC calendar days. It does not
+pretend to be a production schedule engine: business-day rules, ex-coupon
+periods, stubs, and other day counts require separate conventions.
+
+## Why this matters for derivatives
+
+Bond forwards and options settle cash against a price basis. If an exercise
+strike is quoted clean while the modeled bond value is dirty, add the
+exercise-date accrued amount to the strike before calculating payoff. Coupons
+before delivery also have to be assigned to the correct owner.
+
+## Check your understanding
+
+<AssessmentSet />
+
+## Sources
+
+The clean/dirty split and actual/actual coupon-period example follow Tuckman
+and Serrat, Chapter 1 §1.6 [@tuckman-serrat-fixed-income]. Hull's European bond
+option discussion emphasizes matching cash versus quoted strike and bond
+prices [@hull-options-futures].

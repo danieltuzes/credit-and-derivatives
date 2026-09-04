@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   periodicDiscountFactor,
   presentValue,
-} from '../../src/domain/present-value';
+} from '../../content/domain/present-value';
 
 function expectRelativeClose(
   actual: number,

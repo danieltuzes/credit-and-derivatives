@@ -123,7 +123,7 @@ for (const { path, labels } of lessons) {
         .map((element) => element.textContent?.trim());
 
       return {
-        hasLiteralTerm: root.innerHTML.includes('\\term{'),
+        hasLiteralTerm: root.innerHTML.includes('[['),
         katexErrors: root.querySelectorAll('.katex-error').length,
         unmarkedVariables,
       };
@@ -191,7 +191,7 @@ test('notation remains compiled inside compact example components', async ({
   await expect(
     examples.locator('.katex-html [data-notation-key="periodic-rate"]'),
   ).toBeVisible();
-  await expect(examples).not.toContainText('\\term{');
+  await expect(examples).not.toContainText('[[');
 });
 
 test('all examples remain available when JavaScript is disabled', async ({

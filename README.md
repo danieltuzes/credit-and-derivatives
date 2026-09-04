@@ -13,10 +13,10 @@ reviewed code or a cited source; conventions are consistent across lessons.
 
 ## Quick start
 
-Requirements: **Node.js `24.20.0`** (pinned in [`.nvmrc`](.nvmrc) /
-[`.node-version`](.node-version); `engines` requires `>=24 <25` and
-[`.npmrc`](.npmrc) sets `engine-strict`), **pnpm `11.24.0`** (pinned by
-`packageManager`), and Playwright's Chromium for the browser checks.
+Requirements: **Node.js `24.20.0`** (one exact version across [`.nvmrc`](.nvmrc),
+[`.node-version`](.node-version), `package.json` `engines`, and the CI / deploy
+workflows; [`.npmrc`](.npmrc) sets `engine-strict`), **pnpm `11.24.0`** (pinned
+by `packageManager`), and Playwright's Chromium for the browser checks.
 
 ```bash
 # 1. pnpm — standalone install bundles its own Node, so it works with no system Node:
@@ -44,6 +44,7 @@ on `PATH`) is the simplest fix.
 | Command                             | Purpose                                   |
 | ----------------------------------- | ----------------------------------------- |
 | `pnpm dev`                          | Editor preview with hot reload            |
+| `pnpm build:engine`                 | Build `explico` (`tsup` → `dist/`)        |
 | `pnpm validate:content`             | Curriculum + notation semantic validation |
 | `pnpm check`                        | Astro + TypeScript checks                 |
 | `pnpm test` / `pnpm test:watch`     | Numerical, curriculum, notation tests     |
@@ -54,20 +55,34 @@ on `PATH`) is the simplest fix.
 
 ## Repository map
 
-| Path                                                     | Purpose                                                    |
-| -------------------------------------------------------- | ---------------------------------------------------------- |
-| `src/content/docs/`                                      | MDX lessons and site pages                                 |
-| `src/content/{competencies,assessments,tracks,sources}/` | Curriculum data (JSON)                                     |
-| `src/content/notation/`                                  | Shared define-once notation entries (Markdown)             |
-| `src/content.config.ts`                                  | Authoritative Zod schemas for all content                  |
-| `src/domain/`                                            | Pure financial and mathematical calculations               |
-| `src/curriculum/`                                        | Curriculum graph and semantic validation                   |
-| `src/notation/`                                          | Notation parsing, registry, scoping, KaTeX adapters        |
-| `src/components/`                                        | Astro/React UI (labs, notation layer, glossary, examples)  |
-| `scripts/`                                               | Repository-level validation commands                       |
-| `tests/`                                                 | Unit, property, curriculum, browser, accessibility tests   |
-| `docs/`                                                  | Architecture reference and ADRs                            |
-| `reference-library/`                                     | Local (git-ignored) cache of source texts for verification |
+The repo is a pnpm workspace split into an **engine** (`packages/explico/`, the
+`explico` package) and a **course** (everything at the root:
+`content/`, `astro.config.mjs`, `scripts/`, `tests/`). The course depends on the
+engine via `workspace:*`; a dependency-boundary test
+(`tests/unit/boundaries.test.ts`) keeps the engine free of any course reference
+and the course's `content/domain/` framework-free. When the two halves become
+separate repos this is a move, not a detangle.
+
+| Path                                                 | Purpose                                                                                |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `content/docs/`                                      | MDX lessons and site pages                                                             |
+| `content/{competencies,assessments,tracks,sources}/` | Curriculum data (JSON)                                                                 |
+| `content/notation/`                                  | Shared define-once notation entries (Markdown)                                         |
+| `content/domain/`                                    | Pure financial and mathematical calculations (this course)                             |
+| `content/labs/`                                      | The course's interactive React explorers                                               |
+| `content/course.config.ts`                           | Course identity: title, sidebar sections, domains, conventions                         |
+| `src/content.config.ts`                              | Astro's content entry — re-exports the engine's Zod schemas                            |
+| `astro.config.mjs`, `scripts/`                       | The wiring layer: pass `courseConfig` + the manifest to the engine                     |
+| `packages/explico/src/compiler/`                     | The one manifest compiler + the `content` CLI                                          |
+| `packages/explico/src/curriculum/`                   | Curriculum graph and semantic validation                                               |
+| `packages/explico/src/reference/`                    | Notation parsing, registry, scoping, KaTeX adapters, the completeness gate             |
+| `packages/explico/src/components/`                   | Engine UI (notation layer, citations, glossary, examples, layout)                      |
+| `packages/explico/src/{progress,session,analytics}/` | LMS / analytics / identity seams (no-op impls)                                         |
+| `packages/explico/dist/`                             | Engine build (`tsup` → ESM + `.d.ts`); git-ignored, regenerated by `pnpm build:engine` |
+| `build/`                                             | Compiled course output: `manifest.json` (git-ignored) + `resolution/`                  |
+| `tests/`                                             | Unit, property, curriculum, browser, accessibility tests                               |
+| `docs/`                                              | Architecture reference and ADRs                                                        |
+| `reference-library/`                                 | Local (git-ignored) cache of source texts for verification                             |
 
 ## Where things are documented
 

@@ -1,0 +1,292 @@
+---
+title: Events, conditional probability, and expectation
+description: Build expected values from disjoint events without hiding what happens inside an interval.
+editorialStatus: draft
+teaches:
+  - probability.events.interpret
+  - probability.conditional-probability.calculate
+  - probability.expectation-by-partition.calculate
+assumptions:
+  - Worked sums use a finite disjoint and exhaustive event partition
+  - Event probabilities are non-negative and sum to one
+  - A conditional probability is calculated only when the conditioning event has positive probability
+  - Every random value and conditional event mean used in an example is finite
+  - Monetary examples use synthetic USD amounts and do not estimate real-world or pricing probabilities
+notation:
+  uses: []
+  local:
+    - key: probability-event
+      latex: A
+      meaning: "A specified set of possible outcomes in this lesson's probability model. An indexed form selects one event in a finite disjoint and exhaustive partition."
+      formula: 'A_j'
+      sources:
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.1, printed pp. 1-3, Eq. 1.1.5 (an event as a subset of the sample space and finitely many indexed disjoint events).'
+      seeAlso:
+        - probability-measure
+      alignment:
+        kind: competency
+        introducedByCompetency: probability.events.interpret
+        introducedInLesson: foundations.probability-events-and-expectation
+    - key: probability-event-index
+      latex: j
+      meaning: "Selects one event in the lesson's finite partition. The index is bookkeeping and has no probability or monetary unit."
+      formula: 'j \in \{1,\ldots,m\}'
+      sources:
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.1, printed p. 3, Eq. 1.1.5 (an index for finitely many disjoint events).'
+      seeAlso:
+        - probability-event
+        - probability-partition-size
+      alignment:
+        kind: competency
+        introducedByCompetency: probability.events.interpret
+        introducedInLesson: foundations.probability-events-and-expectation
+    - key: probability-partition-size
+      latex: m
+      meaning: "Counts the events in the lesson's finite partition. The count is a positive integer and does not represent time."
+      formula: 'm \in \mathbb{N}'
+      sources:
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.1, printed p. 3, Eq. 1.1.5 (the finite count of indexed disjoint events).'
+      seeAlso:
+        - probability-event-index
+      alignment:
+        kind: competency
+        introducedByCompetency: probability.events.interpret
+        introducedInLesson: foundations.probability-events-and-expectation
+    - key: probability-measure
+      latex: '\mathbb{P}'
+      meaning: 'Assigns each modeled event a number between zero and one. The symbol is page-local and generic; it does not yet select a real-world or risk-neutral interpretation.'
+      units: probability between zero and one
+      sources:
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.1, printed p. 2, Def. 1.1.2 (a probability measure assigns each event a probability between zero and one).'
+      seeAlso:
+        - probability-event
+      alignment:
+        kind: competency
+        introducedByCompetency: probability.events.interpret
+        introducedInLesson: foundations.probability-events-and-expectation
+    - key: probability-random-value
+      latex: X
+      meaning: 'A numerical value determined by which modeled outcome occurs. Its unit is stated by the example, such as USD for a random payment.'
+      sources:
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.2, printed pp. 7-8, Def. 1.2.1 (a random variable as a numerical quantity determined by the experiment outcome).'
+      seeAlso:
+        - expectation
+      alignment:
+        kind: competency
+        introducedByCompetency: probability.expectation-by-partition.calculate
+        introducedInLesson: foundations.probability-events-and-expectation
+    - key: probability-event-value
+      latex: 'x_j'
+      meaning: 'The constant value taken by the random value on one partition event. This quantity can replace a conditional mean only when every outcome in the event gives the same value.'
+      sources:
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.3, printed p. 18, Thm. 1.3.4(i) (a finite-valued random variable and its event-value expectation); Ch. 2 §2.3, printed pp. 68-69, Def. 2.3.1 (conditional expectation over event information).'
+      seeAlso:
+        - probability-event
+        - probability-random-value
+      alignment:
+        kind: competency
+        introducedByCompetency: probability.expectation-by-partition.calculate
+        introducedInLesson: foundations.probability-events-and-expectation
+---
+
+import CompactExample from 'explico/components/examples/CompactExample.astro';
+import CompactExamples from 'explico/components/examples/CompactExamples.astro';
+import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
+
+## What you will be able to do
+
+After this lesson, you should be able to:
+
+- identify events that form a disjoint and exhaustive partition;
+- calculate a conditional probability;
+- calculate an expectation when a random value is constant on each event;
+- use conditional event means when the value varies inside an event.
+
+## Outcomes, events, and probabilities
+
+An **outcome** is one possible result of a modeled experiment. An **event** is
+a specified set of outcomes. Use the local [[probability-event]] $A$ for
+one such set and the local [[probability-measure]] $\mathbb{P}$ for the
+rule that assigns probabilities to events. The letter $\mathbb{P}$ is generic
+on this page. A later finance lesson uses $\mathbb{P}$ specifically for
+real-world probabilities and introduces a different symbol for pricing
+probabilities; this page does not silently choose between them.
+
+A useful finite partition contains events that are:
+
+- **disjoint:** no outcome belongs to two different partition events; and
+- **exhaustive:** every possible outcome belongs to one of them.
+
+Use the local [[probability-event-index]] $j$ to select an event and the
+local [[probability-partition-size]] $m$ to count the events. For a
+disjoint and exhaustive list $A_1,\ldots,A_m$, additivity gives
+
+$$
+\sum_{j=1}^{m}\mathbb{P}(A_j)=1.
+$$
+
+If events overlap, adding their probabilities can double-count outcomes. If
+they are not exhaustive, the sum leaves some outcomes unrepresented. These
+event and additivity definitions follow Shreve's probability-space
+treatment[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.1, printed pp. 1-3, Def. 1.1.2 and eqs. 1.1.2-1.1.5].
+
+## Conditional probability changes the population
+
+Suppose the question asks for event $A$ **given** another event. Write the
+conditioning event as the non-canonical visual variant
+$\explain{probability-event}{B}$. When
+$\mathbb{P}(\explain{probability-event}{B})>0$, conditional
+probability is
+
+$$
+\mathbb{P}(A\mid\explain{probability-event}{B})
+=\frac{\mathbb{P}(A\cap\explain{probability-event}{B})}
+{\mathbb{P}(\explain{probability-event}{B})}.
+$$
+
+The denominator is the probability of the population retained by the phrase
+“given $\explain{probability-event}{B}$.” For example, if 30% of all outcomes
+are in $\explain{probability-event}{B}$ and 12% are in both $A$ and
+$\explain{probability-event}{B}$, then
+
+$$
+\mathbb{P}(A\mid\explain{probability-event}{B})
+=\frac{0.12}{0.30}=0.40.
+$$
+
+In a default model, “default during this period given survival to its start”
+uses only the outcomes that survived to the period start as its denominator.
+That conditional question is conceptually different from unconditional default
+by a horizon. Shreve develops conditioning as averaging within the information
+or event retained by the condition[@shreve-stochastic-calculus-finance-ii; Ch. 2 §2.3, printed pp. 66-69, eqs. 2.3.4-2.3.17 and Def. 2.3.1].
+
+## Expectation from disjoint events
+
+Use the local [[probability-random-value]] $X$ for a numerical value
+determined by the outcome and the [[expectation]] operator $\mathbb{E}$ for
+its probability-weighted average. In this lesson every random value is constant
+on each event of a finite partition, so the general integral definition of
+$\mathbb{E}$ reduces to the weighted sum below. The expectation has the same
+unit as $X$; a random USD payment has an expected value in USD, not in
+percent.
+
+There are two related formulas, and their difference matters.
+
+### Exact value on every event
+
+First suppose $X$ is constant on every partition event. Use the local
+[[probability-event-value]] $x_j$ for its value on $A_j$. Then
+
+$$
+\mathbb{E}[X]
+=\sum_{j=1}^{m}x_j\mathbb{P}(A_j),
+\qquad X=x_j\text{ on }A_j.
+$$
+
+This is the precise setting for the familiar instruction “multiply each value
+by its probability, then add.” Shreve states the finite-valued expectation in
+this form[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.3, printed pp. 13-18, Thms. 1.3.1 and 1.3.4].
+
+### Value varies inside an event
+
+If $X$ is not constant inside $A_j$, one representative value is not generally
+exact. For each positive-probability event, replace it with the conditional
+mean inside that event:
+
+$$
+\mathbb{E}[X]
+=\sum_{j=1}^{m}\mathbb{P}(A_j)\mathbb{E}[X\mid A_j].
+$$
+
+An event with zero probability contributes zero and can be omitted; its
+event-conditioned mean need not be defined.
+
+The identity follows by splitting an expectation across disjoint events and
+using the partial-averaging property of conditional expectation. Shreve gives
+the disjoint-event integral split and the unconditional-average property of
+conditional expectation[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.3, printed p. 17, Remark 1.3.2; Ch. 2 §2.3, printed pp. 68-72, eqs. 2.3.16-2.3.17 and 2.3.25].
+
+<CompactExamples summary="Worked examples (3)">
+  <CompactExample label="Constant value on each event">
+
+Suppose $X$ is a synthetic payment in USD. It equals USD 0, USD 50, or USD
+100 on three disjoint exhaustive events with probabilities 0.10, 0.20, and
+0.70.
+
+| Event | Constant payment, USD | Probability | Contribution, USD |
+| ----: | --------------------: | ----------: | ----------------: |
+| $A_1$ |                     0 |        0.10 |              0.00 |
+| $A_2$ |                    50 |        0.20 |             10.00 |
+| $A_3$ |                   100 |        0.70 |             70.00 |
+
+Therefore,
+
+$$
+\mathbb{E}[X]
+=0\times0.10+50\times0.20+100\times0.70
+=\text{USD }80.
+$$
+
+USD 80 is a probability-weighted average, not a claim that USD 80 is one of
+the possible realized payments.
+
+  </CompactExample>
+  <CompactExample label="Conditional means inside events">
+
+Suppose the same three event probabilities are 0.01, 0.02, and 0.97, but the
+payment varies inside each event. Its conditional means are USD 40, USD 30,
+and USD 0. The exact expectation from the supplied conditional means is
+
+$$
+\mathbb{E}[X]
+=0.01\times40+0.02\times30+0.97\times0
+=\text{USD }1.00.
+$$
+
+No claim is made that every outcome in the first event pays USD 40. That is
+the event's average payment.
+
+  </CompactExample>
+  <CompactExample label="Default inside a period">
+
+For a CDS period, one event can be “default occurs in this period.” A
+protection payment discounted at the actual default time varies within that
+event. Accrued premium also varies because default near the period end accrues
+more than default near its start.
+
+Using one midpoint value for the whole interval is therefore an approximation.
+The exact event contribution is the interval-default probability multiplied by
+the conditional expected discounted payment inside the interval. Refining the
+timeline into smaller disjoint default-time buckets produces a finer sum; in a
+continuous-time model, its limit is written as an integral over default time.
+The later CDS lesson supplies the hazard-based probabilities and cash-flow
+formulas for that integral.
+
+  </CompactExample>
+</CompactExamples>
+
+## Check your understanding
+
+These items separately test events, conditioning, and both expectation forms.
+Each question stays collapsed until you open it; answers and explanations
+appear once you check.
+
+<AssessmentSet />
+
+## Model boundary and review note
+
+This page teaches finite partitions and the idea of a refinement limit. It does
+not construct probability spaces, prove measure-theoretic integration, estimate
+probabilities from data, calibrate risk-neutral probabilities, or evaluate the
+default-time integrals used by a CDS model. A later page distinguishes
+real-world and risk-neutral measures.
+
+The lesson paraphrases the cited textbook; it remains `draft` pending human
+verification of the printed locators, formulas, examples, and notation
+bindings.

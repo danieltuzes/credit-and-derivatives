@@ -1,41 +1,26 @@
 import react from '@astrojs/react';
 import { unified } from '@astrojs/markdown-remark';
 import starlight from '@astrojs/starlight';
-import { readdirSync, readFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
-import matter from 'gray-matter';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
-import { createNotationKatexOptions } from './src/notation/katex-options.mjs';
-import { markdownFilesBelow } from './src/notation/markdown-files.mjs';
-import rehypeFailKatexErrors from './src/notation/rehype-fail-katex-errors.mjs';
-import remarkCitation from './src/notation/remark-citation.mjs';
-import remarkNotation from './src/notation/remark-notation.mjs';
+import { loadManifest } from 'explico/compiler/manifest.ts';
+import { createNotationKatexOptions } from 'explico/reference/katex-options.mjs';
+import rehypeFailKatexErrors from 'explico/reference/rehype-fail-katex-errors.mjs';
+import remarkCitation from 'explico/reference/remark-citation.mjs';
+import remarkNotation from 'explico/reference/remark-notation.mjs';
+import { courseConfig } from './content/course.config.ts';
 
-const notationDirectory = fileURLToPath(
-  new URL('./src/content/notation/', import.meta.url),
-);
-const loadNotationDefinitions = () =>
-  markdownFilesBelow(notationDirectory).map((filename) => {
-    const parsed = matter(readFileSync(filename, 'utf8'));
-    return parsed.data;
-  });
+// The deployment base path. Empty for local dev, `pnpm verify`, and e2e (the
+// site serves from `/`); the GitHub Pages workflow sets `SITE_BASE=/equations`.
+// This is a temporary hosting detail, not an architectural invariant.
+const base = process.env.SITE_BASE || undefined;
 
-const sourcesDirectory = fileURLToPath(
-  new URL('./src/content/sources/', import.meta.url),
-);
-const loadSourceRecords = () =>
-  readdirSync(sourcesDirectory)
-    .filter((name) => name.endsWith('.json'))
-    .sort()
-    .map((name) =>
-      JSON.parse(readFileSync(join(sourcesDirectory, name), 'utf8')),
-    );
-
-// Project GitHub Pages site: https://danieltuzes.github.io/equations
-const base = '/equations';
+// The one compiler manifest (Phase D5). `pnpm validate:content` regenerates it
+// before every `astro check` / `astro build`; a cold `astro dev` compiles it
+// once here (with this course's config). Nothing in this config re-walks
+// `content/`.
+const manifest = await loadManifest(courseConfig);
 
 export default defineConfig({
   output: 'static',
@@ -43,53 +28,18 @@ export default defineConfig({
   base,
   integrations: [
     starlight({
-      title: 'Credit Products Playground',
-      description:
-        'Interactive foundations for bonds, credit risk, CDS, CDX, and their options.',
-      customCss: ['./src/styles/global.css'],
+      title: courseConfig.title,
+      description: courseConfig.description,
+      customCss: ['explico/styles/global.css'],
       components: {
-        Footer: './src/components/starlight/LessonFooter.astro',
-        Header: './src/components/starlight/LayoutHeader.astro',
-        PageSidebar: './src/components/starlight/LayoutPageSidebar.astro',
-        Sidebar: './src/components/starlight/LayoutSidebar.astro',
+        Footer: 'explico/components/starlight/LessonFooter.astro',
+        Header: 'explico/components/starlight/LayoutHeader.astro',
+        PageSidebar: 'explico/components/starlight/LayoutPageSidebar.astro',
+        Sidebar: 'explico/components/starlight/LayoutSidebar.astro',
       },
-      sidebar: [
-        {
-          label: 'Foundations',
-          items: [{ autogenerate: { directory: 'foundations' } }],
-        },
-        {
-          label: 'Bonds',
-          items: [{ autogenerate: { directory: 'bonds' } }],
-        },
-        {
-          label: 'Rates and curves',
-          items: [{ autogenerate: { directory: 'rates' } }],
-        },
-        {
-          label: 'Derivative foundations',
-          items: [{ autogenerate: { directory: 'derivatives' } }],
-        },
-        {
-          label: 'Bond options',
-          items: [{ autogenerate: { directory: 'bond-options' } }],
-        },
-        {
-          label: 'Credit risk',
-          items: [{ autogenerate: { directory: 'credit' } }],
-        },
-        {
-          label: 'CDS',
-          items: [{ autogenerate: { directory: 'cds' } }],
-        },
-        {
-          label: 'Reference',
-          items: [
-            { label: 'Curriculum map', link: '/curriculum-map/' },
-            { label: 'Notation glossary', link: '/glossary/' },
-          ],
-        },
-      ],
+      // Section groups are fixed; lesson order inside each is derived from the
+      // tracks (see the manifest `sidebar`), not an authored `sidebar.order`.
+      sidebar: manifest.sidebar,
     }),
     react(),
   ],
@@ -97,8 +47,15 @@ export default defineConfig({
     processor: unified({
       remarkPlugins: [
         remarkMath,
-        [remarkNotation, { definitions: loadNotationDefinitions, base }],
-        [remarkCitation, { sources: loadSourceRecords }],
+        [
+          remarkNotation,
+          {
+            definitions: manifest.notation.raw,
+            equations: manifest.equations.numbersBySlug,
+            base,
+          },
+        ],
+        [remarkCitation, { sources: manifest.sources }],
       ],
       rehypePlugins: [
         [rehypeKatex, createNotationKatexOptions()],
