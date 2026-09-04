@@ -25,7 +25,7 @@ test('content headings get a wrapper and a same-page anchor link', async ({
   await expect(link.locator('.sr-only')).toHaveText(/Section titled/);
 });
 
-test('clicking a heading anchor deep-links, scrolls, and moves focus (JS on)', async ({
+test('clicking a heading anchor deep-links, scrolls, highlights, and moves focus (JS on)', async ({
   page,
 }) => {
   await page.goto(lesson);
@@ -39,6 +39,11 @@ test('clicking a heading anchor deep-links, scrolls, and moves focus (JS on)', a
   await expect(page).toHaveURL(new RegExp(`#${headingId}$`));
   await expect(page.locator(`#${headingId}`)).toBeInViewport();
   await expect(page.locator(`#${headingId}`)).toBeFocused();
+  // The click must land as a real same-document navigation, not merely a
+  // `history.pushState` — only a real navigation sets `:target`, which is
+  // what plays `heading-flash`. (Regression guard: `pushState` alone changes
+  // the URL but leaves the section looking unhighlighted.)
+  await expect(wrapper).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
 });
 
 test('a heading deep link lands in view with JavaScript disabled', async ({

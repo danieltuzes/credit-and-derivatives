@@ -54,15 +54,22 @@ test('an auto-numbered equation is a deep-link target and takes focus on arrival
   await expect(equation).toBeFocused();
 });
 
-test('clicking an auto-numbered equation number updates the URL with its anchor', async ({
+test('clicking an auto-numbered equation number deep-links and actually highlights it', async ({
   page,
 }) => {
   await page.goto(keyedLesson);
-  // The number is transparent until hover/focus; `force` clicks it anyway (an
-  // `opacity:0` link is still hit-testable), exercising the click → deep-link.
-  await page.locator('#eq-3-1 a.keyed-equation__number').click({ force: true });
+  const equation = page.locator('#eq-3-1');
+  // The number is transparent until the row is hovered or focused.
+  await equation.hover();
+  await equation.locator('a.keyed-equation__number').click();
+
   await expect(page).toHaveURL(/#eq-3-1$/);
-  await expect(page.locator('#eq-3-1')).toBeInViewport();
+  await expect(equation).toBeInViewport();
+  // The click must land as a real same-document navigation, not merely a
+  // `history.pushState` — only a real navigation sets `:target`, which is
+  // what plays `eq-flash`. (Regression guard: `pushState` alone changes the
+  // URL but leaves the equation looking unhighlighted.)
+  await expect(equation).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
 });
 
 test('a prose `[[eq-key]]` reference renders the linked number', async ({

@@ -754,7 +754,7 @@
 }
 
 .sl-markdown-content .keyed-equation:target {
-  animation: eq-flash 3s ease-out both;
+  animation: eq-flash 5s ease-out both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -795,8 +795,8 @@
    hover/focus reveal come from Starlight's bundled `anchor-links.css`; these
    rules add the sticky-header scroll offset and the `:target` flash, mirroring
    the keyed-equation deep-link treatment. `HeadingAnchorEnhancer.astro` adds
-   the JS-only niceties (repeat-activation re-trigger, smooth scroll,
-   `history.pushState`, and a brief highlight of the section body). */
+   the JS-only niceties (smooth scroll, repeat-activation re-trigger, and a
+   brief highlight of the section body). */
 .sl-markdown-content :is(h1, h2, h3, h4, h5, h6),
 .sl-markdown-content .sl-heading-wrapper {
   scroll-margin-block-start: 5rem;
@@ -817,11 +817,9 @@
 .sl-markdown-content .sl-heading-wrapper:has(> :target),
 .sl-markdown-content .deep-link-section-flash {
   border-radius: 0.3rem;
-  animation: heading-flash 3s ease-out both;
-}
-
-.sl-markdown-content .deep-link-section-flash {
-  animation-duration: 2.4s;
+  /* `HeadingAnchorEnhancer.astro`'s `FLASH_MS` cleanup timeout must stay
+     comfortably longer than this so it never clips the fade-out. */
+  animation: heading-flash 5s ease-out both;
 }
 
 @media (prefers-reduced-motion: reduce) {
