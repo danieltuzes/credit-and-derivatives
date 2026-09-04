@@ -1,22 +1,24 @@
 /**
- * Equation identity (Step D7) — shared, framework-free helpers.
+ * Equation identity (Step D7, extended F3) — shared, framework-free helpers.
  *
- * An author marks a display equation by putting a trailing `\label{eq:<key>}`
- * inside its `$$…$$` block (inside math, so the `:` is safe and the form
- * matches amsmath). The compiler assigns the *visible* number from appearance
- * order, scoped to the enclosing `##` section (`(2.4)` = fourth keyed equation
- * under the second section). The number is never authored; unkeyed display
- * equations render clean and stay un-referenceable. Prose refers to an
- * equation with the reserved `eq-` prefix (a bare `:` in `[[…]]` prose would
- * be eaten by `remark-directive`):
+ * Every display equation (`$$…$$`) in a lesson is numbered and given an
+ * `id`, from appearance order scoped to the enclosing `##` section (`(2.4)` =
+ * fourth display equation under the second section). An author additionally
+ * marks an equation with a trailing `\label{eq:<key>}` inside its `$$…$$`
+ * block (inside math, so the `:` is safe and the form matches amsmath) when
+ * they want a *stable* anchor that survives edits and cross-page references:
  *
  *   [[eq-discount-factor-def]]           same page  → "(2.4)" linked to #eq-…
  *   [[foundations/present-value#eq-pv]]  cross page → number from the manifest
  *
+ * An unkeyed equation still gets a positional anchor (`#eq-2-4`) so it can be
+ * deep-linked, but only a keyed equation is referenceable by name.
+ *
  * `scanEquationLabels` (raw Markdown) and `collectEquationLabels` (mdast tree)
  * MUST agree — `tests/notation/equations.test.ts` checks that on the real
  * corpus. Both are here so `manifest.ts` and `remark-notation.mjs` share one
- * numbering algorithm.
+ * numbering algorithm. `collectDisplayEquations` is the superset the render
+ * path uses to number and anchor every display equation, keyed or not.
  */
 
 /** `eq:` key grammar — the notation-key shape without the dotted namespaces. */
@@ -51,9 +53,14 @@ export function stripEquationLabels(latex) {
     .trim();
 }
 
-/** The visible number for the `index`-th keyed equation under `section`. */
+/** The visible number for the `index`-th display equation under `section`. */
 function equationNumber(section, index) {
   return section > 0 ? `${section}.${index}` : String(index);
+}
+
+/** The positional anchor id for an unkeyed equation, e.g. `2.4` → `eq-2-4`. */
+export function equationAnchorId({ key, number }) {
+  return key ? `eq-${key}` : `eq-${String(number).replace(/\./g, '-')}`;
 }
 
 function stripFencedCode(markdown) {
@@ -64,12 +71,28 @@ function stripFencedCode(markdown) {
 }
 
 /**
+ * Blank the body of every block-level MDX component (`<Capitalised …> … </…>`)
+ * so a `$$…$$` used to illustrate a worked example inside `<CompactExample>`
+ * (or an `<Aside>`, etc.) is not counted as a lesson-body equation. The
+ * outermost match wins, so nested components are blanked in one pass;
+ * newlines are kept so line/section structure is unchanged.
+ */
+function stripJsxComponents(markdown) {
+  return String(markdown).replace(
+    /<([A-Z][A-Za-z0-9]*)(?:\s[^>]*)?>[\s\S]*?<\/\1>/g,
+    (block) => block.replace(/[^\n]/g, ' '),
+  );
+}
+
+/**
  * Every keyed display equation in a Markdown body, in appearance order, with
  * its assigned number. `$$…$$` blocks only; `##` headings between them advance
- * the section counter.
+ * the section counter. Every display block advances the in-section index, so a
+ * keyed equation's number reflects its position among *all* display equations,
+ * not only the keyed ones.
  */
 export function scanEquationLabels(markdown) {
-  const text = stripFencedCode(markdown);
+  const text = stripJsxComponents(stripFencedCode(markdown));
   const tokens = [];
   const heading = /^[ \t]{0,3}##[ \t]+\S/gm;
   const display = /\$\$([\s\S]+?)\$\$/g;
@@ -79,9 +102,11 @@ export function scanEquationLabels(markdown) {
   for (const match of text.matchAll(display)) {
     EQ_LABEL_PATTERN.lastIndex = 0;
     const label = EQ_LABEL_PATTERN.exec(match[1]);
-    if (label) {
-      tokens.push({ kind: 'equation', index: match.index, key: label[1] });
-    }
+    tokens.push({
+      kind: 'equation',
+      index: match.index,
+      key: label ? label[1] : null,
+    });
   }
   tokens.sort((a, b) => a.index - b.index);
 
@@ -95,6 +120,7 @@ export function scanEquationLabels(markdown) {
       continue;
     }
     indexInSection += 1;
+    if (token.key == null) continue;
     labels.push({
       key: token.key,
       number: equationNumber(section, indexInSection),
@@ -106,39 +132,49 @@ export function scanEquationLabels(markdown) {
 }
 
 /**
- * The mdast equivalent of `scanEquationLabels`: walk the tree in document
- * order, advancing the section counter on every depth-2 heading and emitting a
- * label for every `math` node whose source carries `\label{eq:…}`.
+ * The mdast equivalent of `scanEquationLabels` for *every* display equation:
+ * walk the tree in document order, advancing the section counter on every
+ * depth-2 heading and emitting a record for every `math` node. `key` is the
+ * `\label{eq:…}` payload when present, else `null`.
  */
-export function collectEquationLabels(tree) {
-  const labels = [];
+export function collectDisplayEquations(tree) {
+  const equations = [];
   let section = 0;
   let indexInSection = 0;
 
-  const walk = (node) => {
-    if (!node || typeof node !== 'object') return;
+  // Only top-level blocks: a `$$…$$` nested in an MDX component (a
+  // `<CompactExample>` worked example, an `<Aside>`) is illustrative, not part
+  // of the lesson's equation sequence, and its container may be collapsed.
+  const children = Array.isArray(tree?.children) ? tree.children : [];
+  for (const node of children) {
+    if (!node || typeof node !== 'object') continue;
     if (node.type === 'heading' && node.depth === 2) {
       section += 1;
       indexInSection = 0;
-      return;
+      continue;
     }
     if (node.type === 'math') {
+      indexInSection += 1;
       EQ_LABEL_PATTERN.lastIndex = 0;
       const label = EQ_LABEL_PATTERN.exec(String(node.value ?? ''));
-      if (label) {
-        indexInSection += 1;
-        labels.push({
-          key: label[1],
-          number: equationNumber(section, indexInSection),
-          section,
-          indexInSection,
-          node,
-        });
-      }
-      return;
+      equations.push({
+        key: label ? label[1] : null,
+        number: equationNumber(section, indexInSection),
+        section,
+        indexInSection,
+        node,
+      });
     }
-    if (Array.isArray(node.children)) node.children.forEach(walk);
-  };
-  walk(tree);
-  return labels;
+  }
+  return equations;
+}
+
+/**
+ * The keyed subset of `collectDisplayEquations` — the tree-walk counterpart of
+ * `scanEquationLabels`. Numbers reflect position among all display equations.
+ */
+export function collectEquationLabels(tree) {
+  return collectDisplayEquations(tree).filter(
+    (equation) => equation.key != null,
+  );
 }

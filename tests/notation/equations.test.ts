@@ -3,6 +3,7 @@ import { courseConfig } from '../../content/course.config';
 
 import remarkNotation from 'explico/reference/remark-notation.mjs';
 import {
+  collectDisplayEquations,
   collectEquationLabels,
   parseEquationRef,
   scanEquationLabels,
@@ -31,6 +32,39 @@ describe('equation identity helpers (D7)', () => {
       ['one', '1.1'],
       ['two', '2.1'],
       ['three', '2.2'],
+    ]);
+  });
+
+  it('numbers every display equation; a keyed one counts unkeyed neighbours', () => {
+    const md = [
+      '## S',
+      '$$ a=b $$',
+      'text $$ c=d \\label{eq:keyed} $$ more',
+      '$$ e=f $$',
+    ].join('\n\n');
+    // The keyed equation is the second display block in the section.
+    expect(scanEquationLabels(md).map((l) => [l.key, l.number])).toEqual([
+      ['keyed', '1.2'],
+    ]);
+
+    const tree = {
+      type: 'root',
+      children: [
+        { type: 'heading', depth: 2, children: [{ type: 'text', value: 'S' }] },
+        { type: 'math', value: 'a=b' },
+        { type: 'math', value: 'c=d \\label{eq:keyed}' },
+        { type: 'math', value: 'e=f' },
+      ],
+    };
+    expect(collectDisplayEquations(tree).map((e) => [e.key, e.number])).toEqual(
+      [
+        [null, '1.1'],
+        ['keyed', '1.2'],
+        [null, '1.3'],
+      ],
+    );
+    expect(collectEquationLabels(tree).map((e) => [e.key, e.number])).toEqual([
+      ['keyed', '1.2'],
     ]);
   });
 

@@ -19,6 +19,7 @@ import NotationLayer, {
 } from '../notation/NotationLayer.astro';
 import CitationLayer from '../citation/CitationLayer.astro';
 import EquationEnhancer from './EquationEnhancer.astro';
+import HeadingAnchorEnhancer from './HeadingAnchorEnhancer.astro';
 
 // `lessonId` is no longer authored (Phase C2); derive it from the route.
 const routeSlug = Astro.locals.starlightRoute.entry.id;
@@ -57,4 +58,5 @@ if (lessonId) {
 <NotationLayer definitions={definitions} />
 {lessonId && <CitationLayer />}
 {lessonId && <EquationEnhancer />}
+{lessonId && <HeadingAnchorEnhancer />}
 <DefaultFooter />

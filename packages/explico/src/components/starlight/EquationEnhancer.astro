@@ -9,9 +9,18 @@
  * `scroll-margin`.
  *
  * This script only adds what CSS and anchors cannot:
- *  - re-triggering the highlight when the same `#eq-…` is activated again;
  *  - a smooth, header-aware scroll on an in-page jump;
+ *  - re-triggering the highlight when the same `#eq-…` is activated again —
+ *    the one case a plain anchor click does nothing for, since the browser
+ *    won't navigate to a fragment that's already current;
  *  - moving keyboard focus onto the equation so screen-reader users land on it.
+ *
+ * It deliberately does *not* intercept an ordinary click that changes the
+ * hash. `:target` is set only by a genuine same-document fragment
+ * navigation — never by `history.pushState` (a common trap: pushState
+ * updates the URL but leaves `:target`, and thus `eq-flash`, dark). Letting
+ * the click through and reacting to the `hashchange` it produces is what
+ * actually plays the highlight.
  *
  * Everything here is gated on `prefers-reduced-motion` and degrades to the
  * native anchor behaviour if it throws.
@@ -55,14 +64,20 @@
       if (!href.startsWith('#eq-')) return; // cross-page: let the browser navigate
       const target = document.getElementById(href.slice(1));
       if (!target) return;
-      event.preventDefault();
-      if (location.hash !== href) history.pushState(null, '', href);
-      activate(target, true);
+      // Only the already-on-this-anchor click needs handling here — the
+      // browser has nothing new to navigate to, so it won't fire `hashchange`
+      // and nothing else will re-trigger the flash. Every other click is left
+      // alone: its native navigation sets `:target` and fires `hashchange`,
+      // which the listener below turns into the same `activate()`.
+      if (location.hash === href) {
+        event.preventDefault();
+        activate(target, true);
+      }
     });
 
     window.addEventListener('hashchange', () => {
       if (!location.hash.startsWith('#eq-')) return;
-      activate(document.getElementById(location.hash.slice(1)), false);
+      activate(document.getElementById(location.hash.slice(1)), true);
     });
 
     if (location.hash.startsWith('#eq-')) {
