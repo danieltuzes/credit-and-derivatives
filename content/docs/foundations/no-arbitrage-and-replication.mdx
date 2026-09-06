@@ -15,6 +15,7 @@ notation:
       latex: i
       meaning: 'Selects one traded security in the finite replicating portfolio. It is a bookkeeping label and has no monetary unit.'
       formula: 'i \in \{1,\ldots,n\}'
+      dimensionless: true
       alignment:
         kind: general
         rationale: Finite portfolio indexing is part of this lesson's algebra assumptions.
@@ -22,12 +23,14 @@ notation:
       latex: n
       meaning: 'Counts the traded securities in the finite replicating portfolio. It is a positive integer rather than a time or cash amount.'
       formula: 'n \in \mathbb{N}'
+      dimensionless: true
       alignment:
         kind: general
         rationale: Counting a finite portfolio is part of this lesson's algebra assumptions.
     - key: replication-security-quantity
       latex: 'a_i'
       meaning: "Number of units of security i held in the replicating portfolio. A positive quantity is long and a negative quantity is short from the portfolio holder's perspective."
+      units: security units
       seeAlso:
         - signed-cash-flow
       alignment:

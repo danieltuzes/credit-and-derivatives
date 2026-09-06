@@ -1,4 +1,4 @@
 allowBuilds:
   esbuild: false
 minimumReleaseAgeExclude:
-  - explico@0.2.0
+  - explico@0.3.0

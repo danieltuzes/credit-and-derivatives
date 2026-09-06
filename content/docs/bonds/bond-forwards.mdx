@@ -50,10 +50,17 @@ $$
 }{
 \explain{discount-factor}{D(0,T_{\mathrm{fwd}})}
 }.
+\label{eq:bond-forward-price}
 $$
 
-For dirty spot USD 960, pre-delivery coupon PV USD 95.45, and delivery factor
-0.92, the fair dirty delivery price is USD 939.72826087.
+For dirty spot USD 960, pre-delivery coupon present value USD 95.45, and
+delivery factor 0.92, [[eq-bond-forward-price]] gives
+
+$$
+F^B_{0,T_{\mathrm{fwd}}}
+=\frac{960-95.45}{0.92}
+=939.72826087\ \text{USD per bond}.
+$$
 
 An already-existing contract need not have that delivery price. Its value is
 handled by the earlier forward-value lesson; here the output is the fair price
@@ -72,6 +79,7 @@ unit/convention mismatch.
 
 ## Sources
 
-The known-income cash-and-carry formula and its coupon-bond application follow
+The known-income cash-and-carry relation [[eq-bond-forward-price]] and its
+coupon-bond application follow
 Hull, Chapter 5 §§5.3–5.5; the dirty bond forward and strike basis is reinforced
 in Chapter 28 §28.1 [@hull-options-futures].

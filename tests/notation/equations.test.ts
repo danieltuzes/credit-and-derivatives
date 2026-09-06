@@ -27,7 +27,9 @@ describe('equation identity helpers (D7)', () => {
       '$$ x=y \\label{eq:infence} $$',
       '```',
     ].join('\n\n');
-    expect(scanEquationLabels(md).map((l) => [l.key, l.number])).toEqual([
+    expect(
+      scanEquationLabels(md, undefined).map((l) => [l.key, l.number]),
+    ).toEqual([
       ['pre', '1'], // before any `##`: bare global counter
       ['one', '1.1'],
       ['two', '2.1'],
@@ -43,9 +45,9 @@ describe('equation identity helpers (D7)', () => {
       '$$ e=f $$',
     ].join('\n\n');
     // The keyed equation is the second display block in the section.
-    expect(scanEquationLabels(md).map((l) => [l.key, l.number])).toEqual([
-      ['keyed', '1.2'],
-    ]);
+    expect(
+      scanEquationLabels(md, undefined).map((l) => [l.key, l.number]),
+    ).toEqual([['keyed', '1.2']]);
 
     const tree = {
       type: 'root',
@@ -56,16 +58,16 @@ describe('equation identity helpers (D7)', () => {
         { type: 'math', value: 'e=f' },
       ],
     };
-    expect(collectDisplayEquations(tree).map((e) => [e.key, e.number])).toEqual(
-      [
-        [null, '1.1'],
-        ['keyed', '1.2'],
-        [null, '1.3'],
-      ],
-    );
-    expect(collectEquationLabels(tree).map((e) => [e.key, e.number])).toEqual([
+    expect(
+      collectDisplayEquations(tree, undefined).map((e) => [e.key, e.number]),
+    ).toEqual([
+      [null, '1.1'],
       ['keyed', '1.2'],
+      [null, '1.3'],
     ]);
+    expect(
+      collectEquationLabels(tree, undefined).map((e) => [e.key, e.number]),
+    ).toEqual([['keyed', '1.2']]);
   });
 
   it('strips `\\label{eq:…}` and its surrounding whitespace', () => {
@@ -105,8 +107,14 @@ describe('equation identity helpers (D7)', () => {
       '$$ c=d \\label{eq:two} $$',
       '$$ e=f $$',
     ].join('\n\n');
-    const fromTree = collectEquationLabels(tree).map((l) => [l.key, l.number]);
-    const fromMd = scanEquationLabels(md).map((l) => [l.key, l.number]);
+    const fromTree = collectEquationLabels(tree, undefined).map((l) => [
+      l.key,
+      l.number,
+    ]);
+    const fromMd = scanEquationLabels(md, undefined).map((l) => [
+      l.key,
+      l.number,
+    ]);
     expect(fromTree).toEqual(fromMd);
     expect(fromTree).toEqual([
       ['one', '1.1'],
@@ -265,19 +273,44 @@ describe('remarkNotation equation wrapping (D7)', () => {
 describe('manifest equation identity (D7)', () => {
   it('records labelled equations, the cross-page table, and no blocking diagnostics', async () => {
     const manifest = await compileManifest(courseConfig);
-    expect(manifest.schemaVersion).toBe(3);
+    expect(manifest.schemaVersion).toBe(6);
 
     const keys = manifest.equations.labels.map((l) => l.key).sort();
     expect(keys).toEqual([
+      'alive-bond-recursion',
+      'bond-call-expiry-payoff',
+      'bond-forward-price',
       'bond-price-from-factors',
+      'bond-put-expiry-payoff',
+      'cds-fixed-coupon-premium',
+      'cds-hazard-to-msq',
+      'cds-msq-calibration',
+      'cds-upfront-balance',
+      'cds-upfront-from-msq',
+      'cds-upfront-to-hazard',
+      'coupon-period-accrual',
+      'dirty-price-bridge',
       'discount-factor-def',
+      'exact-cds-premium-leg',
+      'exact-cds-protection-leg',
+      'expectation-conditional-events',
+      'expectation-event-values',
+      'forward-discount-factor',
+      'knockout-option-recursion',
+      'knockout-terminal-payoff',
+      'lattice-backward-step',
+      'present-value-additivity',
       'present-value-sum',
       'risk-neutral-expected-payoff',
       'risk-neutral-present-value',
+      'surviving-bond-continuation',
     ]);
     expect(
       manifest.equations.numbersBySlug['foundations/present-value'],
-    ).toEqual({ 'present-value-sum': '2.1' });
+    ).toEqual({
+      'present-value-additivity': '5.2',
+      'present-value-sum': '5.1',
+    });
 
     expect(
       manifest.diagnostics.equations.filter((d) => d.severity === 'error'),
@@ -287,7 +320,8 @@ describe('manifest equation identity (D7)', () => {
       (l) => l.id === 'foundations.present-value',
     );
     expect(pv?.equations).toEqual([
-      { key: 'present-value-sum', number: '2.1' },
+      { key: 'present-value-sum', number: '5.1' },
+      { key: 'present-value-additivity', number: '5.2' },
     ]);
   });
 });

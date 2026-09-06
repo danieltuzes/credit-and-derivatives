@@ -60,6 +60,15 @@ on `PATH`) is the simplest fix.
 | `pnpm build` / `pnpm preview`       | Static production build / preview it      |
 | `pnpm format` / `pnpm format:check` | Prettier write / check                    |
 | `pnpm verify`                       | Every required pre-review check, in order |
+| `pnpm serve`                        | Host the course on the local network      |
+| `pnpm deploy -- "message"`          | Verify, commit, push, and await Pages     |
+
+VS Code exposes the same workflows as **Course: Check for no errors**,
+**Course: Host content**, and **Course: Commit all and deploy** under
+**Tasks: Run Task**. The deployment task requires an authenticated GitHub CLI
+(`gh auth login`) and waits for the Pages workflow to finish. Automated
+verification does not replace the human source and quantitative review required
+by [`AI_POLICY.md`](AI_POLICY.md).
 
 ## Repository map
 

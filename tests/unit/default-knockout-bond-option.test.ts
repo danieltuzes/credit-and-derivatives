@@ -33,6 +33,34 @@ const baseInput: DefaultKnockoutBondOptionInput = {
 };
 
 describe('issuer-default knockout bond option', () => {
+  it('reproduces the two-step lesson example', () => {
+    const result = valueDefaultKnockoutBondOption({
+      timesYears: [0, 1, 2],
+      steps: [
+        {
+          discountFactors: [0.95],
+          riskNeutralUpProbabilities: [0.5],
+          conditionalSurvivalProbabilities: [0.9],
+          recoveriesOnDefault: [40],
+        },
+        {
+          discountFactors: [0.9, 0.9],
+          riskNeutralUpProbabilities: [0.5, 0.5],
+          conditionalSurvivalProbabilities: [0.8, 0.9],
+          recoveriesOnDefault: [40, 40],
+        },
+      ],
+      scheduledSurvivalCashFlows: [0, 105],
+      optionExpiryTimeIndex: 1,
+      optionKind: 'call',
+      strikePrice: 85,
+    });
+
+    expect(result.aliveBondValuesByTime[1]).toEqual([82.8, 88.65]);
+    expect(result.aliveOptionValuesByTime[1]).toEqual([0, 3.6500000000000057]);
+    expect(result.optionValueNow).toBeCloseTo(1.560375, 14);
+  });
+
   it('values the alive bond and then extinguishes option value on pre-expiry default', () => {
     const result = valueDefaultKnockoutBondOption(baseInput);
 

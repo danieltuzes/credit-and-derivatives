@@ -12,7 +12,7 @@
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
-      "line": 8,
+      "line": 9,
       "scope": "shared",
       "symbol": "0"
     },
@@ -21,7 +21,7 @@
       "definitionId": "shared:lattice-time-index",
       "key": "lattice-time-index",
       "kind": "prose",
-      "line": 10,
+      "line": 11,
       "scope": "shared",
       "symbol": "i"
     },
@@ -30,7 +30,7 @@
       "definitionId": "shared:lattice-state-index",
       "key": "lattice-state-index",
       "kind": "prose",
-      "line": 10,
+      "line": 11,
       "scope": "shared",
       "symbol": "j"
     },
@@ -39,7 +39,7 @@
       "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-up-weight",
       "key": "lattice-node-up-weight",
       "kind": "prose",
-      "line": 10,
+      "line": 11,
       "scope": "local",
       "symbol": "q_{i,j}"
     },
@@ -48,7 +48,7 @@
       "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-discount-factor",
       "key": "lattice-node-discount-factor",
       "kind": "prose",
-      "line": 11,
+      "line": 12,
       "scope": "local",
       "symbol": "d_{i,j}"
     },
@@ -57,7 +57,7 @@
       "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-next-cash-flow",
       "key": "lattice-next-cash-flow",
       "kind": "math",
-      "line": 12,
+      "line": 13,
       "scope": "local",
       "symbol": "CF_{i+1,j}"
     },
@@ -66,7 +66,7 @@
       "definitionId": "shared:lattice-node-value",
       "key": "lattice-node-value",
       "kind": "prose",
-      "line": 13,
+      "line": 14,
       "scope": "shared",
       "symbol": "V_{i,j}"
     },
@@ -75,7 +75,7 @@
       "definitionId": "shared:lattice-node-value",
       "key": "lattice-node-value",
       "kind": "math",
-      "line": 16,
+      "line": 17,
       "scope": "shared",
       "symbol": "V_{i,j}"
     },
@@ -84,7 +84,7 @@
       "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-discount-factor",
       "key": "lattice-node-discount-factor",
       "kind": "math",
-      "line": 17,
+      "line": 18,
       "scope": "local",
       "symbol": "d_{i,j}"
     },
@@ -93,7 +93,7 @@
       "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-up-weight",
       "key": "lattice-node-up-weight",
       "kind": "math",
-      "line": 19,
+      "line": 20,
       "scope": "local",
       "symbol": "q_{i,j}"
     },
@@ -102,7 +102,7 @@
       "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-next-cash-flow",
       "key": "lattice-next-cash-flow",
       "kind": "math",
-      "line": 20,
+      "line": 21,
       "scope": "local",
       "symbol": "CF_{i+1,j}"
     },
@@ -111,7 +111,7 @@
       "definitionId": "shared:lattice-node-value",
       "key": "lattice-node-value",
       "kind": "math",
-      "line": 21,
+      "line": 22,
       "scope": "shared",
       "symbol": "V_{i,j}"
     },
@@ -120,7 +120,7 @@
       "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-up-weight",
       "key": "lattice-node-up-weight",
       "kind": "math",
-      "line": 22,
+      "line": 23,
       "scope": "local",
       "symbol": "q_{i,j}"
     },
@@ -129,7 +129,7 @@
       "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-next-cash-flow",
       "key": "lattice-next-cash-flow",
       "kind": "math",
-      "line": 23,
+      "line": 24,
       "scope": "local",
       "symbol": "CF_{i+1,j}"
     },
@@ -138,10 +138,10 @@
       "definitionId": "shared:lattice-node-value",
       "key": "lattice-node-value",
       "kind": "math",
-      "line": 24,
+      "line": 25,
       "scope": "shared",
       "symbol": "V_{i,j}"
     }
   ],
-  "schemaVersion": 3
+  "schemaVersion": 6
 }

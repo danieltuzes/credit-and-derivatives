@@ -76,7 +76,7 @@
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
-      "line": 47,
+      "line": 57,
       "scope": "shared",
       "symbol": "0"
     },
@@ -85,7 +85,7 @@
       "definitionId": "shared:discount-factor",
       "key": "discount-factor",
       "kind": "prose",
-      "line": 92,
+      "line": 96,
       "scope": "shared",
       "symbol": "D(0,t)"
     },
@@ -94,7 +94,7 @@
       "definitionId": "page:foundations.present-value:discounting-lab-rate",
       "key": "discounting-lab-rate",
       "kind": "prose",
-      "line": 92,
+      "line": 96,
       "scope": "local",
       "symbol": "y"
     },
@@ -103,7 +103,7 @@
       "definitionId": "page:foundations.present-value:discounting-lab-cash-flow",
       "key": "discounting-lab-cash-flow",
       "kind": "prose",
-      "line": 93,
+      "line": 97,
       "scope": "local",
       "symbol": "C"
     },
@@ -112,7 +112,7 @@
       "definitionId": "shared:present-value",
       "key": "present-value",
       "kind": "prose",
-      "line": 94,
+      "line": 98,
       "scope": "shared",
       "symbol": "PV_0"
     },
@@ -121,10 +121,10 @@
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
-      "line": 94,
+      "line": 98,
       "scope": "shared",
       "symbol": "0"
     }
   ],
-  "schemaVersion": 3
+  "schemaVersion": 6
 }

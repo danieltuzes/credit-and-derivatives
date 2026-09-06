@@ -5,7 +5,7 @@ meaning: "Value at model time t of one unit of the asset or claim named as the d
 aliases:
   - underlying price
 domain: derivatives
-units: stated currency per unit of underlying at model time t
+units: stated currency per unit of underlying at model time
 sources:
   - id: hull-options-futures
     locator: 'Ch. 1 §1.3, printed pp. 5-6 (underlying asset and its spot price at forward maturity), and §1.5, printed pp. 7-9 (underlying asset and stock price in options).'

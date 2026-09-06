@@ -50,6 +50,7 @@ notation:
 ---
 
 import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
+import Diagram from 'explico/components/diagram/Diagram.astro';
 
 ## The standalone contract
 
@@ -73,6 +74,7 @@ $$
 =\max\left(
 \explain{bond-option-expiry-value}{B_{T_{\mathrm{opt}}}^{\mathrm{dirty}}}
 -\explain{option-strike-price}{K},0\right),
+\label{eq:bond-call-expiry-payoff}
 $$
 
 $$
@@ -80,11 +82,49 @@ $$
 =\max\left(
 \explain{option-strike-price}{K}
 -\explain{bond-option-expiry-value}{B_{T_{\mathrm{opt}}}^{\mathrm{dirty}}},0\right).
+\label{eq:bond-put-expiry-payoff}
 $$
 
-Backward induction then turns those payoffs into a
-[[lattice-node-value]]. The lattice must first produce bond values at option
-expiry; payoff arithmetic alone is not a bond option model.
+The lattice first produces expiry bond values. Apply
+[[eq-bond-call-expiry-payoff]] or [[eq-bond-put-expiry-payoff]] at those nodes,
+then apply backward induction to obtain the [[lattice-node-value]].
+
+<Diagram
+  id="bond-option-valuation-flow"
+  label="European bond-option valuation flow"
+  direction="LR"
+  nodes={[
+    { id: 'bond-tree', text: 'Value the bond to option expiry' },
+    { id: 'payoff', text: 'Compute the expiry payoff' },
+    { id: 'induction', text: 'Discount expected option values backward' },
+  ]}
+  edges={[
+    { from: 'bond-tree', to: 'payoff' },
+    { from: 'payoff', to: 'induction' },
+  ]}
+  description="First value the bond at every option-expiry node, then apply the call or put payoff, then discount the risk-neutral expected payoffs backward through the supplied lattice."
+/>
+
+## Worked example
+
+Suppose the supplied one-period lattice gives dirty expiry bond values of USD
+90 and USD 110, strike USD 100, risk-neutral up weight 0.60, and discount
+factor 0.95. Applying [[eq-bond-call-expiry-payoff]] and one backward step gives
+
+$$
+\begin{aligned}
+\explain{bond-call-expiry-payoff}{X_{T_{\mathrm{opt}}}^{B,\mathrm{call},\mathrm{down}}}
+&=\max(90-100,0)=0,\\
+\explain{bond-call-expiry-payoff}{X_{T_{\mathrm{opt}}}^{B,\mathrm{call},\mathrm{up}}}
+&=\max(110-100,0)=10,\\
+\explain{lattice-node-value}{V_0}
+&=0.95\left[(1-0.60)(0)+0.60(10)\right]\\
+&=5.70\ \text{USD per option}.
+\end{aligned}
+$$
+
+The tested domain calculation composes `europeanOptionPayoff` with
+`backwardInductionValue` for the same terminal-payoff and discounting steps.
 
 ## Coupon and exercise ordering
 

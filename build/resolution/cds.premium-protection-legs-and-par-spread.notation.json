@@ -508,7 +508,7 @@
       "definitionId": "shared:basis-point",
       "key": "basis-point",
       "kind": "prose",
-      "line": 169,
+      "line": 170,
       "scope": "shared",
       "symbol": "1\\,\\mathrm{bp}"
     },
@@ -517,7 +517,7 @@
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "math",
-      "line": 177,
+      "line": 178,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
@@ -526,7 +526,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 178,
+      "line": 179,
       "scope": "shared",
       "symbol": "N"
     },
@@ -535,7 +535,7 @@
       "definitionId": "shared:loss-given-default",
       "key": "loss-given-default",
       "kind": "math",
-      "line": 179,
+      "line": 180,
       "scope": "shared",
       "symbol": "\\mathrm{LGD}"
     },
@@ -544,7 +544,7 @@
       "definitionId": "shared:discount-factor",
       "key": "discount-factor",
       "kind": "math",
-      "line": 181,
+      "line": 182,
       "scope": "shared",
       "symbol": "D(0,t)"
     },
@@ -553,7 +553,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 182,
+      "line": 183,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -562,7 +562,7 @@
       "definitionId": "shared:survival-probability",
       "key": "survival-probability",
       "kind": "math",
-      "line": 183,
+      "line": 184,
       "scope": "shared",
       "symbol": "S(0,t)"
     },
@@ -571,7 +571,7 @@
       "definitionId": "shared:maturity-time",
       "key": "maturity-time",
       "kind": "prose",
-      "line": 193,
+      "line": 195,
       "scope": "shared",
       "symbol": "T"
     },
@@ -580,7 +580,7 @@
       "definitionId": "page:cds.premium-protection-legs-and-par-spread:cds-combined-decay-rate",
       "key": "cds-combined-decay-rate",
       "kind": "math",
-      "line": 195,
+      "line": 197,
       "scope": "local",
       "symbol": "\\kappa"
     },
@@ -589,7 +589,7 @@
       "definitionId": "page:cds.premium-protection-legs-and-par-spread:cds-scheduled-premium-annuity",
       "key": "cds-scheduled-premium-annuity",
       "kind": "math",
-      "line": 198,
+      "line": 200,
       "scope": "local",
       "symbol": "A_0^{\\mathrm{sched}}"
     },
@@ -598,7 +598,7 @@
       "definitionId": "page:cds.premium-protection-legs-and-par-spread:cds-accrued-premium-annuity",
       "key": "cds-accrued-premium-annuity",
       "kind": "math",
-      "line": 203,
+      "line": 205,
       "scope": "local",
       "symbol": "A_0^{\\mathrm{accr}}"
     },
@@ -607,7 +607,7 @@
       "definitionId": "page:cds.premium-protection-legs-and-par-spread:cds-protection-factor",
       "key": "cds-protection-factor",
       "kind": "math",
-      "line": 212,
+      "line": 214,
       "scope": "local",
       "symbol": "B_0^{\\mathrm{prot}}"
     },
@@ -616,7 +616,7 @@
       "definitionId": "shared:cds-par-spread",
       "key": "cds-par-spread",
       "kind": "prose",
-      "line": 221,
+      "line": 223,
       "scope": "shared",
       "symbol": "s^{\\star}"
     },
@@ -625,7 +625,7 @@
       "definitionId": "shared:cds-par-spread",
       "key": "cds-par-spread",
       "kind": "math",
-      "line": 225,
+      "line": 227,
       "scope": "shared",
       "symbol": "s^{\\star}"
     },
@@ -634,7 +634,7 @@
       "definitionId": "page:cds.premium-protection-legs-and-par-spread:cds-protection-factor",
       "key": "cds-protection-factor",
       "kind": "math",
-      "line": 226,
+      "line": 228,
       "scope": "local",
       "symbol": "B_0^{\\mathrm{prot}}"
     },
@@ -643,27 +643,9 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 227,
+      "line": 229,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
-    },
-    {
-      "column": 2,
-      "definitionId": "page:cds.premium-protection-legs-and-par-spread:cds-default-event",
-      "key": "cds-default-event",
-      "kind": "math",
-      "line": 244,
-      "scope": "local",
-      "symbol": "G_i"
-    },
-    {
-      "column": 2,
-      "definitionId": "page:cds.premium-protection-legs-and-par-spread:cds-default-event",
-      "key": "cds-default-event",
-      "kind": "math",
-      "line": 245,
-      "scope": "local",
-      "symbol": "G_i"
     },
     {
       "column": 2,
@@ -673,7 +655,25 @@
       "line": 246,
       "scope": "local",
       "symbol": "G_i"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.premium-protection-legs-and-par-spread:cds-default-event",
+      "key": "cds-default-event",
+      "kind": "math",
+      "line": 247,
+      "scope": "local",
+      "symbol": "G_i"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.premium-protection-legs-and-par-spread:cds-default-event",
+      "key": "cds-default-event",
+      "kind": "math",
+      "line": 248,
+      "scope": "local",
+      "symbol": "G_i"
     }
   ],
-  "schemaVersion": 3
+  "schemaVersion": 6
 }

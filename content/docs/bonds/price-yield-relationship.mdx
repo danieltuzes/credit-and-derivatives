@@ -17,6 +17,7 @@ notation:
       latex: '\Delta y'
       meaning: 'A page-local finite change in the supplied yield input. The sign is new yield minus old yield; the unit must be decimal, percentage points, or basis points as explicitly labeled.'
       formula: '\Delta y=y_{\mathrm{new}}-y_{\mathrm{old}}'
+      units: decimal rate per year
       seeAlso:
         - yield-to-maturity
       alignment:
@@ -27,6 +28,7 @@ notation:
       latex: '\Delta P'
       meaning: 'New toy-model price minus old toy-model price for a stated yield shock. This finite change is not yet a duration or convexity approximation.'
       formula: '\Delta P=\explain{price-yield-curve}{P}(y+\Delta y)-P(y)'
+      units: stated currency per bond at valuation time
       seeAlso:
         - bond-price
         - price-yield-curve

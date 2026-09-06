@@ -99,10 +99,19 @@ exception.
 
 ## Error pattern: discount after adding
 
-Adding payments from different dates first and then multiplying the total by
-one unnamed discount factor is generally incomplete. Each payment needs the
-factor for its own time. A single common factor is valid only when the model
-genuinely assigns that same factor to every included amount.
+For the two-payment example, compare the common-factor shortcut with the
+calculation in [[eq-bond-price-from-factors]]:
+
+$$
+\begin{aligned}
+(50+1050)(0.91) &= 1001.00,\\
+50(0.96)+1050(0.91) &= 1003.50,\\
+1001.00 &\ne 1003.50.
+\end{aligned}
+$$
+
+A single common factor is valid only when the model genuinely assigns it to
+every included amount.
 
 ## Check your understanding
 
@@ -117,7 +126,7 @@ you check.
 Discount factors are supplied, not calibrated. Credit risk is absent even
 though the broader project concerns credit products.
 
-The rule $P_0=\sum_k CF_k^{\mathrm{bond}}\,D(0,t_k)$ follows Tuckman &
+The pricing rule [[eq-bond-price-from-factors]] follows Tuckman &
 Serrat[@tuckman-serrat-fixed-income; §1.2, each bond price as its cash flows times the matching discount factors (eqs. 1.1-1.3), checked against market prices in Table 1.4]; Hull discounts each cash flow at its own zero rate the
 same way[@hull-options-futures; Ch. 4, "Bond Pricing"]. The lesson
 stays `draft` pending human confirmation of the printed locators.

@@ -85,6 +85,7 @@ $$
 =
 \explain{cds-premium-leg-present-value}{PV_0^{\mathrm{prem}}}
 +\explain{cds-upfront-amount}{U_0}.
+\label{eq:cds-upfront-balance}
 $$
 
 Equivalently, protection-buyer inception value after the signed upfront is
@@ -133,6 +134,7 @@ $$
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda})
 =
 \explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}(\explain{hazard-rate}{\lambda}).
+\label{eq:cds-msq-calibration}
 $$
 
 That root solve makes $\lambda$ the flat risk-neutral hazard rate implied by
@@ -146,9 +148,11 @@ $$
 \explain{cds-standard-coupon}{c_{\mathrm{std}}}
 \explain{cds-notional}{N}
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda}).
+\label{eq:cds-fixed-coupon-premium}
 $$
 
-Subtract the fixed-coupon premium value from protection value:
+Substitute [[eq-cds-msq-calibration]] and [[eq-cds-fixed-coupon-premium]] into
+the balance [[eq-cds-upfront-balance]]:
 
 $$
 \begin{aligned}
@@ -167,10 +171,11 @@ $$
 -\explain{cds-standard-coupon}{c_{\mathrm{std}}}
 \right).
 \end{aligned}
+\label{eq:cds-upfront-from-msq}
 $$
 
-The second line follows only because the first calibration equation used the
-same model and the same hazard rate. Since the premium annuity and notional
+The substitution in [[eq-cds-upfront-from-msq]] is valid only because every
+term uses the same model and calibrated hazard rate. Since the premium annuity and notional
 are positive, the sign is easy to check: an MSQ above the fixed coupon gives a
 positive buyer-paid upfront; an MSQ below it gives a negative upfront received
 by the buyer.
@@ -180,7 +185,7 @@ by the buyer.
 Given a signed upfront amount, do not generally rearrange the final line while
 silently holding the annuity fixed. In this flat-hazard converter, both the
 protection value and premium annuity change with the unknown hazard rate.
-Instead solve
+Instead use the hazard equation
 
 $$
 \explain{cds-upfront-amount}{U_0}
@@ -190,9 +195,11 @@ $$
 \explain{cds-standard-coupon}{c_{\mathrm{std}}}
 \explain{cds-notional}{N}
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda})
+\label{eq:cds-upfront-to-hazard}
 $$
 
-for a non-negative $\lambda$. Then report
+Solve [[eq-cds-upfront-to-hazard]] for a non-negative $\lambda$, then
+substitute that solution into
 
 $$
 \explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}
@@ -203,7 +210,10 @@ $$
 \explain{cds-notional}{N}
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda})
 }.
+\label{eq:cds-hazard-to-msq}
 $$
+
+Equation [[eq-cds-hazard-to-msq]] then reports the corresponding MSQ.
 
 If a curve and its annuity have already been calibrated and are deliberately
 held fixed, the local algebraic shortcut is

@@ -6,7 +6,7 @@ aliases:
   - nominal rate
   - annualized rate
 domain: rates
-units: decimal per year in code; percent per year in labeled prose and UI
+units: decimal rate per year
 sources:
   - id: tuckman-serrat-fixed-income
     locator: 'Ch. 2 §2.1, printed pp. 66-67, Eq. 2.7 (annual rate quote paired with n compounding periods per year).'

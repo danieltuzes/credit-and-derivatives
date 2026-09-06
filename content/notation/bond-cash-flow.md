@@ -5,7 +5,7 @@ meaning: 'Promised amount paid to the bondholder on one scheduled payment date; 
 aliases:
   - promised bond payment
 domain: bonds
-units: stated currency at payment time t_k
+units: stated currency at payment time
 sources:
   - id: tuckman-serrat-fixed-income
     locator: 'Ch. 1 §1.1, printed p. 50 and Table 1.1 (scheduled coupon payments and principal repayment of a coupon bond).'

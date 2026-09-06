@@ -77,6 +77,7 @@ notation:
 ---
 
 import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
+import Diagram from 'explico/components/diagram/Diagram.astro';
 
 ## Contract definition
 
@@ -104,9 +105,11 @@ $$
 \explain{alive-bond-value}{B^{\mathrm{alive}}_{i+1,j}}
 +\explain{knockout-node-up-weight}{q_{i,j}}
 \explain{alive-bond-value}{B^{\mathrm{alive}}_{i+1,j+1}}.
+\label{eq:surviving-bond-continuation}
 $$
 
-The [[alive-bond-value]] then separates survival and default:
+The [[alive-bond-value]] then combines the survival value from
+[[eq-surviving-bond-continuation]] with the separate default recovery:
 
 $$
 \explain{alive-bond-value}{B^{\mathrm{alive}}_{i,j}}
@@ -117,6 +120,7 @@ $$
 +(1-\explain{conditional-node-survival-probability}{s_{i,j}})
 \explain{bond-default-recovery-cash}{R^B_{i,j}}
 \right].
+\label{eq:alive-bond-recursion}
 $$
 
 Values are ex-cash-flow at each node. Recovery is approximated as paid at the
@@ -131,6 +135,7 @@ $$
 =\max\left(
 \explain{alive-bond-value}{B^{\mathrm{alive}}_{T,j}}
 -\explain{option-strike-price}{K},0\right).
+\label{eq:knockout-terminal-payoff}
 $$
 
 Before expiry, the default branch is zero:
@@ -145,10 +150,49 @@ $$
 +\explain{knockout-node-up-weight}{q_{i,j}}
 \explain{knockout-bond-option-value}{O^{\mathrm{KO}}_{i+1,j+1}}
 \right].
+\label{eq:knockout-option-recursion}
 $$
 
-There is no recovery term in this option equation. If survival at the current
-node is zero, the option value is zero even when the bond recovery is positive.
+Unlike [[eq-alive-bond-recursion]], [[eq-knockout-option-recursion]] has no
+recovery term. If survival at the current node is zero, the option value is
+zero even when the bond recovery is positive.
+
+<Diagram
+  id="knockout-bond-option-flow"
+  label="Issuer-default knockout valuation flow"
+  direction="LR"
+  nodes={[
+    { id: 'bond', text: 'Value the alive bond with recovery' },
+    { id: 'terminal', text: 'Apply the alive-state option payoff' },
+    { id: 'option', text: 'Induct option values with a zero default branch' },
+  ]}
+  edges={[
+    { from: 'bond', to: 'terminal' },
+    { from: 'terminal', to: 'option' },
+  ]}
+  description="Value the underlying bond first, including its separately supplied recovery. At option expiry apply the payoff only in alive states. Before expiry discount only survival-weighted option continuation because the default branch is zero."
+/>
+
+## Worked example
+
+Consider two annual steps. At option expiry, the supplied final-period inputs
+give alive bond values USD 82.80 and USD 88.65; a call strike of USD 85 therefore
+gives terminal option values USD 0 and USD 3.65 by
+[[eq-knockout-terminal-payoff]]. With valuation-time discount factor 0.95,
+survival probability 0.90, and up weight 0.50,
+
+$$
+\begin{aligned}
+O^{\mathrm{KO}}_{1,0}&=\max(82.80-85,0)=0,\\
+O^{\mathrm{KO}}_{1,1}&=\max(88.65-85,0)=3.65,\\
+O^{\mathrm{KO}}_{0,0}
+&=0.95(0.90)\left[(1-0.50)(0)+0.50(3.65)\right]\\
+&=1.560375\ \text{USD per option}.
+\end{aligned}
+$$
+
+The domain function `valueDefaultKnockoutBondOption` performs the same ordered
+bond and option recursions.
 
 ## Parity changes with the contingency
 

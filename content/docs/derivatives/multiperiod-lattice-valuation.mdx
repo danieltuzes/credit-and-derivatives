@@ -49,6 +49,7 @@ notation:
 ---
 
 import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
+import Diagram from 'explico/components/diagram/Diagram.astro';
 
 ## Repeat the one-period argument backward
 
@@ -72,6 +73,7 @@ $$
 \left(\explain{lattice-next-cash-flow}{CF_{i+1,j+1}}
 +\explain{lattice-node-value}{V_{i+1,j+1}}\right)
 \right].
+\label{eq:lattice-backward-step}
 $$
 
 The implementation stores node $j$ and node $j+1$ as the two successors. The
@@ -80,10 +82,48 @@ must use the same ordering.
 
 ## Timing is part of the model
 
-This recursion treats the next-date cash flow as paid before the successor
-continuation value is observed. A coupon-bond value at a node is therefore
+The timing in [[eq-lattice-backward-step]] adds each next-date cash flow before
+discounting its successor total. A coupon-bond value at a node is therefore
 ex-coupon after the cash flow at that node. Changing the exercise/coupon order
 changes the contract and potentially its option payoff.
+
+<Diagram
+  id="backward-induction-flow"
+  label="Backward-induction order"
+  direction="LR"
+  nodes={[
+    { id: 'terminal', text: 'Set terminal node values' },
+    { id: 'successor', text: 'Add next-date cash flows' },
+    { id: 'expectation', text: 'Take the local risk-neutral expectation' },
+    { id: 'discount', text: 'Apply the local discount factor' },
+    { id: 'repeat', text: 'Repeat one row earlier' },
+  ]}
+  edges={[
+    { from: 'terminal', to: 'successor' },
+    { from: 'successor', to: 'expectation' },
+    { from: 'expectation', to: 'discount' },
+    { from: 'discount', to: 'repeat' },
+  ]}
+  description="Start from terminal node values. At each earlier row, add any next-date cash flow to each successor value, form the local risk-neutral weighted average, multiply by the local discount factor, and repeat."
+/>
+
+## Worked example
+
+For terminal values USD 0, USD 20, and USD 40, use second-row discount factors
+0.90 with up weights 0.25 and 0.75, then a first-row discount factor 0.95 with
+up weight 0.50. Applying [[eq-lattice-backward-step]] row by row gives
+
+$$
+\begin{aligned}
+V_{1,0}&=0.90\left[(1-0.25)(0)+0.25(20)\right]=4.50,\\
+V_{1,1}&=0.90\left[(1-0.75)(20)+0.75(40)\right]=31.50,\\
+V_{0,0}&=0.95\left[(1-0.50)(4.50)+0.50(31.50)\right]\\
+&=17.10\ \text{USD}.
+\end{aligned}
+$$
+
+`backwardInductionValue` reproduces the three node rows
+`[[17.1], [4.5, 31.5], [0, 20, 40]]` in its independent reference test.
 
 ## Check your understanding
 

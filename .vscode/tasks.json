@@ -1,0 +1,44 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Course: Commit all and deploy",
+      "type": "process",
+      "command": "pnpm",
+      "args": ["run", "deploy", "--", "${input:commitMessage}"],
+      "detail": "Run every check, commit all changes on main, push, and trigger GitHub Pages.",
+      "problemMatcher": []
+    },
+    {
+      "label": "Course: Check for no errors",
+      "type": "process",
+      "command": "pnpm",
+      "args": ["verify"],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Course: Host content",
+      "type": "process",
+      "command": "pnpm",
+      "args": ["run", "serve"],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "commitMessage",
+      "type": "promptString",
+      "description": "Commit message",
+      "default": "chore: update course and deploy"
+    }
+  ]
+}

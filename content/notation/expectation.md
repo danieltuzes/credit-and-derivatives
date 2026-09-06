@@ -17,7 +17,7 @@ aliases:
   - expected value
   - expectation operator
 domain: probability
-units: same units as the quantity inside the expectation
+units: value units
 sources:
   - id: shreve-stochastic-calculus-finance-ii
     locator: 'Ch. 1 §1.3, printed pp. 13-18, Def. 1.3.1 and Thm. 1.3.4 (expectation as the integral of a random variable against its probability measure, with the finite-valued probability-weighted sum as the special case); Ch. 1 §1.3, printed p. 27, Thm. 1.3.7 (linearity, order, and Jensen).'

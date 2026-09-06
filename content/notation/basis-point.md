@@ -6,7 +6,7 @@ aliases:
   - bp
   - bps
 domain: rates
-units: one ten-thousandth in decimal-rate units
+units: decimal rate
 sources:
   - id: tuckman-serrat-fixed-income
     locator: 'Ch. O §O.2, printed p. 7, n. 4 (a basis point equals 0.01 percentage point).'

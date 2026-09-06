@@ -159,6 +159,7 @@ describe('manifest D6 additions', () => {
         'notation-source-locator',
         'notation-units',
         'numerals-tagged',
+        'operator-explained',
         'units-vocab',
         'weak-local',
       ].sort(),

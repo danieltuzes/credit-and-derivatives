@@ -46,6 +46,7 @@ $$
 \explain{dirty-bond-price}{P^{\mathrm{dirty}}}
 =\explain{clean-bond-price}{P^{\mathrm{clean}}}
 +\explain{accrued-interest}{AI}.
+\label{eq:dirty-price-bridge}
 $$
 
 On a coupon date, accrued interest is zero and the two prices coincide. That
@@ -63,11 +64,18 @@ $$
 =\explain{coupon-payment}{C}
 \frac{\explain{coupon-period-elapsed-days}{n_{\mathrm{elapsed}}}}
 {\explain{coupon-period-total-days}{n_{\mathrm{period}}}}.
+\label{eq:coupon-period-accrual}
 $$
 
 For the dated example February 15, 2021 to August 15, 2021, settlement on
-May 17 is 91 actual days into a 181-day period. A USD 31.25 coupon therefore
-has accrued interest USD $31.25\times91/181=15.71132597$.
+May 17 is 91 actual days into a 181-day period. Applying
+[[eq-coupon-period-accrual]],
+
+$$
+AI
+=31.25\left(\frac{91}{181}\right)
+=15.71132597\ \text{USD per bond}.
+$$
 
 The software validates ISO dates and counts UTC calendar days. It does not
 pretend to be a production schedule engine: business-day rules, ex-coupon
@@ -86,7 +94,8 @@ before delivery also have to be assigned to the correct owner.
 
 ## Sources
 
-The clean/dirty split and actual/actual coupon-period example follow Tuckman
+The clean/dirty identity [[eq-dirty-price-bridge]] and the actual/actual
+calculation [[eq-coupon-period-accrual]] follow Tuckman
 and Serrat, Chapter 1 §1.6 [@tuckman-serrat-fixed-income]. Hull's European bond
 option discussion emphasizes matching cash versus quoted strike and bond
 prices [@hull-options-futures].

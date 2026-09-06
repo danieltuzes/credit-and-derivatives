@@ -69,6 +69,7 @@ $$
 \explain{forward-discount-factor}{Z(t,T)}
 =\frac{\explain{discount-factor}{D(0,T)}}
 {\explain{discount-factor}{D(0,t)}}.
+\label{eq:forward-discount-factor}
 $$
 
 The units are time-$t$ currency per one unit of time-$T$ currency. If
@@ -81,7 +82,8 @@ $$
 The glyph $Z$ is deliberate: shared $D$ remains bound to a factor from
 valuation time, so the new meaning does not silently rebind it.
 
-This ratio is essential for multi-period valuation: each lattice node needs
+The ratio in [[eq-forward-discount-factor]] is essential for multi-period
+valuation: each lattice node needs
 the factor over its next period, not an indiscriminate reuse of a time-zero
 factor.
 

@@ -4,7 +4,7 @@ latex: 'p_t'
 label: 'European put value'
 meaning: 'Current non-negative value to the holder of a European put under the stated model, before any financing or transaction costs.'
 domain: options
-units: stated currency at model time t
+units: stated currency at model time
 sources:
   - id: hull-options-futures
     locator: 'Ch. 1 §1.5, printed pp. 7-9 (put holder right and option purchase price), and Ch. 9 §9.1, printed pp. 194-196 (European put option price and holder value/profit example).'

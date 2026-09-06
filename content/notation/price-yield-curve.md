@@ -5,7 +5,7 @@ meaning: 'Bond price as a function of yield while promised positive fixed cash f
 aliases:
   - bond price as a function of yield
 domain: bonds
-units: price against a nominal annual yield input
+units: stated currency per bond
 sources:
   - id: tuckman-serrat-fixed-income
     locator: 'Ch. 3 §3.2, printed pp. 82-83, Eqs. 3.5-3.8 (bond price as a function of a single yield); Ch. 4 §4.7, printed pp. 119-120, Eqs. 4.20-4.21 (the fixed-cash-flow bond price-yield function).'

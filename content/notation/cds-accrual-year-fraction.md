@@ -5,7 +5,7 @@ meaning: 'Supplied year fraction that converts an annualized spread into the pre
 aliases:
   - premium accrual fraction
 domain: cds
-units: years under the explicitly stated synthetic schedule convention
+units: model-years of premium accrual
 sources:
   - id: tuckman-serrat-fixed-income
     locator: 'Ch. 14 §14.5, printed p. 362 (quarterly premium until default or maturity); Appendix A14.2, printed p. 506, Eq. A14.5 (period day-count fraction applied to the annual CDS spread).'

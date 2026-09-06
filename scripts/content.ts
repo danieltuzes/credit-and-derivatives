@@ -134,7 +134,8 @@ async function main(): Promise<void> {
             `competencies ${c.competencies} · assessments ${c.assessments} · ` +
             `sources ${c.sources} · tracks ${c.tracks} · ` +
             `notation ${c.notationDefinitions} (draft ${report.draftDebt.notation.length}) · ` +
-            `keyed equations ${c.keyedEquations}\n` +
+            `keyed equations ${c.keyedEquations} · keyed tables ${c.keyedTables} · ` +
+            `keyed figures ${c.keyedFigures}\n` +
             `Diagnostics: ${report.diagnostics.errors} error(s), ${report.diagnostics.warnings} warning(s)\n` +
             `Orphans: ${report.orphans.length}\n`,
         );

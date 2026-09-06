@@ -24,8 +24,8 @@ importers:
         specifier: 7.2.7
         version: 7.2.7(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(tsx@4.23.12)(yaml@2.9.0)
       explico:
-        specifier: ^0.2.0
-        version: 0.2.0(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@astrojs/react@6.0.4(@types/node@24.13.3)(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@7.2.0)(tsx@4.23.12)(yaml@2.9.0))(@astrojs/starlight@0.41.9(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(astro@7.2.7(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(tsx@4.23.12)(yaml@2.9.0))(supports-color@7.2.0)(typescript@6.0.2))(astro@7.2.7(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(tsx@4.23.12)(yaml@2.9.0))(katex@0.16.47)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(rehype-katex@7.0.1)(remark-math@6.0.0(supports-color@7.2.0))
+        specifier: 0.3.0
+        version: 0.3.0(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@astrojs/react@6.0.4(@types/node@24.13.3)(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@7.2.0)(tsx@4.23.12)(yaml@2.9.0))(@astrojs/starlight@0.41.9(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(astro@7.2.7(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(tsx@4.23.12)(yaml@2.9.0))(supports-color@7.2.0)(typescript@6.0.2))(astro@7.2.7(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(tsx@4.23.12)(yaml@2.9.0))(katex@0.16.47)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(rehype-katex@7.0.1)(remark-math@6.0.0(supports-color@7.2.0))(remark-mdx@3.1.1(supports-color@7.2.0))
       katex:
         specifier: 0.16.47
         version: 0.16.47
@@ -416,6 +416,12 @@ packages:
   '@ctrl/tinycolor@4.2.0':
     resolution: {integrity: sha512-kzyuwOAQnXJNLS9PSyrk0CWk35nWJW/zl/6KvnTBMFK65gm7U1/Z5BqjxeapjZCIhQcM/DsrEmcbRwDyXyXK4A==}
     engines: {node: '>=14'}
+
+  '@dagrejs/dagre@3.1.1':
+    resolution: {integrity: sha512-zroZB1dFOFiGgv4Xcrn1DckB1o4aOikPqD2NDQPV0WM//CXGcS6xiD0rNkqHmw6FEg4tabt4nxPLwgCWT+Vb2A==}
+
+  '@dagrejs/graphlib@4.0.5':
+    resolution: {integrity: sha512-7xrBTqIts3o+PMUZX97wSc+7TUbW+/rULzGNCTP6yooNVDXbzw4Wutg/H/xOutTB/c/k0YqOAavgPh4/Zk9PFA==}
 
   '@emmetio/abbreviation@2.3.3':
     resolution: {integrity: sha512-mgv58UrU3rh4YgbE/TzgLQwJ3pFsHHhCLqY20aJq+9comytTXUDNGG/SMtSeMJdkpxgXSXunBGLD8Boka3JyVA==}
@@ -1636,8 +1642,8 @@ packages:
     resolution: {integrity: sha512-KfYbmpRm0VbLjEvVa9yGwCi9GI34xvi7A/HXYWQO65CSD2u3MczUJSuwXKFIxlGsgBQizV9q5J9NHj4VG0n+pA==}
     engines: {node: '>=12.0.0'}
 
-  explico@0.2.0:
-    resolution: {integrity: sha512-PRiLCc06w8PjRl0o7XBOmazquxFDWVNiAMdv1jtrukPT0pI3ha1e8Bi50ENZ5X9AQYLvXJJmeHq2I2QcXkCiFg==}
+  explico@0.3.0:
+    resolution: {integrity: sha512-VnZTaARxnqAG2HiWUVNn/b4/ZwfOQA6FqXobxGDefqLLbUN8zdUwlaawLN8L0UThA0/Kn8N0u8LI3Cy6qthQ5Q==}
     peerDependencies:
       '@astrojs/markdown-remark': 7.2.4
       '@astrojs/react': 6.0.4
@@ -1648,6 +1654,7 @@ packages:
       react-dom: 19.2.8
       rehype-katex: 7.0.1
       remark-math: 6.0.0
+      remark-mdx: 3.1.1
 
   expressive-code@0.44.1:
     resolution: {integrity: sha512-GakidxhapWDzpKLqEaFQ8wGk6gAqEtPQibu8+yPBfnDLgev5Vdsh1pasTxnrXL/mzIknyqeTwhMHTghdaiUrTg==}
@@ -3447,6 +3454,12 @@ snapshots:
 
   '@ctrl/tinycolor@4.2.0': {}
 
+  '@dagrejs/dagre@3.1.1':
+    dependencies:
+      '@dagrejs/graphlib': 4.0.5
+
+  '@dagrejs/graphlib@4.0.5': {}
+
   '@emmetio/abbreviation@2.3.3':
     dependencies:
       '@emmetio/scanner': 1.0.4
@@ -4662,17 +4675,19 @@ snapshots:
 
   expect-type@1.4.0: {}
 
-  explico@0.2.0(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@astrojs/react@6.0.4(@types/node@24.13.3)(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@7.2.0)(tsx@4.23.12)(yaml@2.9.0))(@astrojs/starlight@0.41.9(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(astro@7.2.7(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(tsx@4.23.12)(yaml@2.9.0))(supports-color@7.2.0)(typescript@6.0.2))(astro@7.2.7(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(tsx@4.23.12)(yaml@2.9.0))(katex@0.16.47)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(rehype-katex@7.0.1)(remark-math@6.0.0(supports-color@7.2.0)):
+  explico@0.3.0(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@astrojs/react@6.0.4(@types/node@24.13.3)(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@7.2.0)(tsx@4.23.12)(yaml@2.9.0))(@astrojs/starlight@0.41.9(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(astro@7.2.7(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(tsx@4.23.12)(yaml@2.9.0))(supports-color@7.2.0)(typescript@6.0.2))(astro@7.2.7(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(tsx@4.23.12)(yaml@2.9.0))(katex@0.16.47)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(rehype-katex@7.0.1)(remark-math@6.0.0(supports-color@7.2.0))(remark-mdx@3.1.1(supports-color@7.2.0)):
     dependencies:
       '@astrojs/markdown-remark': 7.2.4(supports-color@7.2.0)
       '@astrojs/react': 6.0.4(@types/node@24.13.3)(@types/react-dom@19.2.5(@types/react@19.2.18))(@types/react@19.2.18)(esbuild@0.28.2)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@7.2.0)(tsx@4.23.12)(yaml@2.9.0)
       '@astrojs/starlight': 0.41.9(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(astro@7.2.7(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(tsx@4.23.12)(yaml@2.9.0))(supports-color@7.2.0)(typescript@6.0.2)
+      '@dagrejs/dagre': 3.1.1
       astro: 7.2.7(@astrojs/markdown-remark@7.2.4(supports-color@7.2.0))(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@24.13.3)(tsx@4.23.12)(yaml@2.9.0)
       katex: 0.16.47
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
       rehype-katex: 7.0.1
       remark-math: 6.0.0(supports-color@7.2.0)
+      remark-mdx: 3.1.1(supports-color@7.2.0)
 
   expressive-code@0.44.1:
     dependencies:

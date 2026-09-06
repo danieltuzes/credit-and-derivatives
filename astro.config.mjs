@@ -22,6 +22,9 @@ const base = process.env.SITE_BASE || undefined;
 // once here (with this course's config). Nothing in this config re-walks
 // `content/`.
 const manifest = await loadManifest(courseConfig);
+const chapters = Object.fromEntries(
+  manifest.lessons.map((lesson) => [lesson.slug, lesson.chapter]),
+);
 
 export default defineConfig({
   output: 'static',
@@ -31,12 +34,13 @@ export default defineConfig({
     starlight({
       title: courseConfig.title,
       description: courseConfig.description,
-      customCss: ['explico/styles/global.css'],
+      customCss: ['explico/styles/global.css', './src/styles/course.css'],
       components: {
         Footer: 'explico/components/starlight/LessonFooter.astro',
         Header: 'explico/components/starlight/LayoutHeader.astro',
         PageSidebar: 'explico/components/starlight/LayoutPageSidebar.astro',
         Sidebar: 'explico/components/starlight/LayoutSidebar.astro',
+        SocialIcons: 'explico/components/starlight/LayoutSocialIcons.astro',
       },
       // Section groups are fixed; lesson order inside each is derived from the
       // tracks (see the manifest `sidebar`), not an authored `sidebar.order`.
@@ -53,6 +57,9 @@ export default defineConfig({
           {
             definitions: manifest.notation.raw,
             equations: manifest.equations.numbersBySlug,
+            tables: manifest.tables.numbersBySlug,
+            figures: manifest.figures.numbersBySlug,
+            chapters,
             base,
           },
         ],

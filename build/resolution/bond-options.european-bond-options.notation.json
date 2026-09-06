@@ -12,7 +12,7 @@
       "definitionId": "shared:option-expiry-time",
       "key": "option-expiry-time",
       "kind": "prose",
-      "line": 7,
+      "line": 8,
       "scope": "shared",
       "symbol": "T_{\\mathrm{opt}}"
     },
@@ -21,7 +21,7 @@
       "definitionId": "page:bond-options.european-bond-options:bond-option-expiry-value",
       "key": "bond-option-expiry-value",
       "kind": "prose",
-      "line": 13,
+      "line": 14,
       "scope": "local",
       "symbol": "B_{T_{\\mathrm{opt}}}^{\\mathrm{dirty}}"
     },
@@ -30,7 +30,7 @@
       "definitionId": "shared:option-strike-price",
       "key": "option-strike-price",
       "kind": "prose",
-      "line": 14,
+      "line": 15,
       "scope": "shared",
       "symbol": "K"
     },
@@ -39,7 +39,7 @@
       "definitionId": "shared:accrued-interest",
       "key": "accrued-interest",
       "kind": "prose",
-      "line": 16,
+      "line": 17,
       "scope": "shared",
       "symbol": "AI"
     },
@@ -48,7 +48,7 @@
       "definitionId": "page:bond-options.european-bond-options:bond-call-expiry-payoff",
       "key": "bond-call-expiry-payoff",
       "kind": "math",
-      "line": 22,
+      "line": 23,
       "scope": "local",
       "symbol": "X^{B,\\mathrm{call}}_{T_{\\mathrm{opt}}}"
     },
@@ -57,7 +57,7 @@
       "definitionId": "page:bond-options.european-bond-options:bond-option-expiry-value",
       "key": "bond-option-expiry-value",
       "kind": "math",
-      "line": 24,
+      "line": 25,
       "scope": "local",
       "symbol": "B_{T_{\\mathrm{opt}}}^{\\mathrm{dirty}}"
     },
@@ -66,7 +66,7 @@
       "definitionId": "shared:option-strike-price",
       "key": "option-strike-price",
       "kind": "math",
-      "line": 25,
+      "line": 26,
       "scope": "shared",
       "symbol": "K"
     },
@@ -75,7 +75,7 @@
       "definitionId": "page:bond-options.european-bond-options:bond-put-expiry-payoff",
       "key": "bond-put-expiry-payoff",
       "kind": "math",
-      "line": 29,
+      "line": 31,
       "scope": "local",
       "symbol": "X^{B,\\mathrm{put}}_{T_{\\mathrm{opt}}}"
     },
@@ -84,7 +84,7 @@
       "definitionId": "shared:option-strike-price",
       "key": "option-strike-price",
       "kind": "math",
-      "line": 31,
+      "line": 33,
       "scope": "shared",
       "symbol": "K"
     },
@@ -93,19 +93,46 @@
       "definitionId": "page:bond-options.european-bond-options:bond-option-expiry-value",
       "key": "bond-option-expiry-value",
       "kind": "math",
-      "line": 32,
+      "line": 34,
       "scope": "local",
       "symbol": "B_{T_{\\mathrm{opt}}}^{\\mathrm{dirty}}"
+    },
+    {
+      "column": 45,
+      "definitionId": "shared:lattice-node-value",
+      "key": "lattice-node-value",
+      "kind": "prose",
+      "line": 40,
+      "scope": "shared",
+      "symbol": "V_{i,j}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:bond-options.european-bond-options:bond-call-expiry-payoff",
+      "key": "bond-call-expiry-payoff",
+      "kind": "math",
+      "line": 66,
+      "scope": "local",
+      "symbol": "X^{B,\\mathrm{call}}_{T_{\\mathrm{opt}}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:bond-options.european-bond-options:bond-call-expiry-payoff",
+      "key": "bond-call-expiry-payoff",
+      "kind": "math",
+      "line": 68,
+      "scope": "local",
+      "symbol": "X^{B,\\mathrm{call}}_{T_{\\mathrm{opt}}}"
     },
     {
       "column": 1,
       "definitionId": "shared:lattice-node-value",
       "key": "lattice-node-value",
-      "kind": "prose",
-      "line": 36,
+      "kind": "math",
+      "line": 70,
       "scope": "shared",
       "symbol": "V_{i,j}"
     }
   ],
-  "schemaVersion": 3
+  "schemaVersion": 6
 }

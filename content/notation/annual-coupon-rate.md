@@ -5,7 +5,7 @@ meaning: "Contractual annual rate used to determine a fixed-rate bond's coupon p
 aliases:
   - coupon rate
 domain: bonds
-units: decimal per year in code; percent per year in labeled prose and UI
+units: decimal rate per year
 sources:
   - id: tuckman-serrat-fixed-income
     locator: 'Ch. 1 §1.1 and Table 1.1, printed p. 50 (coupon rate, maturity, and face/par/principal amount of a government coupon bond).'

@@ -6,9 +6,10 @@
     "gloss-wants-promoting": 0,
     "glyph-unique-in-corpus": 15,
     "notation-source-locator": 0,
-    "notation-units": 27,
+    "notation-units": 0,
     "numerals-tagged": 25,
-    "units-vocab": 14,
+    "operator-explained": 0,
+    "units-vocab": 0,
     "weak-local": 10
   },
   "diagnostics": [
@@ -103,243 +104,27 @@
       "severity": "warning"
     },
     {
-      "code": "notation-units",
-      "file": "content/docs/bonds/price-yield-relationship.mdx",
-      "key": "price-change",
-      "lessonId": "bonds.price-yield-relationship",
-      "message": "notation price-change (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/bonds/price-yield-relationship.mdx",
-      "key": "yield-shock",
-      "lessonId": "bonds.price-yield-relationship",
-      "message": "notation yield-shock (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/cds/premium-protection-legs-and-par-spread.mdx",
-      "key": "cds-default-event",
-      "lessonId": "cds.premium-protection-legs-and-par-spread",
-      "message": "notation cds-default-event (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/cds/premium-protection-legs-and-par-spread.mdx",
-      "key": "cds-event-payoff",
-      "lessonId": "cds.premium-protection-legs-and-par-spread",
-      "message": "notation cds-event-payoff (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/cds/premium-protection-legs-and-par-spread.mdx",
-      "key": "cds-event-payoff-value",
-      "lessonId": "cds.premium-protection-legs-and-par-spread",
-      "message": "notation cds-event-payoff-value (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/cds/premium-protection-legs-and-par-spread.mdx",
-      "key": "cds-period-index",
-      "lessonId": "cds.premium-protection-legs-and-par-spread",
-      "message": "notation cds-period-index (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/cds/premium-protection-legs-and-par-spread.mdx",
-      "key": "number-of-cds-periods",
-      "lessonId": "cds.premium-protection-legs-and-par-spread",
-      "message": "notation number-of-cds-periods (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/credit/default-hazard-and-survival.mdx",
-      "key": "credit-period-index",
-      "lessonId": "credit.default-hazard-and-survival",
-      "message": "notation credit-period-index (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/credit/default-hazard-and-survival.mdx",
-      "key": "number-of-credit-periods",
-      "lessonId": "credit.default-hazard-and-survival",
-      "message": "notation number-of-credit-periods (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/derivatives/forward-contracts-and-value.mdx",
-      "key": "forward-contract-quantity",
-      "lessonId": "derivatives.forward-contracts-and-value",
-      "message": "notation forward-contract-quantity (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/cash-flow-timelines.mdx",
-      "key": "payment-index",
-      "lessonId": "foundations.cash-flow-timelines",
-      "message": "notation payment-index (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/discount-factors.mdx",
-      "key": "discounted-unit-value",
-      "lessonId": "foundations.discount-factors",
-      "message": "notation discounted-unit-value (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/no-arbitrage-and-replication.mdx",
-      "key": "replication-security-count",
-      "lessonId": "foundations.no-arbitrage-and-replication",
-      "message": "notation replication-security-count (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/no-arbitrage-and-replication.mdx",
-      "key": "replication-security-index",
-      "lessonId": "foundations.no-arbitrage-and-replication",
-      "message": "notation replication-security-index (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/no-arbitrage-and-replication.mdx",
-      "key": "replication-security-quantity",
-      "lessonId": "foundations.no-arbitrage-and-replication",
-      "message": "notation replication-security-quantity (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/present-value.mdx",
-      "key": "discounting-lab-cash-flow",
-      "lessonId": "foundations.present-value",
-      "message": "notation discounting-lab-cash-flow (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/present-value.mdx",
-      "key": "discounting-lab-rate",
-      "lessonId": "foundations.present-value",
-      "message": "notation discounting-lab-rate (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/present-value.mdx",
-      "key": "number-of-future-payments",
-      "lessonId": "foundations.present-value",
-      "message": "notation number-of-future-payments (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/present-value.mdx",
-      "key": "present-value-payment-index",
-      "lessonId": "foundations.present-value",
-      "message": "notation present-value-payment-index (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/probability-events-and-expectation.mdx",
-      "key": "probability-event",
-      "lessonId": "foundations.probability-events-and-expectation",
-      "message": "notation probability-event (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/probability-events-and-expectation.mdx",
-      "key": "probability-event-index",
-      "lessonId": "foundations.probability-events-and-expectation",
-      "message": "notation probability-event-index (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/probability-events-and-expectation.mdx",
-      "key": "probability-event-value",
-      "lessonId": "foundations.probability-events-and-expectation",
-      "message": "notation probability-event-value (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/probability-events-and-expectation.mdx",
-      "key": "probability-partition-size",
-      "lessonId": "foundations.probability-events-and-expectation",
-      "message": "notation probability-partition-size (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/probability-events-and-expectation.mdx",
-      "key": "probability-random-value",
-      "lessonId": "foundations.probability-events-and-expectation",
-      "message": "notation probability-random-value (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/rates-compounding-and-basis-points.mdx",
-      "key": "number-of-compounding-periods",
-      "lessonId": "foundations.rates-compounding-and-basis-points",
-      "message": "notation number-of-compounding-periods (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/risk-neutral-pricing.mdx",
-      "key": "risk-neutral-scenario-count",
-      "lessonId": "foundations.risk-neutral-pricing",
-      "message": "notation risk-neutral-scenario-count (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
-      "code": "notation-units",
-      "file": "content/docs/foundations/risk-neutral-pricing.mdx",
-      "key": "risk-neutral-scenario-index",
-      "lessonId": "foundations.risk-neutral-pricing",
-      "message": "notation risk-neutral-scenario-index (local) declares neither units nor dimensionless",
-      "severity": "warning"
-    },
-    {
       "code": "numerals-tagged",
-      "count": 2,
+      "count": 17,
       "file": "content/docs/bond-options/european-bond-options.mdx",
       "lessonId": "bond-options.european-bond-options",
-      "message": "bond-options.european-bond-options: 2 numeral(s) in $…$ / result tables (2 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "bond-options.european-bond-options: 17 numeral(s) in $…$ / result tables (17 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {
       "code": "numerals-tagged",
-      "count": 12,
+      "count": 34,
       "file": "content/docs/bond-options/issuer-default-knockout.mdx",
       "lessonId": "bond-options.issuer-default-knockout",
-      "message": "bond-options.issuer-default-knockout: 12 numeral(s) in $…$ / result tables (12 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "bond-options.issuer-default-knockout: 34 numeral(s) in $…$ / result tables (34 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {
       "code": "numerals-tagged",
-      "count": 2,
+      "count": 7,
       "file": "content/docs/bonds/bond-forwards.mdx",
       "lessonId": "bonds.bond-forwards",
-      "message": "bonds.bond-forwards: 2 numeral(s) in $…$ / result tables (2 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "bonds.bond-forwards: 7 numeral(s) in $…$ / result tables (7 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {
@@ -352,10 +137,10 @@
     },
     {
       "code": "numerals-tagged",
-      "count": 31,
+      "count": 41,
       "file": "content/docs/bonds/price-from-discount-factors.mdx",
       "lessonId": "bonds.price-from-discount-factors",
-      "message": "bonds.price-from-discount-factors: 31 numeral(s) in $…$ / result tables (22 in math, 9 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "bonds.price-from-discount-factors: 41 numeral(s) in $…$ / result tables (32 in math, 9 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {
@@ -432,10 +217,10 @@
     },
     {
       "code": "numerals-tagged",
-      "count": 9,
+      "count": 36,
       "file": "content/docs/derivatives/multiperiod-lattice-valuation.mdx",
       "lessonId": "derivatives.multiperiod-lattice-valuation",
-      "message": "derivatives.multiperiod-lattice-valuation: 9 numeral(s) in $…$ / result tables (9 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "derivatives.multiperiod-lattice-valuation: 36 numeral(s) in $…$ / result tables (36 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {
@@ -516,105 +301,6 @@
       "file": "content/docs/rates/discount-curve-and-forward-discounting.mdx",
       "lessonId": "rates.discount-curve-and-forward-discounting",
       "message": "rates.discount-curve-and-forward-discounting: 20 numeral(s) in $…$ / result tables (20 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/annual-coupon-rate.md",
-      "key": "annual-coupon-rate",
-      "message": "notation annual-coupon-rate units \"decimal per year in code; percent per year in labeled prose and UI\" use non-vocabulary token(s): code, labeled, prose, ui",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/basis-point.md",
-      "key": "basis-point",
-      "message": "notation basis-point units \"one ten-thousandth in decimal-rate units\" use non-vocabulary token(s): ten, thousandth",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/bond-cash-flow.md",
-      "key": "bond-cash-flow",
-      "message": "notation bond-cash-flow units \"stated currency at payment time t_k\" use non-vocabulary token(s): t_k",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/call-option-value.md",
-      "key": "call-option-value",
-      "message": "notation call-option-value units \"stated currency at model time t\" use non-vocabulary token(s): t",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/cds-accrual-year-fraction.md",
-      "key": "cds-accrual-year-fraction",
-      "message": "notation cds-accrual-year-fraction units \"years under the explicitly stated synthetic schedule convention\" use non-vocabulary token(s): synthetic, convention",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/derivative-underlying-value.md",
-      "key": "derivative-underlying-value",
-      "message": "notation derivative-underlying-value units \"stated currency per unit of underlying at model time t\" use non-vocabulary token(s): t",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/expectation.md",
-      "key": "expectation",
-      "message": "notation expectation units \"same units as the quantity inside the expectation\" use non-vocabulary token(s): same, inside, expectation",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/forward-contract-value.md",
-      "key": "forward-contract-value",
-      "message": "notation forward-contract-value units \"stated currency at model time t\" use non-vocabulary token(s): t",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/forward-discount-factor.md",
-      "key": "forward-discount-factor",
-      "message": "notation forward-discount-factor units \"currency at time t per one unit of the same currency at time T\" use non-vocabulary token(s): t, same",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/maturity-time.md",
-      "key": "maturity-time",
-      "message": "notation maturity-time units \"years from the valuation date in the simplified model\" use non-vocabulary token(s): simplified",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/nominal-annual-rate.md",
-      "key": "nominal-annual-rate",
-      "message": "notation nominal-annual-rate units \"decimal per year in code; percent per year in labeled prose and UI\" use non-vocabulary token(s): code, labeled, prose, ui",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/price-yield-curve.md",
-      "key": "price-yield-curve",
-      "message": "notation price-yield-curve units \"price against a nominal annual yield input\" use non-vocabulary token(s): price, against, yield, input",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/notation/put-option-value.md",
-      "key": "put-option-value",
-      "message": "notation put-option-value units \"stated currency at model time t\" use non-vocabulary token(s): t",
-      "severity": "warning"
-    },
-    {
-      "code": "units-vocab",
-      "file": "content/docs/foundations/risk-neutral-pricing.mdx",
-      "key": "risk-neutral-scenario-payoff",
-      "lessonId": "foundations.risk-neutral-pricing",
-      "message": "notation risk-neutral-scenario-payoff units \"USD at the pricing horizon in this lesson\" use non-vocabulary token(s): usd, pricing, lesson",
       "severity": "warning"
     },
     {
@@ -709,5 +395,5 @@
     }
   ],
   "generatedBy": "pnpm validate:content",
-  "schemaVersion": 3
+  "schemaVersion": 6
 }

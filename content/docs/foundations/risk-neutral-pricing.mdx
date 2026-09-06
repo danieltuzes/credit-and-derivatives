@@ -29,6 +29,7 @@ notation:
       latex: j
       meaning: 'Selects one scenario in the finite pricing partition. It is a bookkeeping label rather than a probability or time.'
       formula: 'j \in \{1,\ldots,m\}'
+      dimensionless: true
       sources: []
       seeAlso:
         - risk-neutral-probability-measure
@@ -39,6 +40,7 @@ notation:
       latex: m
       meaning: 'Counts the disjoint and exhaustive scenarios in the finite pricing partition. It is a positive integer and does not measure time or money.'
       formula: 'm \in \mathbb{N}'
+      dimensionless: true
       sources: []
       seeAlso:
         - risk-neutral-probability-measure
@@ -48,7 +50,7 @@ notation:
     - key: risk-neutral-scenario-payoff
       latex: 'x_j'
       meaning: 'Realized signed terminal amount in one scenario. Positive means received and negative means paid by the claim holder at the horizon.'
-      units: USD at the pricing horizon in this lesson
+      units: stated currency at the horizon
       sources: []
       seeAlso:
         - terminal-random-payoff

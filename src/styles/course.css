@@ -1,0 +1,38 @@
+/*
+ * Explico 0.3.0 makes equation numbers partially opaque at rest. A partially
+ * blended text color fails contrast checks, so keep the number fully hidden
+ * until the same discovery states used by the engine reveal it. Once visible,
+ * use the high-contrast accent color without an opacity transition.
+ */
+.sl-markdown-content a.keyed-equation__number {
+  color: var(--sl-color-accent-high);
+  opacity: 0;
+  transition: none;
+}
+
+@media (hover: none) {
+  .sl-markdown-content a.keyed-equation__number {
+    opacity: 1;
+  }
+}
+
+.sl-markdown-content .keyed-equation:hover a.keyed-equation__number,
+.sl-markdown-content .keyed-equation:focus-within a.keyed-equation__number,
+.sl-markdown-content .keyed-equation:target a.keyed-equation__number,
+.sl-markdown-content a.keyed-equation__number:focus-visible,
+.sl-markdown-content a.keyed-equation__number.eq-number-revealed,
+.sl-markdown-content .keyed-equation.eq-ref-highlight a.keyed-equation__number {
+  opacity: 1;
+}
+
+@media print, (forced-colors: active) {
+  .sl-markdown-content a.keyed-equation__number {
+    opacity: 1;
+  }
+}
+
+/* Preserve Diagram's authored pixel width so wide flows scroll instead of
+ * inheriting Starlight's responsive SVG shrink and becoming illegible. */
+.sl-markdown-content .diagram-scroll svg {
+  max-width: none;
+}

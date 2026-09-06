@@ -21,8 +21,17 @@ import { courseConfig } from '../content/course.config';
 const manifest = await compileManifest(courseConfig);
 writeManifest(manifest);
 
-const { curriculum, notation, alignment, math, consistency, equations } =
-  manifest.diagnostics;
+const {
+  curriculum,
+  notation,
+  alignment,
+  math,
+  consistency,
+  knowledge,
+  equations,
+  tables,
+  figures,
+} = manifest.diagnostics;
 
 for (const warning of curriculum.filter(
   (issue) => issue.severity === 'warning',
@@ -36,6 +45,15 @@ for (const warning of alignment.filter((d) => d.severity === 'warning')) {
   console.warn(`[${warning.code}] ${warning.message}`);
 }
 for (const warning of equations.filter((d) => d.severity === 'warning')) {
+  console.warn(`[${warning.code}] ${warning.message}`);
+}
+for (const warning of tables.filter((d) => d.severity === 'warning')) {
+  console.warn(`[${warning.code}] ${warning.message}`);
+}
+for (const warning of figures.filter((d) => d.severity === 'warning')) {
+  console.warn(`[${warning.code}] ${warning.message}`);
+}
+for (const warning of knowledge) {
   console.warn(`[${warning.code}] ${warning.message}`);
 }
 
@@ -91,6 +109,12 @@ for (const issue of math.filter((item) => item.severity === 'error')) {
   failures.push(formatMathIssue(issue));
 }
 for (const issue of equations.filter((d) => d.severity === 'error')) {
+  failures.push(`[${issue.code}] ${issue.message}`);
+}
+for (const issue of tables.filter((d) => d.severity === 'error')) {
+  failures.push(`[${issue.code}] ${issue.message}`);
+}
+for (const issue of figures.filter((d) => d.severity === 'error')) {
   failures.push(`[${issue.code}] ${issue.message}`);
 }
 

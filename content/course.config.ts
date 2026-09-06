@@ -18,6 +18,15 @@ export const courseConfig = {
   description:
     'Interactive foundations for bonds, credit risk, CDS, CDX, and their options.',
 
+  about: {
+    version: '0.2.0',
+    authors: [{ name: 'danieltuzes', contact: 'danieltuzes@gmail.com' }],
+    disclaimer:
+      'Educational material only. No investment, legal, tax, accounting, valuation, risk-management, or trading advice.',
+    changelogHref:
+      'https://github.com/danieltuzes/credit-and-derivatives/blob/main/content/CHANGELOG.md',
+  },
+
   /**
    * Sidebar section groups, top to bottom. A lesson slug `bonds/…` joins the
    * `bonds` group; order *within* a group comes from the track order, not here.
