@@ -12,8 +12,8 @@ assumptions:
   - Premium-leg and protection-leg present values are displayed as positive magnitudes
   - The reference entity has at most one modeled default time
   - The reference entity is alive at valuation time and modeled default occurs strictly after time zero
-  - Default follows a constant non-negative risk-neutral hazard rate per model-year
-  - The continuously compounded risk-free rate and recovery fraction are deterministic
+  - Default follows a non-negative risk-neutral hazard rate per model-year; the leg derivations allow it to vary with time and then specialize to one constant value for the closed forms, worked examples, explorer, and assessment
+  - The continuously compounded risk-free rate is likewise general in the leg derivations and then held constant, alongside a deterministic recovery fraction, from the closed-form section onward
   - Premium dates are equally spaced annual, semiannual, or quarterly model-year dates with year fraction equal to elapsed model time
   - Scheduled premium is paid only after survival to its date
   - Default triggers protection and premium accrued since the preceding premium date at the modeled default time
@@ -110,7 +110,7 @@ notation:
         rationale: The symbol specializes the prerequisite finite-event expectation rule.
     - key: cds-default-integration-time
       latex: 'u'
-      meaning: 'Integration variable ranging over every possible default time inside one CDS period. It is a deterministic dummy variable; the random default time is a different symbol.'
+      meaning: 'Integration variable ranging over every possible default time inside one CDS period, or over the interval used to cumulate a time-varying hazard rate into a survival probability. It is a deterministic dummy variable; the random default time is a different symbol.'
       units: model-years after valuation time
       sources: []
       seeAlso:
@@ -118,6 +118,18 @@ notation:
       alignment:
         kind: general
         rationale: A continuous integral needs a dummy time variable distinct from the random default time.
+    - key: cds-general-hazard-rate
+      latex: '\lambda(u)'
+      meaning: 'General risk-neutral default intensity, written as a function of time rather than assumed constant. It generalizes the constant hazard rate used elsewhere in this course to a deterministic function of time; the constant case is recovered by setting it equal to one fixed value for every time.'
+      units: decimal intensity per model-year
+      sources: []
+      seeAlso:
+        - hazard-rate
+        - survival-probability
+      alignment:
+        kind: competency
+        introducedByCompetency: cds.cash-flow-legs.interpret
+        introducedInLesson: cds.premium-protection-legs-and-par-spread
     - key: cds-accrued-year-fraction-at-default
       latex: 'a_i(u)'
       meaning: 'Year fraction accrued from the preceding premium date to a possible default time in period i. In the regular model-year schedule it equals elapsed model time since the period start.'
@@ -208,6 +220,30 @@ notation:
         kind: competency
         introducedByCompetency: cds.protection-leg.calculate
         introducedInLesson: cds.premium-protection-legs-and-par-spread
+    - key: cds-extinguishing-swap-cash-flow
+      latex: 'c_i'
+      meaning: 'Deterministic signed net cash flow scheduled at one payment date for one named perspective, in the extinguishing-swap construction that generalizes the premium leg to an arbitrary schedule. Positive means received, under the signed cash-flow convention used throughout this course.'
+      units: stated currency at the scheduled payment time
+      sources: []
+      seeAlso:
+        - cds-extinguishing-swap-present-value
+        - cds-premium-leg-present-value
+      alignment:
+        kind: competency
+        introducedByCompetency: cds.premium-leg.calculate
+        introducedInLesson: cds.premium-protection-legs-and-par-spread
+    - key: cds-extinguishing-swap-present-value
+      latex: 'PV_0^{\mathrm{ext}}'
+      meaning: 'Present value, for the named perspective, of a scheduled net cash-flow stream that stops entirely once the reference entity defaults. This is the extinguishing-swap construction generalizing the premium leg.'
+      units: stated currency at valuation time
+      sources: []
+      seeAlso:
+        - cds-extinguishing-swap-cash-flow
+        - cds-premium-leg-present-value
+      alignment:
+        kind: competency
+        introducedByCompetency: cds.premium-leg.calculate
+        introducedInLesson: cds.premium-protection-legs-and-par-spread
 ---
 
 import CompactExample from 'explico/components/examples/CompactExample.astro';
@@ -286,35 +322,71 @@ cash flows by survival/default events[@tuckman-serrat-fixed-income; §14.6, prin
 
 ## Hazard supplies the probabilities in the formulas
 
-The lesson's [[hazard-rate]] $\lambda$ is constant, non-negative, and
-measured per model-year under the [[risk-neutral-probability-measure]]
-$\mathbb{Q}$. It gives
+Let the risk-neutral default intensity at a survived time
+$\explain{cds-default-integration-time}{u}$ be
+$\explain{cds-general-hazard-rate}{\lambda(u)}$ — a deterministic function of
+time, measured per model-year under the [[risk-neutral-probability-measure]]
+$\mathbb{Q}$, that generalizes this lesson's constant [[hazard-rate]]
+$\lambda$. Its conditional-intensity meaning is unchanged from the credit
+lesson's definition, only no longer assumed constant: $\lambda(u)$ is the
+proportional rate at which survival is lost at $u$, given survival to $u$.
+Written as a starting relation, that meaning is the differential equation
+
+$$
+-\,d\explain{survival-probability}{S^{\mathbb{Q}}(0,u)}
+=\explain{cds-general-hazard-rate}{\lambda(u)}\,
+\explain{survival-probability}{S^{\mathbb{Q}}(0,u)}\,d
+\explain{cds-default-integration-time}{u},
+\qquad
+\explain{survival-probability}{S^{\mathbb{Q}}(0,0)}=1.
+$$
+
+Dividing by the (positive) survival probability turns the left side into a
+derivative of its logarithm, $-d\ln
+\explain{survival-probability}{S^{\mathbb{Q}}(0,u)}=
+\explain{cds-general-hazard-rate}{\lambda(u)}\,d
+\explain{cds-default-integration-time}{u}$. Integrating from $0$ to
+$\explain{payment-time}{t}$ and using $\ln
+\explain{survival-probability}{S^{\mathbb{Q}}(0,0)}=\ln1=0$ gives
 
 $$
 \explain{survival-probability}{S^{\mathbb{Q}}(0,t)}
-=\exp(-\explain{hazard-rate}{\lambda}
-\explain{payment-time}{t}),
+=\exp\left(-\int_0^{\explain{payment-time}{t}}
+\explain{cds-general-hazard-rate}{\lambda(u)}\,d
+\explain{cds-default-integration-time}{u}\right).
 $$
 
-and therefore
+Integrating the same starting relation over one period, rather than from $0$,
+gives the general interval default probability without assuming any closed
+form for survival:
 
 $$
-\explain{risk-neutral-probability-measure}{\mathbb{Q}}
-(\explain{cds-default-time}{\tau}\in d
-\explain{cds-default-integration-time}{u})
-=\explain{hazard-rate}{\lambda}
+\explain{interval-default-probability}{\Delta q_i^{\mathbb{Q}}}
+=\int_{t_{i-1}}^{t_i}
+\explain{cds-general-hazard-rate}{\lambda(u)}\,
 \explain{survival-probability}{S^{\mathbb{Q}}(0,u)}\,d
-\explain{cds-default-integration-time}{u}.
+\explain{cds-default-integration-time}{u}
+=\explain{survival-probability}{S^{\mathbb{Q}}(0,t_{i-1})}
+-\explain{survival-probability}{S^{\mathbb{Q}}(0,t_i)}.
 $$
 
-For an interval, integrating that density gives the familiar survival drop:
+This lesson's constant hazard rate [[hazard-rate]] $\lambda$ is the special
+case $\lambda(u)\equiv\lambda$ for every $u$: then
+$\int_0^t\lambda(u)\,du=\lambda t$, collapsing the two results above to the
+familiar
 
 $$
+\explain{survival-probability}{S^{\mathbb{Q}}(0,t)}=\exp(-\lambda t),
+\qquad
 \explain{interval-default-probability}{\Delta q_i^{\mathbb{Q}}}
 =\exp(-\lambda t_{i-1})-\exp(-\lambda t_i).
 $$
 
-These are pricing probabilities, not forecasts. A CDS-implied hazard rate can
+The premium-leg and protection-leg sections just below keep the general
+$\lambda(u)$; the closed-form section after them specializes.
+
+These are pricing probabilities, not forecasts, whether or not $\lambda$ is
+held constant. A CDS-implied hazard rate can
 be risk-neutral rather than a prediction of realized defaults[@tuckman-serrat-fixed-income; §14.7, printed p. 371]. The constant-hazard survival relation is given in §14.6 and
 Appendix A14.1[@tuckman-serrat-fixed-income; printed pp. 367–368 and 505, eqs. 14.4–14.5 and A14.1–A14.2].
 
@@ -336,13 +408,15 @@ Suppose default occurs at $u$ in $(t_{i-1},t_i]$. The supplied
 Hull explicitly notes that a final accrued premium is paid when default occurs
 between scheduled dates[@hull-options-futures; §24.1, printed pp. 548–550].
 The half-period and midpoint calculations in Hull and Tuckman are useful
-discrete approximations[@hull-options-futures; §24.2, printed pp. 551–554, Tables 24.1–24.4][@tuckman-serrat-fixed-income; §14.6, printed pp. 368–370, Table 14.10]. Here, because the toy hazard and discount rate are constant, we
-can integrate the modeled default time exactly instead.
+discrete approximations[@hull-options-futures; §24.2, printed pp. 551–554, Tables 24.1–24.4][@tuckman-serrat-fixed-income; §14.6, printed pp. 368–370, Table 14.10]. Here we integrate the modeled default time exactly instead, for a
+general hazard rate and discount curve; the worked closed forms further below
+then specialize both to this lesson's constant case.
 
 ## Exact premium-leg expectation in this model
 
-Let the [[continuously-compounded-risk-free-rate]] be $r$, so
-$D(0,u)=\exp(-ru)$. The positive scheduled-premium factor is
+Let $\explain{discount-factor}{D(0,u)}$ be this course's already-established,
+general dated discount curve — no flat-rate assumption yet. The positive
+scheduled-premium factor is
 
 $$
 \explain{cds-scheduled-premium-annuity}{A_0^{\mathrm{sched}}}
@@ -360,7 +434,7 @@ $$
 \int_{t_{i-1}}^{t_i}
 \explain{cds-accrued-year-fraction-at-default}{a_i(u)}
 \explain{discount-factor}{D(0,u)}
-\explain{hazard-rate}{\lambda}
+\explain{cds-general-hazard-rate}{\lambda(u)}
 \explain{survival-probability}{S^{\mathbb{Q}}(0,u)}\,\mathrm{d}u.
 $$
 
@@ -391,7 +465,7 @@ $$
 \explain{loss-given-default}{\mathrm{LGD}}
 \sum_{i=1}^{n}\int_{t_{i-1}}^{t_i}
 \explain{discount-factor}{D(0,u)}
-\explain{hazard-rate}{\lambda}
+\explain{cds-general-hazard-rate}{\lambda(u)}
 \explain{survival-probability}{S^{\mathbb{Q}}(0,u)}\,\mathrm{d}u.
 \label{eq:exact-cds-protection-leg}
 $$
@@ -401,6 +475,14 @@ multiplied by its risk-neutral probability density and discounted, then the
 disjoint time buckets are added.
 
 ## Closed forms and the zero-upfront par spread
+
+Now specialize both generalized inputs above to this lesson's worked model.
+Take a constant hazard rate, $\lambda(u)\equiv\lambda$ for every $u$ — this
+lesson's constant [[hazard-rate]], recovered above as a special case of
+[[cds-general-hazard-rate]] — and a constant continuously compounded
+risk-free rate, so that the general discount curve used in the last two
+sections is $\explain{discount-factor}{D(0,u)}=\exp(-ru)$ via the lesson's
+[[continuously-compounded-risk-free-rate]] $r$.
 
 For the regular model-year schedule, $\alpha_i=t_i-t_{i-1}$ and the
 [[maturity-time]] is $T=t_n$. Define the
@@ -524,6 +606,81 @@ notional.
   </CompactExample>
 </CompactExamples>
 
+## Generalizing the premium leg: an extinguishing swap
+
+This lesson uses **extinguishing swap** as a local label for the
+construction below. It is not a claim that this phrase is standard market or
+textbook terminology — it names, for this course only, any scheduled cash
+flow that permanently stops the instant the reference entity defaults, the
+same mechanism already derived above for the premium leg.
+
+Consider the same schedule of dates $0=t_0<t_1<\cdots<t_n=T$ against the same
+reference entity, but replace the premium leg's one scheduled amount
+$\explain{cds-contract-spread}{s}\explain{cds-notional}{N}
+\explain{cds-accrual-year-fraction}{\alpha_i}$ at each date with an arbitrary
+deterministic, signed net cash flow
+$\explain{cds-extinguishing-swap-cash-flow}{c_i}$ for one named perspective —
+positive received, negative paid, under this course's signed cash-flow
+convention. As with the premium leg, a scheduled amount is paid only on
+survival to its date, and every later scheduled amount is extinguished the
+instant default occurs. This lesson keeps $c_i$ supplied and deterministic —
+it is not modeled as contingent on a floating rate — and an accrued-at-default
+term can be added by the same construction as the premium leg's
+[[cds-accrued-premium-annuity]] if a flow accrues continuously between dates;
+that term is not repeated here.
+
+Reusing the disjoint-event expectation already used for every CDS leg on this
+page, the scheduled part values by the same survival-weighted discounting
+that gave $A_0^{\mathrm{sched}}$ above:
+
+$$
+\explain{cds-extinguishing-swap-present-value}{PV_0^{\mathrm{ext}}}
+=\sum_{i=1}^{n}
+\explain{cds-extinguishing-swap-cash-flow}{c_i}\,
+\explain{discount-factor}{D(0,t_i)}\,
+\explain{survival-probability}{S^{\mathbb{Q}}(0,t_i)}.
+$$
+
+Setting $\explain{cds-extinguishing-swap-cash-flow}{c_i}=
+\explain{cds-contract-spread}{s}\explain{cds-notional}{N}
+\explain{cds-accrual-year-fraction}{\alpha_i}$ for every $i$ recovers the
+premium leg's scheduled-payment term $A_0^{\mathrm{sched}}$ exactly: the
+premium leg is the special case of an extinguishing swap whose schedule is
+one running spread paid on a fixed notional.
+
+<CompactExamples
+  summary="Worked example"
+  hint="Open the set, then reuse the one-year exact legs example's discounted-survival factors."
+  tabsLabel="Extinguishing-swap example"
+>
+  <CompactExample label="A two-date extinguishing swap">
+
+Reuse the "One-year exact legs" model above: $\kappa=r+\lambda=0.06$ per
+model-year, with semiannual dates $t_1=0.5$ and $t_2=1$. Its
+discounted-survival factors are
+
+$$
+D(0,t_1)S(0,t_1)=\exp(-0.06\times0.5)\approx0.970445534,
+\qquad
+D(0,t_2)S(0,t_2)=\exp(-0.06\times1)\approx0.941764534.
+$$
+
+Suppose this extinguishing swap's schedule is a USD 30,000 receipt at $t_1$
+and a USD 12,000 payment at $t_2$, so $c_1=\text{USD }30{,}000$ and
+$c_2=-\text{USD }12{,}000$. Then
+
+$$
+PV_0^{\mathrm{ext}}
+=30{,}000(0.970445534)+(-12{,}000)(0.941764534)
+\approx\text{USD }17{,}812.19.
+$$
+
+Both terms reuse exactly the $D(0,t_i)S(0,t_i)$ factors above; only the
+signed schedule $c_i$ changed from the premium leg's $sN\alpha_i$.
+
+  </CompactExample>
+</CompactExamples>
+
 ## Why there is no volatility input here
 
 Risk-neutral valuation does not make volatility disappear. A change from the
@@ -558,11 +715,16 @@ premium-leg magnitude, protection-leg magnitude, and par spread.
 
 ## Model boundary and review note
 
-This is an exact valuation only inside its deliberately simplified model. It
-uses model-year dates, one constant risk-neutral hazard, one deterministic
-continuously compounded risk-free rate, deterministic recovery, and immediate
-default-time settlement. It omits calendar schedules, day counts, business-day
-rules, payment delays, term-structure calibration, auctions, deliverables,
-credit-event legal definitions, counterparty risk, collateral, funding,
-restructuring, and transaction costs. All materially changed content remains
-\`draft\` pending independent human review.
+This is an exact valuation only inside its deliberately simplified model. The
+premium and protection legs are derived for a general, possibly time-varying
+risk-neutral hazard rate and a general dated discount curve; the worked
+closed forms, numeric examples, explorer, and assessment all use this
+lesson's narrower special case of one constant risk-neutral hazard and one
+deterministic continuously compounded risk-free rate, with deterministic
+recovery and immediate default-time settlement. The extinguishing swap is
+this lesson's own construction, generalizing the premium leg's schedule
+rather than a named market instrument. The model omits calendar schedules,
+day counts, business-day rules, payment delays, term-structure calibration,
+auctions, deliverables, credit-event legal definitions, counterparty risk,
+collateral, funding, restructuring, and transaction costs. All materially
+changed content remains \`draft\` pending independent human review.

@@ -58,7 +58,8 @@ test('clicking an auto-numbered equation number deep-links and actually highligh
 }) => {
   await page.goto(keyedLesson);
   const equation = page.locator('#eq-4-2');
-  // The number is transparent until the row is hovered or focused.
+  // The number is quiet (partially transparent) at rest and goes fully
+  // opaque on hover; hover here so the reveal state matches a real click.
   await equation.hover();
   await equation.locator('a.keyed-equation__number').click();
 

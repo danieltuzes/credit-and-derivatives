@@ -1,13 +1,22 @@
 /*
- * Explico 0.3.0 makes equation numbers partially opaque at rest. A partially
- * blended text color fails contrast checks, so keep the number fully hidden
- * until the same discovery states used by the engine reveal it. Once visible,
- * use the high-contrast accent color without an opacity transition.
+ * Explico 0.3.0 keeps equation numbers partially visible at rest so a reader
+ * scanning the page can always find them. Explico's default pairs a 0.45
+ * opacity with `--sl-color-text-accent`, and that blended color fails the
+ * automated contrast check. Keep the always-visible behaviour but make it
+ * contrast-safe: the high-contrast accent color at an opacity that still
+ * clears 4.5:1 in both themes (~5.8:1 light, ~7.6:1 dark). The engine's
+ * discovery states below still push it to full opacity.
  */
 .sl-markdown-content a.keyed-equation__number {
   color: var(--sl-color-accent-high);
-  opacity: 0;
-  transition: none;
+  opacity: 0.72;
+  transition: opacity 120ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl-markdown-content a.keyed-equation__number {
+    transition: none;
+  }
 }
 
 @media (hover: none) {

@@ -177,10 +177,10 @@
     },
     {
       "code": "numerals-tagged",
-      "count": 73,
+      "count": 117,
       "file": "content/docs/cds/premium-protection-legs-and-par-spread.mdx",
       "lessonId": "cds.premium-protection-legs-and-par-spread",
-      "message": "cds.premium-protection-legs-and-par-spread: 73 numeral(s) in $…$ / result tables (69 in math, 4 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "cds.premium-protection-legs-and-par-spread: 117 numeral(s) in $…$ / result tables (113 in math, 4 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {
