@@ -285,6 +285,8 @@ describe('manifest equation identity (D7)', () => {
       'cds-fixed-coupon-premium',
       'cds-hazard-to-msq',
       'cds-msq-calibration',
+      'cds-msq-par-equality',
+      'cds-par-spread-from-hazard',
       'cds-upfront-balance',
       'cds-upfront-from-msq',
       'cds-upfront-to-hazard',

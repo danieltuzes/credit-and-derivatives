@@ -14,6 +14,7 @@ sources:
 seeAlso:
   - cds-premium-annuity
   - cds-protection-leg-present-value
+  - cds-market-standard-quote
 alignment:
   kind: competency
   introducedByCompetency: cds.par-spread.calculate
@@ -24,9 +25,12 @@ aiAssisted: true
 
 The par spread $s^{\star}$ is the contractual spread that makes the positive
 premium-leg and protection-leg magnitudes equal at valuation time in the stated
-toy model. It is calculated from the
+model. It is calculated from the
 [[cds-protection-leg-present-value]] magnitude and the
 [[cds-premium-annuity]] under the same assumptions.
 
-It is not a standard-coupon/upfront quote and does not include calibration or
-transaction-specific adjustments.
+If the curve is supplied, par spread is an output. If a quoted spread is
+supplied to a converter, the same equality instead calibrates the curve. Within
+one internally consistent converter model, the resulting market-standard quote
+equals this par spread. It is distinct from the standard coupon that determines
+the traded contract's running cash flows.

@@ -97,17 +97,23 @@ for (const { path, labels } of lessons) {
   }) => {
     await page.goto(path);
 
-    const examples = page.locator('compact-examples');
-    const disclosure = examples.locator(':scope > details');
-    await expect(disclosure).not.toHaveAttribute('open', '');
-    await expect(
-      examples.locator('[data-compact-example]').first(),
-    ).toBeHidden();
+    const exampleGroups = page.locator('compact-examples');
+    for (const disclosure of await exampleGroups
+      .locator(':scope > details')
+      .all()) {
+      await expect(disclosure).not.toHaveAttribute('open', '');
+    }
+    for (const panel of await exampleGroups
+      .locator('[data-compact-example]')
+      .all()) {
+      await expect(panel).toBeHidden();
+    }
 
-    const notationAudit = await examples.evaluate((root) => {
-      const unmarkedVariables = Array.from(
-        root.querySelectorAll<HTMLElement>('.katex-html .mord'),
-      )
+    const notationAudit = await exampleGroups.evaluateAll((roots) => {
+      const unmarkedVariables = roots
+        .flatMap((root) =>
+          Array.from(root.querySelectorAll<HTMLElement>('.katex-html .mord')),
+        )
         .filter((element) => {
           if (element.childElementCount > 0) return false;
           if (element.closest('[data-notation-key]')) return false;
@@ -123,8 +129,11 @@ for (const { path, labels } of lessons) {
         .map((element) => element.textContent?.trim());
 
       return {
-        hasLiteralTerm: root.innerHTML.includes('[['),
-        katexErrors: root.querySelectorAll('.katex-error').length,
+        hasLiteralTerm: roots.some((root) => root.innerHTML.includes('[[')),
+        katexErrors: roots.reduce(
+          (count, root) => count + root.querySelectorAll('.katex-error').length,
+          0,
+        ),
         unmarkedVariables,
       };
     });
@@ -134,6 +143,9 @@ for (const { path, labels } of lessons) {
       unmarkedVariables: [],
     });
 
+    const examples = exampleGroups.filter({ hasText: labels[0] });
+    await expect(examples).toHaveCount(1);
+    const disclosure = examples.locator(':scope > details');
     await examples.locator('summary').click();
     await expect(disclosure).toHaveAttribute('open', '');
 
