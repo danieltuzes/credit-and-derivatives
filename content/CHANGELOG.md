@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-17
+
+- Added a section distinguishing which quantities are supplied versus solved
+  in the CDS quote/upfront conversion, and a section proving the
+  market-standard quote equals the par spread within one internally
+  consistent model.
+- Clarified assumptions and introduced general hazard-rate notation in the
+  premium protection legs and par spread lesson; added a new section on
+  extinguishing swaps, covering their construction and valuation.
+
 ## [0.2.0] - 2026-09-06
 
 - Upgrade the course engine to explico 0.3.0 and surface the reader-facing
