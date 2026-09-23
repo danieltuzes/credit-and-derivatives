@@ -19,7 +19,7 @@ export const courseConfig = {
     'Interactive foundations for bonds, credit risk, CDS, CDX, and their options.',
 
   about: {
-    version: '0.3.0',
+    version: '0.4.0',
     authors: [{ name: 'danieltuzes', contact: 'danieltuzes@gmail.com' }],
     disclaimer:
       'Educational material only. No investment, legal, tax, accounting, valuation, risk-management, or trading advice.',

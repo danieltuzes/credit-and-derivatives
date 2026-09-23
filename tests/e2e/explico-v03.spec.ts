@@ -8,7 +8,7 @@ test('the v0.3 About panel exposes course and engine versions', async ({
   const panel = page.getByRole('banner').locator('details[data-about-panel]');
   await panel.locator('summary').click();
   await expect(panel).toHaveAttribute('open', '');
-  await expect(panel.locator('dd').nth(0)).toHaveText('0.3.0 · 2026-09-17');
+  await expect(panel.locator('dd').nth(0)).toHaveText('0.4.0 · 2026-09-23');
   await expect(panel.locator('dd').nth(1)).toHaveText('explico 0.3.0');
   await expect(
     panel.getByRole('link', { name: 'What changed' }),

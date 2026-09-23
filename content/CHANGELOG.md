@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-09-23
+
 - Added a lesson on the credit curve and market observables: what the CDS
   market shows versus what a converter assumes or solves, why one traded
   upfront per tenor identifies the pricing hazard rate, the marked curve
