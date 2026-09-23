@@ -1,0 +1,43 @@
+{
+  "id": "cds-equivalent-notional-check",
+  "title": "Equivalent notional and quote risk check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "cds-quote-sensitivity-direct",
+      "type": "numeric",
+      "competencyId": "cds.quote-sensitivity.calculate",
+      "evidenceKind": "direct",
+      "prompt": "A bought-protection position is worth USD 357,482.24 at the liquid five-year quote of 160 basis points and USD 363,240.36 after the quote is bumped to 161 basis points with the flat hazard rate re-solved. Calculate the position's risky DV01 in USD per basis point.",
+      "answer": { "value": 5758.12, "tolerance": 0.01 },
+      "explanation": "The bump-and-reprice sensitivity is the value after the bump minus the value before it: 363,240.36 - 357,482.24 = USD 5,758.12 per basis point. It is positive because bought protection gains when the quote rises."
+    },
+    {
+      "id": "cds-quote-sensitivity-transfer",
+      "type": "numeric",
+      "competencyId": "cds.quote-sensitivity.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A trader has sold protection on a three-year contract. Valued for a protection buyer, the contract is worth USD -1,899,072.40 at the liquid quote and USD -1,893,025.81 after a one basis point bump with the hazard rate re-solved. Calculate the seller's risky DV01 in USD per basis point, using the sign convention that a positive number is a gain for the seller.",
+      "answer": { "value": -6046.59, "tolerance": 0.01 },
+      "explanation": "The seller's value is minus the buyer's value: USD 1,899,072.40 before and USD 1,893,025.81 after the bump. The seller's sensitivity is 1,893,025.81 - 1,899,072.40 = USD -6,046.59 per basis point; a seller loses when the quote rises."
+    },
+    {
+      "id": "cds-equivalent-notional-direct",
+      "type": "numeric",
+      "competencyId": "cds.equivalent-notional.calculate",
+      "evidenceKind": "direct",
+      "prompt": "A bought-protection position has risky DV01 of USD 5,758.117764 per basis point. One unit of notional of bought protection in the liquid five-year contract has risky DV01 of 0.000434070474 per basis point. Calculate the magnitude in USD of the liquid-tenor equivalent notional that offsets the position.",
+      "answer": { "value": 13265398.4, "tolerance": 1 },
+      "explanation": "N_eq = -5,758.117764 / 0.000434070474 = -USD 13,265,398.4. The negative sign means the hedge sells protection in the five-year contract; its magnitude is USD 13,265,398.4."
+    },
+    {
+      "id": "cds-equivalent-notional-transfer",
+      "type": "numeric",
+      "competencyId": "cds.equivalent-notional.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A sold-protection position with notional USD 20,000,000 has risky DV01 of USD -6,046.591823 per basis point for the seller. One unit of notional of bought protection in the liquid five-year contract has risky DV01 of 0.000434070474 per basis point. Calculate the equivalent ratio of the liquid-tenor hedge to the position notional.",
+      "answer": { "value": 0.6965, "tolerance": 0.0001 },
+      "explanation": "N_eq = -(-6,046.591823) / 0.000434070474 = +USD 13,929,977.2, so the hedge buys protection in the five-year contract. The equivalent ratio is 13,929,977.2 / 20,000,000 = 0.6965."
+    }
+  ]
+}

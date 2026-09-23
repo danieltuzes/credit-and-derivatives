@@ -16,6 +16,7 @@
     "foundations.present-value",
     "foundations.no-arbitrage-and-replication",
     "foundations.risk-neutral-pricing",
+    "rates.discount-curve-and-forward-discounting",
     "bonds.fixed-rate-contract-and-cash-flows",
     "bonds.price-from-discount-factors",
     "bonds.yield-to-maturity",
@@ -23,7 +24,9 @@
     "credit.default-hazard-and-survival",
     "credit.recovery-and-risky-present-value",
     "cds.premium-protection-legs-and-par-spread",
-    "cds.market-standard-quote-and-upfront"
+    "cds.market-standard-quote-and-upfront",
+    "cds.credit-curve-and-market-observables",
+    "cds.equivalent-notional-and-quote-risk"
   ],
   "editorialStatus": "draft"
 }

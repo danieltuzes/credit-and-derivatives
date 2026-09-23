@@ -27,6 +27,8 @@ const lessonPaths = [
   '/credit/recovery-and-risky-present-value/',
   '/cds/premium-protection-legs-and-par-spread/',
   '/cds/market-standard-quote-and-upfront/',
+  '/cds/credit-curve-and-market-observables/',
+  '/cds/equivalent-notional-and-quote-risk/',
 ] as const;
 
 for (const path of lessonPaths) {

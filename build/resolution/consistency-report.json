@@ -4,10 +4,10 @@
     "convention-single-definition": 0,
     "gloss-name-shape": 0,
     "gloss-wants-promoting": 0,
-    "glyph-unique-in-corpus": 15,
+    "glyph-unique-in-corpus": 17,
     "notation-source-locator": 0,
     "notation-units": 0,
-    "numerals-tagged": 25,
+    "numerals-tagged": 27,
     "operator-explained": 0,
     "units-vocab": 0,
     "weak-local": 10
@@ -64,7 +64,13 @@
     {
       "code": "glyph-unique-in-corpus",
       "glyph": "k",
-      "message": "glyph \"k\" resolves to 3 meanings across the corpus: bond-payment-index (bonds.fixed-rate-contract-and-cash-flows, bonds.price-from-discount-factors, bonds.price-yield-relationship, bonds.yield-to-maturity); payment-index (foundations.cash-flow-timelines); present-value-payment-index (foundations.present-value)",
+      "message": "glyph \"k\" resolves to 4 meanings across the corpus: bond-payment-index (bonds.fixed-rate-contract-and-cash-flows, bonds.price-from-discount-factors, bonds.price-yield-relationship, bonds.yield-to-maturity); cds-tenor-index (cds.credit-curve-and-market-observables); payment-index (foundations.cash-flow-timelines); present-value-payment-index (foundations.present-value)",
+      "severity": "warning"
+    },
+    {
+      "code": "glyph-unique-in-corpus",
+      "glyph": "K",
+      "message": "glyph \"K\" resolves to 2 meanings across the corpus: cds-tenor-count (cds.credit-curve-and-market-observables); option-strike-price (bond-options.european-bond-options, bond-options.issuer-default-knockout, derivatives.european-option-contracts-and-payoffs, derivatives.one-period-binomial-option-valuation, derivatives.put-call-parity)",
       "severity": "warning"
     },
     {
@@ -82,7 +88,13 @@
     {
       "code": "glyph-unique-in-corpus",
       "glyph": "N",
-      "message": "glyph \"N\" resolves to 3 meanings across the corpus: cds-notional (cds.market-standard-quote-and-upfront, cds.premium-protection-legs-and-par-spread); forward-contract-quantity (derivatives.forward-contracts-and-value); number-of-compounding-periods (foundations.rates-compounding-and-basis-points)",
+      "message": "glyph \"N\" resolves to 3 meanings across the corpus: cds-notional (cds.credit-curve-and-market-observables, cds.equivalent-notional-and-quote-risk, cds.market-standard-quote-and-upfront, cds.premium-protection-legs-and-par-spread); forward-contract-quantity (derivatives.forward-contracts-and-value); number-of-compounding-periods (foundations.rates-compounding-and-basis-points)",
+      "severity": "warning"
+    },
+    {
+      "code": "glyph-unique-in-corpus",
+      "glyph": "q",
+      "message": "glyph \"q\" resolves to 2 meanings across the corpus: binomial-risk-neutral-up-weight (derivatives.one-period-binomial-option-valuation); cds-liquid-quotation (cds.equivalent-notional-and-quote-risk)",
       "severity": "warning"
     },
     {
@@ -165,6 +177,22 @@
       "file": "content/docs/bonds/yield-to-maturity.mdx",
       "lessonId": "bonds.yield-to-maturity",
       "message": "bonds.yield-to-maturity: 25 numeral(s) in $…$ / result tables (25 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
+      "severity": "warning"
+    },
+    {
+      "code": "numerals-tagged",
+      "count": 89,
+      "file": "content/docs/cds/credit-curve-and-market-observables.mdx",
+      "lessonId": "cds.credit-curve-and-market-observables",
+      "message": "cds.credit-curve-and-market-observables: 89 numeral(s) in $…$ / result tables (41 in math, 48 in tables) are not tagged to a src/domain/ call or a source locator",
+      "severity": "warning"
+    },
+    {
+      "code": "numerals-tagged",
+      "count": 56,
+      "file": "content/docs/cds/equivalent-notional-and-quote-risk.mdx",
+      "lessonId": "cds.equivalent-notional-and-quote-risk",
+      "message": "cds.equivalent-notional-and-quote-risk: 56 numeral(s) in $…$ / result tables (56 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {

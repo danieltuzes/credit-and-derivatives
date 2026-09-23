@@ -1,0 +1,23 @@
+{
+  "id": "cds.credit-curve.interpret",
+  "title": "Interpret a credit curve",
+  "domain": "cds",
+  "facet": "interpretation",
+  "outcome": "Interpret a credit curve as the term structure of standard-contract marks at quoted tenors together with the survival curve fitted to them, and distinguish a tenor-by-tenor change of quotation from a fit of one hazard term structure.",
+  "prerequisites": [
+    "cds.market-observables.interpret",
+    "credit.survival-probability.interpret",
+    "credit.hazard-rate.interpret",
+    "rates.discount-curve.interpret"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Converting each tenor's quote to an upfront with the standard converter produces one consistent survival curve.",
+    "A par spread read from a fitted term structure must equal the tenor's market-standard quote."
+  ],
+  "editorialStatus": "draft"
+}

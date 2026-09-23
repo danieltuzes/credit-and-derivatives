@@ -1,0 +1,22 @@
+{
+  "id": "cds.quote-sensitivity.calculate",
+  "title": "Calculate a CDS position's quote sensitivity",
+  "domain": "cds",
+  "facet": "calculation",
+  "outcome": "Calculate a CDS position's signed value change for a one-basis-point rise in the liquid tenor's market-standard quote by re-solving the flat hazard rate and revaluing the position for its own side.",
+  "prerequisites": [
+    "cds.upfront-amount.calculate",
+    "cds.quote-upfront-conversion.calculate",
+    "cds.market-standard-quote.interpret"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "A protection seller's value rises when the market quote rises.",
+    "The premium annuity can be held fixed while the quote moves, because only the protection leg depends on the hazard rate."
+  ],
+  "editorialStatus": "draft"
+}

@@ -2,6 +2,21 @@
 
 ## [Unreleased]
 
+- Added a lesson on the credit curve and market observables: what the CDS
+  market shows versus what a converter assumes or solves, why one traded
+  upfront per tenor identifies the pricing hazard rate, the marked curve
+  versus the fitted piecewise-constant hazard curve, curve transformation
+  versus curve fitting, and a jargon note.
+- Added a lesson on the liquid-tenor equivalent notional: bump-and-reprice
+  risky DV01, the equivalent notional and ratio that offset a position's
+  quote risk, and its invariance to quoting in spread, upfront, or par
+  spread terms.
+- Added the piecewise-constant hazard curve fit and the liquid-tenor
+  equivalent domain calculations with reference, invariant, and
+  invalid-input tests.
+- Added the discount curve lesson to the credit products track as a
+  prerequisite of the credit curve lesson.
+
 ## [0.3.0] - 2026-09-17
 
 - Added a section distinguishing which quantities are supplied versus solved

@@ -1,0 +1,23 @@
+{
+  "id": "cds.market-observables.interpret",
+  "title": "Classify CDS market observables",
+  "domain": "cds",
+  "facet": "interpretation",
+  "outcome": "Classify each quantity in a standard CDS valuation as market-observed, contractual, conventional, or model-solved, and explain why the traded upfront alone identifies the pricing-model hazard rate.",
+  "prerequisites": [
+    "cds.market-standard-quote.interpret",
+    "cds.upfront-amount.calculate",
+    "finance.risk-neutral-measure.interpret",
+    "rates.discount-curve.interpret"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The recovery rate used by a standard converter is observed in the CDS quote.",
+    "The hazard rate is a quoted market input rather than a quantity solved from a traded price."
+  ],
+  "editorialStatus": "draft"
+}

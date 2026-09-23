@@ -1,0 +1,23 @@
+{
+  "id": "cds.credit-curve-fit.calculate",
+  "title": "Calculate a fitted credit curve's survival and repricing",
+  "domain": "cds",
+  "facet": "calculation",
+  "outcome": "Calculate the survival probability implied by fitted piecewise-constant hazard segments and verify that a tenor's standard contract reprices to its mark under the fitted curve.",
+  "prerequisites": [
+    "cds.credit-curve.interpret",
+    "cds.quote-upfront-conversion.calculate",
+    "cds.par-spread.calculate",
+    "credit.survival-from-constant-hazard.calculate"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "Survival at a later tenor uses only the hazard rate of the segment ending there.",
+    "A fitted segment hazard rate may be negative when the later mark is cheaper than the earlier one."
+  ],
+  "editorialStatus": "draft"
+}

@@ -1,0 +1,117 @@
+{
+  "id": "cds-credit-curve-observables-check",
+  "title": "Credit curve and market observables check",
+  "editorialStatus": "draft",
+  "items": [
+    {
+      "id": "cds-observables-direct",
+      "type": "single-choice",
+      "competencyId": "cds.market-observables.interpret",
+      "evidenceKind": "direct",
+      "prompt": "In the standard conversion of a five-year contract's quote into an upfront, which quantity is solved from the traded price rather than observed in the market or assumed by convention?",
+      "options": [
+        {
+          "id": "observables-hazard-solved",
+          "label": "The flat risk-neutral hazard rate"
+        },
+        {
+          "id": "observables-coupon-solved",
+          "label": "The fixed running coupon"
+        },
+        {
+          "id": "observables-recovery-solved",
+          "label": "The recovery rate"
+        }
+      ],
+      "correctOptionId": "observables-hazard-solved",
+      "explanation": "The coupon is contractual and the recovery rate is a convention assumed by the converter. The hazard rate is the unknown that the one traded price identifies through the equality of expected discounted leg values."
+    },
+    {
+      "id": "cds-observables-transfer",
+      "type": "single-choice",
+      "competencyId": "cds.market-observables.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "A dealer shows five-year protection at 160 basis points bid and 165 basis points offer, and the converter uses a 40% recovery rate. Which statement is correct?",
+      "options": [
+        {
+          "id": "transfer-recovery-convention",
+          "label": "The 40% recovery is a convention assumed by the converter; the quote does not observe it"
+        },
+        {
+          "id": "transfer-recovery-observed",
+          "label": "The quote reveals that the market expects 40% recovery"
+        },
+        {
+          "id": "transfer-hazard-quoted",
+          "label": "The dealer is quoting the hazard rate directly"
+        }
+      ],
+      "correctOptionId": "transfer-recovery-convention",
+      "explanation": "One traded price cannot identify both recovery and default timing, so the converter assumes recovery and solves the hazard rate. The bid and offer are the observed market levels; the recovery is not among them."
+    },
+    {
+      "id": "cds-curve-interpret-direct",
+      "type": "single-choice",
+      "competencyId": "cds.credit-curve.interpret",
+      "evidenceKind": "direct",
+      "prompt": "An MSQ-marked curve lists 80, 120, and 160 basis points at one, three, and five years. Converting each mark to an upfront with the standard converter, one tenor at a time, is best described as which of the following?",
+      "options": [
+        {
+          "id": "curve-transformation",
+          "label": "A change of quotation using a separate flat hazard rate per tenor; it does not build one term structure"
+        },
+        {
+          "id": "curve-fit",
+          "label": "A fit of one piecewise-constant hazard curve that reprices all three tenors together"
+        },
+        {
+          "id": "curve-observation",
+          "label": "A direct observation of the survival probabilities at one, three, and five years"
+        }
+      ],
+      "correctOptionId": "curve-transformation",
+      "explanation": "The tenor-by-tenor conversion is a curve transformation. Each tenor's flat hazard rate answers a separate question, so the three flat rates are not one survival curve; fitting the curve is a separate step that solves segment hazards in maturity order."
+    },
+    {
+      "id": "cds-curve-interpret-transfer",
+      "type": "single-choice",
+      "competencyId": "cds.credit-curve.interpret",
+      "evidenceKind": "transfer",
+      "prompt": "Under a fitted piecewise-constant curve, the three-year contract's par spread is 119.94 basis points while its MSQ mark is 120 basis points, and the fit reprices the three-year upfront exactly. Why can both numbers be right?",
+      "options": [
+        {
+          "id": "transfer-two-curves",
+          "label": "They are par spreads under two different survival curves that reprice the same traded upfront with different premium annuities"
+        },
+        {
+          "id": "transfer-fit-failed",
+          "label": "The fit failed to reprice the three-year tenor"
+        },
+        {
+          "id": "transfer-arbitrage",
+          "label": "The difference is an arbitrage between the two quotations"
+        }
+      ],
+      "correctOptionId": "transfer-two-curves",
+      "explanation": "The MSQ mark is the par spread under the converter's single flat hazard for that tenor; the fitted par spread uses the term structure's premium annuity. Both reproduce the same traded upfront, and the hypothetical zero-upfront contract is not itself traded, so there is no arbitrage."
+    },
+    {
+      "id": "cds-curve-fit-direct",
+      "type": "numeric",
+      "competencyId": "cds.credit-curve-fit.calculate",
+      "evidenceKind": "direct",
+      "prompt": "Under the fitted curve, the five-year tenor has protection factor 0.071696769 per unit notional and premium annuity 4.500220799 model-years, and its standard coupon is 100 basis points per year. Calculate the upfront fraction of notional, paid by the protection buyer, that the fit reproduces.",
+      "answer": { "value": 0.026694561, "tolerance": 0.000001 },
+      "explanation": "The fit condition per unit notional is protection factor minus coupon times premium annuity: 0.071696769 - 0.010 × 4.500220799 = 0.026694561, which equals the five-year mark."
+    },
+    {
+      "id": "cds-curve-fit-transfer",
+      "type": "numeric",
+      "competencyId": "cds.credit-curve-fit.calculate",
+      "evidenceKind": "transfer",
+      "prompt": "A fitted curve has a segment hazard rate of 0.02 per year on (0, 2] and 0.05 per year on (2, 5] model-years. Calculate the survival probability at four years.",
+      "answer": { "value": 0.869358235, "tolerance": 0.000001 },
+      "explanation": "Survival compounds segment by segment: exp(-0.02 × 2) × exp(-0.05 × 2) = exp(-0.14) = 0.869358235. Using only the second segment's rate over four years would be wrong."
+    }
+  ]
+}

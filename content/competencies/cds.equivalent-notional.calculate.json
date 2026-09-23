@@ -1,0 +1,21 @@
+{
+  "id": "cds.equivalent-notional.calculate",
+  "title": "Calculate a liquid-tenor equivalent notional",
+  "domain": "cds",
+  "facet": "calculation",
+  "outcome": "Calculate the notional and side of the most liquid standard CDS that offsets a position's sensitivity to the liquid tenor's quote, and express it as an equivalent ratio to the position notional.",
+  "prerequisites": [
+    "cds.quote-sensitivity.calculate",
+    "cds.cash-flow-legs.interpret"
+  ],
+  "evidence": {
+    "minimumIndependentItems": 2,
+    "requiresTransfer": true,
+    "requiresUnassistedPass": true
+  },
+  "misconceptions": [
+    "The equivalent notional equals the position notional whenever the reference entity is the same.",
+    "An equivalent-ratio hedge also offsets the loss on an immediate default."
+  ],
+  "editorialStatus": "draft"
+}

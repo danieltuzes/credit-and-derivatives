@@ -1,0 +1,803 @@
+{
+  "file": "content/docs/cds/equivalent-notional-and-quote-risk.mdx",
+  "lesson": "cds.equivalent-notional-and-quote-risk",
+  "localKeys": [
+    "cds-equivalent-notional",
+    "cds-equivalent-ratio",
+    "cds-liquid-quotation",
+    "cds-liquid-tenor-maturity",
+    "cds-liquid-unit-quote-sensitivity",
+    "cds-liquid-unit-value",
+    "cds-position-notional",
+    "cds-position-quote-sensitivity",
+    "cds-position-side",
+    "cds-position-value",
+    "cds-quote-bump"
+  ],
+  "references": [
+    {
+      "column": 1,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "prose",
+      "line": 22,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 14,
+      "definitionId": "shared:cds-market-standard-quote",
+      "key": "cds-market-standard-quote",
+      "kind": "prose",
+      "line": 23,
+      "scope": "shared",
+      "symbol": "s_{\\mathrm{MSQ}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-tenor-maturity",
+      "key": "cds-liquid-tenor-maturity",
+      "kind": "prose",
+      "line": 27,
+      "scope": "local",
+      "symbol": "T_L"
+    },
+    {
+      "column": 28,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-notional",
+      "key": "cds-position-notional",
+      "kind": "prose",
+      "line": 32,
+      "scope": "local",
+      "symbol": "N_{\\mathrm{pos}}"
+    },
+    {
+      "column": 38,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-side",
+      "key": "cds-position-side",
+      "kind": "prose",
+      "line": 34,
+      "scope": "local",
+      "symbol": "\\sigma"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-value",
+      "key": "cds-position-value",
+      "kind": "prose",
+      "line": 36,
+      "scope": "local",
+      "symbol": "V^{\\mathrm{pos}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-value",
+      "key": "cds-position-value",
+      "kind": "math",
+      "line": 39,
+      "scope": "local",
+      "symbol": "V^{\\mathrm{pos}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-side",
+      "key": "cds-position-side",
+      "kind": "math",
+      "line": 40,
+      "scope": "local",
+      "symbol": "\\sigma"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:cds-protection-leg-present-value",
+      "key": "cds-protection-leg-present-value",
+      "kind": "math",
+      "line": 42,
+      "scope": "shared",
+      "symbol": "PV_0^{\\mathrm{prot}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:cds-premium-leg-present-value",
+      "key": "cds-premium-leg-present-value",
+      "kind": "math",
+      "line": 43,
+      "scope": "shared",
+      "symbol": "PV_0^{\\mathrm{prem}}"
+    },
+    {
+      "column": 43,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-value",
+      "key": "cds-liquid-unit-value",
+      "kind": "prose",
+      "line": 54,
+      "scope": "local",
+      "symbol": "v_L"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-value",
+      "key": "cds-liquid-unit-value",
+      "kind": "math",
+      "line": 58,
+      "scope": "local",
+      "symbol": "v_L"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:cds-protection-leg-present-value",
+      "key": "cds-protection-leg-present-value",
+      "kind": "math",
+      "line": 60,
+      "scope": "shared",
+      "symbol": "PV_0^{\\mathrm{prot}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-tenor-maturity",
+      "key": "cds-liquid-tenor-maturity",
+      "kind": "math",
+      "line": 61,
+      "scope": "local",
+      "symbol": "T_L"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:cds-notional",
+      "key": "cds-notional",
+      "kind": "math",
+      "line": 63,
+      "scope": "shared",
+      "symbol": "N"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:cds-standard-coupon",
+      "key": "cds-standard-coupon",
+      "kind": "math",
+      "line": 65,
+      "scope": "shared",
+      "symbol": "c_{\\mathrm{std}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:cds-premium-annuity",
+      "key": "cds-premium-annuity",
+      "kind": "math",
+      "line": 66,
+      "scope": "shared",
+      "symbol": "A_0^{\\mathrm{prem}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-tenor-maturity",
+      "key": "cds-liquid-tenor-maturity",
+      "kind": "math",
+      "line": 67,
+      "scope": "local",
+      "symbol": "T_L"
+    },
+    {
+      "column": 47,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-quotation",
+      "key": "cds-liquid-quotation",
+      "kind": "prose",
+      "line": 76,
+      "scope": "local",
+      "symbol": "q"
+    },
+    {
+      "column": 54,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-quote-bump",
+      "key": "cds-quote-bump",
+      "kind": "prose",
+      "line": 91,
+      "scope": "local",
+      "symbol": "h"
+    },
+    {
+      "column": 26,
+      "definitionId": "shared:basis-point",
+      "key": "basis-point",
+      "kind": "prose",
+      "line": 92,
+      "scope": "shared",
+      "symbol": "1\\,\\mathrm{bp}"
+    },
+    {
+      "column": 11,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-quote-sensitivity",
+      "key": "cds-position-quote-sensitivity",
+      "kind": "prose",
+      "line": 95,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{\\mathrm{pos}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-quote-sensitivity",
+      "key": "cds-position-quote-sensitivity",
+      "kind": "math",
+      "line": 98,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{\\mathrm{pos}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-value",
+      "key": "cds-position-value",
+      "kind": "math",
+      "line": 99,
+      "scope": "local",
+      "symbol": "V^{\\mathrm{pos}}"
+    },
+    {
+      "column": 9,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "math",
+      "line": 100,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 40,
+      "definitionId": "shared:cds-market-standard-quote",
+      "key": "cds-market-standard-quote",
+      "kind": "math",
+      "line": 100,
+      "scope": "shared",
+      "symbol": "s_{\\mathrm{MSQ}}"
+    },
+    {
+      "column": 94,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-quote-bump",
+      "key": "cds-quote-bump",
+      "kind": "math",
+      "line": 100,
+      "scope": "local",
+      "symbol": "h"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-value",
+      "key": "cds-position-value",
+      "kind": "math",
+      "line": 101,
+      "scope": "local",
+      "symbol": "V^{\\mathrm{pos}}"
+    },
+    {
+      "column": 9,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "math",
+      "line": 102,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 40,
+      "definitionId": "shared:cds-market-standard-quote",
+      "key": "cds-market-standard-quote",
+      "kind": "math",
+      "line": 102,
+      "scope": "shared",
+      "symbol": "s_{\\mathrm{MSQ}}"
+    },
+    {
+      "column": 15,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-quote-sensitivity",
+      "key": "cds-liquid-unit-quote-sensitivity",
+      "kind": "prose",
+      "line": 106,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{L}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-quote-sensitivity",
+      "key": "cds-liquid-unit-quote-sensitivity",
+      "kind": "math",
+      "line": 110,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{L}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-value",
+      "key": "cds-liquid-unit-value",
+      "kind": "math",
+      "line": 111,
+      "scope": "local",
+      "symbol": "v_L"
+    },
+    {
+      "column": 9,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "math",
+      "line": 112,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 40,
+      "definitionId": "shared:cds-market-standard-quote",
+      "key": "cds-market-standard-quote",
+      "kind": "math",
+      "line": 112,
+      "scope": "shared",
+      "symbol": "s_{\\mathrm{MSQ}}"
+    },
+    {
+      "column": 94,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-quote-bump",
+      "key": "cds-quote-bump",
+      "kind": "math",
+      "line": 112,
+      "scope": "local",
+      "symbol": "h"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-value",
+      "key": "cds-liquid-unit-value",
+      "kind": "math",
+      "line": 113,
+      "scope": "local",
+      "symbol": "v_L"
+    },
+    {
+      "column": 9,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "math",
+      "line": 114,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 40,
+      "definitionId": "shared:cds-market-standard-quote",
+      "key": "cds-market-standard-quote",
+      "kind": "math",
+      "line": 114,
+      "scope": "shared",
+      "symbol": "s_{\\mathrm{MSQ}}"
+    },
+    {
+      "column": 10,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-quote-sensitivity",
+      "key": "cds-liquid-unit-quote-sensitivity",
+      "kind": "math",
+      "line": 126,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{L}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-equivalent-notional",
+      "key": "cds-equivalent-notional",
+      "kind": "prose",
+      "line": 136,
+      "scope": "local",
+      "symbol": "N_{\\mathrm{eq}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-quote-sensitivity",
+      "key": "cds-position-quote-sensitivity",
+      "kind": "math",
+      "line": 139,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{\\mathrm{pos}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-equivalent-notional",
+      "key": "cds-equivalent-notional",
+      "kind": "math",
+      "line": 140,
+      "scope": "local",
+      "symbol": "N_{\\mathrm{eq}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-quote-sensitivity",
+      "key": "cds-liquid-unit-quote-sensitivity",
+      "kind": "math",
+      "line": 141,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{L}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-equivalent-notional",
+      "key": "cds-equivalent-notional",
+      "kind": "math",
+      "line": 144,
+      "scope": "local",
+      "symbol": "N_{\\mathrm{eq}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-quote-sensitivity",
+      "key": "cds-position-quote-sensitivity",
+      "kind": "math",
+      "line": 146,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{\\mathrm{pos}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-quote-sensitivity",
+      "key": "cds-liquid-unit-quote-sensitivity",
+      "kind": "math",
+      "line": 148,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{L}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-quote-sensitivity",
+      "key": "cds-liquid-unit-quote-sensitivity",
+      "kind": "math",
+      "line": 155,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{L}"
+    },
+    {
+      "column": 7,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-equivalent-ratio",
+      "key": "cds-equivalent-ratio",
+      "kind": "prose",
+      "line": 157,
+      "scope": "local",
+      "symbol": "\\rho_{\\mathrm{eq}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-equivalent-ratio",
+      "key": "cds-equivalent-ratio",
+      "kind": "math",
+      "line": 160,
+      "scope": "local",
+      "symbol": "\\rho_{\\mathrm{eq}}"
+    },
+    {
+      "column": 7,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-equivalent-notional",
+      "key": "cds-equivalent-notional",
+      "kind": "math",
+      "line": 162,
+      "scope": "local",
+      "symbol": "N_{\\mathrm{eq}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-notional",
+      "key": "cds-position-notional",
+      "kind": "math",
+      "line": 164,
+      "scope": "local",
+      "symbol": "N_{\\mathrm{pos}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-equivalent-notional",
+      "key": "cds-equivalent-notional",
+      "kind": "math",
+      "line": 185,
+      "scope": "local",
+      "symbol": "N_{\\mathrm{eq}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-value",
+      "key": "cds-position-value",
+      "kind": "math",
+      "line": 187,
+      "scope": "local",
+      "symbol": "V^{\\mathrm{pos}}"
+    },
+    {
+      "column": 50,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-quotation",
+      "key": "cds-liquid-quotation",
+      "kind": "math",
+      "line": 187,
+      "scope": "local",
+      "symbol": "q"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-value",
+      "key": "cds-liquid-unit-value",
+      "kind": "math",
+      "line": 189,
+      "scope": "local",
+      "symbol": "v_L"
+    },
+    {
+      "column": 40,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-quotation",
+      "key": "cds-liquid-quotation",
+      "kind": "math",
+      "line": 189,
+      "scope": "local",
+      "symbol": "q"
+    },
+    {
+      "column": 8,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-value",
+      "key": "cds-position-value",
+      "kind": "math",
+      "line": 192,
+      "scope": "local",
+      "symbol": "V^{\\mathrm{pos}}"
+    },
+    {
+      "column": 56,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "math",
+      "line": 192,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 8,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "math",
+      "line": 193,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 40,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-quotation",
+      "key": "cds-liquid-quotation",
+      "kind": "math",
+      "line": 193,
+      "scope": "local",
+      "symbol": "q"
+    },
+    {
+      "column": 8,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-value",
+      "key": "cds-liquid-unit-value",
+      "kind": "math",
+      "line": 195,
+      "scope": "local",
+      "symbol": "v_L"
+    },
+    {
+      "column": 46,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "math",
+      "line": 195,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 8,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "math",
+      "line": 196,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 40,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-quotation",
+      "key": "cds-liquid-quotation",
+      "kind": "math",
+      "line": 196,
+      "scope": "local",
+      "symbol": "q"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-value",
+      "key": "cds-position-value",
+      "kind": "math",
+      "line": 199,
+      "scope": "local",
+      "symbol": "V^{\\mathrm{pos}}"
+    },
+    {
+      "column": 50,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "math",
+      "line": 199,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-value",
+      "key": "cds-liquid-unit-value",
+      "kind": "math",
+      "line": 201,
+      "scope": "local",
+      "symbol": "v_L"
+    },
+    {
+      "column": 40,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "math",
+      "line": 201,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:cds-standard-coupon",
+      "key": "cds-standard-coupon",
+      "kind": "math",
+      "line": 221,
+      "scope": "shared",
+      "symbol": "c_{\\mathrm{std}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:cds-market-standard-quote",
+      "key": "cds-market-standard-quote",
+      "kind": "math",
+      "line": 223,
+      "scope": "shared",
+      "symbol": "s_{\\mathrm{MSQ}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "math",
+      "line": 226,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-value",
+      "key": "cds-liquid-unit-value",
+      "kind": "math",
+      "line": 228,
+      "scope": "local",
+      "symbol": "v_L"
+    },
+    {
+      "column": 26,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-notional",
+      "key": "cds-position-notional",
+      "kind": "math",
+      "line": 231,
+      "scope": "local",
+      "symbol": "N_{\\mathrm{pos}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-value",
+      "key": "cds-position-value",
+      "kind": "math",
+      "line": 235,
+      "scope": "local",
+      "symbol": "V^{\\mathrm{pos}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-quote-sensitivity",
+      "key": "cds-position-quote-sensitivity",
+      "kind": "math",
+      "line": 242,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{\\mathrm{pos}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-quote-sensitivity",
+      "key": "cds-liquid-unit-quote-sensitivity",
+      "kind": "math",
+      "line": 249,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{L}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-equivalent-notional",
+      "key": "cds-equivalent-notional",
+      "kind": "math",
+      "line": 257,
+      "scope": "local",
+      "symbol": "N_{\\mathrm{eq}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-equivalent-ratio",
+      "key": "cds-equivalent-ratio",
+      "kind": "math",
+      "line": 264,
+      "scope": "local",
+      "symbol": "\\rho_{\\mathrm{eq}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-notional",
+      "key": "cds-position-notional",
+      "kind": "math",
+      "line": 275,
+      "scope": "local",
+      "symbol": "N_{\\mathrm{pos}}"
+    },
+    {
+      "column": 5,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-side",
+      "key": "cds-position-side",
+      "kind": "math",
+      "line": 276,
+      "scope": "local",
+      "symbol": "\\sigma"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-value",
+      "key": "cds-position-value",
+      "kind": "math",
+      "line": 278,
+      "scope": "local",
+      "symbol": "V^{\\mathrm{pos}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-quote-sensitivity",
+      "key": "cds-position-quote-sensitivity",
+      "kind": "math",
+      "line": 284,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{\\mathrm{pos}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-quote-sensitivity",
+      "key": "cds-liquid-unit-quote-sensitivity",
+      "kind": "math",
+      "line": 290,
+      "scope": "local",
+      "symbol": "\\mathrm{DV01}^{L}"
+    },
+    {
+      "column": 1,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-equivalent-notional",
+      "key": "cds-equivalent-notional",
+      "kind": "math",
+      "line": 293,
+      "scope": "local",
+      "symbol": "N_{\\mathrm{eq}}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-equivalent-ratio",
+      "key": "cds-equivalent-ratio",
+      "kind": "math",
+      "line": 299,
+      "scope": "local",
+      "symbol": "\\rho_{\\mathrm{eq}}"
+    },
+    {
+      "column": 4,
+      "definitionId": "shared:loss-given-default",
+      "key": "loss-given-default",
+      "kind": "math",
+      "line": 332,
+      "scope": "shared",
+      "symbol": "\\mathrm{LGD}"
+    }
+  ],
+  "schemaVersion": 6
+}
