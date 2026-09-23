@@ -6,16 +6,16 @@
   ],
   "references": [
     {
-      "column": 1,
+      "column": 31,
       "definitionId": "shared:payment-time",
       "key": "payment-time",
       "kind": "prose",
-      "line": 17,
+      "line": 16,
       "scope": "shared",
       "symbol": "t_k"
     },
     {
-      "column": 42,
+      "column": 24,
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
@@ -60,16 +60,16 @@
       "symbol": "D(0,t)"
     },
     {
-      "column": 1,
+      "column": 17,
       "definitionId": "page:foundations.discount-factors:discounted-unit-value",
       "key": "discounted-unit-value",
       "kind": "prose",
-      "line": 37,
+      "line": 35,
       "scope": "local",
       "symbol": "V_0(1_t)"
     },
     {
-      "column": 9,
+      "column": 8,
       "definitionId": "shared:nominal-annual-rate",
       "key": "nominal-annual-rate",
       "kind": "prose",

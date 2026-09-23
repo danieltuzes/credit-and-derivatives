@@ -47,7 +47,7 @@
       "symbol": "m"
     },
     {
-      "column": 2,
+      "column": 41,
       "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
       "key": "probability-event",
       "kind": "math",
@@ -61,6 +61,15 @@
       "key": "probability-event",
       "kind": "math",
       "line": 48,
+      "scope": "local",
+      "symbol": "A"
+    },
+    {
+      "column": 15,
+      "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
+      "key": "probability-event",
+      "kind": "math",
+      "line": 49,
       "scope": "local",
       "symbol": "A"
     },
@@ -92,7 +101,7 @@
       "symbol": "A"
     },
     {
-      "column": 9,
+      "column": 2,
       "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
       "key": "probability-event",
       "kind": "math",
@@ -101,7 +110,7 @@
       "symbol": "A"
     },
     {
-      "column": 9,
+      "column": 18,
       "definitionId": "page:foundations.probability-events-and-expectation:probability-event",
       "key": "probability-event",
       "kind": "math",
@@ -150,7 +159,7 @@
       "definitionId": "page:foundations.probability-events-and-expectation:probability-event-value",
       "key": "probability-event-value",
       "kind": "prose",
-      "line": 88,
+      "line": 89,
       "scope": "local",
       "symbol": "x_j"
     }

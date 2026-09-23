@@ -32,15 +32,15 @@ After this lesson, you should be able to:
 A bond is a debt claim. The issuer is the borrower; the bondholder is the
 lender who owns the claim. In the fixed-rate example used here, the issuer
 promises a sequence of coupon payments and repayment of principal at maturity.
-The price paid to acquire the bond is a separate quantity from those promised
-cash flows.
+The price paid for the bond is a different quantity from the promised cash
+flows.
 
-“Promises” matters. A contract can specify an amount without guaranteeing that
-the issuer will pay it. This first bond lesson deliberately builds the
-contractual schedule before introducing default probability or recovery later
-in the credit-risk lessons. Tuckman and Serrat define a coupon bond through its
-coupon rate, maturity, and face (par or principal) amount and show coupons plus
-principal on the cash-flow timeline[@tuckman-serrat-fixed-income; Ch. 1 §1.1, printed p. 50 and Table 1.1].
+The word “promises” is important. A contract can specify an amount without a
+guarantee that the issuer pays it. This first bond lesson constructs the
+contractual schedule. The credit-risk lessons introduce default probability and
+recovery later. Tuckman and Serrat define a coupon bond by its coupon rate, its
+maturity, and its face amount (also called the par amount or the principal
+amount). They show the coupons and the principal on the cash-flow timeline[@tuckman-serrat-fixed-income; Ch. 1 §1.1, printed p. 50 and Table 1.1].
 
 ## Read the contract before valuing it
 
@@ -54,38 +54,44 @@ measured from [[valuation-time]] $0$.
 Write the level [[coupon-payment]] as $C$ and the promised
 [[bond-cash-flow]] on date $k$ as $CF_k^{\mathrm{bond}}$.
 
-The local number of dates is
+The number of payment dates is the payment frequency multiplied by the
+maturity:
 
 $$
 n=m_{\mathrm B}T.
 $$
 
-The page uses subscripted bond-frequency notation rather than reusing the
-earlier [[compounding-frequency]] symbol, so the two concepts remain
-distinct.
+The bond payment frequency is a different concept from the
+[[compounding-frequency]] $m$ of the earlier lessons. So it has a different
+symbol, with the subscript $\mathrm B$.
 
 ## Calculate the coupon
 
-The level coupon payment is
+The level coupon payment is the annual coupon rate multiplied by the face
+value, divided by the payment frequency:
 
 $$
 C=\frac{cF}{m_{\mathrm B}}.
 $$
 
-The coupon rate is applied to face value, not the bond's eventual market price.
+The coupon rate is applied to the face value, not to the market price of the
+bond.
 
 ## Construct every promised payment
 
-For the bondholder, the promised bond cash flow is
+For the bondholder, the promised bond cash flow on date $k$ is the coupon,
+plus the face value on the final date:
 
 $$
 CF_k^{\mathrm{bond}}
 =C+\mathbf{1}_{\{k=n\}}F.
 $$
 
-The indicator contributes face value only on the final date.
+The indicator $\mathbf{1}_{\{k=n\}}$ equals one on the final date and zero on
+every other date. So the face value is paid only on the final date.
 
-For the regular schedule, each date is measured from valuation time:
+On the regular schedule, the payment time of date $k$, measured from valuation
+time, is:
 
 $$
 t_k=\frac{k}{m_{\mathrm B}},
@@ -99,8 +105,8 @@ $$
 >
   <CompactExample label="Annual coupons">
 
-A two-year bond has USD 1,000 face value, a 5% annual coupon rate, and one
-payment per year:
+A two-year bond has a face value of USD 1,000, an annual coupon rate of 5%,
+and one payment per year. The coupon is:
 
 $$
 C=\frac{0.05\times1000}{1}=\text{USD }50.
@@ -115,8 +121,8 @@ $$
 
   <CompactExample label="Semiannual coupons">
 
-An 18-month bond has USD 1,000 face value, a 4% annual coupon rate, and two
-payments per year:
+An 18-month bond has a face value of USD 1,000, an annual coupon rate of 4%,
+and two payments per year. The coupon and the number of payments are:
 
 $$
 C=\frac{0.04\times1000}{2}=\text{USD }20,
@@ -130,14 +136,15 @@ Its payments at 0.5, 1.0, and 1.5 years are USD 20, USD 20, and USD 1,020.
 
   <CompactExample label="Quarterly coupon amount">
 
-For USD 500 face value, a 4.8% annual coupon rate, and quarterly payments,
+For a face value of USD 500, an annual coupon rate of 4.8%, and quarterly
+payments, the coupon is:
 
 $$
 C=\frac{0.048\times500}{4}=\text{USD }6.
 $$
 
-Maturity determines how many such payments occur; it does not change the
-periodic coupon amount under the level-coupon assumption.
+The maturity determines the number of payments. Under the level-coupon
+assumption, the maturity does not change the coupon amount.
 
   </CompactExample>
 </CompactExamples>
@@ -152,7 +159,7 @@ explanations appear once you check.
 
 ## Model boundary and review note
 
-This page describes promised cash flows only. It does not assign a price,
+This lesson describes promised cash flows only. It does not assign a price,
 yield, payment probability, or expected recovery.
 
 The contract terms and the level-coupon schedule follow Tuckman &

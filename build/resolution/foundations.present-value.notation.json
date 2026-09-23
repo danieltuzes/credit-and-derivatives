@@ -72,11 +72,11 @@
       "symbol": "0"
     },
     {
-      "column": 27,
+      "column": 32,
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
-      "line": 57,
+      "line": 59,
       "scope": "shared",
       "symbol": "0"
     },
@@ -85,16 +85,16 @@
       "definitionId": "shared:discount-factor",
       "key": "discount-factor",
       "kind": "prose",
-      "line": 96,
+      "line": 97,
       "scope": "shared",
       "symbol": "D(0,t)"
     },
     {
-      "column": 35,
+      "column": 30,
       "definitionId": "page:foundations.present-value:discounting-lab-rate",
       "key": "discounting-lab-rate",
       "kind": "prose",
-      "line": 96,
+      "line": 97,
       "scope": "local",
       "symbol": "y"
     },
@@ -103,25 +103,25 @@
       "definitionId": "page:foundations.present-value:discounting-lab-cash-flow",
       "key": "discounting-lab-cash-flow",
       "kind": "prose",
-      "line": 97,
+      "line": 98,
       "scope": "local",
       "symbol": "C"
     },
     {
-      "column": 5,
+      "column": 29,
       "definitionId": "shared:present-value",
       "key": "present-value",
       "kind": "prose",
-      "line": 98,
+      "line": 99,
       "scope": "shared",
       "symbol": "PV_0"
     },
     {
-      "column": 26,
+      "column": 50,
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
-      "line": 98,
+      "line": 99,
       "scope": "shared",
       "symbol": "0"
     }

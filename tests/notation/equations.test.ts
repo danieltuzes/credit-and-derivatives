@@ -301,6 +301,7 @@ describe('manifest equation identity (D7)', () => {
       'cds-upfront-from-msq',
       'cds-upfront-is-expectation',
       'cds-upfront-to-hazard',
+      'constant-hazard-survival',
       'coupon-period-accrual',
       'dirty-price-bridge',
       'discount-factor-def',

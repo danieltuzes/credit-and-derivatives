@@ -3,7 +3,7 @@
   "title": "Calculate a European bond option value",
   "domain": "bond-options",
   "facet": "calculation",
-  "outcome": "Calculate a European bond option payoff at expiry and value it by backward induction on a supplied default-free bond-value lattice.",
+  "outcome": "Calculate a European bond option payoff at expiry and value it by backward induction on an input default-free bond-value lattice.",
   "prerequisites": [
     "bond-options.contract.interpret",
     "finance.backward-induction.calculate",

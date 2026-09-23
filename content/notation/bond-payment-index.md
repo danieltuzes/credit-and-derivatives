@@ -26,5 +26,5 @@ $$
 k\in\{1,\ldots,n\}.
 $$
 
-This index is bookkeeping. The matching [[payment-time]] supplies the time
-in years, and the matching [[bond-cash-flow]] supplies the promised amount.
+This index is bookkeeping. The matching [[payment-time]] gives the time
+in years, and the matching [[bond-cash-flow]] gives the promised amount.

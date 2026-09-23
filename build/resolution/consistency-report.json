@@ -141,10 +141,10 @@
     },
     {
       "code": "numerals-tagged",
-      "count": 30,
+      "count": 31,
       "file": "content/docs/bonds/fixed-rate-contract-and-cash-flows.mdx",
       "lessonId": "bonds.fixed-rate-contract-and-cash-flows",
-      "message": "bonds.fixed-rate-contract-and-cash-flows: 30 numeral(s) in $…$ / result tables (18 in math, 12 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "bonds.fixed-rate-contract-and-cash-flows: 31 numeral(s) in $…$ / result tables (19 in math, 12 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {
@@ -181,10 +181,10 @@
     },
     {
       "code": "numerals-tagged",
-      "count": 89,
+      "count": 90,
       "file": "content/docs/cds/credit-curve-and-market-observables.mdx",
       "lessonId": "cds.credit-curve-and-market-observables",
-      "message": "cds.credit-curve-and-market-observables: 89 numeral(s) in $…$ / result tables (41 in math, 48 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "cds.credit-curve-and-market-observables: 90 numeral(s) in $…$ / result tables (42 in math, 48 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {
@@ -213,10 +213,10 @@
     },
     {
       "code": "numerals-tagged",
-      "count": 61,
+      "count": 63,
       "file": "content/docs/credit/default-hazard-and-survival.mdx",
       "lessonId": "credit.default-hazard-and-survival",
-      "message": "credit.default-hazard-and-survival: 61 numeral(s) in $…$ / result tables (50 in math, 11 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "credit.default-hazard-and-survival: 63 numeral(s) in $…$ / result tables (52 in math, 11 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {
@@ -245,10 +245,10 @@
     },
     {
       "code": "numerals-tagged",
-      "count": 36,
+      "count": 40,
       "file": "content/docs/derivatives/multiperiod-lattice-valuation.mdx",
       "lessonId": "derivatives.multiperiod-lattice-valuation",
-      "message": "derivatives.multiperiod-lattice-valuation: 36 numeral(s) in $…$ / result tables (36 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "derivatives.multiperiod-lattice-valuation: 40 numeral(s) in $…$ / result tables (40 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {
@@ -261,10 +261,10 @@
     },
     {
       "code": "numerals-tagged",
-      "count": 23,
+      "count": 24,
       "file": "content/docs/derivatives/put-call-parity.mdx",
       "lessonId": "derivatives.put-call-parity",
-      "message": "derivatives.put-call-parity: 23 numeral(s) in $…$ / result tables (23 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "derivatives.put-call-parity: 24 numeral(s) in $…$ / result tables (24 in math, 0 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {
@@ -277,10 +277,10 @@
     },
     {
       "code": "numerals-tagged",
-      "count": 54,
+      "count": 55,
       "file": "content/docs/foundations/discount-factors.mdx",
       "lessonId": "foundations.discount-factors",
-      "message": "foundations.discount-factors: 54 numeral(s) in $…$ / result tables (42 in math, 12 in tables) are not tagged to a src/domain/ call or a source locator",
+      "message": "foundations.discount-factors: 55 numeral(s) in $…$ / result tables (43 in math, 12 in tables) are not tagged to a src/domain/ call or a source locator",
       "severity": "warning"
     },
     {

@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+- Rewrote lesson prose, notation-card text, competency outcomes, and assessment
+  wording to follow the explico prose rules (P1–P9): one term for each concept,
+  literal wording, one claim per sentence, relation words that match the
+  mathematics, and display equations introduced by what they give. No
+  formula, input value, result, or answer key changed.
+- Replaced the undefined word "supplied" with "input" across the course, and
+  stated in the survival lesson that the survival curve is an input there and
+  is fitted to market prices in practice (see the CDS credit-curve lesson).
+- Renamed figurative section headings; some in-page anchors changed.
+
 ## [0.4.0] - 2026-09-23
 
 - Added a lesson on the credit curve and market observables: what the CDS

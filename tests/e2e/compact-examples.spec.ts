@@ -44,7 +44,7 @@ const lessons = [
   {
     path: '/bonds/price-from-discount-factors/',
     labels: [
-      'Two supplied factors',
+      'Two discount factors',
       'Unfamiliar schedule',
       'Zero-coupon boundary',
     ],
@@ -61,7 +61,7 @@ const lessons = [
     path: '/bonds/price-yield-relationship/',
     labels: [
       'Three points form a curve',
-      'Equal shocks, unequal moves',
+      'Equal shocks, unequal price changes',
       'Hold other inputs fixed',
     ],
   },

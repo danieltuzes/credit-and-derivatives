@@ -27,5 +27,5 @@ and evaluates [[bond-price]] across different
 [[yield-to-maturity]] inputs.
 
 In the toy model the curve slopes downward for non-negative yields and is not a
-straight line. This page treats curvature qualitatively; duration and convexity
+straight line. The price-yield lesson treats curvature qualitatively; duration and convexity
 are separate later competencies.

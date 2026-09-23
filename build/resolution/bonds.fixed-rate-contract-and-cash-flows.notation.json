@@ -94,11 +94,11 @@
       "symbol": "CF_k^{\\mathrm{bond}}"
     },
     {
-      "column": 9,
+      "column": 1,
       "definitionId": "shared:compounding-frequency",
       "key": "compounding-frequency",
       "kind": "prose",
-      "line": 48,
+      "line": 49,
       "scope": "shared",
       "symbol": "m"
     }

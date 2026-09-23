@@ -10,16 +10,16 @@
   ],
   "references": [
     {
-      "column": 18,
+      "column": 6,
       "definitionId": "shared:lattice-time-index",
       "key": "lattice-time-index",
       "kind": "prose",
-      "line": 17,
+      "line": 18,
       "scope": "shared",
       "symbol": "i"
     },
     {
-      "column": 1,
+      "column": 37,
       "definitionId": "shared:lattice-state-index",
       "key": "lattice-state-index",
       "kind": "prose",
@@ -28,16 +28,16 @@
       "symbol": "j"
     },
     {
-      "column": 35,
+      "column": 16,
       "definitionId": "shared:conditional-node-survival-probability",
       "key": "conditional-node-survival-probability",
       "kind": "prose",
-      "line": 19,
+      "line": 20,
       "scope": "shared",
       "symbol": "s_{i,j}"
     },
     {
-      "column": 7,
+      "column": 11,
       "definitionId": "page:bond-options.issuer-default-knockout:surviving-bond-continuation-value",
       "key": "surviving-bond-continuation-value",
       "kind": "prose",
@@ -50,7 +50,7 @@
       "definitionId": "page:bond-options.issuer-default-knockout:surviving-bond-continuation-value",
       "key": "surviving-bond-continuation-value",
       "kind": "math",
-      "line": 25,
+      "line": 27,
       "scope": "local",
       "symbol": "H^B_{i,j}"
     },
@@ -59,30 +59,12 @@
       "definitionId": "page:bond-options.issuer-default-knockout:surviving-bond-next-cash-flow",
       "key": "surviving-bond-next-cash-flow",
       "kind": "math",
-      "line": 26,
+      "line": 28,
       "scope": "local",
       "symbol": "CF^{B}_{i+1}"
     },
     {
       "column": 5,
-      "definitionId": "page:bond-options.issuer-default-knockout:knockout-node-up-weight",
-      "key": "knockout-node-up-weight",
-      "kind": "math",
-      "line": 27,
-      "scope": "local",
-      "symbol": "q_{i,j}"
-    },
-    {
-      "column": 1,
-      "definitionId": "shared:alive-bond-value",
-      "key": "alive-bond-value",
-      "kind": "math",
-      "line": 28,
-      "scope": "shared",
-      "symbol": "B^{\\mathrm{alive}}_{i,j}"
-    },
-    {
-      "column": 2,
       "definitionId": "page:bond-options.issuer-default-knockout:knockout-node-up-weight",
       "key": "knockout-node-up-weight",
       "kind": "math",
@@ -100,11 +82,29 @@
       "symbol": "B^{\\mathrm{alive}}_{i,j}"
     },
     {
+      "column": 2,
+      "definitionId": "page:bond-options.issuer-default-knockout:knockout-node-up-weight",
+      "key": "knockout-node-up-weight",
+      "kind": "math",
+      "line": 31,
+      "scope": "local",
+      "symbol": "q_{i,j}"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:alive-bond-value",
+      "key": "alive-bond-value",
+      "kind": "math",
+      "line": 32,
+      "scope": "shared",
+      "symbol": "B^{\\mathrm{alive}}_{i,j}"
+    },
+    {
       "column": 5,
       "definitionId": "shared:alive-bond-value",
       "key": "alive-bond-value",
       "kind": "prose",
-      "line": 34,
+      "line": 36,
       "scope": "shared",
       "symbol": "B^{\\mathrm{alive}}_{i,j}"
     },
@@ -113,7 +113,7 @@
       "definitionId": "shared:alive-bond-value",
       "key": "alive-bond-value",
       "kind": "math",
-      "line": 38,
+      "line": 41,
       "scope": "shared",
       "symbol": "B^{\\mathrm{alive}}_{i,j}"
     },
@@ -122,7 +122,7 @@
       "definitionId": "page:bond-options.issuer-default-knockout:knockout-node-discount-factor",
       "key": "knockout-node-discount-factor",
       "kind": "math",
-      "line": 39,
+      "line": 42,
       "scope": "local",
       "symbol": "d_{i,j}"
     },
@@ -131,7 +131,7 @@
       "definitionId": "shared:conditional-node-survival-probability",
       "key": "conditional-node-survival-probability",
       "kind": "math",
-      "line": 41,
+      "line": 44,
       "scope": "shared",
       "symbol": "s_{i,j}"
     },
@@ -140,7 +140,7 @@
       "definitionId": "page:bond-options.issuer-default-knockout:surviving-bond-continuation-value",
       "key": "surviving-bond-continuation-value",
       "kind": "math",
-      "line": 42,
+      "line": 45,
       "scope": "local",
       "symbol": "H^B_{i,j}"
     },
@@ -149,7 +149,7 @@
       "definitionId": "shared:conditional-node-survival-probability",
       "key": "conditional-node-survival-probability",
       "kind": "math",
-      "line": 43,
+      "line": 46,
       "scope": "shared",
       "symbol": "s_{i,j}"
     },
@@ -158,7 +158,7 @@
       "definitionId": "page:bond-options.issuer-default-knockout:bond-default-recovery-cash",
       "key": "bond-default-recovery-cash",
       "kind": "math",
-      "line": 44,
+      "line": 47,
       "scope": "local",
       "symbol": "R_{i,j}^{B}"
     },
@@ -167,7 +167,7 @@
       "definitionId": "shared:knockout-bond-option-value",
       "key": "knockout-bond-option-value",
       "kind": "math",
-      "line": 57,
+      "line": 61,
       "scope": "shared",
       "symbol": "O^{\\mathrm{KO}}_{i,j}"
     },
@@ -176,7 +176,7 @@
       "definitionId": "shared:alive-bond-value",
       "key": "alive-bond-value",
       "kind": "math",
-      "line": 59,
+      "line": 63,
       "scope": "shared",
       "symbol": "B^{\\mathrm{alive}}_{i,j}"
     },
@@ -185,7 +185,7 @@
       "definitionId": "shared:option-strike-price",
       "key": "option-strike-price",
       "kind": "math",
-      "line": 60,
+      "line": 64,
       "scope": "shared",
       "symbol": "K"
     },
@@ -194,7 +194,7 @@
       "definitionId": "shared:knockout-bond-option-value",
       "key": "knockout-bond-option-value",
       "kind": "math",
-      "line": 67,
+      "line": 73,
       "scope": "shared",
       "symbol": "O^{\\mathrm{KO}}_{i,j}"
     },
@@ -203,7 +203,7 @@
       "definitionId": "page:bond-options.issuer-default-knockout:knockout-node-discount-factor",
       "key": "knockout-node-discount-factor",
       "kind": "math",
-      "line": 68,
+      "line": 74,
       "scope": "local",
       "symbol": "d_{i,j}"
     },
@@ -212,7 +212,7 @@
       "definitionId": "shared:conditional-node-survival-probability",
       "key": "conditional-node-survival-probability",
       "kind": "math",
-      "line": 69,
+      "line": 75,
       "scope": "shared",
       "symbol": "s_{i,j}"
     },
@@ -221,7 +221,7 @@
       "definitionId": "page:bond-options.issuer-default-knockout:knockout-node-up-weight",
       "key": "knockout-node-up-weight",
       "kind": "math",
-      "line": 71,
+      "line": 77,
       "scope": "local",
       "symbol": "q_{i,j}"
     },
@@ -230,7 +230,7 @@
       "definitionId": "shared:knockout-bond-option-value",
       "key": "knockout-bond-option-value",
       "kind": "math",
-      "line": 72,
+      "line": 78,
       "scope": "shared",
       "symbol": "O^{\\mathrm{KO}}_{i,j}"
     },
@@ -239,7 +239,7 @@
       "definitionId": "page:bond-options.issuer-default-knockout:knockout-node-up-weight",
       "key": "knockout-node-up-weight",
       "kind": "math",
-      "line": 73,
+      "line": 79,
       "scope": "local",
       "symbol": "q_{i,j}"
     },
@@ -248,7 +248,7 @@
       "definitionId": "shared:knockout-bond-option-value",
       "key": "knockout-bond-option-value",
       "kind": "math",
-      "line": 74,
+      "line": 80,
       "scope": "shared",
       "symbol": "O^{\\mathrm{KO}}_{i,j}"
     }

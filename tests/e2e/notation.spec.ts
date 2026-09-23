@@ -137,7 +137,10 @@ test('opens the frequency explanation across the full m_B hover target', async (
   });
 
   const frequencyMarker = page
-    .getByText('The level coupon payment is', { exact: true })
+    .getByText(
+      'The level coupon payment is the annual coupon rate multiplied by the face value, divided by the payment frequency:',
+      { exact: true },
+    )
     .locator('xpath=following-sibling::*[1]')
     .locator(
       '.katex-html [data-notation-key="bond-payment-frequency"]:visible',

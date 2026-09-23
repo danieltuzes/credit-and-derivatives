@@ -19,7 +19,7 @@
       "symbol": "CF_k"
     },
     {
-      "column": 41,
+      "column": 52,
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
@@ -32,7 +32,7 @@
       "definitionId": "page:foundations.no-arbitrage-and-replication:replication-security-index",
       "key": "replication-security-index",
       "kind": "prose",
-      "line": 32,
+      "line": 33,
       "scope": "local",
       "symbol": "i"
     },
@@ -41,7 +41,7 @@
       "definitionId": "page:foundations.no-arbitrage-and-replication:replication-security-count",
       "key": "replication-security-count",
       "kind": "prose",
-      "line": 33,
+      "line": 34,
       "scope": "local",
       "symbol": "n"
     },
@@ -50,7 +50,7 @@
       "definitionId": "page:foundations.no-arbitrage-and-replication:replication-security-quantity",
       "key": "replication-security-quantity",
       "kind": "prose",
-      "line": 34,
+      "line": 35,
       "scope": "local",
       "symbol": "a_i"
     },
@@ -59,7 +59,7 @@
       "definitionId": "page:foundations.no-arbitrage-and-replication:replication-security-value",
       "key": "replication-security-value",
       "kind": "prose",
-      "line": 35,
+      "line": 36,
       "scope": "local",
       "symbol": "V_{0,i}"
     },
@@ -68,7 +68,7 @@
       "definitionId": "page:foundations.no-arbitrage-and-replication:replicated-claim-value",
       "key": "replicated-claim-value",
       "kind": "prose",
-      "line": 36,
+      "line": 37,
       "scope": "local",
       "symbol": "V_0^{\\mathrm{claim}}"
     }

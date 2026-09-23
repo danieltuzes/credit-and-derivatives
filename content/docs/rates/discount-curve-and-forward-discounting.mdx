@@ -9,7 +9,7 @@ assumptions:
   - One deterministic valuation-time discount curve for one stated currency and collateral/funding basis
   - Exact model-year times with no calendar, day-count, curve bootstrapping, or instrument calibration
   - Strictly positive curve nodes with D(0,0) equal to one
-  - Log-linear interpolation between supplied nodes and no extrapolation beyond the final node
+  - Log-linear interpolation between input nodes and no extrapolation beyond the final node
 notation:
   local:
     - key: forward-discount-start-time
@@ -46,24 +46,28 @@ future dates.
 
 ## A curve is a dated collection, not one yield
 
-At [[valuation-time]], the earlier [[discount-factor]] $D(0,t)$ valued a
-deterministic payment at one [[payment-time]]. A discount curve supplies
-that value across many times. Every node must keep the same currency, valuation date, and
-collateral/funding basis. Mixing bases does not create one coherent curve.
+In the earlier lessons, the [[discount-factor]] $D(0,t)$ gave the value at
+[[valuation-time]] of a deterministic payment at one [[payment-time]]. A
+discount curve gives the discount factor for many payment times. Each node of
+the curve is one payment time with its discount factor. Every node must have
+the same currency, the same valuation date, and the same collateral and funding
+basis. Nodes with different bases do not form one consistent curve.
 
-This slice accepts positive nodes and sets $D(0,0)=1$. It interpolates the
-logarithm of the factor linearly between nodes and refuses to extrapolate. That
-is an explicit computational convention, not a claim that log-linear
-interpolation is uniquely correct.
+The curve in this lesson accepts only positive discount factors at its nodes,
+and it sets $D(0,0)=1$. Between two nodes, the logarithm of the discount factor
+is interpolated linearly. The curve is not extrapolated beyond its final node.
+Log-linear interpolation is a convention of this lesson. The lesson does not
+claim that it is the only correct interpolation.
 
-A factor may exceed one. For example, $D(0,1)=1.01$ implies a negative
-continuously compounded one-year zero rate. Positivity is required; being
-below one is not.
+A discount factor can be larger than one. For example, $D(0,1)=1.01$ implies a
+negative continuously compounded one-year zero rate. The curve requires
+positive discount factors, but it does not require discount factors below one.
 
 ## Discount between future times
 
-Let local [[forward-discount-start-time]] $t$ precede local
-[[forward-discount-end-time]] $T$. The [[forward-discount-factor]] is
+Let the local [[forward-discount-start-time]] $t$ be earlier than the local
+[[forward-discount-end-time]] $T$. The [[forward-discount-factor]] is defined
+as the ratio of the two discount factors from valuation time:
 
 $$
 \explain{forward-discount-factor}{Z(t,T)}
@@ -72,26 +76,28 @@ $$
 \label{eq:forward-discount-factor}
 $$
 
-The units are time-$t$ currency per one unit of time-$T$ currency. If
-$D(0,1)=0.98$ and $D(0,3)=0.94$, then
+Its unit is currency at time $t$ per unit of currency at time $T$. If
+$D(0,1)=0.98$ and $D(0,3)=0.94$, the forward discount factor from year 1 to
+year 3 is:
 
 $$
 Z(1,3)=\frac{0.94}{0.98}=0.9591836735.
 $$
 
-The glyph $Z$ is deliberate: shared $D$ remains bound to a factor from
-valuation time, so the new meaning does not silently rebind it.
+The forward discount factor has its own symbol, $Z$. The symbol $D$ keeps its
+meaning: a discount factor from valuation time.
 
-The ratio in [[eq-forward-discount-factor]] is essential for multi-period
-valuation: each lattice node needs
-the factor over its next period, not an indiscriminate reuse of a time-zero
-factor.
+The ratio in [[eq-forward-discount-factor]] is needed for multi-period
+valuation. Each lattice node needs the discount factor over its next period. A
+discount factor from time zero is not the correct discount factor for that
+period.
 
 ## Scope boundary
 
-The curve is supplied, deterministic, and uncalibrated. Later state-dependent
-lessons supply one-period factors by node; they do not assume that today's
-future-to-future factor will actually be observed in every future state.
+The curve is an input. It is deterministic and not calibrated. Later lessons
+with state-dependent discounting give a one-period discount factor at each
+node. They do not assume that today's forward discount factor is realized in
+every future state.
 
 ## Check your understanding
 

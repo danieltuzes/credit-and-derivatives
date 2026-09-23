@@ -8,7 +8,7 @@
       "definitionId": "shared:cds-market-standard-quote",
       "key": "cds-market-standard-quote",
       "kind": "prose",
-      "line": 37,
+      "line": 38,
       "scope": "shared",
       "symbol": "s_{\\mathrm{MSQ}}"
     },
@@ -17,7 +17,7 @@
       "definitionId": "shared:cds-market-standard-quote",
       "key": "cds-market-standard-quote",
       "kind": "math",
-      "line": 38,
+      "line": 39,
       "scope": "shared",
       "symbol": "s_{\\mathrm{MSQ}}"
     },
@@ -26,7 +26,7 @@
       "definitionId": "shared:cds-par-spread",
       "key": "cds-par-spread",
       "kind": "prose",
-      "line": 39,
+      "line": 40,
       "scope": "shared",
       "symbol": "s^{\\star}"
     },
@@ -35,7 +35,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "prose",
-      "line": 40,
+      "line": 41,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -44,7 +44,7 @@
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "prose",
-      "line": 41,
+      "line": 42,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -53,7 +53,7 @@
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "math",
-      "line": 42,
+      "line": 43,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -62,7 +62,7 @@
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
       "kind": "prose",
-      "line": 44,
+      "line": 45,
       "scope": "shared",
       "symbol": "U_0"
     },
@@ -71,16 +71,16 @@
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
       "kind": "math",
-      "line": 45,
+      "line": 46,
       "scope": "shared",
       "symbol": "U_0"
     },
     {
-      "column": 52,
+      "column": 57,
       "definitionId": "shared:basis-point",
       "key": "basis-point",
       "kind": "prose",
-      "line": 55,
+      "line": 56,
       "scope": "shared",
       "symbol": "1\\,\\mathrm{bp}"
     },
@@ -89,7 +89,7 @@
       "definitionId": "shared:cds-par-spread",
       "key": "cds-par-spread",
       "kind": "math",
-      "line": 72,
+      "line": 75,
       "scope": "shared",
       "symbol": "s^{\\star}"
     },
@@ -98,7 +98,7 @@
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "math",
-      "line": 75,
+      "line": 78,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
@@ -107,7 +107,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 75,
+      "line": 78,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -116,7 +116,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 77,
+      "line": 80,
       "scope": "shared",
       "symbol": "N"
     },
@@ -125,7 +125,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 78,
+      "line": 81,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -134,25 +134,25 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 78,
+      "line": 81,
       "scope": "shared",
       "symbol": "\\lambda"
     },
     {
-      "column": 1,
+      "column": 38,
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "prose",
-      "line": 98,
+      "line": 99,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
     {
-      "column": 23,
+      "column": 1,
       "definitionId": "shared:cds-premium-leg-present-value",
       "key": "cds-premium-leg-present-value",
       "kind": "prose",
-      "line": 99,
+      "line": 101,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prem}}"
     },
@@ -161,7 +161,7 @@
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "math",
-      "line": 104,
+      "line": 107,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
@@ -170,7 +170,7 @@
       "definitionId": "shared:cds-premium-leg-present-value",
       "key": "cds-premium-leg-present-value",
       "kind": "math",
-      "line": 106,
+      "line": 109,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prem}}"
     },
@@ -179,7 +179,7 @@
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
       "kind": "math",
-      "line": 107,
+      "line": 110,
       "scope": "shared",
       "symbol": "U_0"
     },
@@ -188,7 +188,7 @@
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "math",
-      "line": 115,
+      "line": 119,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
@@ -197,7 +197,7 @@
       "definitionId": "shared:cds-premium-leg-present-value",
       "key": "cds-premium-leg-present-value",
       "kind": "math",
-      "line": 116,
+      "line": 120,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prem}}"
     },
@@ -206,7 +206,7 @@
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
       "kind": "math",
-      "line": 117,
+      "line": 121,
       "scope": "shared",
       "symbol": "U_0"
     },
@@ -215,7 +215,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "prose",
-      "line": 147,
+      "line": 150,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -224,7 +224,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 148,
+      "line": 151,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -233,7 +233,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 148,
+      "line": 151,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -242,7 +242,7 @@
       "definitionId": "shared:cds-market-standard-quote",
       "key": "cds-market-standard-quote",
       "kind": "math",
-      "line": 152,
+      "line": 156,
       "scope": "shared",
       "symbol": "s_{\\mathrm{MSQ}}"
     },
@@ -251,7 +251,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 153,
+      "line": 157,
       "scope": "shared",
       "symbol": "N"
     },
@@ -260,7 +260,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 154,
+      "line": 158,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -269,7 +269,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 154,
+      "line": 158,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -278,7 +278,7 @@
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "math",
-      "line": 156,
+      "line": 160,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
@@ -287,7 +287,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 156,
+      "line": 160,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -296,7 +296,7 @@
       "definitionId": "shared:cds-premium-leg-present-value",
       "key": "cds-premium-leg-present-value",
       "kind": "math",
-      "line": 165,
+      "line": 170,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prem}}"
     },
@@ -305,7 +305,7 @@
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "math",
-      "line": 166,
+      "line": 171,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -314,7 +314,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 166,
+      "line": 171,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -323,7 +323,7 @@
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "math",
-      "line": 168,
+      "line": 173,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -332,7 +332,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 169,
+      "line": 174,
       "scope": "shared",
       "symbol": "N"
     },
@@ -341,7 +341,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 170,
+      "line": 175,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -350,7 +350,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 170,
+      "line": 175,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -359,7 +359,7 @@
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
       "kind": "math",
-      "line": 179,
+      "line": 184,
       "scope": "shared",
       "symbol": "U_0"
     },
@@ -368,7 +368,7 @@
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "math",
-      "line": 181,
+      "line": 186,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
@@ -377,7 +377,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 181,
+      "line": 186,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -386,7 +386,7 @@
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "math",
-      "line": 183,
+      "line": 188,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -395,7 +395,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 184,
+      "line": 189,
       "scope": "shared",
       "symbol": "N"
     },
@@ -404,7 +404,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 185,
+      "line": 190,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -413,7 +413,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 185,
+      "line": 190,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -422,7 +422,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 187,
+      "line": 192,
       "scope": "shared",
       "symbol": "N"
     },
@@ -431,7 +431,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 188,
+      "line": 193,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -440,7 +440,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 188,
+      "line": 193,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -449,7 +449,7 @@
       "definitionId": "shared:cds-market-standard-quote",
       "key": "cds-market-standard-quote",
       "kind": "math",
-      "line": 190,
+      "line": 195,
       "scope": "shared",
       "symbol": "s_{\\mathrm{MSQ}}"
     },
@@ -458,7 +458,7 @@
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "math",
-      "line": 191,
+      "line": 196,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -466,80 +466,17 @@
       "column": 1,
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
-      "kind": "math",
-      "line": 211,
-      "scope": "shared",
-      "symbol": "U_0"
-    },
-    {
-      "column": 1,
-      "definitionId": "shared:cds-protection-leg-present-value",
-      "key": "cds-protection-leg-present-value",
-      "kind": "math",
-      "line": 213,
-      "scope": "shared",
-      "symbol": "PV_0^{\\mathrm{prot}}"
-    },
-    {
-      "column": 66,
-      "definitionId": "shared:hazard-rate",
-      "key": "hazard-rate",
-      "kind": "math",
-      "line": 213,
-      "scope": "shared",
-      "symbol": "\\lambda"
-    },
-    {
-      "column": 1,
-      "definitionId": "shared:cds-standard-coupon",
-      "key": "cds-standard-coupon",
-      "kind": "math",
-      "line": 215,
-      "scope": "shared",
-      "symbol": "c_{\\mathrm{std}}"
-    },
-    {
-      "column": 1,
-      "definitionId": "shared:cds-notional",
-      "key": "cds-notional",
       "kind": "math",
       "line": 216,
       "scope": "shared",
-      "symbol": "N"
-    },
-    {
-      "column": 1,
-      "definitionId": "shared:cds-premium-annuity",
-      "key": "cds-premium-annuity",
-      "kind": "math",
-      "line": 217,
-      "scope": "shared",
-      "symbol": "A_0^{\\mathrm{prem}}"
-    },
-    {
-      "column": 52,
-      "definitionId": "shared:hazard-rate",
-      "key": "hazard-rate",
-      "kind": "math",
-      "line": 217,
-      "scope": "shared",
-      "symbol": "\\lambda"
-    },
-    {
-      "column": 1,
-      "definitionId": "shared:cds-market-standard-quote",
-      "key": "cds-market-standard-quote",
-      "kind": "math",
-      "line": 225,
-      "scope": "shared",
-      "symbol": "s_{\\mathrm{MSQ}}"
+      "symbol": "U_0"
     },
     {
       "column": 1,
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "math",
-      "line": 228,
+      "line": 218,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
@@ -548,16 +485,25 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 228,
+      "line": 218,
       "scope": "shared",
       "symbol": "\\lambda"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:cds-standard-coupon",
+      "key": "cds-standard-coupon",
+      "kind": "math",
+      "line": 220,
+      "scope": "shared",
+      "symbol": "c_{\\mathrm{std}}"
     },
     {
       "column": 1,
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 230,
+      "line": 221,
       "scope": "shared",
       "symbol": "N"
     },
@@ -566,7 +512,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 231,
+      "line": 222,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -575,7 +521,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 231,
+      "line": 222,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -584,7 +530,61 @@
       "definitionId": "shared:cds-market-standard-quote",
       "key": "cds-market-standard-quote",
       "kind": "math",
-      "line": 242,
+      "line": 230,
+      "scope": "shared",
+      "symbol": "s_{\\mathrm{MSQ}}"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:cds-protection-leg-present-value",
+      "key": "cds-protection-leg-present-value",
+      "kind": "math",
+      "line": 233,
+      "scope": "shared",
+      "symbol": "PV_0^{\\mathrm{prot}}"
+    },
+    {
+      "column": 66,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "math",
+      "line": 233,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:cds-notional",
+      "key": "cds-notional",
+      "kind": "math",
+      "line": 235,
+      "scope": "shared",
+      "symbol": "N"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:cds-premium-annuity",
+      "key": "cds-premium-annuity",
+      "kind": "math",
+      "line": 236,
+      "scope": "shared",
+      "symbol": "A_0^{\\mathrm{prem}}"
+    },
+    {
+      "column": 52,
+      "definitionId": "shared:hazard-rate",
+      "key": "hazard-rate",
+      "kind": "math",
+      "line": 236,
+      "scope": "shared",
+      "symbol": "\\lambda"
+    },
+    {
+      "column": 1,
+      "definitionId": "shared:cds-market-standard-quote",
+      "key": "cds-market-standard-quote",
+      "kind": "math",
+      "line": 245,
       "scope": "shared",
       "symbol": "s_{\\mathrm{MSQ}}"
     },
@@ -593,7 +593,7 @@
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "math",
-      "line": 244,
+      "line": 247,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -602,7 +602,7 @@
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
       "kind": "math",
-      "line": 247,
+      "line": 250,
       "scope": "shared",
       "symbol": "U_0"
     },
@@ -611,7 +611,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 249,
+      "line": 252,
       "scope": "shared",
       "symbol": "N"
     },
@@ -620,7 +620,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 250,
+      "line": 253,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -629,7 +629,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 250,
+      "line": 253,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -638,7 +638,7 @@
       "definitionId": "shared:cds-market-standard-quote",
       "key": "cds-market-standard-quote",
       "kind": "math",
-      "line": 265,
+      "line": 269,
       "scope": "shared",
       "symbol": "s_{\\mathrm{MSQ}}"
     },
@@ -647,7 +647,7 @@
       "definitionId": "shared:cds-par-spread",
       "key": "cds-par-spread",
       "kind": "math",
-      "line": 267,
+      "line": 271,
       "scope": "shared",
       "symbol": "s^{\\star}"
     },
@@ -656,7 +656,7 @@
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "math",
-      "line": 270,
+      "line": 274,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
@@ -665,7 +665,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 270,
+      "line": 274,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -674,7 +674,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 272,
+      "line": 276,
       "scope": "shared",
       "symbol": "N"
     },
@@ -683,7 +683,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 273,
+      "line": 277,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -692,7 +692,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 273,
+      "line": 277,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -701,7 +701,7 @@
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "math",
-      "line": 276,
+      "line": 280,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -710,7 +710,7 @@
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
       "kind": "math",
-      "line": 279,
+      "line": 283,
       "scope": "shared",
       "symbol": "U_0"
     },
@@ -719,7 +719,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 281,
+      "line": 285,
       "scope": "shared",
       "symbol": "N"
     },
@@ -728,7 +728,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 282,
+      "line": 286,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -737,7 +737,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 282,
+      "line": 286,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -746,7 +746,7 @@
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
       "kind": "math",
-      "line": 297,
+      "line": 301,
       "scope": "shared",
       "symbol": "U_0"
     },
@@ -755,7 +755,7 @@
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "math",
-      "line": 299,
+      "line": 303,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
@@ -764,7 +764,7 @@
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "math",
-      "line": 301,
+      "line": 305,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -773,7 +773,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 302,
+      "line": 306,
       "scope": "shared",
       "symbol": "N"
     },
@@ -782,7 +782,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 303,
+      "line": 307,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -791,7 +791,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 330,
+      "line": 334,
       "scope": "shared",
       "symbol": "N"
     },
@@ -800,7 +800,7 @@
       "definitionId": "shared:cds-market-standard-quote",
       "key": "cds-market-standard-quote",
       "kind": "math",
-      "line": 332,
+      "line": 336,
       "scope": "shared",
       "symbol": "s_{\\mathrm{MSQ}}"
     },
@@ -809,7 +809,7 @@
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "math",
-      "line": 334,
+      "line": 338,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -818,7 +818,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 341,
+      "line": 345,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -827,7 +827,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 343,
+      "line": 347,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -836,7 +836,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 343,
+      "line": 347,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -845,7 +845,7 @@
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "math",
-      "line": 350,
+      "line": 355,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
@@ -854,7 +854,7 @@
       "definitionId": "shared:cds-premium-leg-present-value",
       "key": "cds-premium-leg-present-value",
       "kind": "math",
-      "line": 358,
+      "line": 363,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prem}}"
     },
@@ -863,7 +863,7 @@
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
       "kind": "math",
-      "line": 366,
+      "line": 371,
       "scope": "shared",
       "symbol": "U_0"
     },
@@ -872,7 +872,7 @@
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
       "kind": "math",
-      "line": 379,
+      "line": 385,
       "scope": "shared",
       "symbol": "U_0"
     }

@@ -54,7 +54,8 @@ After this lesson, you should be able to:
 
 For the same [[derivative-underlying-value]],
 [[option-strike-price]] $K$, and [[option-expiry-time]]
-$T_{\mathrm{opt}}$, the holder payoffs satisfy the state-by-state identity
+$T_{\mathrm{opt}}$, the holder payoffs satisfy this identity in every state at
+expiry:
 
 $$
 \max\!\left(S_{T_{\mathrm{opt}}}-K,0\right)
@@ -73,7 +74,7 @@ Let local [[parity-income-present-value]] be $I_0$. The local
 $\widetilde{F}_{0,T_{\mathrm{opt}}}=S_0-I_0$. Applying the law of one price to
 the matched portfolios, with [[call-option-value]] $c_0$,
 [[put-option-value]] $p_0$, and the strike-payment [[discount-factor]]
-$D(0,T_{\mathrm{opt}})$, gives
+$D(0,T_{\mathrm{opt}})$, gives put-call parity in present-value form:
 
 $$
 c_0-p_0
@@ -81,17 +82,17 @@ c_0-p_0
 -K D(0,T_{\mathrm{opt}}).
 $$
 
-Because
+The prepaid forward value is the discounted [[forward-price]]
+$F_{0,T_{\mathrm{opt}}}$ for delivery at option expiry:
 
 $$
 \widetilde{F}_{0,T_{\mathrm{opt}}}
-=D(0,T_{\mathrm{opt}})F_{0,T_{\mathrm{opt}}},
+=D(0,T_{\mathrm{opt}})F_{0,T_{\mathrm{opt}}}.
 $$
 
-the same relation can be written in forward form:
-
-Here $F_{0,T_{\mathrm{opt}}}$ is the matching [[forward-price]] for option
-expiry, not the fixed delivery price of an older forward.
+Here $F_{0,T_{\mathrm{opt}}}$ is the current forward price, not the fixed
+delivery price of an existing forward. Substituting it into the present-value
+form gives put-call parity in forward form:
 
 $$
 c_0-p_0
@@ -103,20 +104,21 @@ Hull derives put-call parity by comparing the expiry values of two portfolios
 and invoking no arbitrage[@hull-options-futures; Ch. 10 §10.4, printed pp. 221-225, European put-call parity and arbitrage portfolios].
 
 For $c_0=8$, $\widetilde{F}_{0,T_{\mathrm{opt}}}=97$, $K=100$, and
-$D(0,T_{\mathrm{opt}})=0.95$,
+$D(0,T_{\mathrm{opt}})=0.95$, the present-value form gives the put value:
 
 $$
 p_0=8-97+100(0.95)=6.
 $$
 
-## Where parity stops
+## When put-call parity does not apply
 
 The equality needs the same underlying, strike, expiry, exercise style,
-quantity, income treatment, and settlement basis. American exercise changes
-the timing choices. A default-triggered knock-out changes the default-state
-cash flows: if both options terminate on issuer default, call-minus-put is also
-zero in that state. Its matching forward-style claim must therefore terminate
-on the same event; the vanilla formula cannot be copied unchanged.
+quantity, income treatment, and settlement basis. American exercise adds a
+choice of exercise time. A knockout triggered by default changes the cash
+flows in the default state. If both options terminate on issuer default, the
+call payoff minus the put payoff is zero in that state. So the matching
+forward-style claim must also terminate on issuer default. The formula for
+options without a knockout does not apply unchanged.
 
 ## Check your understanding
 
@@ -124,9 +126,10 @@ on the same event; the vanilla formula cannot be copied unchanged.
 
 ## Model boundary and review note
 
-This model-independent relation still relies on the stated trading, funding,
-income, and contract-matching assumptions. It does not itself supply an option
-price or volatility model.
+Put-call parity does not depend on an option pricing model. It still relies on
+the stated assumptions about trading, funding, income, and matching contract
+terms. Put-call parity does not give an option price by itself, and it contains
+no volatility model.
 
-The parity functions live in a pure tested domain module. Sources, notation,
+The parity functions are implemented in a pure tested domain module. Sources, notation,
 examples, code, and answer keys remain `draft` pending independent human review.

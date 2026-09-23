@@ -7,13 +7,13 @@ teaches:
   - finance.present-value.calculate
 assumptions:
   - Deterministic signed cash flows
-  - A supplied discount factor for every payment time
+  - An input discount factor for every payment time
   - USD examples and a holder perspective
 notation:
   local:
     - key: present-value-payment-index
       latex: k
-      meaning: 'Selects one dated cash flow in the finite schedule. This page-local index keeps sequence bookkeeping separate from the associated time measured in years.'
+      meaning: 'Selects one dated cash flow in the finite schedule. This lesson-local index keeps sequence bookkeeping separate from the associated time measured in years.'
       formula: 'k \in \{1,\ldots,n\}'
       dimensionless: true
       seeAlso:
@@ -69,7 +69,7 @@ After this lesson, you should be able to:
 - discount each dated deterministic amount;
 - add discounted amounts without mixing payment dates.
 
-## Make values comparable before adding
+## Make cash flows comparable before adding
 
 Use the local [[present-value-payment-index]] $k$ to select one row and
 the local [[number-of-future-payments]] $n$ to count the included future
@@ -78,31 +78,33 @@ rows. At row $k$, write the [[signed-cash-flow]] as $CF_k$, its
 $D(0,t_k)$. Write the schedule's [[present-value]] at
 [[valuation-time]] $0$ as $PV_0$.
 
-The present value of the deterministic schedule is
+The present value of the deterministic schedule is the sum of the discounted
+cash flows:
 
 $$
 PV_0=\sum_{k=1}^{n}CF_kD(0,t_k).
 \label{eq:present-value-sum}
 $$
 
-The two bookkeeping symbols are local to this page; the financial quantities
-come from the shared registry.
+The index $k$ and the count $n$ are defined only in this lesson. The other
+symbols are shared across the course.
 
-For compatible schedules $\mathrm{A}$ and $\mathrm{B}$, additivity is
+Two schedules are compatible when they use the same valuation time,
+perspective, currency, and discount factors. Let
+$\mathrm{A}\mathbin{\|}\mathrm{B}$ be the schedule that contains every row of
+both schedules $\mathrm{A}$ and $\mathrm{B}$. For two compatible schedules, the
+present value is additive:
 
 $$
 PV_0(\mathrm{A}\mathbin{\|}\mathrm{B})=PV_0(\mathrm{A})+PV_0(\mathrm{B}).
 \label{eq:present-value-additivity}
 $$
 
-Here $\mathrm{A}\mathbin{\|}\mathrm{B}$ denotes the schedule formed by retaining every row of
-both schedules.
-
 <CompactExamples summary="Worked examples (3)">
   <CompactExample label="One payment">
 
-For a deterministic USD 1,000 receipt paid after two years with
-$D(0,2)=0.9070294785$,
+A deterministic receipt of USD 1,000 is paid after two years, and
+$D(0,2)=0.9070294785$. The present value of the receipt is:
 
 $$
 PV_0
@@ -111,14 +113,14 @@ PV_0
 \approx\text{USD }907.03.
 $$
 
-The output unit is USD at [[valuation-time]] from the holder's
+The present value is in USD at [[valuation-time]], from the holder's
 perspective.
 
   </CompactExample>
   <CompactExample label="Mixed signed cash flows">
 
 Suppose the holder receives USD 100 at $t_1$, pays USD 40 at $t_2$, and
-receives USD 300 at $t_3$. The supplied discount factors are 0.97, 0.93, and
+receives USD 300 at $t_3$. The discount factors are 0.97, 0.93, and
 0.88.
 
 | Payment index $k$ | Cash flow $CF_k$, USD | Discount factor $D(0,t_k)$ | Discounted cash flow $CF_kD(0,t_k)$, USD |
@@ -127,38 +129,37 @@ receives USD 300 at $t_3$. The supplied discount factors are 0.97, 0.93, and
 |                 2 |                   -40 |                       0.93 |                                   -37.20 |
 |                 3 |                  +300 |                       0.88 |                                  +264.00 |
 
-Therefore,
+The present value is the sum of the discounted cash flows:
 
 $$
 PV_0=97.00-37.20+264.00=\text{USD }323.80.
 $$
 
-Discounting preserves the declared signs. Reversing perspective would negate
-the entire result.
+Discounting does not change the sign of a cash flow. Reversing the perspective
+would change the sign of the present value.
 
   </CompactExample>
   <CompactExample label="Additivity">
 
-Concatenating two schedules retains every row, including duplicate payments.
-If the two schedules use the same valuation time, perspective, currency, and
-discount factors, [[eq-present-value-additivity]] is covered by a domain
-property test. The compatibility
-conditions matter: values from different currencies or valuation dates cannot
-be added without another model.
+Combining two schedules keeps every row, including duplicate payments. For
+compatible schedules, a property test of the domain code checks
+[[eq-present-value-additivity]]. The compatibility conditions are necessary:
+present values in different currencies, or at different valuation dates,
+cannot be added without another model.
 
   </CompactExample>
 </CompactExamples>
 
-The lab below turns the one-payment case into a calculator. It builds each
-[[discount-factor]] from a single [[discounting-lab-rate]] compounded
-once a year, then applies it to one [[discounting-lab-cash-flow]] to report
-the [[present-value]] at [[valuation-time]] $0$. Its formulas carry the
-same explained symbols as the prose above.
+The lab below is a calculator for the one-payment case. It calculates the
+[[discount-factor]] from one [[discounting-lab-rate]] with annual
+compounding. It then multiplies one [[discounting-lab-cash-flow]] by the
+discount factor to give the [[present-value]] at [[valuation-time]] $0$. The
+lab formulas use the same symbols as the text above.
 
 <DiscountingExplorerMath />
 
-The lab keeps its calculation in the tested domain module. Its percentage input
-is converted to a decimal at the UI boundary.
+The tested domain code does the lab's calculation. The lab converts its
+percentage input to a decimal before the calculation.
 
 ## Check your understanding
 
@@ -170,7 +171,7 @@ explanations appear once you check.
 
 ## Model boundary and review note
 
-This is deterministic present value. It omits curves, calendars, uncertainty,
+This lesson covers deterministic present value only. It omits curves, calendars, uncertainty,
 credit, recovery, liquidity, tax, and funding.
 
 The rule [[eq-present-value-sum]] follows Tuckman &

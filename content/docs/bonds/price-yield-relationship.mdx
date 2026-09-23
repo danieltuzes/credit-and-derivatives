@@ -1,6 +1,6 @@
 ---
 title: The bond price-yield relationship
-description: See why fixed positive cash-flow prices fall with yield and why the curve is nonlinear.
+description: Explain why the price of fixed positive cash flows decreases when the yield increases, and why the price-yield curve is not linear.
 editorialStatus: draft
 teaches:
   - bonds.price-yield-direction.explain
@@ -15,7 +15,7 @@ notation:
   local:
     - key: yield-shock
       latex: '\Delta y'
-      meaning: 'A page-local finite change in the supplied yield input. The sign is new yield minus old yield; the unit must be decimal, percentage points, or basis points as explicitly labeled.'
+      meaning: 'A lesson-local finite change in the input yield. The sign is new yield minus old yield; the unit must be decimal, percentage points, or basis points as explicitly labeled.'
       formula: '\Delta y=y_{\mathrm{new}}-y_{\mathrm{old}}'
       units: decimal rate per year
       seeAlso:
@@ -47,20 +47,22 @@ import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
 
 After this lesson, you should be able to:
 
-- explain why a fixed positive-cash-flow bond's price falls when yield rises;
+- explain why the price of a bond with fixed positive cash flows decreases when
+  the yield increases;
 - hold contract cash flows fixed while changing only the discounting input;
 - recognize that the price-yield relationship is curved rather than linear.
 
-## Direction comes from every denominator
+## The price decreases because every denominator increases
 
-Write the [[bond-payment-frequency]] as $m_{\mathrm B}$. On this page,
-$y$ is the shorter functional-argument form of the
-[[yield-to-maturity]] $y^{(m_{\mathrm B})}$. Write the
+Write the [[bond-payment-frequency]] as $m_{\mathrm B}$. In this lesson,
+$y$ denotes the [[yield-to-maturity]] $y^{(m_{\mathrm B})}$ without its
+superscript, as the argument of a function. Write the
 [[price-yield-curve]] as $P(y)$.
 
 Use the [[bond-payment-index]] $k$ to select one of the
 [[number-of-bond-payments]] $n$, and write each promised positive
-[[bond-cash-flow]] as $CF_k^{\mathrm{bond}}$. Then
+[[bond-cash-flow]] as $CF_k^{\mathrm{bond}}$. The price at yield $y$ is the
+sum of the promised cash flows, each discounted at the yield:
 
 $$
 P(y)=
@@ -69,10 +71,10 @@ P(y)=
 {\left(1+y/m_{\mathrm B}\right)^k}.
 $$
 
-Within the stated non-negative-yield domain, if yield rises while every cash
-flow stays fixed, every positive denominator increases. Every discounted
-contribution decreases, so [[bond-price]] decreases. The shock table also
-assumes the new yield remains in that domain.
+Assume that the yield stays non-negative and that every cash flow stays fixed.
+If the yield increases, every denominator increases. So every discounted cash
+flow decreases, and the [[bond-price]] decreases. The table below also assumes
+that the new yield is non-negative.
 
 Define the local [[yield-shock]] $\Delta y$ as new yield minus old
 yield, and define the local [[price-change]] $\Delta P$ as new price
@@ -83,7 +85,7 @@ minus old price.
 | $\Delta y>0$ | Increase     | $\Delta P<0$ |
 | $\Delta y<0$ | Decrease     | $\Delta P>0$ |
 
-This statement is conditional on the promised cash flows being held fixed.
+The table holds only if the promised cash flows stay fixed.
 
 <CompactExamples
   summary="Worked examples"
@@ -92,8 +94,8 @@ This statement is conditional on the promised cash flows being held fixed.
 >
   <CompactExample label="Three points form a curve">
 
-For a five-year bond with a 5% annual coupon rate, semiannual payments, and face
-value 100:
+Consider a five-year bond with an annual coupon rate of 5%, semiannual
+payments, and a face value of 100. Its prices at three yields are:
 
 | Nominal annual yield | Price per 100 face |
 | -------------------: | -----------------: |
@@ -101,38 +103,41 @@ value 100:
 |                   6% |            95.7349 |
 |                   7% |            91.6834 |
 
-The price falls as yield rises. The two one-percentage-point price changes are
-not identical, which rules out a straight line.
+The price decreases as the yield increases. Each yield increase is one
+percentage point, but the two price changes are different: 4.2651 and 4.0515.
+So the three points are not on a straight line.
 
   </CompactExample>
 
-  <CompactExample label="Equal shocks, unequal moves">
+  <CompactExample label="Equal shocks, unequal price changes">
 
-Starting from 5% yield:
+Start from a yield of 5%:
 
-- a fall to 4% raises price from 100.0000 to 104.4913, a gain of 4.4913;
-- a rise to 6% lowers price from 100.0000 to 95.7349, a loss of 4.2651.
+- a yield decrease to 4% increases the price from 100.0000 to 104.4913, a
+  change of +4.4913;
+- a yield increase to 6% decreases the price from 100.0000 to 95.7349, a
+  change of −4.2651.
 
-The shock sizes are equal, but the absolute price changes differ. This is the
-qualitative curvature competency. Duration, DV01, and convexity are not yet
-being calculated.
+The two yield shocks have equal size, but the absolute price changes are
+different. This difference is a result of the curvature of the price-yield
+curve. This lesson does not calculate duration, DV01, or convexity.
 
   </CompactExample>
 
   <CompactExample label="Hold other inputs fixed">
 
-If an issuer changes a coupon, a default occurs, or the settlement date moves,
-then more than yield has changed. The simple inverse-direction comparison no
-longer isolates one input.
+Suppose the issuer changes a coupon, a default occurs, or the settlement date
+changes. Then more than the yield has changed, and the comparison no longer
+isolates the effect of the yield.
 
   </CompactExample>
 </CompactExamples>
 
 <BondPriceExplorer client:visible />
 
-The chart, live result, and data-table alternative all use the same tested
-domain function. The notation panel is an explanatory layer only; it performs
-no pricing.
+The chart, the live result, and the data table all use the same tested domain
+function. The notation panel only explains the symbols; it does not calculate
+prices.
 
 ## Check your understanding
 
@@ -144,13 +149,13 @@ check.
 
 ## Model boundary and review note
 
-The plotted curve is a toy yield summary, not a credit curve or recommendation.
+The plotted curve summarizes a toy model with one yield. It is not a credit
+curve and not a recommendation.
 It omits accrued interest, term-structure effects, default, recovery, liquidity,
 tax, funding, and embedded options.
 
 The inverse direction and the curvature both follow Tuckman &
 Serrat[@tuckman-serrat-fixed-income; §4.1, "Price-Rate Curves", Figure 4.2, prices decrease as rates rise; §4.5, "Convexity", price-rate curves of coupon bonds are convex]; Hull notes the same negative price-yield
-relationship[@hull-options-futures; §4.8, Duration]. FINRA states
-plainly that price and yield are inversely
+relationship[@hull-options-futures; §4.8, Duration]. FINRA states that price and yield are inversely
 related[@finra-bond-yield; "Price and yield" section]. The lesson stays
 `draft` pending human confirmation of the printed locators.

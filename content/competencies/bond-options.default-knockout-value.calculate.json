@@ -3,7 +3,7 @@
   "title": "Calculate an issuer-default knockout option value",
   "domain": "bond-options",
   "facet": "calculation",
-  "outcome": "Calculate an issuer-default knockout bond option value on a supplied joint rate-credit lattice by applying survival to option continuation and zero option payoff on pre-expiry default.",
+  "outcome": "Calculate an issuer-default knockout bond option value on an input joint rate-credit lattice by applying survival to option continuation and zero option payoff on pre-expiry default.",
   "prerequisites": [
     "bond-options.default-knockout.interpret",
     "bond-options.european-value.calculate",

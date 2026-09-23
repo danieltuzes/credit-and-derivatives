@@ -15,7 +15,7 @@
       "symbol": "0"
     },
     {
-      "column": 22,
+      "column": 11,
       "definitionId": "page:foundations.cash-flow-timelines:payment-index",
       "key": "payment-index",
       "kind": "prose",
@@ -24,7 +24,7 @@
       "symbol": "k"
     },
     {
-      "column": 46,
+      "column": 34,
       "definitionId": "shared:signed-cash-flow",
       "key": "signed-cash-flow",
       "kind": "prose",
@@ -33,7 +33,7 @@
       "symbol": "CF_k"
     },
     {
-      "column": 16,
+      "column": 1,
       "definitionId": "shared:payment-time",
       "key": "payment-time",
       "kind": "prose",

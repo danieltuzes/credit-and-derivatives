@@ -7,16 +7,7 @@
   ],
   "references": [
     {
-      "column": 4,
-      "definitionId": "shared:valuation-time",
-      "key": "valuation-time",
-      "kind": "prose",
-      "line": 12,
-      "scope": "shared",
-      "symbol": "0"
-    },
-    {
-      "column": 36,
+      "column": 29,
       "definitionId": "shared:discount-factor",
       "key": "discount-factor",
       "kind": "prose",
@@ -25,7 +16,16 @@
       "symbol": "D(0,t)"
     },
     {
-      "column": 30,
+      "column": 1,
+      "definitionId": "shared:valuation-time",
+      "key": "valuation-time",
+      "kind": "prose",
+      "line": 13,
+      "scope": "shared",
+      "symbol": "0"
+    },
+    {
+      "column": 54,
       "definitionId": "shared:payment-time",
       "key": "payment-time",
       "kind": "prose",
@@ -34,11 +34,11 @@
       "symbol": "t_k"
     },
     {
-      "column": 11,
+      "column": 15,
       "definitionId": "page:rates.discount-curve-and-forward-discounting:forward-discount-start-time",
       "key": "forward-discount-start-time",
       "kind": "prose",
-      "line": 28,
+      "line": 31,
       "scope": "local",
       "symbol": "t"
     },
@@ -47,7 +47,7 @@
       "definitionId": "page:rates.discount-curve-and-forward-discounting:forward-discount-end-time",
       "key": "forward-discount-end-time",
       "kind": "prose",
-      "line": 29,
+      "line": 32,
       "scope": "local",
       "symbol": "T"
     },
@@ -56,7 +56,7 @@
       "definitionId": "shared:forward-discount-factor",
       "key": "forward-discount-factor",
       "kind": "prose",
-      "line": 29,
+      "line": 32,
       "scope": "shared",
       "symbol": "Z(t,T)"
     },
@@ -65,7 +65,7 @@
       "definitionId": "shared:forward-discount-factor",
       "key": "forward-discount-factor",
       "kind": "math",
-      "line": 32,
+      "line": 36,
       "scope": "shared",
       "symbol": "Z(t,T)"
     },
@@ -74,7 +74,7 @@
       "definitionId": "shared:discount-factor",
       "key": "discount-factor",
       "kind": "math",
-      "line": 33,
+      "line": 37,
       "scope": "shared",
       "symbol": "D(0,t)"
     },
@@ -83,7 +83,7 @@
       "definitionId": "shared:discount-factor",
       "key": "discount-factor",
       "kind": "math",
-      "line": 34,
+      "line": 38,
       "scope": "shared",
       "symbol": "D(0,t)"
     }

@@ -139,7 +139,8 @@ $\explain{binomial-up-claim-payoff}{X^{\mathrm{up}}}$ or
 [[binomial-down-claim-payoff]]
 $\explain{binomial-down-claim-payoff}{X^{\mathrm{down}}}$.
 
-The local [[binomial-hedge-units]] that matches the payoff difference are
+The local [[binomial-hedge-units]] $\Delta$ is the number of units of the
+underlying that matches the difference between the two claim payoffs:
 
 $$
 \explain{binomial-hedge-units}{\Delta}
@@ -149,7 +150,8 @@ $$
 -\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}}.
 $$
 
-The local [[binomial-risk-free-expiry-cash]] then matches the down state:
+The local [[binomial-risk-free-expiry-cash]] is then chosen so that the
+portfolio matches the claim payoff in the down state:
 
 $$
 \explain{binomial-risk-free-expiry-cash}{M_{T_{\mathrm{opt}}}}
@@ -158,8 +160,8 @@ $$
 \explain{binomial-down-underlying-value}{S^{\mathrm{down}}}.
 $$
 
-Consequently the local [[binomial-claim-value]] of the replicating
-portfolio is
+So the local [[binomial-claim-value]] is the value of the replicating
+portfolio at time zero:
 
 $$
 \explain{binomial-claim-value}{V_0}
@@ -171,8 +173,8 @@ $$
 
 ## The same value with risk-neutral weights
 
-The no-arbitrage tree chooses local [[binomial-risk-neutral-up-weight]]
-$q$ so the underlying itself is priced correctly:
+The local [[binomial-risk-neutral-up-weight]] $q$ is chosen so that the model
+reproduces the current value of the underlying:
 
 $$
 \explain{binomial-risk-neutral-up-weight}{q}
@@ -182,8 +184,8 @@ $$
 -\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}}.
 $$
 
-Using the [[risk-neutral-probability-measure]] $\mathbb{Q}$, the same claim
-value is
+Under the [[risk-neutral-probability-measure]] $\mathbb{Q}$, the claim value
+is the discounted risk-neutral expected payoff:
 
 $$
 \explain{binomial-claim-value}{V_0}
@@ -211,7 +213,8 @@ $\explain{binomial-down-claim-payoff}{X^{\mathrm{down}}}=0$.
 
 Then $\explain{binomial-hedge-units}{\Delta}=0.5$,
 $\explain{binomial-risk-free-expiry-cash}{M_{T_{\mathrm{opt}}}}=-40$, and
-$\explain{binomial-risk-neutral-up-weight}{q}=0.625$. Both methods give
+$\explain{binomial-risk-neutral-up-weight}{q}=0.625$. Both methods give the
+same claim value:
 
 $$
 \explain{binomial-claim-value}{V_0}
@@ -220,15 +223,15 @@ $$
 =11.9047619.
 $$
 
-The negative cash position is borrowing; it is not a negative option value.
+The negative cash position is borrowing. It is not a negative option value.
 
-## From one period to a path
+## From one period to many periods
 
-Repeating this valuation one step at a time produces backward induction on a
-multi-period tree. Later bond-option lessons need node-specific discounting and
-an additional survival/default state. A default-triggered knock-out cannot be
-valued from a terminal distribution alone because the option may terminate
-before expiry.
+Repeating this valuation one period at a time, from expiry backward, is
+backward induction on a multi-period tree. The later bond-option lessons need a
+discount factor at each node and an additional state for survival and default.
+An option with a knockout triggered by default cannot be valued from the
+distribution at expiry alone, because the option can terminate before expiry.
 
 ## Check your understanding
 
@@ -238,8 +241,8 @@ before expiry.
 
 This complete two-state model has one non-income-paying traded underlying, one
 risk-free account, and deterministic discounting. It does not estimate
-real-world probabilities, volatility, multiple time steps, stochastic rates,
-default, or transaction and funding effects.
+real-world probabilities or volatility. It does not model multiple time steps,
+stochastic rates, default, or transaction and funding effects.
 
 The two valuation methods are implemented together in a pure tested domain
 module. The hand-calculated answer and implementation both remain subject to

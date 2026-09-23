@@ -54,7 +54,7 @@
       "type": "numeric",
       "competencyId": "cds.premium-leg.calculate",
       "evidenceKind": "transfer",
-      "prompt": "A two-year quarterly CDS has notional USD 3,000,000 and running spread 125 basis points (0.0125 per year). Exact integration under the supplied constant-hazard model gives scheduled-premium annuity 1.829782217887 model-years and accrued-on-default annuity 0.011512762522 model-years. Calculate the positive premium-leg magnitude in USD.",
+      "prompt": "A two-year quarterly CDS has notional USD 3,000,000 and running spread 125 basis points (0.0125 per year). Exact integration under the input constant-hazard model gives scheduled-premium annuity 1.829782217887 model-years and accrued-on-default annuity 0.011512762522 model-years. Calculate the positive premium-leg magnitude in USD.",
       "answer": { "value": 69048.56176534, "tolerance": 0.01 },
       "explanation": "The total exact premium annuity is 1.841294980409 model-years. Multiplying 0.0125 × 3,000,000 × 1.841294980409 gives USD 69,048.56176534. The accrued factor comes from integrating default time, not a half-period replacement."
     },

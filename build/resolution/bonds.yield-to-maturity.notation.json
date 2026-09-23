@@ -8,7 +8,7 @@
       "definitionId": "shared:bond-payment-index",
       "key": "bond-payment-index",
       "kind": "prose",
-      "line": 16,
+      "line": 17,
       "scope": "shared",
       "symbol": "k"
     },
@@ -17,7 +17,7 @@
       "definitionId": "shared:number-of-bond-payments",
       "key": "number-of-bond-payments",
       "kind": "prose",
-      "line": 17,
+      "line": 18,
       "scope": "shared",
       "symbol": "n"
     },
@@ -26,7 +26,7 @@
       "definitionId": "shared:bond-cash-flow",
       "key": "bond-cash-flow",
       "kind": "prose",
-      "line": 18,
+      "line": 19,
       "scope": "shared",
       "symbol": "CF_k^{\\mathrm{bond}}"
     },
@@ -35,7 +35,7 @@
       "definitionId": "shared:bond-price",
       "key": "bond-price",
       "kind": "prose",
-      "line": 19,
+      "line": 20,
       "scope": "shared",
       "symbol": "P_0"
     },
@@ -44,7 +44,7 @@
       "definitionId": "shared:bond-payment-frequency",
       "key": "bond-payment-frequency",
       "kind": "prose",
-      "line": 19,
+      "line": 20,
       "scope": "shared",
       "symbol": "m_{\\mathrm B}"
     },
@@ -53,16 +53,16 @@
       "definitionId": "shared:yield-to-maturity",
       "key": "yield-to-maturity",
       "kind": "prose",
-      "line": 22,
+      "line": 23,
       "scope": "shared",
       "symbol": "y^{(m_{\\mathrm B})}"
     },
     {
-      "column": 38,
+      "column": 43,
       "definitionId": "shared:coupon-payment",
       "key": "coupon-payment",
       "kind": "prose",
-      "line": 39,
+      "line": 40,
       "scope": "shared",
       "symbol": "C"
     },
@@ -71,7 +71,7 @@
       "definitionId": "shared:face-value",
       "key": "face-value",
       "kind": "prose",
-      "line": 44,
+      "line": 45,
       "scope": "shared",
       "symbol": "F"
     },
@@ -80,7 +80,7 @@
       "definitionId": "shared:maturity-time",
       "key": "maturity-time",
       "kind": "prose",
-      "line": 90,
+      "line": 89,
       "scope": "shared",
       "symbol": "T"
     }

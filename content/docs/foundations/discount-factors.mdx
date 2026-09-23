@@ -40,28 +40,28 @@ After this lesson, you should be able to:
 
 ## Undo accumulation
 
-On this page, $t$ is the shorter generic-horizon form of the shared
-[[payment-time]], measured in years from [[valuation-time]] $0$.
+In this lesson, $t$ denotes a [[payment-time]] without a row index. It is
+measured in years from [[valuation-time]] $0$.
 Write the [[compounding-frequency]] as $m$, the
 [[periodic-rate]] as $r_m$, the [[accumulation-factor]] as
 $A(0,t)$, and the [[discount-factor]] as $D(0,t)$.
 
-The accumulation factor grows a time-zero unit forward. The discount factor
-reverses that operation:
+The accumulation factor $A(0,t)$ is the amount at time $t$ from one unit
+invested at time zero. The discount factor is its reciprocal:
 
 $$
 D(0,t)=\frac{1}{A(0,t)}=\left(1+r_m\right)^{-mt}.
 \label{eq:discount-factor-def}
 $$
 
-The factor and each ingredient retain separate semantic meanings even when
-they appear in one expression.
+The discount factor, the periodic rate, and the compounding frequency keep
+their different meanings, also when they appear in one expression.
 
 ## Meaning before arithmetic
 
-If $D(0,2)=0.94$, then one deterministic unit paid at $t=2$ years has value
-0.94 units at valuation time. Write this local
-[[discounted-unit-value]] as $V_0(1_t)$. At the stated two-year horizon,
+Write the local [[discounted-unit-value]] as $V_0(1_t)$: the value at
+valuation time of one deterministic unit paid at $t$. If $D(0,2)=0.94$, the
+value at valuation time of one unit paid at $t=2$ years is:
 
 $$
 V_0(1_2)
@@ -69,13 +69,14 @@ V_0(1_2)
 =0.94.
 $$
 
-The number 0.94 is not a 94% annual interest rate and is not a 94% probability
-that payment occurs.
+The number 0.94 is not an annual interest rate of 94%. It is also not a
+probability of 94% that the payment occurs.
 
 <CompactExamples summary="Worked examples (3)">
   <CompactExample label="Annual compounding">
 
-At a 5% [[nominal-annual-rate]] with $m=1$ and $t=2$,
+With a [[nominal-annual-rate]] of 5%, $m=1$, and $t=2$, the discount factor
+is:
 
 $$
 D(0,2)
@@ -87,7 +88,8 @@ $$
   </CompactExample>
   <CompactExample label="Semiannual compounding">
 
-At a 6% nominal annual rate compounded twice per year for 1.5 years,
+With a nominal annual rate of 6%, compounded twice per year, the discount
+factor for 1.5 years is:
 
 $$
 D(0,1.5)
@@ -96,13 +98,14 @@ D(0,1.5)
 \approx0.915142.
 $$
 
-The time horizon contains three compounding periods; using exponent 1.5 would
-silently mix years with half-year periods.
+The horizon of 1.5 years contains three compounding periods. The exponent 1.5
+would be wrong, because it counts years, not half-year periods.
 
   </CompactExample>
   <CompactExample label="Read a small curve">
 
-Under the same 6% nominal semiannual model:
+With the same nominal annual rate of 6%, compounded semiannually, the discount
+factors are:
 
 | Time $t$, years | Periods $mt$ | Discount factor $D(0,t)$ |
 | --------------: | -----------: | -----------------------: |
@@ -111,9 +114,9 @@ Under the same 6% nominal semiannual model:
 |             1.0 |            2 |                 0.942596 |
 |             1.5 |            3 |                 0.915142 |
 
-With the stated non-negative rate, later deterministic units receive
-non-increasing discount factors. They are strictly smaller when the rate is
-strictly positive.
+If the rate is non-negative, the discount factor does not increase with the
+payment time. If the rate is positive, the discount factor decreases with the
+payment time.
 
   </CompactExample>
 </CompactExamples>
@@ -128,12 +131,11 @@ once you check.
 
 ## Model boundary and review note
 
-The rate is flat across time and cash flows are deterministic. The page does
-not yet teach spot curves, interpolation, day counts, default, recovery,
+The rate is the same for all times, and the cash flows are deterministic.
+This lesson does not teach spot curves, interpolation, day counts, default, recovery,
 liquidity, or funding.
 
 The discount-factor definition [[eq-discount-factor-def]] follows
-Tuckman & Serrat[@tuckman-serrat-fixed-income; §1.2, the discount factor as the value today of one unit paid at t; §2.4, eqs. 2.17-2.19, the semiannually compounded form]; Hull gives the same
-present-value-of-a-future-unit
-reading[@hull-options-futures; Ch. 4, "Bond Pricing"]. The lesson
+Tuckman & Serrat[@tuckman-serrat-fixed-income; §1.2, the discount factor as the value today of one unit paid at t; §2.4, eqs. 2.17-2.19, the semiannually compounded form]; Hull gives the same interpretation, the present value of one unit paid in the
+future[@hull-options-futures; Ch. 4, "Bond Pricing"]. The lesson
 stays `draft` pending human confirmation of the printed locators.

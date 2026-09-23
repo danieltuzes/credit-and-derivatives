@@ -1,6 +1,6 @@
 ---
 title: Yield to maturity as a single-rate summary
-description: Interpret the rate that reproduces a toy bond price, then price from a supplied yield.
+description: Interpret the rate that reproduces a toy bond price, then calculate the price from an input yield.
 editorialStatus: draft
 teaches:
   - bonds.yield-to-maturity.interpret
@@ -23,7 +23,8 @@ After this lesson, you should be able to:
 
 - interpret yield to maturity as a model-dependent single-rate summary;
 - state its annualization and compounding convention;
-- calculate price from a supplied yield without changing promised cash flows.
+- calculate the price from an input yield without changing the promised cash
+  flows.
 
 ## What yield means in this toy model
 
@@ -44,18 +45,18 @@ P_0
 {\left(1+y^{(m_{\mathrm B})}/m_{\mathrm B}\right)^k}.
 $$
 
-The semantic key matters because the glyph $y^{(m_{\mathrm B})}$ could
-otherwise be mistaken for a spot rate, effective annual rate, expected return,
-or another quote. Here it means only the explicitly defined bond yield.
+The symbol $y^{(m_{\mathrm B})}$ could be mistaken for a spot rate, an
+effective annual rate, an expected return, or another quote. In this course it
+means only the bond yield defined above.
 
-## Coupon rate and yield do different jobs
+## Coupon rate and yield have different roles
 
-- The coupon rate fixes the promised [[coupon-payment]] $C$ in the
+- The coupon rate determines the promised [[coupon-payment]] $C$ in the
   contract.
-- The supplied yield controls the denominators used by this pricing summary.
+- The input yield determines the denominators in the price formula.
 
-Changing the yield input does not rewrite the bond's coupons or
-[[face-value]] $F$.
+A change of the input yield does not change the coupons or the
+[[face-value]] $F$ of the bond.
 
 <CompactExamples
   summary="Worked examples"
@@ -64,8 +65,9 @@ Changing the yield input does not rewrite the bond's coupons or
 >
   <CompactExample label="Annual payments">
 
-A two-year, 5% annual-coupon bond with USD 1,000 face value pays USD 50 and USD
-1,050. At a 6% annual yield with annual compounding,
+A two-year bond with an annual coupon rate of 5% and a face value of USD 1,000
+pays USD 50 and USD 1,050. At an annual yield of 6% with annual compounding,
+the price is:
 
 $$
 P_0
@@ -74,16 +76,13 @@ P_0
 \approx\text{USD }981.67.
 $$
 
-This migrates the original skeleton's numerical example without changing its
-expected value.
-
   </CompactExample>
 
   <CompactExample label="Semiannual compounding">
 
 For the same face value and coupon rate over two years, but with semiannual
-payments, $C=25$, $m_{\mathrm B}=2$, and $n=4$. A 6% nominal annual yield gives a
-3% periodic rate:
+payments, $C=25$, $m_{\mathrm B}=2$, and $n=4$. A nominal annual yield of 6%
+gives a periodic rate of 3%, and the price is:
 
 $$
 P_0
@@ -94,14 +93,14 @@ P_0
 \approx\text{USD }981.41.
 $$
 
-The annual and semiannual examples use the same percentage number but not the
-same timing or compounding model.
+The annual and the semiannual example use the same yield number, 6%, but
+different payment times and different compounding.
 
   </CompactExample>
 
   <CompactExample label="Zero-coupon special case">
 
-With no coupons and [[maturity-time]] $T$,
+With no coupons and [[maturity-time]] $T$, the price is:
 
 $$
 P_0=\frac{F}{(1+y^{(m_{\mathrm B})}/m_{\mathrm B})^{m_{\mathrm B}T}}.
@@ -123,9 +122,10 @@ explanations appear once you check.
 
 ## Model boundary and review note
 
-This page prices from a supplied yield; it does not solve numerically for yield
-from a price. A real bond implementation also needs schedules, day counts,
-accrued interest, clean/dirty price, and potentially credit and option models.
+This lesson calculates the price from an input yield. It does not solve
+numerically for the yield from a price. A real bond implementation also needs
+schedules, day counts, accrued interest, clean and dirty prices, and possibly
+credit and option models.
 
 The single-rate definition and the $2T$-period pricing formula follow Tuckman &
 Serrat[@tuckman-serrat-fixed-income; §3.2, "Yield to Maturity": the single rate that discounts a bond's cash flows to its market price (eq. 3.5 and the general formula), also its internal rate of return]; Hull gives the same

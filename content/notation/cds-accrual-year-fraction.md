@@ -1,7 +1,7 @@
 ---
 key: cds-accrual-year-fraction
 latex: '\alpha_i'
-meaning: 'Supplied year fraction that converts an annualized spread into the premium amount for one scheduled period; a positive model input.'
+meaning: 'Input year fraction that converts an annualized spread into the premium amount for one scheduled period; a positive model input.'
 aliases:
   - premium accrual fraction
 domain: cds
@@ -22,7 +22,7 @@ editorialStatus: draft
 aiAssisted: true
 ---
 
-The accrual year fraction $\alpha_i$ is supplied directly in this lesson. It
+The accrual year fraction $\alpha_i$ is a direct input in this lesson. It
 converts the annualized [[cds-contract-spread]] into a period amount.
 
 For the lesson's equal model-year periods, it is the arithmetic difference

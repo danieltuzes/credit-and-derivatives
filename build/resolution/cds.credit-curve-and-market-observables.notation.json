@@ -49,11 +49,11 @@
       "symbol": "\\Pi^{\\mathrm{buyer}}"
     },
     {
-      "column": 46,
+      "column": 1,
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
-      "line": 34,
+      "line": 35,
       "scope": "shared",
       "symbol": "0"
     },
@@ -62,7 +62,7 @@
       "definitionId": "shared:present-value",
       "key": "present-value",
       "kind": "math",
-      "line": 38,
+      "line": 39,
       "scope": "shared",
       "symbol": "PV_0"
     },
@@ -71,16 +71,16 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-buyer-discounted-cash-flows",
       "key": "cds-buyer-discounted-cash-flows",
       "kind": "math",
-      "line": 39,
+      "line": 40,
       "scope": "local",
       "symbol": "\\Pi^{\\mathrm{buyer}}"
     },
     {
-      "column": 40,
+      "column": 50,
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
       "kind": "prose",
-      "line": 44,
+      "line": 45,
       "scope": "shared",
       "symbol": "U_0"
     },
@@ -89,7 +89,7 @@
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
       "kind": "math",
-      "line": 49,
+      "line": 51,
       "scope": "shared",
       "symbol": "U_0"
     },
@@ -98,7 +98,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-buyer-discounted-cash-flows",
       "key": "cds-buyer-discounted-cash-flows",
       "kind": "math",
-      "line": 50,
+      "line": 52,
       "scope": "local",
       "symbol": "\\Pi^{\\mathrm{buyer}}"
     },
@@ -107,7 +107,7 @@
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "math",
-      "line": 51,
+      "line": 53,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
@@ -116,16 +116,16 @@
       "definitionId": "shared:cds-premium-leg-present-value",
       "key": "cds-premium-leg-present-value",
       "kind": "math",
-      "line": 52,
+      "line": 54,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prem}}"
     },
     {
-      "column": 13,
+      "column": 14,
       "definitionId": "shared:survival-probability",
       "key": "survival-probability",
       "kind": "prose",
-      "line": 70,
+      "line": 73,
       "scope": "shared",
       "symbol": "S(0,t)"
     },
@@ -134,7 +134,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "prose",
-      "line": 79,
+      "line": 83,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -143,7 +143,7 @@
       "definitionId": "shared:cds-market-standard-quote",
       "key": "cds-market-standard-quote",
       "kind": "prose",
-      "line": 94,
+      "line": 100,
       "scope": "shared",
       "symbol": "s_{\\mathrm{MSQ}}"
     },
@@ -152,7 +152,7 @@
       "definitionId": "shared:discount-factor",
       "key": "discount-factor",
       "kind": "prose",
-      "line": 95,
+      "line": 101,
       "scope": "shared",
       "symbol": "D(0,t)"
     },
@@ -161,7 +161,7 @@
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "prose",
-      "line": 96,
+      "line": 102,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -170,7 +170,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "prose",
-      "line": 96,
+      "line": 102,
       "scope": "shared",
       "symbol": "N"
     },
@@ -179,7 +179,7 @@
       "definitionId": "shared:recovery-rate",
       "key": "recovery-rate",
       "kind": "prose",
-      "line": 97,
+      "line": 103,
       "scope": "shared",
       "symbol": "R"
     },
@@ -188,7 +188,7 @@
       "definitionId": "shared:loss-given-default",
       "key": "loss-given-default",
       "kind": "prose",
-      "line": 97,
+      "line": 103,
       "scope": "shared",
       "symbol": "\\mathrm{LGD}"
     },
@@ -197,7 +197,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "prose",
-      "line": 99,
+      "line": 105,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -206,7 +206,7 @@
       "definitionId": "shared:cds-par-spread",
       "key": "cds-par-spread",
       "kind": "prose",
-      "line": 99,
+      "line": 105,
       "scope": "shared",
       "symbol": "s^{\\star}"
     },
@@ -215,7 +215,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-index",
       "key": "cds-tenor-index",
       "kind": "prose",
-      "line": 125,
+      "line": 131,
       "scope": "local",
       "symbol": "k"
     },
@@ -224,7 +224,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-count",
       "key": "cds-tenor-count",
       "kind": "prose",
-      "line": 126,
+      "line": 132,
       "scope": "local",
       "symbol": "K"
     },
@@ -233,7 +233,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-maturity",
       "key": "cds-tenor-maturity",
       "kind": "math",
-      "line": 127,
+      "line": 133,
       "scope": "local",
       "symbol": "T_k"
     },
@@ -242,34 +242,34 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-maturity",
       "key": "cds-tenor-maturity",
       "kind": "math",
-      "line": 127,
+      "line": 133,
       "scope": "local",
       "symbol": "T_k"
     },
     {
-      "column": 1,
+      "column": 44,
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-quote",
       "key": "cds-tenor-quote",
       "kind": "prose",
-      "line": 130,
+      "line": 136,
       "scope": "local",
       "symbol": "s_k"
     },
     {
-      "column": 11,
+      "column": 1,
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-upfront-fraction",
       "key": "cds-tenor-upfront-fraction",
       "kind": "prose",
-      "line": 131,
+      "line": 138,
       "scope": "local",
       "symbol": "u_k"
     },
     {
-      "column": 1,
+      "column": 11,
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-segment-hazard-rate",
       "key": "cds-segment-hazard-rate",
       "kind": "prose",
-      "line": 146,
+      "line": 155,
       "scope": "local",
       "symbol": "\\lambda_k"
     },
@@ -278,7 +278,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-maturity",
       "key": "cds-tenor-maturity",
       "kind": "math",
-      "line": 147,
+      "line": 156,
       "scope": "local",
       "symbol": "T_k"
     },
@@ -287,7 +287,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-maturity",
       "key": "cds-tenor-maturity",
       "kind": "math",
-      "line": 147,
+      "line": 156,
       "scope": "local",
       "symbol": "T_k"
     },
@@ -296,7 +296,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-maturity",
       "key": "cds-tenor-maturity",
       "kind": "math",
-      "line": 148,
+      "line": 157,
       "scope": "local",
       "symbol": "T_k"
     },
@@ -305,7 +305,7 @@
       "definitionId": "shared:survival-probability",
       "key": "survival-probability",
       "kind": "math",
-      "line": 152,
+      "line": 161,
       "scope": "shared",
       "symbol": "S(0,t)"
     },
@@ -314,7 +314,7 @@
       "definitionId": "shared:survival-probability",
       "key": "survival-probability",
       "kind": "math",
-      "line": 153,
+      "line": 162,
       "scope": "shared",
       "symbol": "S(0,t)"
     },
@@ -323,7 +323,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-segment-hazard-rate",
       "key": "cds-segment-hazard-rate",
       "kind": "math",
-      "line": 154,
+      "line": 163,
       "scope": "local",
       "symbol": "\\lambda_k"
     },
@@ -332,7 +332,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-maturity",
       "key": "cds-tenor-maturity",
       "kind": "math",
-      "line": 155,
+      "line": 164,
       "scope": "local",
       "symbol": "T_k"
     },
@@ -341,7 +341,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-maturity",
       "key": "cds-tenor-maturity",
       "kind": "math",
-      "line": 155,
+      "line": 164,
       "scope": "local",
       "symbol": "T_k"
     },
@@ -350,16 +350,16 @@
       "definitionId": "shared:survival-probability",
       "key": "survival-probability",
       "kind": "math",
-      "line": 157,
+      "line": 166,
       "scope": "shared",
       "symbol": "S(0,t)"
     },
     {
-      "column": 43,
+      "column": 19,
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-flat-tenor-hazard-rate",
       "key": "cds-flat-tenor-hazard-rate",
       "kind": "prose",
-      "line": 174,
+      "line": 184,
       "scope": "local",
       "symbol": "\\lambda^{\\mathrm{flat}}_k"
     },
@@ -368,7 +368,7 @@
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "math",
-      "line": 193,
+      "line": 204,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
@@ -377,7 +377,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-maturity",
       "key": "cds-tenor-maturity",
       "kind": "math",
-      "line": 194,
+      "line": 205,
       "scope": "local",
       "symbol": "T_k"
     },
@@ -386,7 +386,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-segment-hazard-rate",
       "key": "cds-segment-hazard-rate",
       "kind": "math",
-      "line": 195,
+      "line": 206,
       "scope": "local",
       "symbol": "\\lambda_k"
     },
@@ -395,7 +395,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-segment-hazard-rate",
       "key": "cds-segment-hazard-rate",
       "kind": "math",
-      "line": 196,
+      "line": 207,
       "scope": "local",
       "symbol": "\\lambda_k"
     },
@@ -404,7 +404,7 @@
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "math",
-      "line": 197,
+      "line": 208,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -413,7 +413,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 198,
+      "line": 209,
       "scope": "shared",
       "symbol": "N"
     },
@@ -422,7 +422,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 199,
+      "line": 210,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -431,7 +431,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-maturity",
       "key": "cds-tenor-maturity",
       "kind": "math",
-      "line": 200,
+      "line": 211,
       "scope": "local",
       "symbol": "T_k"
     },
@@ -440,7 +440,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-segment-hazard-rate",
       "key": "cds-segment-hazard-rate",
       "kind": "math",
-      "line": 201,
+      "line": 212,
       "scope": "local",
       "symbol": "\\lambda_k"
     },
@@ -449,7 +449,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-segment-hazard-rate",
       "key": "cds-segment-hazard-rate",
       "kind": "math",
-      "line": 202,
+      "line": 213,
       "scope": "local",
       "symbol": "\\lambda_k"
     },
@@ -458,7 +458,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-upfront-fraction",
       "key": "cds-tenor-upfront-fraction",
       "kind": "math",
-      "line": 203,
+      "line": 214,
       "scope": "local",
       "symbol": "u_k"
     },
@@ -467,16 +467,16 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 204,
+      "line": 215,
       "scope": "shared",
       "symbol": "N"
     },
     {
-      "column": 20,
+      "column": 40,
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "math",
-      "line": 240,
+      "line": 254,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -485,7 +485,7 @@
       "definitionId": "shared:recovery-rate",
       "key": "recovery-rate",
       "kind": "math",
-      "line": 242,
+      "line": 256,
       "scope": "shared",
       "symbol": "R"
     },
@@ -494,7 +494,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-quote",
       "key": "cds-tenor-quote",
       "kind": "math",
-      "line": 243,
+      "line": 257,
       "scope": "local",
       "symbol": "s_k"
     },
@@ -503,7 +503,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-quote",
       "key": "cds-tenor-quote",
       "kind": "math",
-      "line": 243,
+      "line": 257,
       "scope": "local",
       "symbol": "s_k"
     },
@@ -512,7 +512,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-quote",
       "key": "cds-tenor-quote",
       "kind": "math",
-      "line": 244,
+      "line": 258,
       "scope": "local",
       "symbol": "s_k"
     },
@@ -521,7 +521,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-maturity",
       "key": "cds-tenor-maturity",
       "kind": "math",
-      "line": 245,
+      "line": 259,
       "scope": "local",
       "symbol": "T_k"
     },
@@ -530,7 +530,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-maturity",
       "key": "cds-tenor-maturity",
       "kind": "math",
-      "line": 245,
+      "line": 259,
       "scope": "local",
       "symbol": "T_k"
     },
@@ -539,7 +539,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-maturity",
       "key": "cds-tenor-maturity",
       "kind": "math",
-      "line": 246,
+      "line": 260,
       "scope": "local",
       "symbol": "T_k"
     },
@@ -548,7 +548,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-quote",
       "key": "cds-tenor-quote",
       "kind": "math",
-      "line": 250,
+      "line": 264,
       "scope": "local",
       "symbol": "s_k"
     },
@@ -557,7 +557,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-flat-tenor-hazard-rate",
       "key": "cds-flat-tenor-hazard-rate",
       "kind": "math",
-      "line": 250,
+      "line": 264,
       "scope": "local",
       "symbol": "\\lambda^{\\mathrm{flat}}_k"
     },
@@ -566,7 +566,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 250,
+      "line": 264,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -575,7 +575,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-tenor-upfront-fraction",
       "key": "cds-tenor-upfront-fraction",
       "kind": "math",
-      "line": 250,
+      "line": 264,
       "scope": "local",
       "symbol": "u_k"
     },
@@ -584,7 +584,7 @@
       "definitionId": "shared:cds-upfront-amount",
       "key": "cds-upfront-amount",
       "kind": "math",
-      "line": 250,
+      "line": 264,
       "scope": "shared",
       "symbol": "U_0"
     },
@@ -593,7 +593,7 @@
       "definitionId": "shared:survival-probability",
       "key": "survival-probability",
       "kind": "math",
-      "line": 250,
+      "line": 264,
       "scope": "shared",
       "symbol": "S(0,t)"
     },
@@ -602,7 +602,7 @@
       "definitionId": "page:cds.credit-curve-and-market-observables:cds-segment-hazard-rate",
       "key": "cds-segment-hazard-rate",
       "kind": "math",
-      "line": 269,
+      "line": 284,
       "scope": "local",
       "symbol": "\\lambda_k"
     },
@@ -611,7 +611,7 @@
       "definitionId": "shared:survival-probability",
       "key": "survival-probability",
       "kind": "math",
-      "line": 269,
+      "line": 284,
       "scope": "shared",
       "symbol": "S(0,t)"
     },
@@ -620,7 +620,7 @@
       "definitionId": "shared:cds-premium-annuity",
       "key": "cds-premium-annuity",
       "kind": "math",
-      "line": 269,
+      "line": 284,
       "scope": "shared",
       "symbol": "A_0^{\\mathrm{prem}}"
     },
@@ -629,7 +629,7 @@
       "definitionId": "shared:cds-protection-leg-present-value",
       "key": "cds-protection-leg-present-value",
       "kind": "math",
-      "line": 269,
+      "line": 284,
       "scope": "shared",
       "symbol": "PV_0^{\\mathrm{prot}}"
     },
@@ -638,7 +638,7 @@
       "definitionId": "shared:cds-notional",
       "key": "cds-notional",
       "kind": "math",
-      "line": 269,
+      "line": 284,
       "scope": "shared",
       "symbol": "N"
     },
@@ -647,7 +647,7 @@
       "definitionId": "shared:cds-par-spread",
       "key": "cds-par-spread",
       "kind": "math",
-      "line": 269,
+      "line": 284,
       "scope": "shared",
       "symbol": "s^{\\star}"
     },
@@ -656,7 +656,7 @@
       "definitionId": "shared:cds-par-spread",
       "key": "cds-par-spread",
       "kind": "prose",
-      "line": 345,
+      "line": 365,
       "scope": "shared",
       "symbol": "s^{\\star}"
     }

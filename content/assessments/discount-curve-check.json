@@ -31,7 +31,7 @@
       "type": "single-choice",
       "competencyId": "rates.discount-curve.interpret",
       "evidenceKind": "transfer",
-      "prompt": "Can a valid supplied curve contain D(0,1) = 1.01 in this lesson?",
+      "prompt": "Can a valid input curve contain D(0,1) = 1.01 in this lesson?",
       "options": [
         {
           "id": "yes-negative",

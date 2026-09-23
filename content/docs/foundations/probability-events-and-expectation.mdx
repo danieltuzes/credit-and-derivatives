@@ -1,6 +1,6 @@
 ---
 title: Events, conditional probability, and expectation
-description: Build expected values from disjoint events without hiding what happens inside an interval.
+description: Calculate expected values from disjoint events, including values that vary inside an event.
 editorialStatus: draft
 teaches:
   - probability.events.interpret
@@ -11,7 +11,7 @@ assumptions:
   - Event probabilities are non-negative and sum to one
   - A conditional probability is calculated only when the conditioning event has positive probability
   - Every random value and conditional event mean used in an example is finite
-  - Monetary examples use synthetic USD amounts and do not estimate real-world or pricing probabilities
+  - Monetary examples use invented USD amounts and do not estimate real-world or pricing probabilities
 notation:
   uses: []
   local:
@@ -118,36 +118,36 @@ After this lesson, you should be able to:
 An **outcome** is one possible result of a modeled experiment. An **event** is
 a specified set of outcomes. Use the local [[probability-event]] $A$ for
 one such set and the local [[probability-measure]] $\mathbb{P}$ for the
-rule that assigns probabilities to events. The letter $\mathbb{P}$ is generic
-on this page. A later finance lesson uses $\mathbb{P}$ specifically for
+rule that assigns probabilities to events. In this lesson, $\mathbb{P}$ is a general
+probability measure. A later finance lesson uses $\mathbb{P}$ only for
 real-world probabilities and introduces a different symbol for pricing
-probabilities; this page does not silently choose between them.
+probabilities. This lesson does not choose between the two.
 
-A useful finite partition contains events that are:
+In this lesson, a finite partition is a finite list of events that are:
 
 - **disjoint:** no outcome belongs to two different partition events; and
 - **exhaustive:** every possible outcome belongs to one of them.
 
 Use the local [[probability-event-index]] $j$ to select an event and the
 local [[probability-partition-size]] $m$ to count the events. For a
-disjoint and exhaustive list $A_1,\ldots,A_m$, additivity gives
+disjoint and exhaustive list $A_1,\ldots,A_m$, additivity of the probability
+measure gives the sum of the event probabilities:
 
 $$
 \sum_{j=1}^{m}\mathbb{P}(A_j)=1.
 $$
 
-If events overlap, adding their probabilities can double-count outcomes. If
-they are not exhaustive, the sum leaves some outcomes unrepresented. These
+If the events overlap, the sum of their probabilities can count some outcomes
+twice. If the events are not exhaustive, the sum omits some outcomes. These
 event and additivity definitions follow Shreve's probability-space
 treatment[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.1, printed pp. 1-3, Def. 1.1.2 and eqs. 1.1.2-1.1.5].
 
-## Conditional probability changes the population
+## Conditional probability restricts the outcomes
 
-Suppose the question asks for event $A$ **given** another event. Write the
-conditioning event as the non-canonical visual variant
-$\explain{probability-event}{B}$. When
-$\mathbb{P}(\explain{probability-event}{B})>0$, conditional
-probability is
+Suppose the question asks for the probability of event $A$ **given** another
+event. Write the conditioning event as $\explain{probability-event}{B}$. When
+$\mathbb{P}(\explain{probability-event}{B})>0$, the conditional probability
+of $A$ given $\explain{probability-event}{B}$ is defined as:
 
 $$
 \mathbb{P}(A\mid\explain{probability-event}{B})
@@ -155,20 +155,20 @@ $$
 {\mathbb{P}(\explain{probability-event}{B})}.
 $$
 
-The denominator is the probability of the population retained by the phrase
-“given $\explain{probability-event}{B}$.” For example, if 30% of all outcomes
-are in $\explain{probability-event}{B}$ and 12% are in both $A$ and
-$\explain{probability-event}{B}$, then
+The denominator is the probability of the outcomes that the condition “given
+$\explain{probability-event}{B}$” keeps. For example, suppose 30% of all
+outcomes are in $\explain{probability-event}{B}$, and 12% are in both $A$ and
+$\explain{probability-event}{B}$. Then the conditional probability is:
 
 $$
 \mathbb{P}(A\mid\explain{probability-event}{B})
 =\frac{0.12}{0.30}=0.40.
 $$
 
-In a default model, “default during this period given survival to its start”
-uses only the outcomes that survived to the period start as its denominator.
-That conditional question is conceptually different from unconditional default
-by a horizon. Shreve develops conditioning as averaging within the information
+In a default model, consider the probability of “default during this period
+given survival to its start.” Its denominator is the probability of survival to
+the start of the period. This conditional probability is different from the
+unconditional probability of default by a horizon. Shreve develops conditioning as averaging within the information
 or event retained by the condition[@shreve-stochastic-calculus-finance-ii; Ch. 2 §2.3, printed pp. 66-69, eqs. 2.3.4-2.3.17 and Def. 2.3.1].
 
 ## Expectation from disjoint events
@@ -181,12 +181,15 @@ $\mathbb{E}$ reduces to the weighted sum below. The expectation has the same
 unit as $X$; a random USD payment has an expected value in USD, not in
 percent.
 
-There are two related formulas, and their difference matters.
+This section gives two formulas. The first formula requires $X$ to be
+constant on each event. The second formula does not.
 
 ### Exact value on every event
 
 First suppose $X$ is constant on every partition event. Use the local
-[[probability-event-value]] $x_j$ for its value on $A_j$. Then
+[[probability-event-value]] $x_j$ for its value on $A_j$. Then the
+expectation is the sum of the event values, each multiplied by the probability
+of its event:
 
 $$
 \mathbb{E}[X]
@@ -195,15 +198,14 @@ $$
 \label{eq:expectation-event-values}
 $$
 
-Equation [[eq-expectation-event-values]] makes the operation explicit as a sum
-of event values multiplied by their probabilities. Shreve states the finite-valued expectation in
-this form[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.3, printed pp. 13-18, Thms. 1.3.1 and 1.3.4].
+Shreve states the expectation of a finite-valued random variable in the form
+of [[eq-expectation-event-values]][@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.3, printed pp. 13-18, Thms. 1.3.1 and 1.3.4].
 
 ### Value varies inside an event
 
-If $X$ is not constant inside $A_j$, one representative value is not generally
-exact. For each positive-probability event, replace it with the conditional
-mean inside that event:
+If $X$ is not constant inside $A_j$, one representative value is in general not
+exact. For each event with positive probability, replace the value with the
+conditional mean of $X$ inside that event. The expectation is then:
 
 $$
 \mathbb{E}[X]
@@ -211,8 +213,8 @@ $$
 \label{eq:expectation-conditional-events}
 $$
 
-An event with zero probability contributes zero and can be omitted; its
-event-conditioned mean need not be defined.
+An event with zero probability contributes zero to the sum and can be omitted.
+Its conditional mean need not be defined.
 
 The partition identity [[eq-expectation-conditional-events]] follows by splitting an expectation across disjoint events and
 using the partial-averaging property of conditional expectation. Shreve gives
@@ -222,7 +224,7 @@ conditional expectation[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.3, pri
 <CompactExamples summary="Worked examples (3)">
   <CompactExample label="Constant value on each event">
 
-Suppose $X$ is a synthetic payment in USD. It equals USD 0, USD 50, or USD
+Suppose $X$ is a payment in USD. It equals USD 0, USD 50, or USD
 100 on three disjoint exhaustive events with probabilities 0.10, 0.20, and
 0.70.
 
@@ -232,7 +234,7 @@ Suppose $X$ is a synthetic payment in USD. It equals USD 0, USD 50, or USD
 | $A_2$ |                    50 |        0.20 |             10.00 |
 | $A_3$ |                   100 |        0.70 |             70.00 |
 
-Therefore,
+The expectation is the sum of the contributions:
 
 $$
 \mathbb{E}[X]
@@ -240,15 +242,16 @@ $$
 =\text{USD }80.
 $$
 
-USD 80 is a probability-weighted average, not a claim that USD 80 is one of
-the possible realized payments.
+The expectation of USD 80 is a probability-weighted average. An expectation
+need not be one of the possible payments, and in this example it is not.
 
   </CompactExample>
   <CompactExample label="Conditional means inside events">
 
-Suppose the same three event probabilities are 0.01, 0.02, and 0.97, but the
-payment varies inside each event. Its conditional means are USD 40, USD 30,
-and USD 0. The exact expectation from the supplied conditional means is
+Suppose three disjoint exhaustive events have probabilities 0.01, 0.02, and
+0.97, and the payment varies inside each event. The conditional means of the
+payment are USD 40, USD 30, and USD 0. The exact expectation from these
+conditional means is:
 
 $$
 \mathbb{E}[X]
@@ -256,24 +259,24 @@ $$
 =\text{USD }1.00.
 $$
 
-No claim is made that every outcome in the first event pays USD 40. That is
-the event's average payment.
+USD 40 is the average payment inside the first event. The example does not
+claim that every outcome in the first event pays USD 40.
 
   </CompactExample>
   <CompactExample label="Default inside a period">
 
 For a CDS period, one event can be “default occurs in this period.” A
 protection payment discounted at the actual default time varies within that
-event. Accrued premium also varies because default near the period end accrues
-more than default near its start.
+event. Accrued premium also varies within the event, because a default near
+the end of the period accrues more premium than a default near its start.
 
-Using one midpoint value for the whole interval is therefore an approximation.
-The exact event contribution is the interval-default probability multiplied by
-the conditional expected discounted payment inside the interval. Refining the
-timeline into smaller disjoint default-time buckets produces a finer sum; in a
-continuous-time model, its limit is written as an integral over default time.
-The later CDS lesson supplies the hazard-based probabilities and cash-flow
-formulas for that integral.
+So one midpoint value for the whole period is an approximation. The exact
+contribution of the event is the interval default probability multiplied by the
+conditional mean of the discounted payment inside the period. If the period is
+divided into smaller disjoint default-time intervals, the sum has more terms.
+In a continuous-time model, the limit of this sum is an integral over the
+default time. The later CDS lesson gives the hazard-rate probabilities and the
+cash-flow formulas for that integral.
 
   </CompactExample>
 </CompactExamples>
@@ -288,10 +291,11 @@ appear once you check.
 
 ## Model boundary and review note
 
-This page teaches finite partitions and the idea of a refinement limit. It does
+This lesson teaches finite partitions and the idea of the limit of a
+refinement. It does
 not construct probability spaces, prove measure-theoretic integration, estimate
 probabilities from data, calibrate risk-neutral probabilities, or evaluate the
-default-time integrals used by a CDS model. A later page distinguishes
+default-time integrals used by a CDS model. A later lesson distinguishes
 real-world and risk-neutral measures.
 
 The lesson paraphrases the cited textbook; it remains `draft` pending human

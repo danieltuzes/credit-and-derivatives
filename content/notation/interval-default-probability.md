@@ -1,7 +1,7 @@
 ---
 key: interval-default-probability
 latex: '\Delta q_i'
-meaning: 'Probability assigned by the model to first default during one stated time interval, conditional only through the supplied survival curve construction.'
+meaning: 'Probability assigned by the model to first default during one stated time interval, conditional only through the input survival curve construction.'
 aliases:
   - marginal default probability
 domain: credit
@@ -26,5 +26,5 @@ For two ordered endpoints, the interval default probability is the earlier
 [[survival-probability]] minus the later survival probability. Lessons add
 an explicit schedule index when they apply that subtraction.
 
-This draft assumes at most one modeled default and a non-increasing supplied
+This draft assumes at most one modeled default and a non-increasing input
 survival curve.

@@ -8,9 +8,9 @@ teaches:
 assumptions:
   - Standalone European option on one defaultable fixed-cash-flow bond
   - Issuer default in any lattice period before exercise extinguishes the option with zero option rebate
-  - The underlying bond may pay a separately supplied non-negative recovery cash amount at the next lattice date after period default
+  - The underlying bond may pay a separate input non-negative recovery cash amount at the next lattice date after period default
   - Exercise occurs immediately after any scheduled surviving bond cash flow at expiry; strike and alive bond values are dirty cash amounts
-  - Supplied risk-neutral up weights, conditional survival probabilities, recoveries, and one-period discount factors; no calibration or real-world forecast
+  - Input risk-neutral up weights, conditional survival probabilities, recoveries, and one-period discount factors; no calibration or real-world forecast
   - Conditional survival/default is applied at the current node before the next rate-state branch; no simultaneous-event ambiguity inside a period
   - No counterparty default, early exercise, option rebate, restructuring, settlement delay, correlation calibration, liquidity, tax, or funding adjustment
 notation:
@@ -81,22 +81,24 @@ import Diagram from 'explico/components/diagram/Diagram.astro';
 
 ## Contract definition
 
-Here “knockout” has one precise trigger: if the issuer defaults before the
-European exercise instant, the option is extinguished and pays no option
-rebate. This is not a barrier tied to the bond's market price.
+In this lesson, “knockout” has one trigger: if the issuer defaults before the
+exercise time, the option is extinguished and pays no rebate. This knockout is
+not a barrier on the market price of the bond.
 
-The underlying bond is a different claim. It may still pay recovery after
-default. That recovery belongs in the bond tree, never in the option's default
-branch.
+The underlying bond is a different claim. The bond can still pay recovery after
+default. So the recovery is part of the bond value, and it is never part of the
+option value in the default state.
 
 ## Value the underlying bond first
 
-At an alive node [[lattice-time-index]] $i$,
-[[lattice-state-index]] $j$, use the local node discount factor $d_{i,j}$, local
-risk-neutral up weight $q_{i,j}$, [[conditional-node-survival-probability]]
-$s_{i,j}$, next surviving cash flow $CF^B_{i+1}$, and local bond recovery
-$R^B_{i,j}$. First collect the next-time value conditional on survival in the
-local [[surviving-bond-continuation-value]]:
+An alive node is a node at which the issuer has not defaulted. At an alive node
+with [[lattice-time-index]] $i$ and [[lattice-state-index]] $j$, use the
+local node discount factor $d_{i,j}$, the local risk-neutral up weight
+$q_{i,j}$, the [[conditional-node-survival-probability]] $s_{i,j}$, the next
+surviving cash flow $CF^B_{i+1}$, and the local bond recovery $R^B_{i,j}$.
+The local [[surviving-bond-continuation-value]] is the bond value at the next
+time, conditional on survival. It is the next surviving cash flow plus the
+expected alive bond value:
 
 $$
 \explain{surviving-bond-continuation-value}{H^B_{i,j}}
@@ -108,8 +110,9 @@ $$
 \label{eq:surviving-bond-continuation}
 $$
 
-The [[alive-bond-value]] then combines the survival value from
-[[eq-surviving-bond-continuation]] with the separate default recovery:
+The [[alive-bond-value]] is the discounted expectation over survival and
+default. Survival gives the continuation value from
+[[eq-surviving-bond-continuation]], and default gives the recovery:
 
 $$
 \explain{alive-bond-value}{B^{\mathrm{alive}}_{i,j}}
@@ -123,12 +126,13 @@ $$
 \label{eq:alive-bond-recursion}
 $$
 
-Values are ex-cash-flow at each node. Recovery is approximated as paid at the
-next lattice date, an explicit simplification.
+The values at each node are ex-cash-flow. The model assumes that recovery is
+paid at the next lattice date. This timing is a simplification.
 
 ## Apply the knockout to option continuation
 
-At call expiry, conditional on the issuer still being alive,
+At call expiry, if the issuer has not defaulted, the option value is the call
+payoff:
 
 $$
 \explain{knockout-bond-option-value}{O^{\mathrm{KO}}_{T,j}}
@@ -138,7 +142,9 @@ $$
 \label{eq:knockout-terminal-payoff}
 $$
 
-Before expiry, the default branch is zero:
+Before expiry, the option value in the default state is zero. So the option
+value at a node is the discounted, survival-weighted expectation of the option
+values at the two successor nodes:
 
 $$
 \explain{knockout-bond-option-value}{O^{\mathrm{KO}}_{i,j}}
@@ -153,9 +159,10 @@ $$
 \label{eq:knockout-option-recursion}
 $$
 
-Unlike [[eq-alive-bond-recursion]], [[eq-knockout-option-recursion]] has no
-recovery term. If survival at the current node is zero, the option value is
-zero even when the bond recovery is positive.
+[[eq-knockout-option-recursion]] has no recovery term, unlike
+[[eq-alive-bond-recursion]]. If the conditional survival probability at the
+current node is zero, the option value is zero, also when the bond recovery is
+positive.
 
 <Diagram
   id="knockout-bond-option-flow"
@@ -164,22 +171,26 @@ zero even when the bond recovery is positive.
   nodes={[
     { id: 'bond', text: 'Value the alive bond with recovery' },
     { id: 'terminal', text: 'Apply the alive-state option payoff' },
-    { id: 'option', text: 'Induct option values with a zero default branch' },
+    {
+      id: 'option',
+      text: 'Apply backward induction with zero option value at default',
+    },
   ]}
   edges={[
     { from: 'bond', to: 'terminal' },
     { from: 'terminal', to: 'option' },
   ]}
-  description="Value the underlying bond first, including its separately supplied recovery. At option expiry apply the payoff only in alive states. Before expiry discount only survival-weighted option continuation because the default branch is zero."
+  description="Value the underlying bond first, including its separate input recovery. At option expiry, apply the payoff only in alive states. Before expiry, discount only the survival-weighted option values, because the option value at default is zero."
 />
 
 ## Worked example
 
-Consider two annual steps. At option expiry, the supplied final-period inputs
-give alive bond values USD 82.80 and USD 88.65; a call strike of USD 85 therefore
-gives terminal option values USD 0 and USD 3.65 by
-[[eq-knockout-terminal-payoff]]. With valuation-time discount factor 0.95,
-survival probability 0.90, and up weight 0.50,
+Consider a lattice with two annual steps. At option expiry, the input values of
+the final period give alive bond values of USD 82.80 and USD 88.65. With a call
+strike of USD 85, [[eq-knockout-terminal-payoff]] gives terminal option values
+of USD 0 and USD 3.65. At valuation time, the discount factor is 0.95, the
+conditional survival probability is 0.90, and the up weight is 0.50. The option
+values are:
 
 $$
 \begin{aligned}
@@ -191,24 +202,25 @@ O^{\mathrm{KO}}_{0,0}
 \end{aligned}
 $$
 
-The domain function `valueDefaultKnockoutBondOption` performs the same ordered
-bond and option recursions.
+The domain function `valueDefaultKnockoutBondOption` performs the same bond
+recursion and option recursion, in the same order.
 
-## Parity changes with the contingency
+## Put-call parity with a default knockout
 
-Vanilla put-call parity does not automatically survive this contract change.
-Call minus put is zero in a pre-expiry default state, so its matching synthetic
-forward must also be extinguished by the same default event. A default-free
-forward is not the state-by-state match.
+Put-call parity for options without a knockout does not hold unchanged for this
+contract. In a default state before expiry, the call value minus the put value
+is zero. So the matching synthetic forward must also be extinguished by the
+same default event. A default-free forward does not match the options in every
+state.
 
 ## Model and source boundary
 
-Hull describes European bond options and separately describes credit
-derivatives whose forwards/options cease to exist after reference-entity
-default. The exact combination here—an issuer-default knockout option on the
-issuer's bond—is a transparent teaching synthesis implementing the stated
-contract, not a claim that all bond options use this convention. The joint
-rate-credit lattice is supplied rather than calibrated.
+Hull describes European bond options. Separately, Hull describes CDS forwards
+and CDS options that cease to exist if the reference entity defaults. This
+lesson combines the two descriptions for teaching: an option on the issuer's
+bond that is knocked out by issuer default. The lesson implements the stated
+contract. It does not claim that all bond options use this convention. The
+joint lattice for rates and credit is an input; it is not calibrated.
 
 ## Check your understanding
 
@@ -216,8 +228,8 @@ rate-credit lattice is supplied rather than calibrated.
 
 ## Sources
 
-Bond-option cash-price conventions follow Hull, Chapter 28 §28.1; the analogous
-default-extinguishment convention is described for CDS forwards and options in
-Chapter 24 §24.5; backward induction follows Chapter 12
-[@hull-options-futures]. Recovery conventions must state base and timing, as
-emphasized by the fixed-income treatment [@tuckman-serrat-fixed-income].
+The bond-option cash-price conventions follow Hull, Chapter 28 §28.1. Hull
+describes the analogous extinguishment at default for CDS forwards and CDS
+options in Chapter 24 §24.5. Backward induction follows Chapter 12
+[@hull-options-futures]. A recovery convention must state its base and its
+timing, as the fixed-income treatment emphasizes [@tuckman-serrat-fixed-income].

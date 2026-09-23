@@ -16,7 +16,7 @@ notation:
   local:
     - key: cds-liquid-tenor-maturity
       latex: 'T_L'
-      meaning: 'Maturity of the most liquid standard contract on the reference entity, whose market-standard quote supplies the single market level of the flat-hazard model.'
+      meaning: 'Maturity of the most liquid standard contract on the reference entity, whose market-standard quote gives the single market level of the flat-hazard model.'
       units: model-years from valuation time
       sources:
         - id: tuckman-serrat-fixed-income
@@ -175,8 +175,8 @@ import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
 
 After this lesson, you should be able to:
 
-- calculate a CDS position's signed value change for a one basis point rise in
-  the liquid tenor's quote, re-solving the hazard rate rather than holding the
+- calculate a CDS position's signed value change for a one basis point increase
+  in the liquid tenor's quote, re-solving the hazard rate rather than holding the
   premium annuity fixed;
 - explain why, in a one-factor model, risk measured against the
   market-standard quote, the upfront, or the par spread is the same risk;
@@ -186,22 +186,24 @@ After this lesson, you should be able to:
 
 ## One market level moves everything
 
-The preceding lessons value every contract on a reference entity off one flat
-[[hazard-rate]] $\lambda$, and the quote lesson showed how the market level
-sets it: the [[cds-market-standard-quote]] $s_{\mathrm{MSQ}}$ of the standard
-contract is treated as a par spread and $\lambda$ is the root of
-[[cds/market-standard-quote-and-upfront#eq-cds-msq-calibration]]. Take that
-contract to be the most liquid one, with the local
-[[cds-liquid-tenor-maturity]] $T_L$, in practice usually five years
+The preceding lessons value every contract on a reference entity with one flat
+[[hazard-rate]] $\lambda$. The quote lesson showed how the market level
+determines $\lambda$: the [[cds-market-standard-quote]] $s_{\mathrm{MSQ}}$ of
+the standard contract is treated as a par spread, and $\lambda$ is the root of
+[[cds/market-standard-quote-and-upfront#eq-cds-msq-calibration]]. In this
+lesson, that contract is the most liquid one, with the local
+[[cds-liquid-tenor-maturity]] $T_L$. In practice, the most liquid tenor is
+usually five years
 [@hull-options-futures; Ch. 24 §24.1, printed p. 549]
 [@tuckman-serrat-fixed-income; Ch. 14 §14.5, printed p. 365].
 
-A position is one contract on the same name with its own maturity, fixed
-coupon, and positive local [[cds-position-notional]] $N_{\mathrm{pos}}$.
+A position is one contract on the same reference entity with its own maturity,
+fixed coupon, and positive local [[cds-position-notional]] $N_{\mathrm{pos}}$.
 Its legs are the exact default-time expectations of the legs lesson, evaluated
 at the same $\lambda$. Let the local [[cds-position-side]] $\sigma$ be $+1$
 for bought protection and $-1$ for sold protection. The local
-[[cds-position-value]] is
+[[cds-position-value]] is the protection-buyer value of the legs lesson,
+multiplied by the side:
 
 $$
 \explain{cds-position-value}{V^{\mathrm{pos}}}
@@ -209,18 +211,17 @@ $$
 \left(
 \explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}
 -\explain{cds-premium-leg-present-value}{PV_0^{\mathrm{prem}}}
-\right),
+\right).
 \label{eq:cds-position-value}
 $$
 
-the protection-buyer value of the legs lesson with the sign of the side
-attached. Hull marks a CDS to market in the same way, with opposite signs for
+Hull marks a CDS to market in the same way, with opposite signs for
 buyer and seller [@hull-options-futures; Ch. 24 §24.2, printed pp. 553-554].
 Any upfront exchanged at inception is a sunk cash flow and is left out of
 $V^{\mathrm{pos}}$; it does not change any sensitivity.
 
-For the liquid contract itself, the local [[cds-liquid-unit-value]] is the
-buyer value of one unit of notional,
+For the liquid contract, the local [[cds-liquid-unit-value]] is the buyer
+value per unit of notional:
 
 $$
 \explain{cds-liquid-unit-value}{v_L}
@@ -232,23 +233,24 @@ $$
 }
 -\explain{cds-standard-coupon}{c_{\mathrm{std}}}
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}
-(\explain{cds-liquid-tenor-maturity}{T_L}),
+(\explain{cds-liquid-tenor-maturity}{T_L}).
 \label{eq:cds-liquid-unit-value}
 $$
 
-which is exactly the fair upfront fraction of the quote lesson, so at the
-current market level it equals the liquid contract's upfront per unit
+This value is the fair upfront fraction of the quote lesson. So at the current
+market level, it equals the upfront amount of the liquid contract per unit of
 notional [@hull-options-futures; Ch. 24 §24.4, printed p. 557].
 
 Because $\lambda$ is the only state variable, every quotation of the liquid
-contract is a function of it. Write the local [[cds-liquid-quotation]] $q$
-for any one of them: the market-standard quote, the upfront fraction, or the
-par spread. Each is strictly increasing in $\lambda$ in this model, so each is
-invertible, and "the quote moved" means "the hazard rate moved" whichever
-quotation the desk marks. There is one risk factor here, seen through three
-scales. In this flat-hazard, flat-rate model the par spread is even the same at
-every maturity, so a position's par spread and the liquid quote are literally
-one number.
+contract is a function of $\lambda$. Write the local [[cds-liquid-quotation]]
+$q$ for any one of them: the market-standard quote, the upfront fraction, or
+the par spread. In this model, each quotation is strictly increasing in
+$\lambda$, so each quotation is invertible. So a change of the quote is a
+change of the hazard rate, whichever quotation the trading desk uses for its
+marks. The model has one risk factor, expressed in three quotations. In this
+model, with a flat hazard rate and a flat interest rate, the par spread is also
+the same at every maturity. So the par spread of a position and the liquid
+quote are the same number.
 
 ## Risky DV01 by bump and reprice
 
@@ -260,19 +262,20 @@ uses that bump-and-reprice definition with the local [[cds-quote-bump]]
 $h=0.0001$ per year, one [[basis-point]] of market-standard quote.
 
 Write $\lambda(s_{\mathrm{MSQ}})$ for the hazard rate re-solved from a quote.
-The local [[cds-position-quote-sensitivity]] is
+The local [[cds-position-quote-sensitivity]] is the change in the position
+value when the quote increases by $h$:
 
 $$
 \explain{cds-position-quote-sensitivity}{\mathrm{DV01}^{\mathrm{pos}}}
 =\explain{cds-position-value}{V^{\mathrm{pos}}}
 \!\left(\explain{hazard-rate}{\lambda}(\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}+\explain{cds-quote-bump}{h})\right)
 -\explain{cds-position-value}{V^{\mathrm{pos}}}
-\!\left(\explain{hazard-rate}{\lambda}(\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}})\right),
+\!\left(\explain{hazard-rate}{\lambda}(\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}})\right).
 \label{eq:cds-risky-dv01}
 $$
 
-and the local [[cds-liquid-unit-quote-sensitivity]] is the same difference
-for one unit of bought liquid protection,
+The local [[cds-liquid-unit-quote-sensitivity]] is the same difference, for
+one unit of bought liquid protection:
 
 $$
 \explain{cds-liquid-unit-quote-sensitivity}{\mathrm{DV01}^{L}}
@@ -283,25 +286,27 @@ $$
 \label{eq:cds-liquid-unit-dv01}
 $$
 
-Three points about the definition matter in practice.
+Three properties of the definition are important in practice.
 
-- **Both legs move.** A higher hazard rate raises the protection leg and
-  lowers the premium annuity, so the sensitivity is not the annuity times one
-  basis point. Holding the annuity fixed is the shortcut the quote lesson
-  warned against.
-- **The sign belongs to the side.** Bought protection gains when the quote
-  rises, so its sensitivity is positive; sold protection has the opposite
-  sign. $\explain{cds-liquid-unit-quote-sensitivity}{\mathrm{DV01}^{L}}$ is
+- **Both legs change.** A higher hazard rate increases the protection leg and
+  decreases the premium annuity. So the sensitivity is not the annuity
+  multiplied by one basis point. Holding the annuity fixed is the shortcut that
+  the quote lesson warned against.
+- **The sign depends on the side.** Bought protection gains value when the
+  quote increases, so its sensitivity is positive. Sold protection has a
+  negative sensitivity. $\explain{cds-liquid-unit-quote-sensitivity}{\mathrm{DV01}^{L}}$ is
   defined for bought protection and is positive.
-- **It is a finite bump.** The value is a curved function of the quote, so a
-  one basis point bump and the derivative differ slightly; the model boundary
-  returns to this.
+- **The bump is finite.** The value is a nonlinear function of the quote. So
+  the result of a one basis point bump differs slightly from the derivative.
+  The section “What an equivalent-ratio hedge does not do” discusses this
+  difference.
 
 ## The liquid-tenor equivalent
 
-A hedge that removes the quote risk is the liquid contract in the amount that
-makes the hedged sensitivity zero. With the local
-[[cds-equivalent-notional]] $N_{\mathrm{eq}}$ of bought liquid protection,
+A hedge that removes the quote risk is a position in the liquid contract whose
+notional makes the sensitivity of the hedged position zero. Let the local
+[[cds-equivalent-notional]] $N_{\mathrm{eq}}$ be the notional of bought liquid
+protection. The hedge condition and its solution are:
 
 $$
 \explain{cds-position-quote-sensitivity}{\mathrm{DV01}^{\mathrm{pos}}}
@@ -318,11 +323,12 @@ $$
 \label{eq:cds-equivalent-notional}
 $$
 
-A positive $N_{\mathrm{eq}}$ means buy protection in the liquid tenor; a
-negative one means sell it. Because
-$\explain{cds-liquid-unit-quote-sensitivity}{\mathrm{DV01}^{L}}$ is positive, the hedge
-always takes the side opposite to the sign of the position's sensitivity. The
-local [[cds-equivalent-ratio]] states the size relative to the position,
+A positive $N_{\mathrm{eq}}$ means: buy protection in the liquid tenor. A
+negative $N_{\mathrm{eq}}$ means: sell protection in the liquid tenor. Because
+$\explain{cds-liquid-unit-quote-sensitivity}{\mathrm{DV01}^{L}}$ is positive,
+the sign of $N_{\mathrm{eq}}$ is always opposite to the sign of the position's
+sensitivity. The local [[cds-equivalent-ratio]] is the size of the hedge
+relative to the position:
 
 $$
 \explain{cds-equivalent-ratio}{\rho_{\mathrm{eq}}}
@@ -334,20 +340,21 @@ $$
 \label{eq:cds-equivalent-ratio}
 $$
 
-This is the DV01-neutral hedge of the bond lessons in Tuckman and Serrat,
-where the face amount of a liquid hedge is minus the ratio of the two DV01s
-times the position amount, and the instrument with the larger sensitivity is
-traded in the smaller quantity
+This hedge is the DV01-neutral hedge that Tuckman and Serrat describe for
+bonds. There, the face amount of a liquid hedge is minus the ratio of the two
+DV01s, multiplied by the position amount. The instrument with the larger
+sensitivity is traded in the smaller quantity
 [@tuckman-serrat-fixed-income; Ch. 4 §4.3, printed pp. 110-111, eqs. 4.6-4.9].
-The phrases **equivalent notional** and **equivalent ratio** are this course's
-labels for the hedge amount and its ratio (`NEEDS_SOURCE` for desk usage; the
+The names **equivalent notional** and **equivalent ratio**, for the hedge amount
+and its ratio, belong to this course (`NEEDS_SOURCE` for desk usage; the
 registered sources define the DV01 hedge but not these names).
 
-**Which quote risk?** A desk may mark the position's risk against the
-market-standard quote, against the upfront, or against a par spread. In this
-model it does not matter. In the limit of a small bump, both sensitivities are
-derivatives with respect to the same quotation $q$, and the chain rule through
-the one state variable gives
+**The choice of quotation does not change the hedge.** A trading desk can
+measure the position's risk against the market-standard quote, the upfront, or
+a par spread. In this model, the choice does not change the equivalent
+notional. In the limit of a small bump, both sensitivities are derivatives with
+respect to the same quotation $q$. The chain rule through the one state
+variable $\lambda$ gives:
 
 $$
 \explain{cds-equivalent-notional}{N_{\mathrm{eq}}}
@@ -371,12 +378,13 @@ d\explain{cds-liquid-unit-value}{v_L}/d\explain{hazard-rate}{\lambda}
 \label{eq:cds-equivalent-invariance}
 $$
 
-The factor that converts hazard into quotation cancels. MSQ risk, upfront risk,
-and par spread risk are one risk, and the same equivalent notional offsets all
-three. The sensitivities themselves do differ across quotations, because they
-are measured per unit of different things; the hedge amount does not. With a
-finite bump the three ratios differ only through curvature, as the worked
-example shows.
+The factor $d\lambda/dq$, which converts a change of the hazard rate into a
+change of the quotation, cancels. So MSQ risk, upfront risk, and par spread
+risk are one risk, and the same equivalent notional offsets all three. The
+sensitivities themselves differ across quotations, because each sensitivity is
+measured per unit of a different quotation. The hedge amount is the same. With
+a finite bump, the three equivalent ratios differ only because of the
+curvature, as the worked example shows.
 
 <CompactExamples
   summary="Worked hedges"
@@ -385,26 +393,26 @@ example shows.
 >
   <CompactExample label="A seven-year position hedged with five-year">
 
-The liquid contract is a quarterly five-year standard contract with
+The liquid contract is a five-year standard contract with quarterly premiums,
 $\explain{cds-standard-coupon}{c_{\mathrm{std}}}=0.010$ per year (100 basis
 points per year) and market-standard quote
 $\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}=0.016$ per year (160
-basis points per year); the risk-free rate is 2% per year continuously
-compounded and recovery is 40%. The quote calibrates
-$\explain{hazard-rate}{\lambda}=0.026600129$ per year, and by
-[[eq-cds-liquid-unit-value]] one unit of bought five-year protection is worth
-$\explain{cds-liquid-unit-value}{v_L}=0.026694561$ before upfront.
+basis points per year). The risk-free rate is 2% per year, continuously
+compounded, and the recovery rate is 40%. Calibration to the quote gives
+$\explain{hazard-rate}{\lambda}=0.026600129$ per year. By
+[[eq-cds-liquid-unit-value]], one unit of bought five-year protection is worth
+$\explain{cds-liquid-unit-value}{v_L}=0.026694561$ before the upfront amount.
 
-The position is bought protection on a seven-year contract at the same 100
-basis point coupon with $\explain{cds-position-notional}{N_{\mathrm{pos}}}=
-\text{USD }10{,}000{,}000$. At the calibrated hazard rate its protection leg
-is USD 953,285.99 and its premium leg USD 595,803.74, so by
-[[eq-cds-position-value]]
+The position is bought protection on a seven-year contract with the same
+coupon of 100 basis points and $\explain{cds-position-notional}{N_{\mathrm{pos}}}=
+\text{USD }10{,}000{,}000$. At the calibrated hazard rate, the protection-leg
+present value of the position is USD 953,285.99, and its premium-leg present
+value is USD 595,803.74. So by [[eq-cds-position-value]],
 $\explain{cds-position-value}{V^{\mathrm{pos}}}=\text{USD }357{,}482.24$.
 
-Bump the liquid quote by $h=0.0001$ to 161 basis points. The re-solved hazard
-rate is $0.026766381$ per year. Revaluing by [[eq-cds-risky-dv01]] and
-[[eq-cds-liquid-unit-dv01]],
+Bump the liquid quote by $h=0.0001$, to 161 basis points. The re-solved hazard
+rate is $0.026766381$ per year. Revaluing with [[eq-cds-risky-dv01]] and
+[[eq-cds-liquid-unit-dv01]] gives the two sensitivities:
 
 $$
 \explain{cds-position-quote-sensitivity}{\mathrm{DV01}^{\mathrm{pos}}}
@@ -419,19 +427,19 @@ $$
 \text{ per unit notional per basis point}.
 $$
 
-By [[eq-cds-equivalent-notional]],
+By [[eq-cds-equivalent-notional]], the equivalent notional is:
 
 $$
 \explain{cds-equivalent-notional}{N_{\mathrm{eq}}}
 =-\frac{5{,}758.117764}{0.000434070474}
-=-\text{USD }13{,}265{,}398.37,
+=-\text{USD }13{,}265{,}398.37.
 $$
 
-so the hedge sells protection on USD 13,265,398 of the five-year contract, and
-by [[eq-cds-equivalent-ratio]]
+So the hedge sells protection on a notional of USD 13,265,398 of the five-year
+contract. By [[eq-cds-equivalent-ratio]],
 $\explain{cds-equivalent-ratio}{\rho_{\mathrm{eq}}}=1.3265$. The seven-year
-contract has the larger sensitivity per unit notional, so more of the
-five-year contract is needed than the position's own notional. The tested
+contract has the larger sensitivity per unit of notional. So the hedge notional
+in the five-year contract is larger than the notional of the position. The tested
 implementation reports a hedged sensitivity of zero to arithmetic precision.
 
   </CompactExample>
@@ -441,12 +449,13 @@ implementation reports a hedged sensitivity of zero to arithmetic precision.
 Keep the same liquid contract and market level. The position is sold
 protection on a three-year contract with coupon 500 basis points per year and
 $\explain{cds-position-notional}{N_{\mathrm{pos}}}=\text{USD }20{,}000{,}000$,
-so $\explain{cds-position-side}{\sigma}=-1$. Because the coupon is far above
-the 160 basis point market level, the seller's value is positive:
+so $\explain{cds-position-side}{\sigma}=-1$. Because the coupon of 500 basis
+points is higher than the market level of 160 basis points, the seller's value
+is positive:
 $\explain{cds-position-value}{V^{\mathrm{pos}}}=\text{USD }1{,}899{,}072.40$.
 
-After the same one basis point bump the seller's value falls to
-USD 1,893,025.81, so
+After the same bump of one basis point, the seller's value decreases to
+USD 1,893,025.81. So the sensitivity is:
 
 $$
 \explain{cds-position-quote-sensitivity}{\mathrm{DV01}^{\mathrm{pos}}}
@@ -454,69 +463,72 @@ $$
 \text{ per basis point}.
 $$
 
-The seller loses when the quote rises. With the same
+The seller loses value when the quote increases. With the same
 $\explain{cds-liquid-unit-quote-sensitivity}{\mathrm{DV01}^{L}}=0.000434070474$,
+the equivalent notional is:
 
 $$
 \explain{cds-equivalent-notional}{N_{\mathrm{eq}}}
 =-\frac{-6{,}046.591823}{0.000434070474}
-=+\text{USD }13{,}929{,}977.23,
+=+\text{USD }13{,}929{,}977.23.
 $$
 
-so the hedge buys protection on USD 13,929,977 of the five-year contract, and
-$\explain{cds-equivalent-ratio}{\rho_{\mathrm{eq}}}=0.6965$. A shorter
-contract has less sensitivity per unit notional, so less than the position's
-notional of the five-year contract offsets it, even though the high coupon
-makes the position itself valuable.
+So the hedge buys protection on a notional of USD 13,929,977 of the five-year
+contract, and $\explain{cds-equivalent-ratio}{\rho_{\mathrm{eq}}}=0.6965$.
+The three-year contract has a smaller sensitivity per unit of notional than the
+five-year contract. So a five-year notional smaller than the position notional
+offsets the position. This holds although the high coupon gives the position a
+large value.
 
   </CompactExample>
 
   <CompactExample label="Three quotations, one hedge">
 
-Repeat the seven-year hedge but bump the liquid contract's upfront fraction by
-one basis point of notional, 0.0001, instead of its quote, re-solving the
-hazard rate from the bumped upfront. The equivalent ratio is 1.32670 against
-1.32654 from the quote bump. Shrinking both bumps by a factor of one thousand
-moves both ratios to 1.32674, as [[eq-cds-equivalent-invariance]] predicts:
-the residual difference at one basis point is the curvature of a finite bump,
-not a different risk.
+Repeat the seven-year hedge, but bump the upfront fraction of the liquid
+contract by 0.0001 (one basis point of notional) instead of its quote.
+Re-solve the hazard rate from the bumped upfront fraction. The equivalent ratio
+is 1.32670, compared with 1.32654 from the quote bump. With both bumps one
+thousand times smaller, both ratios are 1.32674, as
+[[eq-cds-equivalent-invariance]] predicts. So the difference at one basis
+point is a result of the curvature of a finite bump, not of a different risk.
 
-As a check on the construction, hedging the liquid contract itself, bought on
-USD 10,000,000, returns an equivalent ratio of exactly one on the opposite
-side: the hedge is the offsetting trade.
+As a check, apply the construction to the liquid contract itself, with bought
+protection on USD 10,000,000. The equivalent ratio is exactly one, on the
+opposite side: the hedge is the offsetting trade.
 
   </CompactExample>
 </CompactExamples>
 
 ## What an equivalent-ratio hedge does not do
 
-The hedge cancels one derivative at one market level under one model. It
-leaves at least the following exposures, each of which a desk manages
-separately.
+The hedge sets one sensitivity to zero, at one market level, in one model. It
+leaves at least the following exposures, and a trading desk manages each of
+them separately.
 
-- **Default itself.** The seven-year hedge above sells protection on
-  USD 13,265,398 against bought protection on USD 10,000,000. On an immediate
-  default with 40% recovery, the position receives
+- **Default.** The seven-year hedge above sells protection on
+  USD 13,265,398 against bought protection on USD 10,000,000. If default
+  occurs immediately, with 40% recovery, the position receives
   $\explain{loss-given-default}{\mathrm{LGD}}\times10{,}000{,}000=\text{USD }6{,}000{,}000$
-  while the hedge pays $0.6\times13{,}265{,}398.37=\text{USD }7{,}959{,}239.02$, a
-  net loss of about USD 1,959,239 before accrued premium. Matching quote
-  sensitivity is not matching the default payoff; the jump-to-default exposure
-  of a hedged book must be measured on its own.
+  and the hedge pays $0.6\times13{,}265{,}398.37=\text{USD }7{,}959{,}239.02$.
+  The net loss is about USD 1,959,239, before accrued premium. Equal quote
+  sensitivities do not imply equal default payoffs. So the jump-to-default
+  exposure of a hedged portfolio must be measured separately.
 - **Curve shape.** The model has one hazard rate. Under the fitted curve of
-  the credit-curve lesson, a seven-year position also depends on segments the
-  five-year contract does not see, and a shift of the five-year quote alone
-  would move only part of the position. Bucketing the sensitivity by tenor is
-  the standard extension (`NEEDS_SOURCE`: the registered sources describe
+  the credit-curve lesson, a seven-year position also depends on the segments
+  beyond five years, on which the five-year contract does not depend. A change
+  of the five-year quote alone would change the value of only part of the
+  position. Measuring the sensitivity separately for each tenor is the standard
+  extension (`NEEDS_SOURCE`: the registered sources describe
   single-factor DV01 hedging only).
-- **Curvature and the bump.** Both sensitivities change as the quote moves, so
-  the hedge drifts and must be rebalanced; Tuckman and Serrat make the same
-  point for bond DV01 hedges [@tuckman-serrat-fixed-income; Ch. 4 §4.2, printed p. 109 (DV01 as a local measure)].
-- **Everything held fixed.** Recovery, the discount curve, and the accrual
-  and settlement conventions were held constant. A change in any of them
-  moves both contracts differently.
-- **Costs.** The hedge crosses the liquid contract's bid-offer, and the
-  position's own liquidity is why the hedge is not simply the offsetting
-  trade in the position's tenor [@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 366-367 (unwinding through the on-the-run contract and managing the maturity and spread mismatch)].
+- **Curvature.** Both sensitivities change when the quote changes. So the
+  hedge stops being exact and must be rebalanced. Tuckman and Serrat make the
+  same point for bond DV01 hedges [@tuckman-serrat-fixed-income; Ch. 4 §4.2, printed p. 109 (DV01 as a local measure)].
+- **Inputs held fixed.** The recovery rate, the discount curve, and the
+  accrual and settlement conventions are constant in the model. A change in
+  any of them changes the values of the two contracts by different amounts.
+- **Costs.** The hedge pays the bid-offer spread of the liquid contract. The
+  lower liquidity of the position's own tenor is the reason why the hedge is
+  not the offsetting trade in that tenor [@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 366-367 (unwinding through the on-the-run contract and managing the maturity and spread mismatch)].
 
 ## Check your understanding
 
@@ -529,11 +541,11 @@ has direct and transfer evidence.
 ## Model boundary and review note
 
 This AI-assisted lesson and all cited locators remain `draft` pending human
-editorial and quantitative review. Inputs are synthetic. The sensitivity is a
-one basis point bump of the liquid tenor's market-standard quote under one
-flat hazard rate, one deterministic discount rate, one deterministic recovery
-rate, and a regular quarterly model-year schedule; the hedge is sized at one
-market level and is not rebalanced. The lesson omits curve shape risk, default
+editorial and quantitative review. All input values are invented for teaching.
+The sensitivity is a one basis point bump of the liquid tenor's market-standard
+quote, under one flat hazard rate, one deterministic discount rate, one
+deterministic recovery rate, and a regular quarterly model-year schedule. The
+hedge is sized at one market level and is not rebalanced. The lesson omits curve shape risk, default
 and recovery risk beyond the illustration above, bid-offer, transaction costs,
 calendar and settlement conventions, counterparty risk, collateral, funding,
 and any stochastic model of rates or intensity.

@@ -1,7 +1,7 @@
 ---
 key: cds-par-spread
 latex: 's^{\star}'
-meaning: "Contractual spread that makes the two positive leg magnitudes equal at valuation time with zero upfront amount, solved under the lesson's supplied curves, recovery, timing, and accrued-premium convention."
+meaning: "Contractual spread that makes the two positive leg magnitudes equal at valuation time with zero upfront amount, solved under the lesson's input curves, recovery, timing, and accrued-premium convention."
 aliases:
   - zero-upfront par spread
 domain: cds
@@ -29,8 +29,8 @@ model. It is calculated from the
 [[cds-protection-leg-present-value]] magnitude and the
 [[cds-premium-annuity]] under the same assumptions.
 
-If the curve is supplied, par spread is an output. If a quoted spread is
-supplied to a converter, the same equality instead calibrates the curve. Within
+If the curve is an input, the par spread is an output. If a quoted spread is
+the input of a converter, the same equality calibrates the curve instead. Within
 one internally consistent converter model, the resulting market-standard quote
 equals this par spread. It is distinct from the standard coupon that determines
 the traded contract's running cash flows.

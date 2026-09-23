@@ -6,7 +6,7 @@
   ],
   "references": [
     {
-      "column": 47,
+      "column": 48,
       "definitionId": "shared:forward-delivery-price",
       "key": "forward-delivery-price",
       "kind": "prose",
@@ -51,7 +51,7 @@
       "symbol": "I_0^{\\mathrm{pre}}"
     },
     {
-      "column": 1,
+      "column": 54,
       "definitionId": "shared:bond-forward-price",
       "key": "bond-forward-price",
       "kind": "prose",

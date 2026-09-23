@@ -8,7 +8,7 @@
   ],
   "references": [
     {
-      "column": 5,
+      "column": 28,
       "definitionId": "shared:forward-delivery-time",
       "key": "forward-delivery-time",
       "kind": "prose",
@@ -21,7 +21,7 @@
       "definitionId": "shared:forward-delivery-price",
       "key": "forward-delivery-price",
       "kind": "prose",
-      "line": 17,
+      "line": 16,
       "scope": "shared",
       "symbol": "K_{\\mathrm{fwd}}"
     },
@@ -30,7 +30,7 @@
       "definitionId": "shared:derivative-underlying-value",
       "key": "derivative-underlying-value",
       "kind": "prose",
-      "line": 18,
+      "line": 17,
       "scope": "shared",
       "symbol": "S_t"
     },
@@ -39,7 +39,7 @@
       "definitionId": "page:derivatives.forward-contracts-and-value:long-forward-expiry-payoff",
       "key": "long-forward-expiry-payoff",
       "kind": "prose",
-      "line": 19,
+      "line": 18,
       "scope": "local",
       "symbol": "\\Pi_{T_{\\mathrm{fwd}}}^{\\mathrm{long}}"
     },
@@ -48,7 +48,7 @@
       "definitionId": "shared:forward-price",
       "key": "forward-price",
       "kind": "prose",
-      "line": 33,
+      "line": 32,
       "scope": "shared",
       "symbol": "F_{t,T_{\\mathrm{fwd}}}"
     },
@@ -57,7 +57,7 @@
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
-      "line": 34,
+      "line": 33,
       "scope": "shared",
       "symbol": "0"
     },
@@ -66,7 +66,7 @@
       "definitionId": "page:derivatives.forward-contracts-and-value:deterministic-income-present-value",
       "key": "deterministic-income-present-value",
       "kind": "prose",
-      "line": 36,
+      "line": 35,
       "scope": "local",
       "symbol": "I_0"
     },
@@ -75,16 +75,16 @@
       "definitionId": "shared:discount-factor",
       "key": "discount-factor",
       "kind": "prose",
-      "line": 41,
+      "line": 40,
       "scope": "shared",
       "symbol": "D(0,t)"
     },
     {
-      "column": 29,
+      "column": 33,
       "definitionId": "page:derivatives.forward-contracts-and-value:forward-contract-quantity",
       "key": "forward-contract-quantity",
       "kind": "prose",
-      "line": 65,
+      "line": 66,
       "scope": "local",
       "symbol": "N"
     },
@@ -93,7 +93,7 @@
       "definitionId": "shared:forward-contract-value",
       "key": "forward-contract-value",
       "kind": "prose",
-      "line": 66,
+      "line": 67,
       "scope": "shared",
       "symbol": "V_t^{\\mathrm{fwd}}"
     }

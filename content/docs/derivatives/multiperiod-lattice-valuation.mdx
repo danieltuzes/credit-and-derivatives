@@ -5,10 +5,10 @@ editorialStatus: draft
 teaches:
   - finance.backward-induction.calculate
 assumptions:
-  - A caller-supplied recombining pricing lattice with two successor nodes from each current node
+  - An input recombining pricing lattice with two successor nodes from each current node
   - Strictly positive one-period discount factors and risk-neutral up weights between zero and one inclusive
   - Terminal values and any next-date cash flows share one currency and holder sign convention
-  - No claim that the supplied lattice has been calibrated or is complete outside its modeled states
+  - No claim that the input lattice has been calibrated or is complete outside its modeled states
 notation:
   local:
     - key: lattice-node-discount-factor
@@ -57,10 +57,13 @@ The one-period binomial lesson valued two terminal payoffs. A multi-period
 lattice applies the same pricing step at every node, beginning with the last
 row and moving backward to [[valuation-time]].
 
-At node [[lattice-time-index]] $i$, [[lattice-state-index]] $j$, let local [[lattice-node-up-weight]] be $q_{i,j}$ and local
-[[lattice-node-discount-factor]] be $d_{i,j}$. With local next-date cash
-flow $\explain{lattice-next-cash-flow}{CF_{i+1,j}}$ paid just before the successor continuation value, the
-[[lattice-node-value]] recursion is
+At the node with [[lattice-time-index]] $i$ and [[lattice-state-index]] $j$,
+let the local [[lattice-node-up-weight]] be $q_{i,j}$ and the local
+[[lattice-node-discount-factor]] be $d_{i,j}$. Let the local next-date cash
+flow $\explain{lattice-next-cash-flow}{CF_{i+1,j}}$ be paid at the successor
+node $(i+1,j)$; the node value $V_{i+1,j}$ excludes it. The
+[[lattice-node-value]] at node $(i,j)$ is the discounted risk-neutral
+expectation of the successor cash flows plus the successor node values:
 
 $$
 \explain{lattice-node-value}{V_{i,j}}
@@ -76,16 +79,17 @@ $$
 \label{eq:lattice-backward-step}
 $$
 
-The implementation stores node $j$ and node $j+1$ as the two successors. The
-labels “up” and “down” are conventions; the supplied probabilities and values
-must use the same ordering.
+The two successors of node $(i,j)$ are the nodes $(i+1,j)$ and $(i+1,j+1)$.
+The labels “up” and “down” are conventions. The input up weights and values
+must use the same order.
 
 ## Timing is part of the model
 
-The timing in [[eq-lattice-backward-step]] adds each next-date cash flow before
-discounting its successor total. A coupon-bond value at a node is therefore
-ex-coupon after the cash flow at that node. Changing the exercise/coupon order
-changes the contract and potentially its option payoff.
+In [[eq-lattice-backward-step]], each next-date cash flow is added to the value
+of its successor node before discounting. So the value of a coupon bond at a
+node is ex-coupon: it excludes the coupon paid at that node. A change of the
+order of exercise and coupon payment changes the contract, and it can change
+the option payoff.
 
 <Diagram
   id="backward-induction-flow"
@@ -109,9 +113,10 @@ changes the contract and potentially its option payoff.
 
 ## Worked example
 
-For terminal values USD 0, USD 20, and USD 40, use second-row discount factors
-0.90 with up weights 0.25 and 0.75, then a first-row discount factor 0.95 with
-up weight 0.50. Applying [[eq-lattice-backward-step]] row by row gives
+The terminal values are USD 0, USD 20, and USD 40. At time index 1, both nodes
+have discount factor 0.90, and their up weights are 0.25 and 0.75. At time
+index 0, the discount factor is 0.95 and the up weight is 0.50. Applying
+[[eq-lattice-backward-step]] row by row gives the node values:
 
 $$
 \begin{aligned}
@@ -132,6 +137,6 @@ $$
 ## Sources
 
 The replication, risk-neutral weighting, and backward-induction construction
-follow Hull, Chapter 12 §§12.1–12.3 [@hull-options-futures]. The supplied node
-factors are model inputs here; calibration and short-rate dynamics are outside
-this slice.
+follow Hull, Chapter 12 §§12.1–12.3 [@hull-options-futures]. The node discount
+factors are model inputs. Calibration and short-rate dynamics are outside this
+lesson.

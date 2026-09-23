@@ -1,7 +1,7 @@
 ---
 key: bond-cash-flow
 latex: 'CF_k^{\mathrm{bond}}'
-meaning: 'Promised amount paid to the bondholder on one scheduled payment date; a positive receipt for the bondholder, with default excluded in this slice.'
+meaning: 'Promised amount paid to the bondholder on one scheduled payment date; a positive receipt for the bondholder, with default excluded in the bond lessons.'
 aliases:
   - promised bond payment
 domain: bonds

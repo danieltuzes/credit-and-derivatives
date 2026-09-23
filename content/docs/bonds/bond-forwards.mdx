@@ -26,21 +26,21 @@ notation:
 
 import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
 
-## Contract first
+## The forward contract
 
-The long bond forward is obligated to pay the [[forward-delivery-price]]
-and receive the named bond at [[forward-delivery-time]]. It does not own the
-bond before delivery. Coupons paid before delivery therefore belong to the
-current holder.
+The holder of a long bond forward must pay the [[forward-delivery-price]]
+and receive the named bond at [[forward-delivery-time]]. The holder of the
+forward does not own the bond before delivery. So coupons paid before delivery
+belong to the current owner of the bond.
 
 ## Cash-and-carry price
 
 At [[valuation-time]], start with the current [[dirty-bond-price]]
 $P^{\mathrm{dirty}}$. Subtract the local
-[[predelivery-coupon-present-value]] $I_0^{\mathrm{pre}}$. The remainder is
-the prepaid forward value of receiving the bond at delivery. Converting that
-prepaid amount into delivery-date currency gives the fair
-[[bond-forward-price]]:
+[[predelivery-coupon-present-value]] $I_0^{\mathrm{pre}}$. The difference is
+the prepaid forward value: the value today of receiving the bond at delivery.
+Dividing the prepaid forward value by the discount factor to delivery converts
+it to an amount at delivery. This amount is the fair [[bond-forward-price]]:
 
 $$
 \explain{bond-forward-price}{F^B_{0,T_{\mathrm{fwd}}}}
@@ -53,8 +53,9 @@ $$
 \label{eq:bond-forward-price}
 $$
 
-For dirty spot USD 960, pre-delivery coupon present value USD 95.45, and
-delivery factor 0.92, [[eq-bond-forward-price]] gives
+For a dirty price of USD 960, a present value of the predelivery coupons of
+USD 95.45, and a discount factor to delivery of 0.92,
+[[eq-bond-forward-price]] gives the bond forward price:
 
 $$
 F^B_{0,T_{\mathrm{fwd}}}
@@ -62,16 +63,16 @@ F^B_{0,T_{\mathrm{fwd}}}
 =939.72826087\ \text{USD per bond}.
 $$
 
-An already-existing contract need not have that delivery price. Its value is
-handled by the earlier forward-value lesson; here the output is the fair price
-for a new contract.
+An existing contract can have a different delivery price. The earlier lesson
+on forward value calculates the value of such a contract. This lesson
+calculates the fair delivery price of a new contract.
 
 ## Basis consistency
 
-A clean spot quote must first be converted to dirty cash price. Likewise, a
-clean delivery quote or strike needs the delivery-date accrued amount. Mixing
-clean and dirty values can look like a pricing discrepancy while being only a
-unit/convention mismatch.
+A clean price quote must first be converted to a dirty price. In the same way,
+the accrued interest at the delivery date must be added to a clean delivery
+price or a clean strike. If clean and dirty prices are mixed, the result can
+look like a pricing discrepancy, but it is only a mismatch of conventions.
 
 ## Check your understanding
 
@@ -81,5 +82,5 @@ unit/convention mismatch.
 
 The known-income cash-and-carry relation [[eq-bond-forward-price]] and its
 coupon-bond application follow
-Hull, Chapter 5 §§5.3–5.5; the dirty bond forward and strike basis is reinforced
-in Chapter 28 §28.1 [@hull-options-futures].
+Hull, Chapter 5 §§5.3–5.5; Hull also treats the dirty-price basis of the bond
+forward and the strike in Chapter 28 §28.1 [@hull-options-futures].

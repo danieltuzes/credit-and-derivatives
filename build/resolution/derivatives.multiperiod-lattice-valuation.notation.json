@@ -17,7 +17,7 @@
       "symbol": "0"
     },
     {
-      "column": 9,
+      "column": 18,
       "definitionId": "shared:lattice-time-index",
       "key": "lattice-time-index",
       "kind": "prose",
@@ -26,7 +26,7 @@
       "symbol": "i"
     },
     {
-      "column": 37,
+      "column": 49,
       "definitionId": "shared:lattice-state-index",
       "key": "lattice-state-index",
       "kind": "prose",
@@ -35,11 +35,11 @@
       "symbol": "j"
     },
     {
-      "column": 76,
+      "column": 15,
       "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-up-weight",
       "key": "lattice-node-up-weight",
       "kind": "prose",
-      "line": 11,
+      "line": 12,
       "scope": "local",
       "symbol": "q_{i,j}"
     },
@@ -48,7 +48,7 @@
       "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-discount-factor",
       "key": "lattice-node-discount-factor",
       "kind": "prose",
-      "line": 12,
+      "line": 13,
       "scope": "local",
       "symbol": "d_{i,j}"
     },
@@ -57,7 +57,7 @@
       "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-next-cash-flow",
       "key": "lattice-next-cash-flow",
       "kind": "math",
-      "line": 13,
+      "line": 14,
       "scope": "local",
       "symbol": "CF_{i+1,j}"
     },
@@ -66,7 +66,7 @@
       "definitionId": "shared:lattice-node-value",
       "key": "lattice-node-value",
       "kind": "prose",
-      "line": 14,
+      "line": 16,
       "scope": "shared",
       "symbol": "V_{i,j}"
     },
@@ -75,7 +75,7 @@
       "definitionId": "shared:lattice-node-value",
       "key": "lattice-node-value",
       "kind": "math",
-      "line": 17,
+      "line": 20,
       "scope": "shared",
       "symbol": "V_{i,j}"
     },
@@ -84,39 +84,12 @@
       "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-discount-factor",
       "key": "lattice-node-discount-factor",
       "kind": "math",
-      "line": 18,
+      "line": 21,
       "scope": "local",
       "symbol": "d_{i,j}"
     },
     {
       "column": 4,
-      "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-up-weight",
-      "key": "lattice-node-up-weight",
-      "kind": "math",
-      "line": 20,
-      "scope": "local",
-      "symbol": "q_{i,j}"
-    },
-    {
-      "column": 7,
-      "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-next-cash-flow",
-      "key": "lattice-next-cash-flow",
-      "kind": "math",
-      "line": 21,
-      "scope": "local",
-      "symbol": "CF_{i+1,j}"
-    },
-    {
-      "column": 2,
-      "definitionId": "shared:lattice-node-value",
-      "key": "lattice-node-value",
-      "kind": "math",
-      "line": 22,
-      "scope": "shared",
-      "symbol": "V_{i,j}"
-    },
-    {
-      "column": 2,
       "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-up-weight",
       "key": "lattice-node-up-weight",
       "kind": "math",
@@ -139,6 +112,33 @@
       "key": "lattice-node-value",
       "kind": "math",
       "line": 25,
+      "scope": "shared",
+      "symbol": "V_{i,j}"
+    },
+    {
+      "column": 2,
+      "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-up-weight",
+      "key": "lattice-node-up-weight",
+      "kind": "math",
+      "line": 26,
+      "scope": "local",
+      "symbol": "q_{i,j}"
+    },
+    {
+      "column": 7,
+      "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-next-cash-flow",
+      "key": "lattice-next-cash-flow",
+      "kind": "math",
+      "line": 27,
+      "scope": "local",
+      "symbol": "CF_{i+1,j}"
+    },
+    {
+      "column": 2,
+      "definitionId": "shared:lattice-node-value",
+      "key": "lattice-node-value",
+      "kind": "math",
+      "line": 28,
       "scope": "shared",
       "symbol": "V_{i,j}"
     }

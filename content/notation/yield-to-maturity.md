@@ -29,7 +29,7 @@ single nominal annual rate,
 compounded at the stated [[bond-payment-frequency]], that reproduces the toy
 [[bond-price]] from its promised cash flows.
 
-In this slice it appears in
+In the bond lessons it appears in
 
 $$
 P_0=\sum_{k=1}^{n}\frac{CF_k^{\mathrm{bond}}}

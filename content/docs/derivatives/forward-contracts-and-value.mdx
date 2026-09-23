@@ -64,19 +64,18 @@ After this lesson, you should be able to:
 
 ## An obligation, not an option
 
-The [[forward-delivery-time]] $T_{\mathrm{fwd}}$ is when the exchange
-occurs. Under the physical-settlement convention, the long pays the
+The exchange occurs at the [[forward-delivery-time]] $T_{\mathrm{fwd}}$. Under the physical-settlement convention, the long pays the
 [[forward-delivery-price]] $K_{\mathrm{fwd}}$ and receives one unit of
-the asset. If its [[derivative-underlying-value]] then is
+the asset. If the [[derivative-underlying-value]] at delivery is
 $S_{T_{\mathrm{fwd}}}$, the local [[long-forward-expiry-payoff]] per unit
-is
+is the asset value minus the delivery price:
 
 $$
 \Pi_{T_{\mathrm{fwd}}}^{\mathrm{long}}
 =S_{T_{\mathrm{fwd}}}-K_{\mathrm{fwd}}.
 $$
 
-The short has the exact opposite payoff. Hull distinguishes this bilateral
+The payoff of the short is the negative of the payoff of the long. Hull distinguishes this bilateral
 obligation from an option holder's exercise right and gives the corresponding
 long and short payoff directions[@hull-options-futures; Ch. 1 §1.3, printed pp. 5-7, forward contracts and payoffs].
 
@@ -86,11 +85,12 @@ The [[forward-price]] $F_{0,T_{\mathrm{fwd}}}$ is the delivery price that
 would make a new contract worth zero at [[valuation-time]] $0$. Suppose
 the underlying is worth $S_0$ and the local
 [[deterministic-income-present-value]] paid before delivery is $I_0$.
-The forward long does not own the asset before delivery, so the prepaid value of
-what will be delivered is $S_0-I_0$.
+The long does not own the asset before delivery and does not receive the
+income. So the prepaid value of the asset delivered is $S_0-I_0$.
 
 Under the stated cash-and-carry assumptions, with the delivery-time
-[[discount-factor]] $D(0,T_{\mathrm{fwd}})$, the law of one price gives
+[[discount-factor]] $D(0,T_{\mathrm{fwd}})$, the law of one price gives the
+forward price:
 
 $$
 F_{0,T_{\mathrm{fwd}}}
@@ -101,21 +101,23 @@ Hull derives the no-income and known-income forward prices by matching a spot
 purchase and financing strategy to the forward exchange
 [@hull-options-futures; Ch. 5 §§5.3-5.5, printed pp. 103-108, cash-and-carry forward pricing and known income].
 
-For $S_0=100$, $I_0=4$, and $D(0,T_{\mathrm{fwd}})=0.95$,
+For $S_0=100$, $I_0=4$, and $D(0,T_{\mathrm{fwd}})=0.95$, the forward price
+is:
 
 $$
 F_{0,T_{\mathrm{fwd}}}=\frac{100-4}{0.95}=101.0526316.
 $$
 
-The nonzero delivery price is not an inception premium. The fair new contract's
-signed value is zero because its fixed delivery price equals the current forward
-price.
+The delivery price is not a premium paid at inception. A new contract with a
+fair delivery price has signed value zero, because its delivery price equals
+the current forward price.
 
 ## An existing forward can gain or lose value
 
-After inception, $K_{\mathrm{fwd}}$ remains fixed while the current forward
-price can change. For local [[forward-contract-quantity]] $N$, the
-[[forward-contract-value]] to the long at time zero is
+After inception, $K_{\mathrm{fwd}}$ stays fixed, but the current forward
+price can change. For the local [[forward-contract-quantity]] $N$, the
+[[forward-contract-value]] to the long at time zero is the discounted
+difference between the current forward price and the delivery price:
 
 $$
 V_0^{\mathrm{fwd}}
@@ -124,7 +126,7 @@ V_0^{\mathrm{fwd}}
 $$
 
 If $N=10$, the current forward price is 98, the contract delivery price is 102,
-and the discount factor is 0.94, then
+and the discount factor is 0.94, the value to the long is:
 
 $$
 V_0^{\mathrm{fwd}}=10(0.94)(98-102)=-37.60.
@@ -140,7 +142,7 @@ discounted forward-price difference for an existing contract
 
 ## Model boundary and review note
 
-This is a teaching cash-and-carry model for an investment asset with known
+This lesson uses a toy cash-and-carry model for an investment asset with known
 income and deterministic discounting. It does not model futures-style daily
 settlement, repo specialness, collateral, counterparty credit, taxes, borrowing
 asymmetry, delivery options, or an asset that cannot be financed or shorted on

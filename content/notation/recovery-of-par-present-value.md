@@ -26,7 +26,7 @@ aiAssisted: true
 
 The one-period recovery-of-par present value $PV_0^{\mathrm{RoP}}$ combines a
 survival-state par payment and a default-state recovered-par payment, both paid
-at the same scheduled maturity and discounted by the same supplied
+at the same scheduled maturity and discounted by the same input
 [[discount-factor]].
 
 This definition does not cover recovery paid at default, recovery of market

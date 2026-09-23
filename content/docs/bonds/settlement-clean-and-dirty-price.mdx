@@ -38,9 +38,10 @@ import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
 
 ## The price paid is not always the price quoted
 
-A bond screen commonly shows the [[clean-bond-price]], also called the flat
-or quoted price. The buyer pays the [[dirty-bond-price]], also called the
-full, cash, or invoice price. The bridge is [[accrued-interest]]:
+A bond price quote commonly shows the [[clean-bond-price]], also called the
+flat or quoted price. The buyer pays the [[dirty-bond-price]], also called the
+full, cash, or invoice price. The dirty price is the clean price plus the
+[[accrued-interest]]:
 
 $$
 \explain{dirty-bond-price}{P^{\mathrm{dirty}}}
@@ -49,15 +50,17 @@ $$
 \label{eq:dirty-price-bridge}
 $$
 
-On a coupon date, accrued interest is zero and the two prices coincide. That
-is why the earlier coupon-date bond model could use one bond-price symbol.
+On a coupon date, the accrued interest is zero, so the two prices are equal.
+For this reason, the earlier bond lessons, which settle on a coupon date, use
+one bond-price symbol.
 
 ## Actual/actual within one coupon period
 
-Under this lesson's narrow convention, let the local
+Under the convention of this lesson, let the local
 [[coupon-period-elapsed-days]] be $n_{\mathrm{elapsed}}$ and the local
 [[coupon-period-total-days]] be $n_{\mathrm{period}}$. For one
-[[coupon-payment]] $C$,
+[[coupon-payment]] $C$, the accrued interest is the coupon multiplied by the
+fraction of the coupon period that has elapsed:
 
 $$
 \explain{accrued-interest}{AI}
@@ -67,9 +70,10 @@ $$
 \label{eq:coupon-period-accrual}
 $$
 
-For the dated example February 15, 2021 to August 15, 2021, settlement on
-May 17 is 91 actual days into a 181-day period. Applying
-[[eq-coupon-period-accrual]],
+Consider the coupon period from February 15, 2021 to August 15, 2021, which
+has 181 days. Settlement on May 17, 2021 is 91 actual days after the start of
+the period. With a coupon of USD 31.25, [[eq-coupon-period-accrual]] gives the
+accrued interest:
 
 $$
 AI
@@ -77,16 +81,18 @@ AI
 =15.71132597\ \text{USD per bond}.
 $$
 
-The software validates ISO dates and counts UTC calendar days. It does not
-pretend to be a production schedule engine: business-day rules, ex-coupon
-periods, stubs, and other day counts require separate conventions.
+The domain code checks that the dates are valid ISO dates and counts UTC
+calendar days. It is not a production schedule engine: business-day rules,
+ex-coupon periods, stubs, and other day counts require separate conventions.
 
 ## Why this matters for derivatives
 
-Bond forwards and options settle cash against a price basis. If an exercise
-strike is quoted clean while the modeled bond value is dirty, add the
-exercise-date accrued amount to the strike before calculating payoff. Coupons
-before delivery also have to be assigned to the correct owner.
+The cash amount paid at the settlement of a bond forward or a bond option
+depends on whether its price is clean or dirty. If a strike is quoted as a clean
+price and the modeled bond price is a dirty price, add the accrued interest at
+the exercise date to the strike before the payoff is calculated. Also, each
+coupon paid before delivery must be assigned to the party that owns the bond on
+the coupon date.
 
 ## Check your understanding
 
@@ -94,7 +100,7 @@ before delivery also have to be assigned to the correct owner.
 
 ## Sources
 
-The clean/dirty identity [[eq-dirty-price-bridge]] and the actual/actual
+The identity between the clean and the dirty price [[eq-dirty-price-bridge]] and the actual/actual
 calculation [[eq-coupon-period-accrual]] follow Tuckman
 and Serrat, Chapter 1 §1.6 [@tuckman-serrat-fixed-income]. Hull's European bond
 option discussion emphasizes matching cash versus quoted strike and bond

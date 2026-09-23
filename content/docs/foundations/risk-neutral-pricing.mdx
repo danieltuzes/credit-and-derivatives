@@ -9,7 +9,7 @@ assumptions:
   - Valuation occurs at time zero from the claim-holder perspective
   - Examples use a finite disjoint and exhaustive scenario partition
   - The terminal payoff and all values are signed USD amounts
-  - The supplied risk-free discount factor is deterministic
+  - The input risk-free discount factor is deterministic
   - The pricing model is arbitrage-free and admits at least one risk-neutral measure relative to its cash-account numeraire
 notation:
   local:
@@ -86,22 +86,23 @@ After this lesson, you should be able to:
 - state why a simple CDS model can omit a separate volatility input without
   claiming that volatility never matters.
 
-## Two measures answer two different questions
+## Two measures for two different uses
 
-Stand at [[valuation-time]] $0$. Let the local
+Valuation is at [[valuation-time]] $0$. Let the local
 [[risk-neutral-pricing-horizon]] $T$ be a future time in exact model-years,
-and let the [[terminal-random-payoff]] $X_T$ be the signed USD amount a
-claim holder receives or pays then.
+and let the [[terminal-random-payoff]] $X_T$ be the signed USD amount that a
+claim holder receives or pays at $T$.
 
 A probability measure assigns mutually consistent weights to events. The
-[[real-world-probability-measure]] $\mathbb{P}$ is intended to describe
-modeled actual-world likelihoods: it is the relevant measure for a forecast.
-The [[risk-neutral-probability-measure]] $\mathbb{Q}$ instead supplies
-weights for an arbitrage-consistent pricing model. The same event can therefore
-have different probabilities under $\mathbb{P}$ and $\mathbb{Q}$. Shreve makes
-this actual-versus-risk-neutral distinction when introducing change of measure
-[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.6, printed pp. 32-35];
-Hull makes the same forecasting-versus-valuation distinction
+[[real-world-probability-measure]] $\mathbb{P}$ describes the modeled
+probabilities of events in the real world. It is the measure for a forecast.
+The [[risk-neutral-probability-measure]] $\mathbb{Q}$ gives the weights of
+an arbitrage-free pricing model. So the same event can have different
+probabilities under $\mathbb{P}$ and $\mathbb{Q}$. Shreve makes this
+distinction between the actual and the risk-neutral measure in the
+introduction of the change of measure
+[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.6, printed pp. 32-35].
+Hull makes the same distinction between forecasting and valuation
 [@hull-options-futures; Ch. 12 §12.2, printed pp. 257-260; Ch. 14 §14.7, printed pp. 311-313].
 
 > **There is no “risk-free measure” in this model.** The measure is
@@ -109,30 +110,31 @@ Hull makes the same forecasting-versus-valuation distinction
 > convention used as the pricing benchmark. It does not describe the event
 > probabilities, and it does not make the payoff safe.
 
-The name also does not assume that every investor is indifferent to risk.
-Risk preferences and risk premia help make $\mathbb{P}$ and $\mathbb{Q}$
-different; the pricing calculation uses $\mathbb{Q}$ after it has been selected
-or calibrated.
+The name “risk-neutral” also does not assume that every investor is
+indifferent to risk. Risk preferences and risk premia are among the reasons why
+$\mathbb{P}$ and $\mathbb{Q}$ differ. The pricing calculation uses
+$\mathbb{Q}$ after $\mathbb{Q}$ has been selected or calibrated.
 
 ## From a partition to a price
 
 In a no-arbitrage model with the cash account as numeraire, $\mathbb{Q}$ is
-chosen so that discounted traded prices are martingales. In plain language,
-after applying the benchmark discounting, today's traded price equals its
-conditional $\mathbb{Q}$-weighted future value. Shreve states the martingale
+chosen so that discounted traded prices are martingales. In words:
+after discounting with the cash account, today's traded price equals the
+conditional $\mathbb{Q}$-expectation of its discounted future value. Shreve states the martingale
 condition and its discounted-payoff consequence
 [@shreve-stochastic-calculus-finance-ii; Ch. 5 §5.2.2, printed pp. 214-217, eqs. 5.2.22-5.2.24; §5.2.4, printed pp. 218-219, eqs. 5.2.29-5.2.31]. Tuckman and Serrat give the same expected-discounted-value
 construction in a finite-state fixed-income setting
 [@tuckman-serrat-fixed-income; Ch. 7 §7.3, printed pp. 182-184, eqs. 7.7-7.8].
 
-To calculate the [[expectation]] under the
-[[risk-neutral-probability-measure]] — written $\mathbb{E}^{\mathbb{Q}}$, the
-same averaging operator taken with $\mathbb{Q}$'s pricing weights — use the
-local [[risk-neutral-scenario-index]] $j$ and
-[[risk-neutral-scenario-count]] $m$. Let $x_j$ be the local
+Write the [[expectation]] under the [[risk-neutral-probability-measure]] as
+$\mathbb{E}^{\mathbb{Q}}$. It is the same averaging operator, taken with the
+pricing weights of $\mathbb{Q}$. Use the local
+[[risk-neutral-scenario-index]] $j$ and [[risk-neutral-scenario-count]]
+$m$. Let $x_j$ be the local
 [[risk-neutral-scenario-payoff]], in USD at $T$, and let $q_j$ be its
 dimensionless [[risk-neutral-scenario-probability]]. For disjoint,
-exhaustive scenarios on which the payoff is constant,
+exhaustive scenarios on which the payoff is constant, the risk-neutral
+expected payoff is:
 
 $$
 \mathbb{E}^{\mathbb{Q}}[X_T]
@@ -144,9 +146,10 @@ q_j\ge 0,
 \label{eq:risk-neutral-expected-payoff}
 $$
 
-This expected payoff is measured in future USD at $T$. It is not yet a
-time-zero value. Let the supplied [[discount-factor]] be $D(0,T)$, in
-time-zero USD per USD at $T$. The claim's [[present-value]] is
+This expected payoff is in USD at $T$. It is not a present value. Let
+the input [[discount-factor]] be $D(0,T)$, in USD at time zero per USD at
+$T$. The claim's [[present-value]] is the discounted risk-neutral expected
+payoff:
 
 $$
 PV_0
@@ -157,9 +160,9 @@ PV_0
 $$
 
 The second equality uses this lesson's assumption that $D(0,T)$ is
-deterministic. If discounting is random, it must generally remain inside the
-expectation; replacing an expectation of a product by a product of expectations
-would require additional assumptions.
+deterministic. If the discount factor is random, it must in general stay inside the
+expectation. The expectation of a product equals the product of the
+expectations only under additional assumptions.
 
 ## Worked example
 
@@ -185,27 +188,28 @@ PV_0
 =\text{USD }57\text{ at time }0.
 $$
 
-No $\mathbb{P}$ probabilities enter this price because the example explicitly
-supplies $\mathbb{Q}$ pricing weights. Estimating a real-world expected payoff
-would be a different calculation.
+No $\mathbb{P}$ probabilities enter this price, because the example states
+the $\mathbb{Q}$ pricing weights as inputs. An estimate of the real-world
+expected payoff would be a different calculation.
 
 ## Uncertainty remains
 
-Changing from $\mathbb{P}$ to $\mathbb{Q}$ reweights modeled outcomes; it does
-not erase randomness. In the standard diffusion change-of-measure result, the
-drift changes while the diffusion coefficient remains
-[@shreve-stochastic-calculus-finance-ii; Ch. 5 §5.2.2, printed pp. 214-217, especially eqs. 5.2.22-5.2.24]. Volatility therefore remains a model
-input for nonlinear claims such as options. Product-specific reasons why a
-restricted linear model may omit a separate volatility input belong beside that
-product model rather than in this foundation.
+A change from $\mathbb{P}$ to $\mathbb{Q}$ changes the weights of the modeled
+outcomes. It does not remove the randomness. In the standard change-of-measure
+result for a diffusion, the drift changes and the diffusion coefficient stays
+the same
+[@shreve-stochastic-calculus-finance-ii; Ch. 5 §5.2.2, printed pp. 214-217, especially eqs. 5.2.22-5.2.24]. So volatility remains a model
+input for nonlinear claims such as options. A restricted linear model can omit
+a separate volatility input for reasons specific to its product. The lesson on
+that product states those reasons.
 
 ## Advanced boundary: uniqueness
 
-The supplied pricing measure need not be unique. Under the usual technical
-conditions, absence of arbitrage is tied to existence of a suitable martingale
-measure, while uniqueness requires the stronger condition that the modeled
-market be complete. This is a boundary note rather than a competency assessed
-on this page. Shreve develops the existence and uniqueness distinction
+The pricing measure need not be unique. Under the usual technical conditions,
+the absence of arbitrage is tied to the existence of a suitable martingale
+measure. Uniqueness of the measure requires a stronger condition: the modeled
+market must be complete. This section is a boundary note, and the assessment
+of this lesson does not test it. Shreve develops the existence and uniqueness distinction
 [@shreve-stochastic-calculus-finance-ii; Ch. 5 §§5.4.3-5.4.4, printed pp. 228-233].
 
 ## Check your understanding
@@ -218,7 +222,7 @@ scenario weights and a signed negative payoff.
 ## Model boundary and review note
 
 This lesson uses one terminal payoff, a finite scenario partition, deterministic
-risk-free discounting, and supplied $\mathbb{Q}$ weights. It does not estimate
+risk-free discounting, and input $\mathbb{Q}$ weights. It does not estimate
 $\mathbb{P}$, calibrate $\mathbb{Q}$, generate a yield curve, treat a stochastic
 numeraire, establish market completeness, or value counterparty, liquidity,
 funding, or option effects.

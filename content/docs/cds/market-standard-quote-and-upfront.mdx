@@ -8,9 +8,9 @@ teaches:
   - cds.quote-upfront-conversion.calculate
 assumptions:
   - The named perspective is a protection buyer that pays running premium, receives protection, and pays a positive signed upfront amount
-  - MSQ is a lesson-local abbreviation for market-standard quote, meaning the conventional quoted spread supplied to this simplified converter
+  - MSQ is a lesson-local abbreviation for market-standard quote, meaning the conventional quoted spread that is an input to this simplified converter
   - The MSQ is treated as a zero-upfront par spread that implies one non-negative constant risk-neutral hazard rate
-  - The market level is supplied as either MSQ or signed upfront; the converter supplies the mapping and does not choose that market level
+  - The market level is an input, stated either as an MSQ or as a signed upfront; the converter gives the mapping between the two and does not choose the market level
   - Within one internally consistent model, the MSQ returned from an upfront amount equals that model's zero-upfront par spread
   - The running coupon is fixed and may differ from the MSQ
   - The premium annuity includes scheduled premium and exact accrued premium at modeled default time under the preceding CDS lesson's flat-hazard model
@@ -30,29 +30,30 @@ After this lesson, you should be able to:
 
 - distinguish a conventional spread quote from the contract's fixed running
   coupon;
-- identify which quantity is supplied and which is solved in each quotation
+- identify which quantity is an input and which is solved in each quotation
   direction;
 - calculate the signed upfront amount that makes protection-buyer inception
   value zero;
 - reverse the simplified conversion without incorrectly freezing a
   quote-dependent premium annuity.
 
-## Three numbers with three different jobs
+## Three quantities with three different roles
 
 Standardized CDS quotation separates a fixed running coupon from a
-market-determined upfront amount. Textbook treatments describe converting a
-quoted or par spread into the value of a contract with a fixed coupon, while
-the official converter specification accepts either spread or upfront and
-returns the other. [@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 366-371; Appendix A14.2, printed pp. 506-507, eqs. A14.5-A14.7]
+market-determined upfront amount. Textbook treatments describe how to convert a
+quoted spread, treated as a par spread, into the value of a contract with a
+fixed coupon. The official converter specification accepts either the spread or
+the upfront and returns the other. [@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 366-371; Appendix A14.2, printed pp. 506-507, eqs. A14.5-A14.7]
 [@hull-options-futures; Ch. 24 §24.4, printed pp. 556-557]
 [@isda-cds-standard-model; Standard CDS Contract Converter Specification, version May 5, 2009, Functionality and Specification, printed p. 1]
 
-This lesson uses **market-standard quote**, abbreviated **MSQ**, as a local
-label for that conventional quoted spread. The books and official
-specification more commonly say _quoted spread_, _conventional spread_, or
-simply _spread_; this page does not claim that “MSQ” is a universal acronym.
+This lesson uses the name **market-standard quote** (**MSQ**) for this
+conventional quoted spread. The name belongs to this course. The books and the
+official specification more commonly say _quoted spread_, _conventional
+spread_, or _spread_. This lesson does not claim that “MSQ” is a universal
+abbreviation.
 
-The three quantities have distinct jobs, but they are not three independent
+The three quantities have different roles, but they are not three independent
 inputs:
 
 - the [[cds-market-standard-quote]]
@@ -63,31 +64,33 @@ inputs:
   $\explain{cds-standard-coupon}{c_{\mathrm{std}}}$ determines the running
   premium cash flows;
 - the [[cds-upfront-amount]]
-  $\explain{cds-upfront-amount}{U_0}$ bridges the value difference at
+  $\explain{cds-upfront-amount}{U_0}$ offsets the difference in value at
   inception.
 
-“Upfront fee” is the usual phrase intended here; this lesson prefers
-**upfront amount** because the amount is signed. Its convention is
+The phrase “upfront fee” is also common. This lesson uses **upfront amount**,
+because the amount is signed. The sign of $U_0$ means:
 
 - $U_0>0$: the protection buyer pays;
 - $U_0=0$: no upfront cash changes hands in the toy model;
 - $U_0<0$: the protection buyer receives $-U_0$.
 
-Rates use decimals per year in formulas. Convert a [[basis-point]] quote
+In the formulas, rates are decimals per year. Convert a [[basis-point]] quote
 to decimal form by dividing by 10,000.
 
-## First decide what is supplied and what is solved
+## First decide which quantities are inputs and which are solved
 
-The equation connecting par spread and hazard can be used in opposite
-directions. Calling everything an “input” hides that distinction.
+The equation that connects the par spread and the hazard rate can be used in
+two directions. So a quantity can be an input in one calculation and solved in
+another. The table shows the inputs and the solved quantities of each
+calculation.
 
-| Calculation      | Supplied                                                                                           | Solved or calculated                                  |
+| Calculation      | Input                                                                                              | Solved or calculated                                  |
 | ---------------- | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
 | Model par spread | Hazard rate, recovery, discount input, maturity, and cash-flow conventions                         | Par spread $s^{\star}$                                |
 | MSQ to upfront   | Market quote $s_{\mathrm{MSQ}}$, standard coupon $c_{\mathrm{std}}$, and the converter conventions | Flat hazard rate $\lambda$, then signed upfront $U_0$ |
 | Upfront to MSQ   | Market upfront $U_0$, standard coupon $c_{\mathrm{std}}$, and the converter conventions            | Flat hazard rate $\lambda$, then $s_{\mathrm{MSQ}}$   |
 
-If the hazard rate is already supplied, the par spread is the output:
+If the hazard rate is an input, the par spread is the output:
 
 $$
 \explain{cds-par-spread}{s^{\star}}
@@ -101,25 +104,25 @@ $$
 \label{eq:cds-par-spread-from-hazard}
 $$
 
-If the MSQ is supplied instead, [[eq-cds-par-spread-from-hazard]] is a
-calibration equation: the quoted spread is the input and the flat hazard rate
-is the unknown. If the upfront is supplied, the upfront balance is the
-calibration equation. The market participant or price source supplies the
-market level; the standard converter specifies how spread and upfront are
-translated under common assumptions. [@isda-cds-standard-model; Standard CDS Contract Converter Specification, version May 5, 2009, Functionality and Specification, printed pp. 1 and 4]
+If the MSQ is the input instead, [[eq-cds-par-spread-from-hazard]] is a
+calibration equation: the quoted spread is the input, and the flat hazard rate
+is the unknown. If the upfront amount is the input, the upfront balance is the
+calibration equation. The market participant or the price source provides the
+market level. The standard converter specifies how the spread and the upfront
+are converted into each other under common assumptions. [@isda-cds-standard-model; Standard CDS Contract Converter Specification, version May 5, 2009, Functionality and Specification, printed pp. 1 and 4]
 
-Consequently, do not fix both $s_{\mathrm{MSQ}}$ and $\lambda$ independently.
-Once the other model inputs are fixed, they must satisfy the zero-upfront
-condition together.
+So do not fix both $s_{\mathrm{MSQ}}$ and $\lambda$ independently. When the
+other model inputs are fixed, $s_{\mathrm{MSQ}}$ and $\lambda$ must together
+satisfy the zero-upfront condition.
 
 ## Why one upfront amount is enough at inception
 
-At a fixed set of model inputs, all future protection cash flows have already
-been summarized by one positive
-[[cds-protection-leg-present-value]] magnitude, and all fixed-coupon cash
-flows by one positive [[cds-premium-leg-present-value]] magnitude. Their
-difference is one currency amount. One cash transfer at time zero can
-therefore offset that difference exactly:
+For fixed model inputs, one positive [[cds-protection-leg-present-value]]
+summarizes all future protection cash flows. One positive
+[[cds-premium-leg-present-value]] summarizes all fixed-coupon cash flows. The
+difference of the two present values is one currency amount. So one cash
+transfer at time zero can offset that difference exactly. The upfront balance
+is:
 
 $$
 \explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}
@@ -129,7 +132,8 @@ $$
 \label{eq:cds-upfront-balance}
 $$
 
-Equivalently, protection-buyer inception value after the signed upfront is
+Equivalently, the value to the protection buyer at inception, after the signed
+upfront amount, is zero:
 
 $$
 0=
@@ -144,22 +148,21 @@ or other inputs change.
 
 ## Risk-neutral does not mean risk-free
 
-The calibration uses **risk-neutral pricing probabilities**, not necessarily
-real-world default forecasts. Under risk-neutral valuation, probabilities are
-pricing weights chosen consistently with traded prices and risk-free
-discounting; “risk-free” describes the discount input, not the probability
-measure. The hazard rate inferred from prices can therefore differ from an
+The calibration uses **risk-neutral pricing probabilities**. They are not
+necessarily real-world default forecasts. Under risk-neutral valuation,
+probabilities are pricing weights, chosen consistently with traded prices and
+risk-free discounting. “Risk-free” describes the discount input, not the
+probability measure. So the hazard rate inferred from prices can differ from an
 estimated real-world default intensity. [@tuckman-serrat-fixed-income; Ch. 7 §7.3, printed pp. 182-184, eqs. 7.7-7.8; Ch. 14 §14.7, printed p. 371]
 [@hull-options-futures; Ch. 23 §23.5, printed pp. 528-530]
 
-It would be inaccurate to say that changing probability measure makes
-volatility disappear. This particular converter has no separate volatility
-input because its discount rate, hazard rate, recovery, and schedule are
-deterministic and its leg values are linear expectations of one-default cash
-flows. A model with stochastic rates, default intensity, recovery,
-wrong-way dependence, or CDS options can require volatility and correlation
-inputs. The risk-neutral measure supplies pricing weights; it does not erase
-those risks.
+A change of probability measure does not remove volatility. This converter has
+no separate volatility input, for two reasons. Its discount rate, hazard rate,
+recovery rate, and schedule are deterministic. Its leg values are expectations
+that are linear in the one-default cash flows. A model with stochastic rates,
+stochastic default intensity, stochastic recovery, wrong-way dependence, or CDS
+options can require volatility and correlation inputs. The risk-neutral measure
+gives pricing weights; it does not remove those risks.
 
 ## Convert MSQ to signed upfront
 
@@ -167,7 +170,8 @@ The conversion must use one internally consistent model. For each candidate
 constant hazard rate, calculate the positive
 [[cds-premium-annuity]]
 $\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda})$
-and protection-leg value. First solve the zero-upfront quote condition
+and the protection-leg present value. First, solve the zero-upfront quote
+condition for $\lambda$:
 
 $$
 \explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}
@@ -178,9 +182,10 @@ $$
 \label{eq:cds-msq-calibration}
 $$
 
-That root solve makes $\lambda$ the flat risk-neutral hazard rate implied by
-the MSQ under this lesson's schedule, discount, recovery, and default-time
-accrual assumptions. The fixed-coupon premium leg is then
+The root $\lambda$ of [[eq-cds-msq-calibration]] is the flat risk-neutral
+hazard rate implied by the MSQ, under the assumptions of this lesson on the
+schedule, discounting, recovery, and accrual at default. The premium-leg
+present value with the fixed coupon is then:
 
 $$
 \explain{cds-premium-leg-present-value}{PV_0^{\mathrm{prem}}}
@@ -192,8 +197,8 @@ $$
 \label{eq:cds-fixed-coupon-premium}
 $$
 
-Substitute [[eq-cds-msq-calibration]] and [[eq-cds-fixed-coupon-premium]] into
-the balance [[eq-cds-upfront-balance]]:
+Substituting [[eq-cds-msq-calibration]] and [[eq-cds-fixed-coupon-premium]]
+into the upfront balance [[eq-cds-upfront-balance]] gives the upfront amount:
 
 $$
 \begin{aligned}
@@ -216,17 +221,17 @@ $$
 $$
 
 The substitution in [[eq-cds-upfront-from-msq]] is valid only because every
-term uses the same model and calibrated hazard rate. Since the premium annuity and notional
-are positive, the sign is easy to check: an MSQ above the fixed coupon gives a
-positive buyer-paid upfront; an MSQ below it gives a negative upfront received
-by the buyer.
+term uses the same model and the same calibrated hazard rate. The premium
+annuity and the notional are positive. So an MSQ above the fixed coupon gives a
+positive upfront amount, which the buyer pays. An MSQ below the fixed coupon
+gives a negative upfront amount, which the buyer receives.
 
 ## Convert signed upfront back to MSQ
 
-Given a signed upfront amount, do not generally rearrange the final line while
-silently holding the annuity fixed. In this flat-hazard converter, both the
-protection value and premium annuity change with the unknown hazard rate.
-Instead use the hazard equation
+When the input is a signed upfront amount, do not rearrange the last line of
+[[eq-cds-upfront-from-msq]] with the annuity held fixed. In this flat-hazard
+converter, both the protection-leg present value and the premium annuity change
+with the unknown hazard rate. Instead, solve this equation for the hazard rate:
 
 $$
 \explain{cds-upfront-amount}{U_0}
@@ -239,8 +244,8 @@ $$
 \label{eq:cds-upfront-to-hazard}
 $$
 
-Solve [[eq-cds-upfront-to-hazard]] for a non-negative $\lambda$, then
-substitute that solution into
+Solve [[eq-cds-upfront-to-hazard]] for a non-negative $\lambda$. Then
+[[eq-cds-hazard-to-msq]] gives the MSQ from this $\lambda$:
 
 $$
 \explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}
@@ -254,10 +259,8 @@ $$
 \label{eq:cds-hazard-to-msq}
 $$
 
-Equation [[eq-cds-hazard-to-msq]] then reports the corresponding MSQ.
-
-If a curve and its annuity have already been calibrated and are deliberately
-held fixed, the local algebraic shortcut is
+If a curve and its annuity have already been calibrated and are held fixed,
+rearranging [[eq-cds-upfront-from-msq]] gives a shortcut:
 
 $$
 \explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}
@@ -272,14 +275,15 @@ $$
 }.
 $$
 
-That shortcut is not the full upfront-to-quote conversion when the quote
-itself determines $\lambda$ and therefore changes the denominator.
+This shortcut is not the full conversion from upfront to quote when the quote
+itself determines $\lambda$, because then the denominator changes with the
+quote.
 
 ## When MSQ and par spread are equal
 
-Within one internally consistent risk-neutral model, they are equal. After the
-converter has inferred one $\lambda$ from either the spread or the upfront,
-the following quantities are the same:
+Within one internally consistent risk-neutral model, the MSQ and the par spread
+are equal. After the converter has inferred one $\lambda$, from the spread or
+from the upfront amount, the following quantities are equal:
 
 $$
 \begin{aligned}
@@ -312,7 +316,7 @@ pricing probabilities, discount inputs, recovery, schedule, default-accrual
 treatment, and settlement convention in every term.
 
 The phrase **par spread from another curve** needs more care. The observed
-standard-coupon trade supplies the one combined price
+trade with a standard coupon gives one combined price:
 
 $$
 \explain{cds-upfront-amount}{U_0}
@@ -324,21 +328,21 @@ $$
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}.
 $$
 
-That price does not separately observe the protection value and the premium
-annuity. The standard converter resolves the separation by imposing its
-constant-hazard conversion model. A different risk-neutral term structure can
-reprice the same fixed-coupon/upfront contract while assigning a different
-premium annuity, and therefore a different par coupon to a hypothetical
-zero-upfront contract. The official converter itself distinguishes its single
-constant hazard rate from a term structure used in a fuller credit-curve
-model. [@isda-cds-standard-model; Standard CDS Examples, version October 26, 2012, printed p. 2 (the converter uses a single flat hazard rate rather than a term structure of flat spreads)]
+This price does not show the protection-leg present value and the premium
+annuity separately. The standard converter separates them by assuming its
+constant-hazard model. A different risk-neutral term structure can reprice the
+same contract, with its fixed coupon and upfront amount, but with a different
+premium annuity. That term structure then gives a different par coupon to a
+hypothetical zero-upfront contract. The official converter itself distinguishes
+its single constant hazard rate from the term structure of a fuller
+credit-curve model. [@isda-cds-standard-model; Standard CDS Examples, version October 26, 2012, printed p. 2 (the converter uses a single flat hazard rate rather than a term structure of flat spreads)]
 
-This difference is not by itself an arbitrage: the observed fixed-coupon CDS
-and the hypothetical zero-upfront CDS have different premium cash flows. No
-arbitrage requires identical tradable cash flows to have the same price. If a
-zero-upfront CDS paying $s_{\mathrm{MSQ}}$ were itself executable on otherwise
-identical terms, however, a curve calibrated consistently to that traded claim
-would have to give it zero value. [@tuckman-serrat-fixed-income; Ch. 1 §§1.3-1.4, printed pp. 53-57 (law of one price, replication, and arbitrage enforcement)]
+This difference is not an arbitrage by itself, because the observed
+fixed-coupon CDS and the hypothetical zero-upfront CDS have different premium
+cash flows. No arbitrage requires identical tradable cash flows to have the
+same price. But suppose a zero-upfront CDS that pays $s_{\mathrm{MSQ}}$ could be
+traded on otherwise identical terms. Then a curve calibrated consistently to
+that traded contract would have to give it zero value. [@tuckman-serrat-fixed-income; Ch. 1 §§1.3-1.4, printed pp. 53-57 (law of one price, replication, and arbitrage enforcement)]
 
 <CompactExamples
   summary="Worked conversions"
@@ -347,7 +351,7 @@ would have to give it zero value. [@tuckman-serrat-fixed-income; Ch. 1 §§1.3-1
 >
   <CompactExample label="MSQ to buyer-paid upfront">
 
-Consider a synthetic five-year quarterly CDS with notional
+Consider a five-year CDS with quarterly premiums and notional
 $\explain{cds-notional}{N}=\text{USD }10{,}000{,}000$, 2% continuously
 compounded risk-free rate, 40% recovery, MSQ
 $\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}=0.015$ per year (150
@@ -355,8 +359,8 @@ basis points per year), and fixed coupon
 $\explain{cds-standard-coupon}{c_{\mathrm{std}}}=0.010$ per year (100 basis
 points per year).
 
-Under the lesson's exact-default-time flat-hazard model, the quote calibration
-gives
+Under the flat-hazard model of this lesson, with exact default times, the
+calibration to the quote gives:
 
 $$
 \explain{hazard-rate}{\lambda}=0.024937617\text{ per year},
@@ -365,7 +369,8 @@ $$
 =4.466915290\text{ model-years}.
 $$
 
-Because the calibrated quote is a par spread, protection value is
+Because the calibrated quote is a par spread, the protection-leg present value
+is:
 
 $$
 \explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}
@@ -373,7 +378,7 @@ $$
 =\text{USD }670{,}037.29.
 $$
 
-The fixed-coupon premium value is
+The premium-leg present value with the fixed coupon is:
 
 $$
 \explain{cds-premium-leg-present-value}{PV_0^{\mathrm{prem}}}
@@ -381,7 +386,7 @@ $$
 =\text{USD }446{,}691.53.
 $$
 
-Therefore
+The upfront amount is the difference of the two present values:
 
 $$
 \explain{cds-upfront-amount}{U_0}
@@ -389,44 +394,46 @@ $$
 =\text{USD }223{,}345.76.
 $$
 
-The amount is positive, so the protection buyer pays it. Substitution gives
-$670{,}037.29-446{,}691.53-223{,}345.76=0$ up to displayed rounding.
+The upfront amount is positive, so the protection buyer pays it. As a check,
+$670{,}037.29-446{,}691.53-223{,}345.76=0$, up to the rounding of the
+displayed values.
 
   </CompactExample>
 
   <CompactExample label="Why reverse conversion is a solve">
 
-Suppose the same contract instead arrives with signed upfront
-$\explain{cds-upfront-amount}{U_0}=\text{USD }223{,}345.76$ and no MSQ. A
-solver varies the flat $\lambda$ and recomputes both protection value and the
-premium annuity until their fixed-coupon difference matches that upfront.
+Suppose the input for the same contract is the signed upfront amount
+$\explain{cds-upfront-amount}{U_0}=\text{USD }223{,}345.76$, and the MSQ is
+unknown. A solver changes the flat $\lambda$ and recalculates both the
+protection-leg present value and the premium annuity, until
+[[eq-cds-upfront-to-hazard]] holds.
 
-The root is approximately $\lambda=0.024937617$ per year. Only after finding
-that root does the ratio of protection value to notional times premium annuity
-return $s_{\mathrm{MSQ}}\approx0.015$, or 150 basis points per year.
+The root is approximately $\lambda=0.024937617$ per year. Only with this root
+does [[eq-cds-hazard-to-msq]] give $s_{\mathrm{MSQ}}\approx0.015$ (150 basis
+points per year).
 
-Using $4.466915290$ as though it were independent of the unknown quote would
-happen to reproduce the answer only because that annuity was already computed
-at the answer's hazard rate.
+The shortcut with the annuity fixed at $4.466915290$ gives the same answer
+here, but only because this annuity was already calculated at the solution's
+hazard rate. Before the solve, this annuity is unknown.
 
   </CompactExample>
 </CompactExamples>
 
 ## What a real standard converter adds
 
-The official converter is date- and convention-aware: its specified inputs
-include trade and maturity dates, notional, standard coupon, recovery,
-discount inputs, and either spread or upfront; its outputs include the other
-quotation and a cash-settlement amount.
+The official converter uses dates and market conventions. Its inputs include
+the trade date and the maturity date, the notional, the standard coupon, the
+recovery rate, the discount inputs, and either the spread or the upfront. Its
+outputs include the other quotation and a cash-settlement amount.
 [@isda-cds-standard-model; Standard CDS Contract Converter Specification, version May 5, 2009, Functionality and Specification, printed p. 1]
 
 This lesson is not an implementation of that standard model. It uses
-model-year periods and a single flat hazard rate. A production conversion also
-has to respect calendar schedules, day-count and business-day conventions,
-curve construction and interpolation, settlement timing, accrued amount, and
-other contract details. The simple identities remain useful for understanding
-why quote, coupon, and upfront differ, but the displayed number is not a trade
-cash-settlement instruction.
+model-year periods and a single flat hazard rate. A production conversion must
+also handle calendar schedules, day-count and business-day conventions, curve
+construction and interpolation, settlement timing, the accrued amount, and
+other contract details. The identities of this lesson explain why the quote,
+the coupon, and the upfront amount differ. But the numbers in this lesson are
+not cash-settlement instructions for a trade.
 
 ## Check your understanding
 
@@ -439,11 +446,11 @@ evidence.
 ## Model boundary and review note
 
 This AI-assisted lesson and all cited locators remain `draft` pending human
-editorial and quantitative review. Inputs are synthetic. The converter assumes
+editorial and quantitative review. All input values are invented for teaching. The converter assumes
 one deterministic discount rate, one deterministic recovery rate, one
 constant risk-neutral hazard rate, regular model-year periods, exact
 default-time accrued premium inside that toy schedule, and an upfront payment
-at time zero. It omits the contractual and numerical machinery listed above,
+at time zero. It omits the contract details and numerical methods listed above,
 as well as stochastic rates, stochastic intensity or recovery, volatility and
 correlation calibration, counterparty risk, collateral, funding, liquidity,
 and transaction costs.

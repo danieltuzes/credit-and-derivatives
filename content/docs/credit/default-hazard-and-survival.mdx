@@ -1,6 +1,6 @@
 ---
 title: Default, hazard, and survival
-description: Read a supplied survival curve, calculate interval default probabilities, and use a constant-hazard toy model.
+description: Read an input survival curve, calculate interval default probabilities, and use a constant-hazard toy model.
 editorialStatus: draft
 teaches:
   - credit.survival-probability.interpret
@@ -9,8 +9,8 @@ teaches:
   - credit.survival-from-constant-hazard.calculate
 assumptions:
   - At most one modeled default can occur for the reference entity
-  - Survival probabilities are supplied risk-neutral pricing-model inputs rather than historical estimates
-  - The supplied survival curve begins at one and is non-increasing
+  - Survival probabilities are risk-neutral pricing-model inputs, not historical estimates; the lesson states them and does not calculate them
+  - The input survival curve begins at one and is non-increasing
   - Times are exact model-years measured from valuation time, with no calendar or day-count engine
   - The hazard calculation uses one deterministic constant intensity over the full horizon
 notation:
@@ -30,7 +30,7 @@ notation:
         introducedInLesson: credit.default-hazard-and-survival
     - key: number-of-credit-periods
       latex: 'n'
-      meaning: 'Counts the intervals in the supplied survival schedule. It is a positive integer count for this finite toy model.'
+      meaning: 'Counts the intervals in the input survival schedule. It is a positive integer count for this finite toy model.'
       formula: 'n \in \{1,2,\ldots\}'
       dimensionless: true
       sources: []
@@ -82,19 +82,19 @@ import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
 
 After this lesson, you should be able to:
 
-- interpret a supplied survival probability without confusing it with a
-  discount factor;
-- calculate the probability assigned to default inside one interval;
+- interpret a survival probability without confusing it with a discount
+  factor;
+- calculate the default probability of one interval from the survival curve;
 - explain what a constant hazard rate means in this toy model;
-- calculate survival from a supplied constant hazard rate.
+- calculate the survival probability from a constant hazard rate.
 
-## Survival answers a dated probability question
+## Survival probability: no default by time t
 
-The [[survival-probability]] $S^{\mathbb{Q}}(0,t)$ is the supplied
-probability, under the [[risk-neutral-probability-measure]]
-$\mathbb{Q}$, that the reference entity has not defaulted between
-[[valuation-time]] $0$ and future time $t$. With the local
-[[credit-default-time]] $\tau$,
+The [[survival-probability]] $S^{\mathbb{Q}}(0,t)$ is the probability, under
+the [[risk-neutral-probability-measure]] $\mathbb{Q}$, that the reference
+entity has not defaulted between [[valuation-time]] $0$ and a future time $t$.
+With the local [[credit-default-time]] $\tau$, the survival probability is
+defined as:
 
 $$
 \explain{survival-probability}{S^{\mathbb{Q}}(0,t)}
@@ -103,29 +103,37 @@ $$
 \explain{payment-time}{t}).
 $$
 
-This meaning is deliberately separate from time value. A survival probability
-describes a modeled event; a discount factor converts a future unit to value at
-time zero. Equal numbers would not make those concepts interchangeable.
+In this lesson, the survival probabilities are inputs: the lesson states their
+values and does not calculate them. In practice, a survival curve is fitted to
+market prices. The CDS lesson on the credit curve fits one to CDS quotes.
 
-The toy curve begins at
+A survival probability is not a discount factor. A survival probability is the
+probability of a modeled event. A discount factor converts an amount paid at a
+future time to its value at time zero. A survival probability and a discount
+factor can have equal values and still mean different things.
+
+We assume that the survival curve starts at one:
 
 $$
 S(0,0)=1
 $$
 
-and does not increase with time. The page does not estimate these probabilities
-from data or market quotes. Tuckman and Serrat introduce survival and default
-probabilities for CDS valuation[@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 367–370, eqs. 14.4–14.7]; Hull distinguishes risk-neutral
-default probabilities used in valuation from real-world probabilities
+We also assume that the survival curve does not increase with time. This
+lesson does not estimate survival probabilities from historical data, and it
+does not fit them to market quotes. Tuckman and Serrat introduce survival and
+default probabilities for CDS valuation[@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 367–370, eqs. 14.4–14.7].
+Hull distinguishes risk-neutral default probabilities, which are used in
+valuation, from real-world default probabilities
 [@hull-options-futures; Ch. 23 §23.5, printed pp. 528–530].
 
-## An interval probability is a drop in survival
+## Interval default probability: a decrease in survival
 
-Use the local [[credit-period-index]] $i$ to select one of the
-[[number-of-credit-periods]] $n$. The matching
-[[payment-time]] is written explicitly as
-$\explain{payment-time}{t_i}$. For ordered times, the
-[[interval-default-probability]] is
+The local [[credit-period-index]] $i$ selects one interval of the survival
+schedule, and the [[number-of-credit-periods]] $n$ counts the intervals.
+Interval $i$ starts at $t_{i-1}$ and ends at the [[payment-time]]
+$\explain{payment-time}{t_i}$, with $t_{i-1}<t_i$. The
+[[interval-default-probability]] of interval $i$ is the decrease in survival
+probability over the interval:
 
 $$
 \explain{interval-default-probability}{\Delta q_i^{\mathbb{Q}}}
@@ -133,23 +141,26 @@ $$
 -\explain{survival-probability}{S^{\mathbb{Q}}(0,t_i)}.
 $$
 
-The subtraction order matters. A non-increasing survival curve gives
-$\Delta q_i\geq0$. Adding interval probabilities from time zero through a
-horizon gives the cumulative probability assigned to default by that horizon:
+The survival probability at the start of the interval comes first in the
+subtraction. Because the survival curve does not increase, this order gives
+$\Delta q_i\geq0$. The sum of the interval default probabilities from time zero
+to $t_n$ is the cumulative default probability by $t_n$:
 
 $$
 \sum_{i=1}^{n}\Delta q_i=1-\explain{survival-probability}{S(0,t_n)}.
 $$
 
-That telescoping identity uses the assumptions $S(0,0)=1$ and at most one
-modeled default.
+This identity holds because the sum telescopes: each intermediate survival
+probability appears once with a plus sign and once with a minus sign. The
+identity uses two assumptions: $S(0,0)=1$, and at most one modeled default.
 
-## Constant hazard is an intensity, not a cumulative probability
+## Constant hazard rate: an intensity, not a cumulative probability
 
-The [[hazard-rate]] $\lambda$ is a constant conditional default intensity
-per model-year in this deliberately narrow model. It is not the probability of
-default by the end of one year and is not a discount rate. Using the local
-[[credit-small-time-increment]] $\Delta t$, its conditional definition is
+In this lesson, the [[hazard-rate]] $\lambda$ is constant. It is a conditional
+default intensity, measured per model-year. The hazard rate is not the
+probability of default by the end of one year. It is also not a discount rate.
+With the local [[credit-small-time-increment]] $\Delta t$, the hazard rate is
+defined as the limit of a conditional default probability per unit of time:
 
 $$
 \explain{hazard-rate}{\lambda}
@@ -161,21 +172,23 @@ $$
 }{\Delta t}.
 $$
 
-The conditioning matters: the population at risk at time $t$ contains only
-paths that have survived to $t$.
+The probability in this definition is conditional on the event $\tau>t$. So the
+hazard rate at time $t$ describes only the paths on which the reference entity
+has survived to $t$.
 
-With constant hazard, the model assigns
+With a constant hazard rate, the survival probability is:
 
 $$
 \explain{survival-probability}{S^{\mathbb{Q}}(0,t)}
 =\exp(-\explain{hazard-rate}{\lambda}t).
+\label{eq:constant-hazard-survival}
 $$
 
-The matching cumulative default probability by $t$ is therefore
-$1-S(0,t)$. This lesson does not introduce piecewise hazard rates, curve
-calibration, or a statistical estimator. The conditional intensity and
-constant-hazard exponential survival relation are developed in Tuckman and
-Serrat[@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 367–368; Appendix A14.1, printed p. 505, eqs. A14.1–A14.2] and Hull
+So the cumulative default probability by $t$ is $1-S(0,t)$. This lesson does
+not introduce piecewise hazard rates, curve calibration, or a statistical
+estimator. Tuckman and Serrat derive the conditional intensity and the
+constant-hazard survival probability[@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 367–368; Appendix A14.1, printed p. 505, eqs. A14.1–A14.2],
+and so does Hull
 [@hull-options-futures; Ch. 23 §§23.2 and 23.5, printed pp. 522–523 and 528–530].
 
 <CompactExamples
@@ -185,39 +198,43 @@ Serrat[@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 367–368; Appen
 >
   <CompactExample label="One interval drop">
 
-Suppose the supplied one-year survival probability is $S(0,1)=0.97$. Starting
-from $S(0,0)=1$, the probability assigned to default during the first year is
+Suppose the one-year survival probability is $S(0,1)=0.97$. With $S(0,0)=1$,
+the interval default probability of the first year is:
 
 $$
 \explain{interval-default-probability}{\Delta q_1}=1-0.97=0.03=3\%.
 $$
 
-The 3% is an interval event probability. No discounting has been performed.
+The 3% is the probability of default during the first year. It is not
+discounted.
 
   </CompactExample>
 
   <CompactExample label="Three years at constant hazard">
 
-Let $\lambda=0.02$ per model-year and $t=3$ model-years. Then
+Let $\lambda=0.02$ per model-year and $t=3$ model-years. Substituting these
+values into [[eq-constant-hazard-survival]] gives the three-year survival
+probability:
 
 $$
 S(0,3)=\exp(-0.02\times3)=\exp(-0.06)\approx0.941765.
 $$
 
-The cumulative probability assigned to default by three years is
+The cumulative default probability by three years is:
 
 $$
 1-S(0,3)\approx0.058235=5.8235\%.
 $$
 
-It is not $\lambda t=6\%$; that product is the exponent in this model, not the
-exact cumulative default probability.
+The cumulative default probability is not $\lambda t=6\%$. The product
+$\lambda t$ is the exponent in the survival probability. It is not the exact
+cumulative default probability.
 
   </CompactExample>
 
   <CompactExample label="Two unequal interval drops">
 
-Consider this supplied curve:
+Consider this survival curve:
 
 | Interval index $i$ | Time $\explain{payment-time}{t_i}$, model-years | Survival $\explain{survival-probability}{S(0,t_i)}$ | Interval default $\Delta q_i$ |
 | -----------------: | ----------------------------------------------: | --------------------------------------------------: | ----------------------------: |
@@ -225,9 +242,9 @@ Consider this supplied curve:
 |                  1 |                                               1 |                                                0.97 |                          0.03 |
 |                  2 |                                               2 |                                                0.92 |                          0.05 |
 
-The second interval receives more default probability than the first, even
-though both intervals are one model-year long. The cumulative two-year default
-probability is $0.03+0.05=0.08=1-0.92$.
+The interval default probability of the second interval, 0.05, is larger than
+that of the first interval, 0.03, although both intervals are one model-year
+long. The cumulative two-year default probability is $0.03+0.05=0.08=1-0.92$.
 
   </CompactExample>
 </CompactExamples>
@@ -242,11 +259,17 @@ item and a transfer item.
 
 ## Model boundary and review note
 
-This is a one-default, constant-hazard teaching model with exact model-year
-times and supplied pricing probabilities. It omits calendar dates, day counts,
-business-day adjustments, stochastic rates, dependence between rates and
-default, estimation, and calibration. It makes no claim that pricing-model
-probabilities are forecasts of realized default frequencies.
+This lesson uses a toy model with at most one default, a constant hazard
+rate, exact model-year times, and survival probabilities that are inputs. The
+model omits:
+
+- calendar dates, day counts, and business-day adjustments;
+- stochastic interest rates;
+- dependence between interest rates and default;
+- estimation and calibration.
+
+The lesson makes no claim that pricing-model probabilities are forecasts of
+realized default frequencies.
 
 All materially changed source locators, formulas, examples, notation, and
 answer keys remain \`draft\` pending independent human review.

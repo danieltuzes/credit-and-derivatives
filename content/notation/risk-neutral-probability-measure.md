@@ -1,7 +1,7 @@
 ---
 key: risk-neutral-probability-measure
 latex: '\mathbb{Q}'
-meaning: 'Supplies model pricing weights under which discounted traded prices satisfy the martingale condition; it prices payoffs relative to a stated numeraire and is not a forecast of actual event frequencies.'
+meaning: 'Gives model pricing weights under which discounted traded prices satisfy the martingale condition; it prices payoffs relative to a stated numeraire and is not a forecast of actual event frequencies.'
 aliases:
   - equivalent martingale measure
   - pricing measure
@@ -25,7 +25,7 @@ editorialStatus: draft
 aiAssisted: true
 ---
 
-The risk-neutral probability measure $\mathbb{Q}$ supplies the scenario weights
+The risk-neutral probability measure $\mathbb{Q}$ gives the scenario weights
 used by the stated no-arbitrage pricing model. It is equivalent to the
 real-world measure $\mathbb{P}$ — the two agree on which outcomes are
 possible — but assigns those outcomes different weights.

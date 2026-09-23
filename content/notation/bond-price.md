@@ -1,7 +1,7 @@
 ---
 key: bond-price
 latex: 'P_0'
-meaning: "Present value of the simplified bond's promised payments at valuation time; the amount paid by the buyer, shown as a positive value in this slice."
+meaning: "Present value of the simplified bond's promised payments at valuation time; the amount paid by the buyer, shown as a positive value in the bond lessons."
 aliases:
   - dirty price in the settlement-on-coupon-date toy model
   - present value of promised bond cash flows
@@ -31,5 +31,5 @@ $$
 P_0=\sum_{k=1}^{n}CF_k^{\mathrm{bond}}D(0,t_k).
 $$
 
-Settlement is on a coupon date here, so this slice does not yet distinguish
+Settlement is on a coupon date here, so these lessons do not yet distinguish
 clean price, accrued interest, and dirty price.

@@ -31,7 +31,7 @@
       "definitionId": "shared:derivative-underlying-value",
       "key": "derivative-underlying-value",
       "kind": "prose",
-      "line": 23,
+      "line": 24,
       "scope": "shared",
       "symbol": "S_t"
     },
@@ -40,7 +40,7 @@
       "definitionId": "page:derivatives.european-option-contracts-and-payoffs:long-call-expiry-payoff",
       "key": "long-call-expiry-payoff",
       "kind": "prose",
-      "line": 24,
+      "line": 25,
       "scope": "local",
       "symbol": "\\Pi_{T_{\\mathrm{opt}}}^{\\mathrm{call}}"
     },
@@ -49,7 +49,7 @@
       "definitionId": "page:derivatives.european-option-contracts-and-payoffs:long-put-expiry-payoff",
       "key": "long-put-expiry-payoff",
       "kind": "prose",
-      "line": 25,
+      "line": 26,
       "scope": "local",
       "symbol": "\\Pi_{T_{\\mathrm{opt}}}^{\\mathrm{put}}"
     },
@@ -58,7 +58,7 @@
       "definitionId": "shared:call-option-value",
       "key": "call-option-value",
       "kind": "prose",
-      "line": 47,
+      "line": 48,
       "scope": "shared",
       "symbol": "c_t"
     },
@@ -67,12 +67,12 @@
       "definitionId": "shared:put-option-value",
       "key": "put-option-value",
       "kind": "prose",
-      "line": 47,
+      "line": 48,
       "scope": "shared",
       "symbol": "p_t"
     },
     {
-      "column": 7,
+      "column": 56,
       "definitionId": "page:derivatives.european-option-contracts-and-payoffs:option-premium-paid",
       "key": "option-premium-paid",
       "kind": "prose",
@@ -81,11 +81,11 @@
       "symbol": "\\pi_0"
     },
     {
-      "column": 45,
+      "column": 36,
       "definitionId": "page:derivatives.european-option-contracts-and-payoffs:option-holder-expiry-profit",
       "key": "option-holder-expiry-profit",
       "kind": "prose",
-      "line": 52,
+      "line": 53,
       "scope": "local",
       "symbol": "G_{T_{\\mathrm{opt}}}"
     }

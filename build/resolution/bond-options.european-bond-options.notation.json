@@ -35,7 +35,7 @@
       "symbol": "K"
     },
     {
-      "column": 15,
+      "column": 1,
       "definitionId": "shared:accrued-interest",
       "key": "accrued-interest",
       "kind": "prose",
@@ -98,7 +98,7 @@
       "symbol": "B_{T_{\\mathrm{opt}}}^{\\mathrm{dirty}}"
     },
     {
-      "column": 45,
+      "column": 55,
       "definitionId": "shared:lattice-node-value",
       "key": "lattice-node-value",
       "kind": "prose",
@@ -111,7 +111,7 @@
       "definitionId": "page:bond-options.european-bond-options:bond-call-expiry-payoff",
       "key": "bond-call-expiry-payoff",
       "kind": "math",
-      "line": 66,
+      "line": 68,
       "scope": "local",
       "symbol": "X^{B,\\mathrm{call}}_{T_{\\mathrm{opt}}}"
     },
@@ -120,7 +120,7 @@
       "definitionId": "page:bond-options.european-bond-options:bond-call-expiry-payoff",
       "key": "bond-call-expiry-payoff",
       "kind": "math",
-      "line": 68,
+      "line": 70,
       "scope": "local",
       "symbol": "X^{B,\\mathrm{call}}_{T_{\\mathrm{opt}}}"
     },
@@ -129,7 +129,7 @@
       "definitionId": "shared:lattice-node-value",
       "key": "lattice-node-value",
       "kind": "math",
-      "line": 70,
+      "line": 72,
       "scope": "shared",
       "symbol": "V_{i,j}"
     }

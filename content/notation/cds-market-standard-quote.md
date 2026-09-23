@@ -1,7 +1,7 @@
 ---
 key: cds-market-standard-quote
 latex: 's_{\mathrm{MSQ}}'
-meaning: "Conventional spread supplied to or returned by the lesson's simplified converter; it equals the zero-upfront par spread within the converter's implied flat-hazard model and need not equal the contract's fixed running coupon."
+meaning: "Conventional spread that is the input or the output of the lesson's simplified converter; it equals the zero-upfront par spread within the converter's implied flat-hazard model and need not equal the contract's fixed running coupon."
 aliases:
   - MSQ
   - conventional spread
@@ -28,17 +28,17 @@ aiAssisted: true
 ---
 
 This lesson uses **market-standard quote**, abbreviated MSQ, for the
-conventional spread supplied to or returned by its simplified converter. The
+conventional spread that is the input or the output of its simplified converter. The
 label is local to this lesson; it is not presented as universal market
 terminology.
 
-When spread is supplied, the converter treats $s_{\mathrm{MSQ}}$ as a
+When the spread is the input, the converter treats $s_{\mathrm{MSQ}}$ as a
 zero-upfront par spread and infers one flat pricing-model hazard rate. When
-upfront is supplied, it first infers that hazard rate and then returns the
+the upfront is the input, it first infers that hazard rate and then returns the
 corresponding zero-upfront spread. Thus MSQ equals par spread inside that one
 converter model; it is not a second independent market observation once the
 upfront and conversion conventions have been fixed.
 
-The market supplies the spread or upfront level. The conversion convention
-supplies the mapping between them. Neither role belongs to the fixed running
+The market gives the spread or upfront level. The conversion convention
+gives the mapping between them. Neither role belongs to the fixed running
 coupon that determines the actual premium cash flows.

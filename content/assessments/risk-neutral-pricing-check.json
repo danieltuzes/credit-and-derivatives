@@ -12,7 +12,7 @@
       "options": [
         {
           "id": "forecast-versus-price",
-          "label": "P describes modeled real-world frequencies; Q supplies no-arbitrage pricing weights"
+          "label": "P describes modeled real-world frequencies; Q gives no-arbitrage pricing weights"
         },
         {
           "id": "same-by-definition",

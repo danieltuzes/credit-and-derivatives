@@ -1,7 +1,7 @@
 ---
 key: lattice-node-value
 latex: 'V_{i,j}'
-meaning: 'Claim value at time row i and state node j obtained by one-period backward induction from its successor nodes, conditional on reaching that node under the supplied pricing lattice.'
+meaning: 'Claim value at time row i and state node j obtained by one-period backward induction from its successor nodes, conditional on reaching that node under the input pricing lattice.'
 domain: finance
 units: stated currency at the node time
 sources:

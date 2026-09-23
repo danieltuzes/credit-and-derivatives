@@ -58,16 +58,16 @@
       "symbol": "P_0"
     },
     {
-      "column": 1,
+      "column": 70,
       "definitionId": "shared:present-value",
       "key": "present-value",
       "kind": "prose",
-      "line": 18,
+      "line": 17,
       "scope": "shared",
       "symbol": "PV_0"
     },
     {
-      "column": 22,
+      "column": 4,
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
@@ -76,11 +76,11 @@
       "symbol": "0"
     },
     {
-      "column": 35,
+      "column": 50,
       "definitionId": "shared:face-value",
       "key": "face-value",
       "kind": "prose",
-      "line": 75,
+      "line": 74,
       "scope": "shared",
       "symbol": "F"
     },
@@ -89,7 +89,7 @@
       "definitionId": "shared:maturity-time",
       "key": "maturity-time",
       "kind": "prose",
-      "line": 76,
+      "line": 75,
       "scope": "shared",
       "symbol": "T"
     }

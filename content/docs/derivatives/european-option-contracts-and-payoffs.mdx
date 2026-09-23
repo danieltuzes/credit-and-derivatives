@@ -78,15 +78,16 @@ After this lesson, you should be able to:
 
 - identify the holder, writer, underlying, strike, and expiry of a European option;
 - calculate long and short call and put payoffs;
-- distinguish current value or premium, expiry payoff, and profit.
+- distinguish current value, premium, expiry payoff, and profit.
 
 ## Rights and obligations
 
 A European call gives its holder the right, but not the obligation, to buy one
 unit of the underlying for the [[option-strike-price]] $K$ at the
 [[option-expiry-time]] $T_{\mathrm{opt}}$. A European put gives the holder
-the corresponding right to sell. The writer must perform if the holder
-exercises. Hull introduces these call/put and European-exercise distinctions
+the corresponding right to sell. If the holder exercises, the writer must
+carry out the other side of the exchange. Hull introduces call and put rights
+and European exercise
 [@hull-options-futures; Ch. 1 §1.5, printed pp. 7-9, call and put option rights and European exercise].
 
 ## Expiry payoff
@@ -105,32 +106,32 @@ $$
 =\max\!\left(K-S_{T_{\mathrm{opt}}},0\right).
 $$
 
-The maximum with zero is the holder's right to decline an unfavorable
-exercise. A writer's signed payoff is the negative of the matching holder
+The maximum with zero expresses the holder's right not to exercise when
+exercise would give a negative payoff. A writer's signed payoff is the negative of the matching holder
 payoff.
 
 For $S_{T_{\mathrm{opt}}}=115$ and $K=100$, one call pays 15 and one put pays
-zero. For $S_{T_{\mathrm{opt}}}=70$ and $K=85$, one put pays 15; a writer of
-three such puts has signed payoff $-45$.
+zero. For $S_{T_{\mathrm{opt}}}=70$ and $K=85$, one put pays 15. A writer of
+three such puts has a signed payoff of $-45$.
 
 ## Value, premium, payoff, and profit are different
 
 The [[call-option-value]] $c_t$ or [[put-option-value]] $p_t$ is a
-current value. At inception, the amount actually paid by the holder is the
-local [[option-premium-paid]] $\pi_0$ under the stated settlement
-convention. The payoff is determined later from the expiry state.
+current value. At inception, the holder pays the local [[option-premium-paid]] $\pi_0$,
+under the stated settlement convention. The payoff is determined later, by the
+state at expiry.
 
-If financing is deliberately ignored, local [[option-holder-expiry-profit]]
-for a call is
+If financing is ignored, the local [[option-holder-expiry-profit]] of a call
+is the payoff minus the premium:
 
 $$
 G_{T_{\mathrm{opt}}}
 =\Pi_{T_{\mathrm{opt}}}^{\mathrm{call}}-\pi_0.
 $$
 
-Thus a call purchased for 6 that later pays 9 has payoff 9 and profit 3 under
-that shortcut. A fully dated profit calculation would carry the premium and
-any other cash flows to one common comparison date. Hull's option examples
+For example, a call bought for 6 that later pays 9 has a payoff of 9 and a
+profit of 3, if financing is ignored. A profit calculation that includes
+financing first moves the premium and all other cash flows to one common date. Hull's option examples
 distinguish premium, exercise, payoff, and profit
 [@hull-options-futures; Ch. 9 practice questions 9.1-9.2 and 9.9-9.10, printed pp. 211-212, payoff versus profit].
 
@@ -140,10 +141,10 @@ distinguish premium, exercise, payoff, and profit
 
 ## Model boundary and review note
 
-This lesson covers European calls and puts only. It does not yet value them or
+This lesson covers European calls and puts only. It does not value them or
 cover American or Bermudan exercise, automatic exercise, assignment, settlement
 delay, corporate actions, collateral, counterparty default, or barrier and other
 path-dependent terms.
 
-The payoff functions live in a pure tested domain module. Sources, notation,
+The payoff functions are implemented in a pure tested domain module. Sources, notation,
 examples, code, and answer keys remain `draft` pending independent human review.

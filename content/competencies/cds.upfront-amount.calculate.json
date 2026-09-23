@@ -3,7 +3,7 @@
   "title": "Calculate a CDS upfront amount",
   "domain": "cds",
   "facet": "calculation",
-  "outcome": "Calculate the signed upfront amount that makes protection-buyer inception value zero for a supplied quote-implied premium annuity and fixed running coupon.",
+  "outcome": "Calculate the signed upfront amount that makes protection-buyer inception value zero for an input quote-implied premium annuity and fixed running coupon.",
   "prerequisites": [
     "cds.market-standard-quote.interpret",
     "cds.premium-leg.calculate",

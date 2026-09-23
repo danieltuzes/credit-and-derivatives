@@ -26,5 +26,5 @@ aiAssisted: true
 ---
 
 The dirty price is the price basis used for cash settlement and present value
-in this slice. On a coupon date with zero accrued interest it coincides with
+in the settlement lesson. On a coupon date with zero accrued interest it coincides with
 the earlier simplified bond-price definition.

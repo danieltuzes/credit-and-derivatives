@@ -10,14 +10,14 @@ assumptions:
   - One positive par payment is scheduled at maturity from the asset-holder perspective
   - Survival pays full par at maturity
   - Any default before maturity pays a deterministic recovery fraction of par at that same maturity date
-  - One supplied survival probability and one supplied deterministic discount factor apply to maturity
+  - One input survival probability and one input deterministic discount factor apply to maturity
   - At most one modeled default can occur and there are no coupons or intermediate payments
   - Times are exact model-years with no calendar, day-count, settlement-delay, or business-day treatment
 notation:
   local:
     - key: recovery-par-amount
       latex: 'F'
-      meaning: 'Positive currency amount promised after survival and used as the recovery base after default. It is a synthetic model input and not a market price.'
+      meaning: 'Positive currency amount promised after survival and used as the recovery base after default. It is a toy-model input and not a market price.'
       formula: 'F>0'
       units: stated currency at the scheduled payment time
       sources: []
@@ -57,64 +57,66 @@ After this lesson, you should be able to:
 
 ## Name the recovery convention before calculating
 
-This lesson uses one narrow convention only. A claim has positive local
+This lesson uses one recovery convention. A claim has a positive local
 [[recovery-par-amount]] $F$ and one local
 [[recovery-payment-time]] $T$, measured from
 [[valuation-time]] $0$.
 
 - If the reference entity survives through $T$, the holder receives $F$ at
   $T$.
-- If it defaults at any earlier time, the holder receives $RF$ at $T$, where
-  [[recovery-rate]] $R$ is deterministic.
+- If the reference entity defaults at or before $T$, the holder receives $RF$
+  at $T$, where the [[recovery-rate]] $R$ is deterministic.
 
-Both state payments occur at the same scheduled time. That timing is a model
-assumption, not an assertion about an actual instrument. In particular, this
-page does not teach recovery paid at default, recovery of market value,
-settlement delay, or a CDS settlement mechanism.
+The survival payment and the default payment are both paid at $T$. This timing
+is a model assumption, not a description of an actual instrument. This lesson
+does not teach recovery paid at default, recovery of market value, settlement
+delay, or a CDS settlement mechanism.
 
-Tuckman and Serrat define a bond recovery rate relative to face amount and
-identify the complementary loss fraction in their credit-loss discussion
-[@tuckman-serrat-fixed-income; Ch. 14 §14.2, printed p. 353]. The
-payment-at-maturity timing on this page is an explicit teaching convention,
-not a claim that this is the only recovery convention.
+Tuckman and Serrat define a bond recovery rate relative to the face amount.
+They also identify the complementary loss fraction in their credit-loss
+discussion [@tuckman-serrat-fixed-income; Ch. 14 §14.2, printed p. 353].
+Payment of the recovery at maturity is a convention of this lesson. The lesson
+does not claim that it is the only recovery convention.
 
 ## Recovery and loss given default are complements here
 
-The [[loss-given-default]] fraction is
+The [[loss-given-default]] fraction is defined as:
 
 $$
 \mathrm{LGD}=1-R,
 \qquad 0\leq R\leq1.
 $$
 
-For example, $R=0.40$ implies $\mathrm{LGD}=0.60$ in this synthetic model. The
-number is chosen for arithmetic only; the lesson makes no claim that 40% is a
-market convention, forecast, or appropriate assumption for any real entity.
+For example, $R=0.40$ gives $\mathrm{LGD}=0.60$ in this toy model. The value
+0.40 is chosen only for the arithmetic. The lesson makes no claim that 40% is a
+market convention, a forecast, or an appropriate assumption for any real
+entity.
 
-## Take the state-weighted maturity amount, then discount it
+## Calculate the expected maturity amount, then discount it
 
-The supplied [[survival-probability]] is
+The input [[survival-probability]] is
 $\explain{survival-probability}{S^{\mathbb{Q}}(0,T)}$ under the
-[[risk-neutral-probability-measure]] $\mathbb{Q}$. Under the one-default
-model, the pricing probability assigned to default before $T$ is
-$1-S^{\mathbb{Q}}(0,T)$.
+[[risk-neutral-probability-measure]] $\mathbb{Q}$. In the one-default model,
+the probability of default by $T$ is $1-S^{\mathbb{Q}}(0,T)$.
 
-For this single interval from $0$ through $T$, $1-S(0,T)$ is the
-[[interval-default-probability]]. The state-weighted amount paid at $T$
-is
+For the single interval from $0$ through $T$, $1-S(0,T)$ is the
+[[interval-default-probability]]. The expected amount paid at $T$ under
+$\mathbb{Q}$ is the survival payment and the default payment, each multiplied by
+its probability:
 
 $$
 F\left[S(0,T)+R\left(1-S(0,T)\right)\right].
 $$
 
-This is the two-event specialization of the expectation-by-partition rule:
-survival pays $F$ and default pays $RF$. Shreve gives the finite-valued
-expectation rule[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.3, printed pp. 13–18]; Tuckman and Serrat apply survival/default event weighting
-and discounting to credit cash flows[@tuckman-serrat-fixed-income; Ch. 14 §14.7, printed pp. 371–372, eq. 14.8 and Table 14.11].
+This is the two-event case of the expectation from disjoint events in the
+probability lesson: survival pays $F$, and default pays $RF$. Shreve gives the
+expectation of a finite-valued random variable[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.3, printed pp. 13–18].
+Tuckman and Serrat weight credit cash flows by survival and default
+probabilities and then discount them[@tuckman-serrat-fixed-income; Ch. 14 §14.7, printed pp. 371–372, eq. 14.8 and Table 14.11].
 
-Both state amounts are paid at $T$, so the same supplied
-[[discount-factor]] $\explain{discount-factor}{D(0,T)}$ applies. The
-[[recovery-of-par-present-value]] is
+The survival payment and the default payment are both paid at $T$. So one input
+[[discount-factor]] $\explain{discount-factor}{D(0,T)}$ applies to both. The
+[[recovery-of-par-present-value]] is the discounted expected amount:
 
 $$
 \explain{recovery-of-par-present-value}{PV_0^{\mathrm{RoP}}}
@@ -125,9 +127,9 @@ $$
 \right].
 $$
 
-This is a [[present-value]] calculation from the asset-holder perspective:
-the modeled future receipts and their value are positive. A purchase price paid
-by that holder would have the opposite cash-flow sign.
+This [[present-value]] is calculated from the perspective of the holder of the
+claim: the modeled future receipts and their value are positive. A purchase
+price paid by the holder would have the opposite cash-flow sign.
 
 <CompactExamples
   summary="Worked examples"
@@ -137,13 +139,14 @@ by that holder would have the opposite cash-flow sign.
   <CompactExample label="Partial recovery">
 
 Let $F=\text{USD }1{,}000$, $D(0,T)=0.96$, $S(0,T)=0.92$, and $R=0.40$. The
-state-weighted fraction of par paid at maturity is
+expected fraction of par paid at maturity is:
 
 $$
 0.92+0.40(1-0.92)=0.952.
 $$
 
-Therefore,
+Multiplying this fraction by the par amount and the discount factor gives the
+present value:
 
 $$
 PV_0^{\mathrm{RoP}}
@@ -151,15 +154,15 @@ PV_0^{\mathrm{RoP}}
 =\text{USD }913.92.
 $$
 
-The undiscounted expected maturity amount is USD 952.00; discounting then
-converts it to valuation time.
+The expected amount at maturity, before discounting, is USD 952.00. The
+discount factor converts this amount to its value at valuation time.
 
   </CompactExample>
 
   <CompactExample label="Zero-recovery boundary">
 
 Let $F=\text{USD }1{,}000$, $D(0,T)=0.94$, $S(0,T)=0.90$, and $R=0$. The
-default state contributes no payment:
+default payment is zero, so the present value is:
 
 $$
 PV_0^{\mathrm{RoP}}
@@ -167,15 +170,16 @@ PV_0^{\mathrm{RoP}}
 =\text{USD }846.00.
 $$
 
-This boundary is the discounted survival-state payment, not a statement about
-real recovery outcomes.
+With zero recovery, the present value is the discounted expected survival
+payment. This example makes no statement about real recovery outcomes.
 
   </CompactExample>
 
   <CompactExample label="Full-recovery boundary">
 
 Keep $F=\text{USD }1{,}000$, $D(0,T)=0.94$, and $S(0,T)=0.90$, but set $R=1$.
-Both states now pay full par at the same time:
+The survival payment and the default payment are now both the full par amount,
+paid at $T$:
 
 $$
 PV_0^{\mathrm{RoP}}
@@ -183,27 +187,33 @@ PV_0^{\mathrm{RoP}}
 =\text{USD }940.00.
 $$
 
-Within this narrow timing convention, the survival probability drops out at
-full recovery because both modeled states have the same amount and date.
+With full recovery, the present value does not depend on the survival
+probability. The reason is that both modeled events pay the same amount on the
+same date. This result holds only under the timing convention of this lesson.
 
   </CompactExample>
 </CompactExamples>
 
 ## Check your understanding
 
-The assessment tests recovery meaning, loss-given-default arithmetic, and
-direct and transfer calculations under the same one-period timing convention.
+The assessment tests the meaning of recovery, loss-given-default arithmetic,
+and direct and transfer calculations under the same one-period timing
+convention.
 
 <AssessmentSet />
 
 ## Model boundary and review note
 
-The model has one maturity date, one deterministic recovery fraction, one
-supplied survival probability, and one supplied discount factor. Recovery is a
-fraction of par paid at maturity even when default occurs earlier. The lesson
-omits default-time settlement, coupons, multiple intervals, stochastic
-recovery, market-value recovery, interest/default dependence, calibration,
-liquidity, funding, taxes, and counterparty risk.
+The model has one maturity date, one deterministic recovery rate, one input
+survival probability, and one input discount factor. Recovery is a fraction of
+par paid at maturity, also when default occurs earlier. The lesson omits:
+
+- settlement at the default time;
+- coupons and multiple intervals;
+- stochastic recovery and recovery of market value;
+- dependence between interest rates and default;
+- calibration;
+- liquidity, funding, taxes, and counterparty risk.
 
 All materially changed content and source locators remain \`draft\` pending
 independent human review.

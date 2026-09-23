@@ -150,7 +150,7 @@ After this lesson, you should be able to:
 
 - classify each quantity in a standard CDS valuation as market-observed,
   contractual, conventional, or model-solved;
-- explain why the traded upfront alone is enough to pin down the pricing
+- explain why the traded upfront alone is enough to determine the pricing
   hazard rate, and why that is a consequence of risk-neutral pricing rather
   than an extra assumption;
 - read a credit curve as tenor marks together with the survival curve fitted to
@@ -170,10 +170,11 @@ states the general discounted-payoff formula
 
 A CDS is such a claim. Let the local [[cds-buyer-discounted-cash-flows]]
 $\Pi^{\mathrm{buyer}}$ be the random sum of the protection buyer's discounted
-signed cash flows over the contract life, before any upfront: protection
-received at the modeled default time less scheduled and accrued premium paid,
-each discounted from its own payment time to [[valuation-time]] $0$. Its
-pricing value is
+signed cash flows over the life of the contract, before any upfront amount. It
+is the protection received at the modeled default time minus the scheduled and
+accrued premium paid. Each cash flow is discounted from its own payment time to
+[[valuation-time]] $0$. The present value of the CDS is the risk-neutral
+expectation of this sum:
 
 $$
 \explain{present-value}{PV_0}
@@ -181,10 +182,11 @@ $$
 \label{eq:cds-price-is-expectation}
 $$
 
-Now add the one fact the market supplies. A new standard contract is traded at
-its market upfront: the buyer pays the [[cds-upfront-amount]] $U_0$ at time
-zero and receives the claim valued by [[eq-cds-price-is-expectation]]. A
-trade done at the market level has zero value at inception, so
+Now add the one fact that the market gives. A new standard contract is traded
+at its market upfront amount: the buyer pays the [[cds-upfront-amount]]
+$U_0$ at time zero and receives the claim valued by
+[[eq-cds-price-is-expectation]]. A trade at the market level has zero present
+value at inception. So the upfront amount equals the present value:
 
 $$
 \explain{cds-upfront-amount}{U_0}
@@ -194,100 +196,107 @@ $$
 \label{eq:cds-upfront-is-expectation}
 $$
 
-The second equality is linearity of expectation: the protection cash flows and
-the premium cash flows are summed separately, giving the two positive leg
-magnitudes of the preceding lessons. Equation
+The second equality follows from the linearity of expectation: the
+expectations of the protection cash flows and of the premium cash flows are
+calculated separately. They are the two positive leg present values of the
+preceding lessons. Equation
 [[eq-cds-upfront-is-expectation]] is the same identity as
-[[cds/market-standard-quote-and-upfront#eq-cds-upfront-balance]], now read in
-the other direction. There, the model inputs were supplied and the upfront was
-the output. Here, the upfront is observed, and the equation constrains the
+[[cds/market-standard-quote-and-upfront#eq-cds-upfront-balance]], read in the
+other direction. In the preceding lesson, the model parameters were inputs and
+the upfront was the output. Here, the upfront is observed, and the equation constrains the
 model.
 
 **Why one equality is enough.** The standard contract has no cash flow at
-inception other than the upfront, so the trade supplies exactly one number. In
-this course's model, discounting and recovery are deterministic and both legs
-are linear expectations over the default time, so the only unknown inside
-[[eq-cds-upfront-is-expectation]] is the pricing measure's view of default
-timing: the [[survival-probability]] curve. Setting the expected values of
-the two legs equal, with the upfront on the premium side, is therefore not a
-modeling choice added to risk-neutral pricing. It is what risk-neutral pricing
-says about a contract that has just been traded at market. Tuckman and Serrat
-describe the market convention in exactly these steps: find the hazard rate
-that makes the expected discounted fee and contingent legs equal, then value
-the standard coupon at that hazard rate
+inception other than the upfront amount. So the trade gives exactly one number.
+In the model of this course, discounting and recovery are deterministic, and
+both legs are linear expectations over the default time. So the only unknown in
+[[eq-cds-upfront-is-expectation]] is the timing of default under the pricing
+measure: the [[survival-probability]] curve. Setting the expected values of
+the two legs equal, with the upfront amount on the premium side, is therefore
+not a modeling choice added to risk-neutral pricing. It is what risk-neutral
+pricing says about a contract that has just been traded at the market level.
+Tuckman and Serrat describe the market convention in these steps. First, find
+the hazard rate that makes the expected discounted fee leg and contingent leg
+(in this course, the premium leg and the protection leg) equal. Then value the
+standard coupon at that hazard rate
 [@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 368-370].
 
-One number identifies one unknown. With a single flat [[hazard-rate]]
+One number determines one unknown. With a single flat [[hazard-rate]]
 $\lambda$ per contract, as in the preceding lesson, one traded price is exactly
 enough. With a term structure of hazard rates, one traded price per tenor is
-exactly enough only if the curve has one free parameter per tenor, which is
-what the piecewise-constant shape below provides. Fewer prices than parameters
-would leave the curve under-determined and a convention would have to fill the
-gap; more prices than parameters would turn exact repricing into a best fit.
+exactly enough only if the curve has one free parameter per tenor. The
+piecewise-constant curve below has this property. With fewer prices than
+parameters, the curve is under-determined, and a convention must fix the
+remaining parameters. With more prices than parameters, the curve can in
+general only fit the prices approximately (a best fit).
 
 ## What the market shows, what the model assumes, what the model solves
 
-Calling every quantity an input hides which ones the market can contradict. The
-table sorts the quantities of a standard contract at one tenor.
+If every quantity is called an input, it is not clear which quantities the
+market can contradict. The table classifies the quantities of a standard
+contract at one tenor.
 
 | Quantity                                                                                                         | Status                                        | Where it comes from                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Signed upfront $U_0$, or the [[cds-market-standard-quote]] it stands for                                         | **Observed**                                  | Dealer bid and offer for the standard contract; a mid is taken as the mark. [@hull-options-futures; Ch. 24 §24.1, printed p. 549 (market-maker bid and offer in basis points per year)]                                                                                                                                                                                                                                                                                    |
-| Risk-free [[discount-factor]] $D(0,t)$                                                                           | **Observed** in another market, then supplied | Built from the rates market, not from the CDS; the converter takes it as a supplied discount input. [@isda-cds-standard-model; Standard CDS Contract Converter Specification, version May 5, 2009, Functionality and Specification, printed p. 1]                                                                                                                                                                                                                          |
+| Risk-free [[discount-factor]] $D(0,t)$                                                                           | **Observed** in another market, then an input | Built from the rates market, not from the CDS; the converter takes it as a discount input. [@isda-cds-standard-model; Standard CDS Contract Converter Specification, version May 5, 2009, Functionality and Specification, printed p. 1]                                                                                                                                                                                                                                   |
 | [[cds-standard-coupon]] $c_{\mathrm{std}}$, [[cds-notional]] $N$, maturity, credit events, reference obligations | **Contractual**                               | Written into the standard contract; the coupon is 100 or 500 basis points and maturities fall on standard dates. [@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed pp. 366-367 (standard maturity dates on the twentieth of March, June, September, and December; 100 or 500 basis point coupons with a market-determined upfront)] [@hull-options-futures; Ch. 24 §24.4, printed p. 556 (a coupon and a recovery rate are specified for each underlying and maturity)] |
 | [[recovery-rate]] $R$ and hence [[loss-given-default]] $\mathrm{LGD}$                                            | **Convention**                                | Assumed by the converter, commonly 40% but 20% or 25% for some contract types. It is not observed in the quote. [@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed p. 368, n. 15]                                                                                                                                                                                                                                                                                        |
 | Shape of the hazard rate between and beyond tenors, accrual treatment                                            | **Convention**                                | The converter's single flat hazard rate, or this lesson's piecewise-constant curve. [@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed p. 370 (the quote-to-upfront translation is a convention like price and yield; participants need not believe in constant hazard or a particular recovery, but all use the convention)]                                                                                                                                            |
 | [[hazard-rate]] $\lambda$, the survival curve, the [[cds-par-spread]] $s^{\star}$, the other quotation           | **Solved**                                    | Root of [[eq-cds-upfront-is-expectation]] given everything above. [@hull-options-futures; Ch. 24 §24.4, printed pp. 556-557 (a hazard rate is implied from the quoted spread by iterative search)]                                                                                                                                                                                                                                                                         |
 
-Two consequences of the risk-neutral reading follow directly.
+The risk-neutral interpretation has two consequences.
 
 - **The solved probabilities are pricing weights.** Hull describes implying
   default probabilities from CDS quotes as the analogue of implying
-  volatilities from option prices, and insists that CDS valuation needs
+  volatilities from option prices. Hull states that CDS valuation needs
   risk-neutral, not real-world, default probabilities
   [@hull-options-futures; Ch. 24 §24.2, printed p. 554]. A survival curve
   fitted to quotes is a statement about prices, not a forecast of default
-  frequencies; Tuckman and Serrat make the same point for the price-implied
+  frequencies. Tuckman and Serrat make the same point for the price-implied
   hazard rate [@tuckman-serrat-fixed-income; Ch. 14 §14.7, printed p. 371].
 - **Recovery must be assumed because one price cannot identify two unknowns.**
-  The protection payoff scales with $\mathrm{LGD}$ and the implied hazard rate
-  scales roughly with its reciprocal, so a contract valued with the same
-  recovery that implied its hazard rate is not very sensitive to that recovery
-  choice. A binary CDS, whose payoff does not depend on recovery, would add the
+  The protection payoff is proportional to $\mathrm{LGD}$, and the implied
+  hazard rate is approximately proportional to $1/\mathrm{LGD}$. So a contract
+  valued with the same recovery rate that implied its hazard rate is not very
+  sensitive to the choice of recovery rate. A binary CDS, whose payoff does not depend on recovery, would add the
   second equation needed to separate the two [@hull-options-futures; Ch. 24 §24.2, printed pp. 554-555].
 
 ## The credit curve is two objects
 
-A discount curve is a dated collection of discount factors on one currency and
-funding basis, not one yield; see the rates lesson. A credit curve is the same
-idea for one reference entity, but it comes in two layers that this course
-keeps apart.
+A discount curve is a set of dated discount factors in one currency and on one
+funding basis; it is not one yield (see the rates lesson). A credit curve is
+the same idea for one reference entity. But a credit curve has two layers, and
+this course keeps them separate.
 
 **The marked curve.** Use the local [[cds-tenor-index]] $k$ across the
 [[cds-tenor-count]] $K$ quoted tenors with maturities
 $\explain{cds-tenor-maturity}{T_1}<\cdots<\explain{cds-tenor-maturity}{T_K}$.
-At each tenor the market shows the standard contract's price. If the desk
-records that price as a conventional spread, the mark is the local
-[[cds-tenor-quote]] $s_k$; if it records the traded price itself, the mark is
-the local [[cds-tenor-upfront-fraction]] $u_k$. This course calls a curve
+At each tenor, the market shows the price of the standard contract. A mark is
+the recorded price at one tenor. If the trading desk records the price as a
+conventional spread, the mark is the local [[cds-tenor-quote]] $s_k$. If the
+desk records the traded price itself, the mark is the local
+[[cds-tenor-upfront-fraction]] $u_k$. This course calls a curve
 whose marks are market-standard quotes an **MSQ-marked curve**, and one whose
 marks are upfront fractions an **upfront-marked curve**. Both labels are local
 to this course (`NEEDS_SOURCE`: the desk vocabulary for marking conventions is
 not documented in the registered sources). Tuckman and Serrat tabulate
-five-year spreads across names and plot the slope of the term structure of
-spreads across tenors, which is normally upward but inverted in stress
+five-year spreads for several reference entities. They also plot the term
+structure of spreads across tenors: its slope is normally upward, but it is
+inverted in periods of stress
 [@tuckman-serrat-fixed-income; Ch. 14 §14.5, printed pp. 362-363, Table 14.9 and Figure 14.5].
-Hull lists the tenors that commonly trade, with five years the most liquid
+Hull lists the tenors that commonly trade; the five-year tenor is the most
+liquid
 [@hull-options-futures; Ch. 24 §24.1, printed p. 549].
 
-**The fitted curve.** The legs lesson already allows a deterministic
-time-varying hazard rate and shows that survival is the exponential of its
-integral. The fitted credit curve is the special case in which the hazard is
-constant on each segment between consecutive tenors: the local
-[[cds-segment-hazard-rate]] $\lambda_k$ on
-$(\explain{cds-tenor-maturity}{T_{k-1}},\explain{cds-tenor-maturity}{T_k}]$
-with $\explain{cds-tenor-maturity}{T_0}=0$. Survival then compounds segment by
-segment,
+**The fitted curve.** The legs lesson allows a deterministic time-varying
+hazard rate. It shows that the survival probability is the exponential of minus
+the integral of the hazard rate. The fitted credit curve is the special case in
+which the hazard rate is constant on each segment between consecutive tenors:
+the local [[cds-segment-hazard-rate]] $\lambda_k$ on
+$(\explain{cds-tenor-maturity}{T_{k-1}},\explain{cds-tenor-maturity}{T_k}]$,
+with $\explain{cds-tenor-maturity}{T_0}=0$. The survival probability is then a
+product with one factor per segment:
 
 $$
 \explain{survival-probability}{S^{\mathbb{Q}}(0,T_k)}
@@ -299,36 +308,38 @@ $$
 \label{eq:cds-piecewise-survival}
 $$
 
-and inside a segment it decays at that segment's constant rate exactly as in
-the constant-hazard lesson. Hull notes that when spreads for different
+Inside a segment, the survival probability decreases at the constant hazard
+rate of that segment, as in the constant-hazard lesson. Hull notes that when spreads for different
 maturities are available, the hazard rate is calculated as a step function
 [@hull-options-futures; Ch. 24 §24.2, printed p. 554, n. 6].
 
-The marked curve is data. The fitted curve is a model object chosen so that
-the data reprice. Keeping the layers apart is what makes the next distinction
-possible.
+The marked curve is data. The fitted curve is a model object, chosen so that
+the model reprices the data. The next distinction depends on keeping the two
+layers separate.
 
 ## Transforming marks is not fitting the curve
 
-**Curve transformation** changes the quotation of each mark without building a
-term structure. Tenor by tenor, the standard converter takes $s_k$, solves the
-flat rate this course writes as the local [[cds-flat-tenor-hazard-rate]]
-$\lambda^{\mathrm{flat}}_k$ for that tenor alone, values the fixed coupon at
-that rate, and returns $u_k$; or it runs the same steps backwards. This is the
-conversion of the preceding lesson applied once per tenor
-[@hull-options-futures; Ch. 24 §24.4, printed pp. 556-557]. The flat rates of
-different tenors are separate answers to separate questions. They are not one
+**Curve transformation** changes the quotation of each mark and does not build a
+term structure. For each tenor separately, the standard converter takes $s_k$
+and solves for a flat hazard rate for that tenor alone. This course writes this
+rate as the local [[cds-flat-tenor-hazard-rate]]
+$\lambda^{\mathrm{flat}}_k$. The converter then values the fixed coupon at
+that rate and returns $u_k$. The converter can also do the same steps in the
+reverse direction. This is the conversion of the preceding lesson, applied once
+per tenor
+[@hull-options-futures; Ch. 24 §24.4, printed pp. 556-557]. The flat hazard rates
+of different tenors are solutions of separate equations. They are not one
 survival curve, and the official converter itself distinguishes its single
 flat hazard rate from a term structure
 [@isda-cds-standard-model; Standard CDS Examples, version October 26, 2012, printed p. 2 (the converter uses a single flat hazard rate rather than a term structure of flat spreads)].
-The par spread of a hypothetical zero-upfront contract is a third quotation
-reachable by the same tenor-by-tenor route. **Curve transformation** is a local
-label for this quotation change (`NEEDS_SOURCE` for the phrase itself).
+The same tenor-by-tenor conversion also gives a third quotation: the par
+spread of a hypothetical zero-upfront contract. The name **curve
+transformation** belongs to this course (`NEEDS_SOURCE` for the phrase itself).
 
 **Fitting the curve** finds one term structure that reprices every mark at
 once. With the marks written as upfront fractions, the fit condition at tenor
-$k$ is the buyer-value identity [[eq-cds-upfront-is-expectation]] per unit
-notional, evaluated under the segments up to $k$:
+$k$ is the buyer-value identity [[eq-cds-upfront-is-expectation]], evaluated
+with the segment hazard rates up to $k$:
 
 $$
 \explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}
@@ -346,29 +357,32 @@ $$
 \label{eq:cds-curve-fit-tenor}
 $$
 
-Both legs are the exact default-time integrals of the legs lesson with the
-piecewise hazard substituted; each premium period lies inside one segment, so
-each period is a one-period flat-hazard model started from the survival and
-discount reached at its start. Solve [[eq-cds-curve-fit-tenor]] in maturity
-order: the first tenor determines $\lambda_1$, which is then held fixed while
-the second tenor determines $\lambda_2$, and so on. Each step is a
-one-dimensional root solve, because the buyer value of a contract increases
-with the hazard rate of any segment inside its life. A zero-upfront par mark
-is the special case $u_k=0$ with the coupon set to the quoted par spread. The
-result is a curve under which every quoted tenor reprices exactly and whose
-survival probabilities at all tenors are mutually consistent.
+Both legs are the exact default-time integrals of the legs lesson, with the
+piecewise-constant hazard rate substituted. Each premium period lies inside one
+segment. So each period is a one-period flat-hazard model that starts from the
+survival probability and the discount factor at the start of the period. Solve
+[[eq-cds-curve-fit-tenor]] in maturity order. The first tenor determines
+$\lambda_1$. Then $\lambda_1$ is held fixed, and the second tenor determines
+$\lambda_2$, and so on. Each step is a one-dimensional root solve for
+$\lambda_k$. The buyer value of a contract increases with the hazard rate of
+any segment inside the life of the contract, so each step has at most one
+root. A zero-upfront par mark is the special case $u_k=0$, with the coupon set
+to the quoted par spread. The result is a curve under which every quoted tenor
+reprices exactly. The survival probabilities of this curve at all tenors are
+consistent with each other.
 
-The same survival curve then prices every other contract on the name: an
-off-tenor maturity, a legacy contract at a different coupon, or a hypothetical
-zero-upfront contract. That is what a fitted curve is for. Note two things it
-does not do. It does not make the fitted par spread at a tenor equal to that
-tenor's MSQ mark, because the fitted premium annuity differs from the
-converter's flat annuity even though both reprice the same traded upfront;
-this is the "par spread from another curve" point of the preceding lesson. And
-it does not guarantee a solution: a later mark that is cheaper than the
-zero-hazard value implied by the earlier segments would need a negative
-$\lambda_k$, which the model refuses, because a survival probability cannot
-increase with time.
+The same survival curve then prices every other contract on the same reference
+entity: a maturity between the quoted tenors, an existing contract with a
+different coupon, or a hypothetical zero-upfront contract. This is the purpose
+of a fitted curve. The fit has two limits. First, the fitted par spread at a
+tenor is in general not equal to the MSQ mark of that tenor. The reason is that
+the fitted premium annuity differs from the flat annuity of the converter,
+although both reprice the same traded upfront amount. This is the "par spread
+from another curve" point of the preceding lesson. Second, a solution need not
+exist. A later mark that is cheaper than the zero-hazard value implied by the
+earlier segments would need a negative $\lambda_k$. The model rejects a
+negative hazard rate, because a survival probability cannot increase with
+time.
 
 <CompactExamples
   summary="Worked curve"
@@ -377,8 +391,8 @@ increase with time.
 >
   <CompactExample label="Transform the marks">
 
-Take a synthetic MSQ-marked curve on one name: quarterly standard contracts
-with fixed coupon $\explain{cds-standard-coupon}{c_{\mathrm{std}}}=0.010$ per
+Take an MSQ-marked curve for one reference entity: standard contracts with
+quarterly premiums and a fixed coupon $\explain{cds-standard-coupon}{c_{\mathrm{std}}}=0.010$ per
 year (100 basis points per year), continuously compounded risk-free rate 2%
 per year, recovery $\explain{recovery-rate}{R}=0.40$, and marks
 $\explain{cds-tenor-quote}{s_1}=0.008$, $\explain{cds-tenor-quote}{s_2}=0.012$,
@@ -386,7 +400,7 @@ $\explain{cds-tenor-quote}{s_3}=0.016$ at maturities
 $\explain{cds-tenor-maturity}{T_1}=1$, $\explain{cds-tenor-maturity}{T_2}=3$,
 $\explain{cds-tenor-maturity}{T_3}=5$ model-years. Notional is USD 10,000,000.
 
-Tenor by tenor, the flat converter of the preceding lesson gives
+For each tenor separately, the flat converter of the preceding lesson gives:
 
 | Tenor $k$ | $\explain{cds-tenor-quote}{s_k}$, bp/yr | $\explain{cds-flat-tenor-hazard-rate}{\lambda^{\mathrm{flat}}_k}$, per yr | Flat $\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}$, model-yrs | $\explain{cds-tenor-upfront-fraction}{u_k}$ | $\explain{cds-upfront-amount}{U_0}$, USD | Flat $\explain{survival-probability}{S(0,T_k)}$ |
 | --------: | --------------------------------------: | ------------------------------------------------------------------------: | -------------------------------------------------------------------: | ------------------------------------------: | ---------------------------------------: | ----------------------------------------------: |
@@ -394,11 +408,12 @@ Tenor by tenor, the flat converter of the preceding lesson gives
 |         2 |                                     120 |                                                               0.019950083 |                                                          2.820140305 |                                 0.005640281 |                                56,402.81 |                                     0.941905574 |
 |         3 |                                     160 |                                                               0.026600129 |                                                          4.449093452 |                                 0.026694561 |                               266,945.61 |                                     0.875464525 |
 
-Each row is the preceding lesson's conversion: for example, at five years,
-$u_3=4.449093452\times(0.016-0.010)=0.026694561$. The one-year mark is
-below the coupon, so the buyer receives its upfront. The three flat hazard
-rates answer three separate questions. Reading the last column as one survival
-curve would be a mistake: the two-year survival is not defined by it at all.
+Each row is the conversion of the preceding lesson. For example, at five
+years, $u_3=4.449093452\times(0.016-0.010)=0.026694561$. The one-year mark
+is below the coupon, so the buyer receives the upfront amount. The three flat
+hazard rates are solutions of three separate equations. The last column is not
+one survival curve: for example, it does not define the survival probability
+at two years.
 
   </CompactExample>
 
@@ -413,22 +428,24 @@ maturity order.
 |         2 |             (1, 3] |                                            0.023463765 |                                       0.941550234 |                                                            2.829254583 |                                                                                         0.033932826 |                                            119.9356 |
 |         3 |             (3, 5] |                                            0.037572831 |                                       0.873389867 |                                                            4.500220799 |                                                                                         0.071696769 |                                            159.3183 |
 
-Every tenor reprices: at five years,
-$0.071696769-0.010\times4.500220799=0.026694561=u_3$, and the residuals at
-all three tenors are below $10^{-12}$ in the tested implementation.
+Every tenor reprices. For example, at five years,
+$0.071696769-0.010\times4.500220799=0.026694561=u_3$. In the tested
+implementation, the residuals at all three tenors are below $10^{-12}$.
 
-Read the table against the transformation. The first segment equals the
-one-year flat rate, because a one-year contract sees only one segment. The
-later segments are steeper than the flat rates: the five-year flat rate
-0.026600 is an average over five years, while the fitted hazard on the last
-two years is 0.037573, because the earlier years are already priced by the
-cheaper short tenors. Consequently the fitted five-year survival, 0.873390,
-is below the flat-implied 0.875465. And the fitted par spreads at three and
-five years, 119.94 and 159.32 basis points, are not the marks of 120 and 160:
-the same traded upfronts are reproduced with different premium annuities.
+Compare this table with the transformation. The hazard rate of the first
+segment equals the one-year flat rate, because a one-year contract depends only
+on the first segment. The hazard rates of the later segments are higher than
+the flat rates. The five-year flat rate, 0.026600, is an average over five
+years. The fitted hazard rate on the last two years is 0.037573, because the
+shorter tenors, with lower hazard rates, already price the earlier years. So
+the fitted five-year survival probability, 0.873390, is below the flat survival
+probability, 0.875465. The fitted par spreads at three and five years, 119.94
+and 159.32 basis points, are not equal to the marks of 120 and 160 basis
+points. The reason is that the fitted curve reproduces the same traded upfront
+amounts with different premium annuities.
 
-Between tenors the fitted curve is defined too: by
-[[eq-cds-piecewise-survival]], survival at two years is
+The fitted curve also defines the survival probability between tenors. By
+[[eq-cds-piecewise-survival]], the survival probability at two years is
 $0.986788009\exp(-0.023463765\times1)=0.963903771$, and at four years it is
 $0.941550234\exp(-0.037572831\times1)=0.906829881$.
 
@@ -436,18 +453,20 @@ $0.941550234\exp(-0.037572831\times1)=0.906829881$.
 
   <CompactExample label="The marks are prices of particular contracts">
 
-Read the same three numbers 80, 120, and 160 basis points not as MSQ marks at
-a 100 basis point coupon but as zero-upfront par spreads, that is,
-$u_k=0$ with each tenor's coupon equal to its quote. The fit then gives
-segment hazards 0.013300046, 0.023480220, and 0.037863368 per year, with
-five-year survival 0.872853786 rather than 0.873389867.
+Now read the same three numbers, 80, 120, and 160 basis points, as
+zero-upfront par spreads, not as MSQ marks with a coupon of 100 basis points.
+So $u_k=0$, and the coupon of each tenor equals its quote. The fit then gives
+segment hazard rates of 0.013300046, 0.023480220, and 0.037863368 per year,
+and a five-year survival probability of 0.872853786 instead of 0.873389867.
 
-The first segment is unchanged, because a one-year contract at zero upfront
-and coupon 80 basis points is exactly what the converter priced. The later
-segments move, because a standard contract at 100 basis points with an upfront
-and a zero-upfront contract at 120 basis points are different cash-flow
-streams whose prices happen to be written with the same number. A mark is
-the price of a particular contract; the fit must be told which one.
+The first segment is unchanged, because the converter also treats the one-year
+MSQ of 80 basis points as the par spread of a zero-upfront one-year contract.
+The later segments change. A standard contract with a coupon of 100 basis
+points and an upfront amount is a different stream of cash flows from a
+zero-upfront contract with a coupon of 120 basis points. The two prices are
+written with the same number, but they are prices of different contracts. A
+mark is the price of a particular contract, and the fit must know which
+contract.
 
   </CompactExample>
 
@@ -455,23 +474,24 @@ the price of a particular contract; the fit must be told which one.
 
 Suppose the one-year zero-upfront par mark is 300 basis points and the
 three-year mark is 100 basis points. The first segment prices the one-year
-contract. The three-year contract at 100 basis points is then worth more to
-the seller than its first year alone already implies, even with no default
-risk at all after year one. Its mark sits below the zero-hazard bound, and
-the fit reports that it would need a negative segment hazard rate. In the
-tested implementation, raising the three-year mark to 110 basis points
-restores a solution with a second-segment hazard of 0.001573 per year.
+contract. Then the three-year contract at 100 basis points is worth more to the
+seller than the first year alone implies, even with zero default risk after
+year one. So its mark is below the zero-hazard bound, and the fit reports that
+the mark would need a negative segment hazard rate. In the tested
+implementation, a three-year mark of 110 basis points has a solution, with a
+hazard rate of 0.001573 per year in the second segment.
 
-Steeply inverted marks are therefore not automatically an arbitrage, but they
-are a signal: either the marks are stale or off-market, or the model's
-piecewise-constant shape and deterministic recovery cannot describe them.
+Steeply inverted marks are not necessarily an arbitrage, but they indicate a
+problem. Either the marks are out of date or not at market levels, or the
+piecewise-constant shape and the deterministic recovery of the model cannot
+describe them.
 
   </CompactExample>
 </CompactExamples>
 
 ## A note on jargon
 
-Desk vocabulary for CDS mixes contract terms, quotation conventions, and risk
+The vocabulary of CDS trading desks mixes contract terms, quotation conventions, and risk
 measures. The table gives this course's reading of the most common phrases,
 with the registered source where one supports it. Entries marked
 `NEEDS_SOURCE` are recorded as usage this course adopts locally; a human should
@@ -480,7 +500,7 @@ confirm or replace them before review.
 | Phrase                                                                      | Meaning in this course                                                                                                                                                                                                                                                                    |
 | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Reference entity, credit event, notional                                    | The named borrower, the contractually defined trigger, and the amount protected. [@hull-options-futures; Ch. 24 §24.1, printed pp. 548-549] [@tuckman-serrat-fixed-income; Ch. 14 §14.5, printed p. 361]                                                                                  |
-| Buying protection, selling protection; short credit, long credit            | A protection buyer pays premium and wins on default, like a short seller of the bond; a protection seller resembles a bond holder. [@tuckman-serrat-fixed-income; Ch. 14 §14.5, printed pp. 364-365]                                                                                      |
+| Buying protection, selling protection; short credit, long credit            | A protection buyer pays premium and gains on default, like a short seller of the bond; a protection seller resembles a bond holder. [@tuckman-serrat-fixed-income; Ch. 14 §14.5, printed pp. 364-365]                                                                                     |
 | Index buyer and seller                                                      | For index CDS the words are reversed: the index buyer receives premium and pays on default, like a portfolio holder. [@tuckman-serrat-fixed-income; Ch. 14 §14.5, printed p. 363]                                                                                                         |
 | Spread, quoted spread, conventional spread, MSQ                             | The annualized premium of a hypothetical zero-upfront contract, used as the conventional quote; this course's local label is market-standard quote. [@tuckman-serrat-fixed-income; Ch. 14 §14.5, printed p. 362] [@hull-options-futures; Ch. 24 §24.1, printed p. 549]                    |
 | Par spread                                                                  | The running spread that makes the two legs equal with zero upfront under a stated curve; see the [[cds-par-spread]] card.                                                                                                                                                                 |
@@ -514,13 +534,13 @@ evidence.
 ## Model boundary and review note
 
 This AI-assisted lesson and all cited locators remain `draft` pending human
-editorial and quantitative review. Inputs are synthetic. The fitted curve is
+editorial and quantitative review. All input values are invented for teaching. The fitted curve is
 piecewise constant with knots at quoted tenors, extended flat, under one
 deterministic discount rate, one deterministic recovery rate, and exact
 default-time accrual on a regular model-year schedule. A production curve
-respects calendar schedules, day counts, business-day rules, settlement
+also handles calendar schedules, day counts, business-day rules, settlement
 timing, accrued premium at inception, an interpolation and extrapolation
-policy chosen by the desk, and a discount curve built from the rates market.
+policy chosen by the trading desk, and a discount curve built from the rates market.
 The lesson does not model bid-offer, liquidity, dealer inventory, stochastic
 rates or intensity, recovery risk, counterparty risk, collateral, funding, or
 transaction costs, and it makes no claim that pricing-model survival

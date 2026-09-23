@@ -1,15 +1,15 @@
 ---
 title: European bond options
-description: Define a standalone option on a bond, align its cash-price basis, and value supplied expiry payoffs on a lattice.
+description: Define a standalone option on a bond, put its prices on one cash-price basis, and value expiry payoffs on an input lattice.
 editorialStatus: draft
 teaches:
   - bond-options.contract.interpret
   - bond-options.european-value.calculate
 assumptions:
   - Standalone European call or put on one named bond, exercisable at one stated time
-  - Exercise occurs immediately after any scheduled coupon at option expiry, so the supplied expiry bond values are ex-coupon
+  - Exercise occurs immediately after any scheduled coupon at option expiry, so the input expiry bond values are ex-coupon
   - Bond values and strike are dirty cash prices in the same currency per bond
-  - Default-free supplied pricing lattice with no early exercise, counterparty default, funding spread, volatility calibration, or embedded issuer option
+  - Default-free input pricing lattice with no early exercise, counterparty default, funding spread, volatility calibration, or embedded issuer option
 notation:
   local:
     - key: bond-option-expiry-value
@@ -56,18 +56,18 @@ import Diagram from 'explico/components/diagram/Diagram.astro';
 
 A European bond call gives the holder the right, but not the obligation, to
 buy a named bond at [[option-expiry-time]]. A put gives the right to sell.
-This is not the issuer call feature inside a callable bond; the party holding
-the right and the surrounding instrument are different.
+This option is not the issuer's call feature inside a callable bond. The two
+rights are held by different parties and belong to different instruments.
 
-## Align cash-price units before payoff
+## Put the bond value and the strike on one price basis
 
 The local [[bond-option-expiry-value]]
 $B_{T_{\mathrm{opt}}}^{\mathrm{dirty}}$ and [[option-strike-price]] $K$
-must use the same dirty cash basis. If a contract states a clean strike, add
-exercise-date [[accrued-interest]] before comparison.
+must both be dirty cash prices. If a contract states a clean strike, add the
+[[accrued-interest]] at the exercise date to the strike before the comparison.
 
-For the lesson's exercise immediately after any expiry-date coupon, the call
-and put payoffs are
+In this lesson, exercise occurs immediately after any coupon paid on the expiry
+date. The call payoff and the put payoff are:
 
 $$
 \explain{bond-call-expiry-payoff}{X^{B,\mathrm{call}}_{T_{\mathrm{opt}}}}
@@ -85,9 +85,10 @@ $$
 \label{eq:bond-put-expiry-payoff}
 $$
 
-The lattice first produces expiry bond values. Apply
-[[eq-bond-call-expiry-payoff]] or [[eq-bond-put-expiry-payoff]] at those nodes,
-then apply backward induction to obtain the [[lattice-node-value]].
+The lattice first gives the bond values at expiry. Apply
+[[eq-bond-call-expiry-payoff]] or [[eq-bond-put-expiry-payoff]] at the expiry
+nodes. Then apply backward induction to calculate the [[lattice-node-value]]
+at time zero.
 
 <Diagram
   id="bond-option-valuation-flow"
@@ -95,21 +96,22 @@ then apply backward induction to obtain the [[lattice-node-value]].
   direction="LR"
   nodes={[
     { id: 'bond-tree', text: 'Value the bond to option expiry' },
-    { id: 'payoff', text: 'Compute the expiry payoff' },
+    { id: 'payoff', text: 'Calculate the expiry payoff' },
     { id: 'induction', text: 'Discount expected option values backward' },
   ]}
   edges={[
     { from: 'bond-tree', to: 'payoff' },
     { from: 'payoff', to: 'induction' },
   ]}
-  description="First value the bond at every option-expiry node, then apply the call or put payoff, then discount the risk-neutral expected payoffs backward through the supplied lattice."
+  description="First value the bond at every option-expiry node, then apply the call or put payoff, then discount the risk-neutral expected payoffs backward through the input lattice."
 />
 
 ## Worked example
 
-Suppose the supplied one-period lattice gives dirty expiry bond values of USD
-90 and USD 110, strike USD 100, risk-neutral up weight 0.60, and discount
-factor 0.95. Applying [[eq-bond-call-expiry-payoff]] and one backward step gives
+Suppose a one-period input lattice gives dirty bond values at expiry of USD 90
+and USD 110. The strike is USD 100, the risk-neutral up weight is 0.60, and the
+discount factor is 0.95. Applying [[eq-bond-call-expiry-payoff]] and one
+backward step gives the call value:
 
 $$
 \begin{aligned}
@@ -123,14 +125,15 @@ $$
 \end{aligned}
 $$
 
-The tested domain calculation composes `europeanOptionPayoff` with
-`backwardInductionValue` for the same terminal-payoff and discounting steps.
+The tested domain code does the same two steps: `europeanOptionPayoff`
+calculates the expiry payoffs, and `backwardInductionValue` discounts them.
 
 ## Coupon and exercise ordering
 
-An expiry-date coupon is paid before exercise in this slice, so the expiry
-bond value is ex-coupon. A contract exercising before the coupon or transferring
-coupon entitlement would require different terminal inputs.
+In this lesson, a coupon on the expiry date is paid before exercise. So the
+bond value at expiry is ex-coupon. A contract that is exercised before the
+coupon, or that transfers the right to the coupon, requires different terminal
+inputs.
 
 ## Check your understanding
 
@@ -138,7 +141,7 @@ coupon entitlement would require different terminal inputs.
 
 ## Sources
 
-The bond-option definition and the need to distinguish cash/dirty from
-quoted/clean strikes follow Hull, Chapter 28 §28.1 [@hull-options-futures].
-This lesson uses a supplied lattice rather than Black's market model so the
-subsequent issuer-default state can remain explicit.
+The bond-option definition and the need to distinguish a cash (dirty) strike
+from a quoted (clean) strike follow Hull, Chapter 28 §28.1 [@hull-options-futures].
+This lesson uses an input lattice, not Black's market model, so that the
+next lesson can model the issuer-default state explicitly.

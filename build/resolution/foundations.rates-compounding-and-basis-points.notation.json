@@ -6,7 +6,7 @@
   ],
   "references": [
     {
-      "column": 48,
+      "column": 53,
       "definitionId": "shared:nominal-annual-rate",
       "key": "nominal-annual-rate",
       "kind": "prose",
@@ -33,16 +33,16 @@
       "symbol": "r_m"
     },
     {
-      "column": 1,
+      "column": 31,
       "definitionId": "shared:payment-time",
       "key": "payment-time",
       "kind": "prose",
-      "line": 22,
+      "line": 21,
       "scope": "shared",
       "symbol": "t_k"
     },
     {
-      "column": 23,
+      "column": 1,
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
@@ -51,25 +51,25 @@
       "symbol": "0"
     },
     {
-      "column": 1,
+      "column": 42,
       "definitionId": "page:foundations.rates-compounding-and-basis-points:number-of-compounding-periods",
       "key": "number-of-compounding-periods",
       "kind": "prose",
-      "line": 23,
+      "line": 22,
       "scope": "local",
       "symbol": "N"
     },
     {
-      "column": 25,
+      "column": 83,
       "definitionId": "shared:accumulation-factor",
       "key": "accumulation-factor",
       "kind": "prose",
-      "line": 24,
+      "line": 23,
       "scope": "shared",
       "symbol": "A(0,t)"
     },
     {
-      "column": 1,
+      "column": 26,
       "definitionId": "page:foundations.rates-compounding-and-basis-points:number-of-compounding-periods",
       "key": "number-of-compounding-periods",
       "kind": "prose",
@@ -78,7 +78,7 @@
       "symbol": "N"
     },
     {
-      "column": 1,
+      "column": 5,
       "definitionId": "shared:accumulation-factor",
       "key": "accumulation-factor",
       "kind": "prose",
@@ -109,7 +109,7 @@
       "definitionId": "shared:basis-point",
       "key": "basis-point",
       "kind": "prose",
-      "line": 73,
+      "line": 74,
       "scope": "shared",
       "symbol": "1\\,\\mathrm{bp}"
     }
