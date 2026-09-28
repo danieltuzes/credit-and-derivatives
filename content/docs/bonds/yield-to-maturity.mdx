@@ -42,7 +42,7 @@ $$
 P_0
 =\sum_{k=1}^{n}
 \frac{CF_k^{\mathrm{bond}}}
-{\left(1+y^{(m_{\mathrm B})}/m_{\mathrm B}\right)^k}.
+{\left(1+y^{\left(m_{\mathrm B}\right)}/m_{\mathrm B}\right)^k}
 $$
 
 The symbol $y^{(m_{\mathrm B})}$ could be mistaken for a spot rate, an
@@ -59,7 +59,8 @@ A change of the input yield does not change the coupons or the
 [[face-value]] $F$ of the bond.
 
 <CompactExamples
-  summary="Worked examples"
+  id="yield-to-maturity-pricing"
+  short="Pricing from a yield to maturity"
   hint="Open the set, then choose a yield convention."
   tabsLabel="Yield-to-maturity pricing examples"
 >
@@ -73,7 +74,7 @@ $$
 P_0
 =\frac{50}{1.06}
 +\frac{1050}{1.06^2}
-\approx\text{USD }981.67.
+\approx\text{USD }981.67
 $$
 
   </CompactExample>
@@ -90,7 +91,7 @@ P_0
 +\frac{25}{1.03^2}
 +\frac{25}{1.03^3}
 +\frac{1025}{1.03^4}
-\approx\text{USD }981.41.
+\approx\text{USD }981.41
 $$
 
 The annual and the semiannual example use the same yield number, 6%, but
@@ -103,7 +104,7 @@ different payment times and different compounding.
 With no coupons and [[maturity-time]] $T$, the price is:
 
 $$
-P_0=\frac{F}{(1+y^{(m_{\mathrm B})}/m_{\mathrm B})^{m_{\mathrm B}T}}.
+P_0=\frac{F}{\left(1+y^{\left(m_{\mathrm B}\right)}/m_{\mathrm B}\right)^{m_{\mathrm B}T}}
 $$
 
 For USD 1,000 due in three years at 4% with annual compounding, the price is

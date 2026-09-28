@@ -84,7 +84,7 @@ The [[loss-given-default]] fraction is defined as:
 
 $$
 \mathrm{LGD}=1-R,
-\qquad 0\leq R\leq1.
+\qquad 0\leq R\leq1
 $$
 
 For example, $R=0.40$ gives $\mathrm{LGD}=0.60$ in this toy model. The value
@@ -105,7 +105,7 @@ $\mathbb{Q}$ is the survival payment and the default payment, each multiplied by
 its probability:
 
 $$
-F\left[S(0,T)+R\left(1-S(0,T)\right)\right].
+F\left[S\left(0,T\right)+R\left(1-S\left(0,T\right)\right)\right]
 $$
 
 This is the two-event case of the expectation from disjoint events in the
@@ -122,9 +122,9 @@ $$
 \explain{recovery-of-par-present-value}{PV_0^{\mathrm{RoP}}}
 =F\,\explain{discount-factor}{D(0,T)}
 \left[
-\explain{survival-probability}{S^{\mathbb{Q}}(0,T)}
-+R\left(1-\explain{survival-probability}{S^{\mathbb{Q}}(0,T)}\right)
-\right].
+\explain{survival-probability}{S^{\mathbb{Q}}\left(0,T\right)}
++R\left(1-\explain{survival-probability}{S^{\mathbb{Q}}\left(0,T\right)}\right)
+\right]
 $$
 
 This [[present-value]] is calculated from the perspective of the holder of the
@@ -132,7 +132,8 @@ claim: the modeled future receipts and their value are positive. A purchase
 price paid by the holder would have the opposite cash-flow sign.
 
 <CompactExamples
-  summary="Worked examples"
+  id="recovery-of-par-present-values"
+  short="Recovery-of-par present values"
   hint="Open the set, then choose a recovery boundary."
   tabsLabel="Recovery-of-par present-value examples"
 >
@@ -142,7 +143,7 @@ Let $F=\text{USD }1{,}000$, $D(0,T)=0.96$, $S(0,T)=0.92$, and $R=0.40$. The
 expected fraction of par paid at maturity is:
 
 $$
-0.92+0.40(1-0.92)=0.952.
+0.92+0.40(1-0.92)=0.952
 $$
 
 Multiplying this fraction by the par amount and the discount factor gives the
@@ -151,7 +152,7 @@ present value:
 $$
 PV_0^{\mathrm{RoP}}
 =1000(0.96)(0.952)
-=\text{USD }913.92.
+=\text{USD }913.92
 $$
 
 The expected amount at maturity, before discounting, is USD 952.00. The
@@ -166,8 +167,8 @@ default payment is zero, so the present value is:
 
 $$
 PV_0^{\mathrm{RoP}}
-=1000(0.94)\left[0.90+0(0.10)\right]
-=\text{USD }846.00.
+=1000(0.94)\left[0.90+0\left(0.10\right)\right]
+=\text{USD }846.00
 $$
 
 With zero recovery, the present value is the discounted expected survival
@@ -183,8 +184,8 @@ paid at $T$:
 
 $$
 PV_0^{\mathrm{RoP}}
-=1000(0.94)\left[0.90+1(0.10)\right]
-=\text{USD }940.00.
+=1000(0.94)\left[0.90+1\left(0.10\right)\right]
+=\text{USD }940.00
 $$
 
 With full recovery, the present value does not depend on the survival

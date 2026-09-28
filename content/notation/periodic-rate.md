@@ -28,5 +28,5 @@ For the nominal convention used here, it nests the
 [[nominal-annual-rate]] and [[compounding-frequency]] definitions:
 
 $$
-r_{\explain{compounding-frequency}{m}}=\frac{j^{(\explain{compounding-frequency}{m})}}{\explain{compounding-frequency}{m}}.
+r_{\explain{compounding-frequency}{m}}=\frac{\explain{nominal-annual-rate}{j^{(m)}}}{\explain{compounding-frequency}{m}}
 $$

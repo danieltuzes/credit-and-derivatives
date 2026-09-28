@@ -65,7 +65,7 @@
       "definitionId": "page:bonds.settlement-clean-and-dirty-price:coupon-period-elapsed-days",
       "key": "coupon-period-elapsed-days",
       "kind": "prose",
-      "line": 25,
+      "line": 27,
       "scope": "local",
       "symbol": "n_{\\mathrm{elapsed}}"
     },
@@ -74,7 +74,7 @@
       "definitionId": "page:bonds.settlement-clean-and-dirty-price:coupon-period-total-days",
       "key": "coupon-period-total-days",
       "kind": "prose",
-      "line": 26,
+      "line": 28,
       "scope": "local",
       "symbol": "n_{\\mathrm{period}}"
     },
@@ -83,7 +83,7 @@
       "definitionId": "shared:coupon-payment",
       "key": "coupon-payment",
       "kind": "prose",
-      "line": 27,
+      "line": 29,
       "scope": "shared",
       "symbol": "C"
     },
@@ -92,7 +92,7 @@
       "definitionId": "shared:accrued-interest",
       "key": "accrued-interest",
       "kind": "math",
-      "line": 31,
+      "line": 33,
       "scope": "shared",
       "symbol": "AI"
     },
@@ -101,7 +101,7 @@
       "definitionId": "shared:coupon-payment",
       "key": "coupon-payment",
       "kind": "math",
-      "line": 32,
+      "line": 34,
       "scope": "shared",
       "symbol": "C"
     },
@@ -110,7 +110,7 @@
       "definitionId": "page:bonds.settlement-clean-and-dirty-price:coupon-period-elapsed-days",
       "key": "coupon-period-elapsed-days",
       "kind": "math",
-      "line": 33,
+      "line": 35,
       "scope": "local",
       "symbol": "n_{\\mathrm{elapsed}}"
     },
@@ -119,10 +119,10 @@
       "definitionId": "page:bonds.settlement-clean-and-dirty-price:coupon-period-total-days",
       "key": "coupon-period-total-days",
       "kind": "math",
-      "line": 34,
+      "line": 36,
       "scope": "local",
       "symbol": "n_{\\mathrm{period}}"
     }
   ],
-  "schemaVersion": 6
+  "schemaVersion": 24
 }

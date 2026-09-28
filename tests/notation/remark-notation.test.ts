@@ -9,6 +9,7 @@ interface TestNode {
   attributes?: Record<string, unknown>[];
   children?: TestNode[];
   data?: {
+    hName?: string;
     hProperties?: Record<string, unknown>;
     hChildren?: TestNode[];
   };
@@ -144,10 +145,19 @@ describe('remark notation authoring adapter', () => {
       },
     ]);
 
-    expect(tree.children?.[1]?.value).toBe(
+    // A lesson-scoped inline `$…$` is wrapped in an inert copy-latex span
+    // (`inlineEquationNode`) — the bound math itself lives one level deeper,
+    // as that wrapper's only child, unchanged in type or shape otherwise.
+    expect(tree.children?.[1]?.data?.hName).toBe('span');
+    expect(tree.children?.[1]?.data?.hProperties).toMatchObject({
+      className: ['inline-equation'],
+      'data-latex': 'CF_{k}',
+    });
+    const boundMath = tree.children?.[1]?.children?.[0];
+    expect(boundMath?.value).toBe(
       '\\explain{signed-cash-flow}{CF_{\\explain{payment-index}{k}}}',
     );
-    expect(tree.children?.[1]?.data?.hChildren).toEqual([
+    expect(boundMath?.data?.hChildren).toEqual([
       {
         type: 'text',
         value: '\\explain{signed-cash-flow}{CF_{\\explain{payment-index}{k}}}',
@@ -333,7 +343,9 @@ describe('remark notation authoring adapter', () => {
       type: 'link',
       url: '/glossary/#notation-signed-cash-flow',
     });
-    expect(textComponent?.children?.[3]?.value).toBe(
+    const boundComponentMath = textComponent?.children?.[3]?.children?.[0];
+    expect(textComponent?.children?.[3]?.data?.hName).toBe('span');
+    expect(boundComponentMath?.value).toBe(
       '\\explain{signed-cash-flow}{CF_{\\explain{payment-index}{k}}}',
     );
     expect(textComponent?.children?.[4]?.value).toContain('[[not-in-scope]]');
@@ -418,7 +430,13 @@ describe('remark notation authoring adapter', () => {
       type: 'link',
       url: '/glossary/#notation-known',
     });
-    expect(tree.children?.[1]?.value).toBe('\\explain{known}{K}');
+    expect(tree.children?.[1]?.data?.hProperties).toMatchObject({
+      className: ['inline-equation'],
+      'data-latex': 'K',
+    });
+    expect(tree.children?.[1]?.children?.[0]?.value).toBe(
+      '\\explain{known}{K}',
+    );
     expect(file.data.notationReferences).toEqual([
       { key: 'known', kind: 'prose' },
       { key: 'known', kind: 'math' },

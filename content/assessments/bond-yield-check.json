@@ -1,6 +1,6 @@
 {
   "id": "bond-yield-check",
-  "title": "Yield to maturity check",
+  "title": "Yield to maturity",
   "editorialStatus": "draft",
   "items": [
     {
@@ -56,7 +56,7 @@
       "evidenceKind": "direct",
       "prompt": "Price in USD a two-year bond with USD 1,000 face value, a 5% annual coupon rate, and one coupon payment per year at a 6% nominal annual yield compounded annually. Assume valuation on a coupon date and no accrued interest.",
       "answer": { "value": 981.6660733357066, "tolerance": 0.01 },
-      "explanation": "P = 50 / 1.06 + 1,050 / 1.06^2."
+      "explanation": "$P_0=\\frac{50}{1.06}+\\frac{1{,}050}{1.06^{2}}$."
     },
     {
       "id": "bond-price-transfer",
@@ -65,7 +65,7 @@
       "evidenceKind": "transfer",
       "prompt": "Price in USD a two-year bond with USD 1,000 face value, a 5% annual coupon rate, and two coupon payments per year at a 6% nominal annual yield compounded semiannually. Assume valuation on a coupon date and no accrued interest.",
       "answer": { "value": 981.4145079859479, "tolerance": 0.01 },
-      "explanation": "Each coupon is USD 25 and the periodic yield is 0.06 / 2 = 0.03, so P = 25 / 1.03 + 25 / 1.03^2 + 25 / 1.03^3 + 1,025 / 1.03^4."
+      "explanation": "Each coupon is USD 25 and the periodic yield is $0.06/2=0.03$, so $P_0=\\frac{25}{1.03}+\\frac{25}{1.03^{2}}+\\frac{25}{1.03^{3}}+\\frac{1{,}025}{1.03^{4}}$."
     }
   ]
 }

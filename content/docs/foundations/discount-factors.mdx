@@ -50,7 +50,7 @@ The accumulation factor $A(0,t)$ is the amount at time $t$ from one unit
 invested at time zero. The discount factor is its reciprocal:
 
 $$
-D(0,t)=\frac{1}{A(0,t)}=\left(1+r_m\right)^{-mt}.
+D(0,t)=\frac{1}{A(0,t)}=\left(1+r_m\right)^{-mt}
 \label{eq:discount-factor-def}
 $$
 
@@ -66,13 +66,13 @@ value at valuation time of one unit paid at $t=2$ years is:
 $$
 V_0(1_2)
 =1\times D(0,2)
-=0.94.
+=0.94
 $$
 
 The number 0.94 is not an annual interest rate of 94%. It is also not a
 probability of 94% that the payment occurs.
 
-<CompactExamples summary="Worked examples (3)">
+<CompactExamples id="discount-factor-calculations" short="Discount factors from rates and curves">
   <CompactExample label="Annual compounding">
 
 With a [[nominal-annual-rate]] of 5%, $m=1$, and $t=2$, the discount factor
@@ -82,7 +82,7 @@ $$
 D(0,2)
 =\left(1+\frac{0.05}{1}\right)^{-1\times2}
 =\frac{1}{1.05^2}
-\approx0.907029.
+\approx0.907029
 $$
 
   </CompactExample>
@@ -95,7 +95,7 @@ $$
 D(0,1.5)
 =\left(1+\frac{0.06}{2}\right)^{-2(1.5)}
 =\frac{1}{1.03^3}
-\approx0.915142.
+\approx0.915142
 $$
 
 The horizon of 1.5 years contains three compounding periods. The exponent 1.5

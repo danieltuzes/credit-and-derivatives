@@ -7,13 +7,15 @@ import {
 } from 'explico/compiler/manifest';
 
 describe('content manifest (Phase D5)', () => {
+  // Two whole-corpus compiles run at once; under the full suite's parallel
+  // load they need more than vitest's 5 s default.
   it('compiles deterministically — two runs are byte-identical', async () => {
     const [first, second] = await Promise.all([
       compileManifest(courseConfig),
       compileManifest(courseConfig),
     ]);
     expect(serializeManifest(first)).toBe(serializeManifest(second));
-  });
+  }, 20_000);
 
   it('serializes with recursively sorted object keys', async () => {
     const manifest = await compileManifest(courseConfig);

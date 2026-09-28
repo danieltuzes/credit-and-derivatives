@@ -23,7 +23,7 @@ The loss-given-default fraction is the complement of the
 [[recovery-rate]]:
 
 $$
-\mathrm{LGD}=1-R.
+\mathrm{LGD}=1-R
 $$
 
 The fraction has meaning only after the recovery base, timing, and perspective

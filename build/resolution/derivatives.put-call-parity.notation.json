@@ -2,7 +2,6 @@
   "file": "content/docs/derivatives/put-call-parity.mdx",
   "lesson": "derivatives.put-call-parity",
   "localKeys": [
-    "parity-income-present-value",
     "prepaid-forward-value"
   ],
   "references": [
@@ -34,12 +33,12 @@
       "symbol": "T_{\\mathrm{opt}}"
     },
     {
-      "column": 11,
-      "definitionId": "page:derivatives.put-call-parity:parity-income-present-value",
-      "key": "parity-income-present-value",
+      "column": 9,
+      "definitionId": "shared:underlying-income-present-value",
+      "key": "underlying-income-present-value",
       "kind": "prose",
       "line": 31,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "I_0"
     },
     {
@@ -88,5 +87,5 @@
       "symbol": "F_{t,T_{\\mathrm{fwd}}}"
     }
   ],
-  "schemaVersion": 6
+  "schemaVersion": 24
 }

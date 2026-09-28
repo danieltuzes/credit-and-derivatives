@@ -11,6 +11,39 @@
   stated in the survival lesson that the survival curve is an input there and
   is fitted to market prices in practice (see the CDS credit-curve lesson).
 - Renamed figurative section headings; some in-page anchors changed.
+- Upgraded the course engine to explico 0.11.1. Every equation, diagram,
+  knowledge check, and example set is now numbered `‹part›.‹chapter›.‹n›`
+  (for example, equation 1.5.1 was 5.1), and lesson sections show outline
+  numbers. The positional anchor of an unlabelled equation changed with its
+  number (for example, `#eq-4-2` is now `#eq-1-4-2`).
+- Gave each worked-example set a topical title and a stable `#ex-…` anchor,
+  and gave each diagram a short title with its former description as the
+  caption.
+- Dropped "check" from knowledge-check titles, which now follow a "Knowledge
+  check" badge, and removed the "Check your understanding" heading where it
+  only announced the check below it.
+- Shortened the credit-curve heading "What the market shows, what the model
+  assumes, what the model solves"; its anchor changed.
+- Removed sentence punctuation from the end of display equations, sized every
+  nested bracket with `\left`/`\right`, and wrote the arithmetic in five
+  assessment explanations as typeset math in the lessons' notation. No
+  formula, input value, result, or answer key changed.
+- Added explanations for the abbreviations CDS, CDX, DTS, FINRA, IMM, ISDA,
+  ISO, JTD, and UTC.
+- Added an overview page for each of the seven parts: how the part builds on
+  the earlier parts, what it covers, the argument through its chapters, and
+  its chapter list. The homepage now lists every part and chapter, and its
+  buttons lead to the first part, the contents, the CDS part, and the
+  curriculum map.
+- Gave six tables a number, a title, and a caption: the price-yield sign
+  table, the observed-versus-solved and jargon tables of the credit-curve
+  lesson, the quote-conversion inputs, the rate representations, and the
+  risk-neutral worked example. Tables inside worked examples stay unnumbered.
+- Merged notation that two lessons declared twice into one shared entry each:
+  the default time, the lattice node discount factor and up weight, and the
+  present value of the underlying's income. The default time is now stated as
+  τ > 0, which follows from S(0,0) = 1; the survival lesson previously stated
+  τ ≥ 0.
 
 ## [0.4.0] - 2026-09-23
 

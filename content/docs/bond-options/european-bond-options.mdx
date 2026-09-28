@@ -73,7 +73,7 @@ $$
 \explain{bond-call-expiry-payoff}{X^{B,\mathrm{call}}_{T_{\mathrm{opt}}}}
 =\max\left(
 \explain{bond-option-expiry-value}{B_{T_{\mathrm{opt}}}^{\mathrm{dirty}}}
--\explain{option-strike-price}{K},0\right),
+-\explain{option-strike-price}{K},0\right)
 \label{eq:bond-call-expiry-payoff}
 $$
 
@@ -81,7 +81,7 @@ $$
 \explain{bond-put-expiry-payoff}{X^{B,\mathrm{put}}_{T_{\mathrm{opt}}}}
 =\max\left(
 \explain{option-strike-price}{K}
--\explain{bond-option-expiry-value}{B_{T_{\mathrm{opt}}}^{\mathrm{dirty}}},0\right).
+-\explain{bond-option-expiry-value}{B_{T_{\mathrm{opt}}}^{\mathrm{dirty}}},0\right)
 \label{eq:bond-put-expiry-payoff}
 $$
 
@@ -92,7 +92,8 @@ at time zero.
 
 <Diagram
   id="bond-option-valuation-flow"
-  label="European bond-option valuation flow"
+  short="European bond-option valuation flow"
+  caption="First value the bond at every option-expiry node, then apply the call or put payoff, then discount the risk-neutral expected payoffs backward through the input lattice."
   direction="LR"
   nodes={[
     { id: 'bond-tree', text: 'Value the bond to option expiry' },
@@ -103,7 +104,6 @@ at time zero.
     { from: 'bond-tree', to: 'payoff' },
     { from: 'payoff', to: 'induction' },
   ]}
-  description="First value the bond at every option-expiry node, then apply the call or put payoff, then discount the risk-neutral expected payoffs backward through the input lattice."
 />
 
 ## Worked example
@@ -116,12 +116,12 @@ backward step gives the call value:
 $$
 \begin{aligned}
 \explain{bond-call-expiry-payoff}{X_{T_{\mathrm{opt}}}^{B,\mathrm{call},\mathrm{down}}}
-&=\max(90-100,0)=0,\\
+&=\max(90-100,0)=0\\
 \explain{bond-call-expiry-payoff}{X_{T_{\mathrm{opt}}}^{B,\mathrm{call},\mathrm{up}}}
-&=\max(110-100,0)=10,\\
+&=\max(110-100,0)=10\\
 \explain{lattice-node-value}{V_0}
-&=0.95\left[(1-0.60)(0)+0.60(10)\right]\\
-&=5.70\ \text{USD per option}.
+&=0.95\left[\left(1-0.60\right)\left(0\right)+0.60\left(10\right)\right]\\
+&=5.70\ \text{USD per option}
 \end{aligned}
 $$
 
@@ -134,8 +134,6 @@ In this lesson, a coupon on the expiry date is paid before exercise. So the
 bond value at expiry is ex-coupon. A contract that is exercised before the
 coupon, or that transfers the right to the coupon, requires different terminal
 inputs.
-
-## Check your understanding
 
 <AssessmentSet />
 

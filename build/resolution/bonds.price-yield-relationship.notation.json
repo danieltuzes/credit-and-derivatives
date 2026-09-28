@@ -11,7 +11,7 @@
       "definitionId": "shared:bond-payment-frequency",
       "key": "bond-payment-frequency",
       "kind": "prose",
-      "line": 18,
+      "line": 19,
       "scope": "shared",
       "symbol": "m_{\\mathrm B}"
     },
@@ -20,7 +20,7 @@
       "definitionId": "shared:yield-to-maturity",
       "key": "yield-to-maturity",
       "kind": "prose",
-      "line": 19,
+      "line": 20,
       "scope": "shared",
       "symbol": "y^{(m_{\\mathrm B})}"
     },
@@ -29,7 +29,7 @@
       "definitionId": "shared:price-yield-curve",
       "key": "price-yield-curve",
       "kind": "prose",
-      "line": 21,
+      "line": 22,
       "scope": "shared",
       "symbol": "P(y)"
     },
@@ -38,7 +38,7 @@
       "definitionId": "shared:bond-payment-index",
       "key": "bond-payment-index",
       "kind": "prose",
-      "line": 23,
+      "line": 24,
       "scope": "shared",
       "symbol": "k"
     },
@@ -47,7 +47,7 @@
       "definitionId": "shared:number-of-bond-payments",
       "key": "number-of-bond-payments",
       "kind": "prose",
-      "line": 24,
+      "line": 25,
       "scope": "shared",
       "symbol": "n"
     },
@@ -56,7 +56,7 @@
       "definitionId": "shared:bond-cash-flow",
       "key": "bond-cash-flow",
       "kind": "prose",
-      "line": 25,
+      "line": 26,
       "scope": "shared",
       "symbol": "CF_k^{\\mathrm{bond}}"
     },
@@ -65,7 +65,7 @@
       "definitionId": "shared:bond-price",
       "key": "bond-price",
       "kind": "prose",
-      "line": 37,
+      "line": 38,
       "scope": "shared",
       "symbol": "P_0"
     },
@@ -74,7 +74,7 @@
       "definitionId": "page:bonds.price-yield-relationship:yield-shock",
       "key": "yield-shock",
       "kind": "prose",
-      "line": 40,
+      "line": 41,
       "scope": "local",
       "symbol": "\\Delta y"
     },
@@ -83,10 +83,10 @@
       "definitionId": "page:bonds.price-yield-relationship:price-change",
       "key": "price-change",
       "kind": "prose",
-      "line": 41,
+      "line": 42,
       "scope": "local",
       "symbol": "\\Delta P"
     }
   ],
-  "schemaVersion": 6
+  "schemaVersion": 24
 }

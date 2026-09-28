@@ -28,5 +28,5 @@ Its definition nests [[face-value]], [[annual-coupon-rate]], and
 [[bond-payment-frequency]]:
 
 $$
-C=\frac{cF}{m_{\mathrm B}}.
+C=\frac{cF}{m_{\mathrm B}}
 $$

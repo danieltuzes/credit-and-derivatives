@@ -2,7 +2,6 @@
   "file": "content/docs/derivatives/forward-contracts-and-value.mdx",
   "lesson": "derivatives.forward-contracts-and-value",
   "localKeys": [
-    "deterministic-income-present-value",
     "forward-contract-quantity",
     "long-forward-expiry-payoff"
   ],
@@ -63,11 +62,11 @@
     },
     {
       "column": 1,
-      "definitionId": "page:derivatives.forward-contracts-and-value:deterministic-income-present-value",
-      "key": "deterministic-income-present-value",
+      "definitionId": "shared:underlying-income-present-value",
+      "key": "underlying-income-present-value",
       "kind": "prose",
       "line": 35,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "I_0"
     },
     {
@@ -98,5 +97,5 @@
       "symbol": "V_t^{\\mathrm{fwd}}"
     }
   ],
-  "schemaVersion": 6
+  "schemaVersion": 24
 }

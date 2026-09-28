@@ -1,6 +1,6 @@
 {
   "id": "discount-factor-check",
-  "title": "Discount factors check",
+  "title": "Discount factors",
   "editorialStatus": "draft",
   "items": [
     {
@@ -44,7 +44,7 @@
       "evidenceKind": "direct",
       "prompt": "Calculate the dimensionless two-year discount factor from a 5% nominal annual rate compounded annually.",
       "answer": { "value": 0.9070294784580498, "tolerance": 0.000001 },
-      "explanation": "D(0,2) = 1 / 1.05^2."
+      "explanation": "$D(0,2)=\\frac{1}{1.05^{2}}$."
     },
     {
       "id": "df-calc-transfer",
@@ -53,7 +53,7 @@
       "evidenceKind": "transfer",
       "prompt": "Calculate the dimensionless 1.5-year discount factor from a 6% nominal annual rate compounded semiannually.",
       "answer": { "value": 0.9151416593531596, "tolerance": 0.000001 },
-      "explanation": "The periodic rate is 0.06 / 2 = 0.03 and 1.5 years contains three half-year periods, so D(0,1.5) = 1 / 1.03^3."
+      "explanation": "The periodic rate is $0.06/2=0.03$ and 1.5 years contains three half-year periods, so $D(0,1.5)=\\frac{1}{1.03^{3}}$."
     }
   ]
 }

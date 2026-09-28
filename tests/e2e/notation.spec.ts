@@ -43,9 +43,13 @@ test('renders semantic notation as static KaTeX with one flat control per key', 
   await expect(
     layer.locator('[data-notation-entry="discount-factor"]'),
   ).toHaveCount(1);
-  await expect(
-    layer.locator('[data-notation-control="discount-factor"]'),
-  ).toHaveCount(1);
+  // The panel's symbol is the entry's control (explico 0.6): no separate pin.
+  const symbolTrigger = layer.locator(
+    '[data-notation-symbol-trigger][data-notation-key="discount-factor"]',
+  );
+  await expect(symbolTrigger).toHaveCount(1);
+  await expect(symbolTrigger).toHaveAttribute('role', 'button');
+  await expect(symbolTrigger).toHaveAttribute('tabindex', '0');
   await expect(
     page.locator('[data-notation-key="discount-factor"] button'),
   ).toHaveCount(0);
@@ -58,14 +62,15 @@ test('opens, pins, links, and closes a notation explanation by keyboard', async 
   const layer = page.locator('[data-notation-layer]');
   await layer.locator('details > summary').click();
 
-  const control = layer.locator('[data-notation-control="discount-factor"]');
+  const control = layer.locator(
+    '[data-notation-symbol-trigger][data-notation-key="discount-factor"]',
+  );
   const popup = popupFor(page, 'discount-factor');
   await expect(control).toBeVisible();
   await control.focus();
   await page.keyboard.press('Enter');
 
   await expect(control).toHaveAttribute('aria-pressed', 'true');
-  await expect(control).toHaveAttribute('aria-expanded', 'true');
   await expect(popup).toBeVisible();
   await expect(popup.locator('[data-slot-title]')).toHaveText(
     'Discount factor',
@@ -78,7 +83,6 @@ test('opens, pins, links, and closes a notation explanation by keyboard', async 
   await page.keyboard.press('Escape');
   await expect(popup).toBeHidden();
   await expect(control).toHaveAttribute('aria-pressed', 'false');
-  await expect(control).toHaveAttribute('aria-expanded', 'false');
 });
 
 test('renders a hovered CF_k label with MathML and a smaller subscript', async ({
@@ -101,7 +105,11 @@ test('renders a hovered CF_k label with MathML and a smaller subscript', async (
   );
   const layer = page.locator('[data-notation-layer]');
   await layer.locator('details > summary').click();
-  await layer.locator('[data-notation-control="signed-cash-flow"]').click();
+  await layer
+    .locator(
+      '[data-notation-symbol-trigger][data-notation-key="signed-cash-flow"]',
+    )
+    .click();
 
   const panelSymbol = popup.locator('[data-slot-symbol] .notation-symbol');
   await expect(panelSymbol).toBeVisible();
@@ -287,9 +295,12 @@ test('keeps page notation and definitions available without JavaScript', async (
   await expect(
     details.locator('[data-notation-link="discount-factor"]'),
   ).toHaveAttribute('href', '/glossary/#notation-discount-factor');
+  // Without script the panel symbol is plain text, not a control.
   await expect(
-    details.locator('[data-notation-control="discount-factor"]'),
-  ).toBeHidden();
+    details.locator(
+      '[data-notation-symbol-trigger][data-notation-key="discount-factor"]',
+    ),
+  ).not.toHaveAttribute('role', 'button');
   await expect(
     page.locator('.katex-html [data-notation-key="discount-factor"]').first(),
   ).toBeVisible();
@@ -303,7 +314,11 @@ test('has no detectable accessibility violations with an explanation pinned', as
   await page.goto(lessonPath);
   const layer = page.locator('[data-notation-layer]');
   await layer.locator('details > summary').click();
-  await layer.locator('[data-notation-control="discount-factor"]').click();
+  await layer
+    .locator(
+      '[data-notation-symbol-trigger][data-notation-key="discount-factor"]',
+    )
+    .click();
   await expect(popupFor(page, 'discount-factor')).toBeVisible();
 
   const results = await new AxeBuilder({ page })
@@ -489,20 +504,16 @@ test('clicking a symbol inside an open notation card opens an additional card be
     'Expectation',
   );
 
-  // Closing just the child (its own card body, not the "×") leaves the
-  // parent open.
+  // A click inside a card never closes it (explico 0.11); the child's own
+  // "×" closes just the child and leaves the parent open.
   await outcomePopup.locator('[data-slot-title]').click();
+  await expect(outcomePopup).toBeVisible();
+  await outcomePopup.locator('[data-card-close]').click();
   await expect(outcomePopup).toBeHidden();
   await expect(expectationPopup).toBeVisible();
 
-  // Closing the parent (its own card body) takes any child with it —
-  // nothing is left pointing at a symbol that's gone. Reopen the child
-  // first to prove the cascade.
-  await outcomeTrigger.click();
-  await expect(outcomePopup).toBeVisible();
-  await expectationPopup.locator('[data-slot-title]').click();
+  await expectationPopup.locator('[data-card-close]').click();
   await expect(expectationPopup).toBeHidden();
-  await expect(outcomePopup).toBeHidden();
 });
 
 test('keeps the formula and every gloss name readable without JavaScript', async ({
@@ -643,7 +654,7 @@ test('hovering a symbol inside a pinned card opens an additional, unpinned card'
   await expect(expectationPopup).toBeVisible();
 });
 
-test('a pinned card can be closed by clicking its own body, or its corner "×"', async ({
+test('a click inside a pinned card leaves it open, and its "×" closes it', async ({
   page,
 }) => {
   await page.goto(riskNeutralPricingPath);
@@ -656,15 +667,13 @@ test('a pinned card can be closed by clicking its own body, or its corner "×"',
   await expectationTrigger.click();
   await expect(expectationPopup).toBeVisible();
 
-  // Clicking the card's own body (not a nested symbol, not a link) collapses
-  // it — the same gesture the reader would use to dismiss any card.
+  // A click inside the card (explico 0.11) keeps it: reading, selecting,
+  // or following a symbol in a card never costs the reader the card.
   await expectationPopup.locator('[data-slot-title]').click();
-  await expect(expectationPopup).toBeHidden();
-
-  // The corner "×" does the same.
-  await expectationTrigger.click();
   await expect(expectationPopup).toBeVisible();
-  await expectationPopup.locator('[data-popup-close]').click();
+
+  // The header's "×" closes it.
+  await expectationPopup.locator('[data-card-close]').click();
   await expect(expectationPopup).toBeHidden();
 
   // Clicking the *equation* itself — the unexplained parts included — is
@@ -676,7 +685,7 @@ test('a pinned card can be closed by clicking its own body, or its corner "×"',
   await expect(expectationPopup).toBeVisible();
 });
 
-test('a hovered notation card closes and unpins a pinned citation, never overlapping it', async ({
+test('a hovered notation card leaves a pinned citation open, and the two never overlap', async ({
   page,
 }) => {
   await page.goto(riskNeutralPricingPath);
@@ -690,8 +699,8 @@ test('a hovered notation card closes and unpins a pinned citation, never overlap
   await citationMarker.scrollIntoViewIfNeeded();
   await citationMarker.hover();
   await expect(citationPanel).toBeVisible();
-  await citationPanel.locator('[data-panel-pin]').click();
-  await expect(citationPanel.locator('[data-panel-pin]')).toHaveAttribute(
+  await citationPanel.locator('[data-card-pin]').click();
+  await expect(citationPanel.locator('[data-card-pin]')).toHaveAttribute(
     'aria-pressed',
     'true',
   );
@@ -702,18 +711,23 @@ test('a hovered notation card closes and unpins a pinned citation, never overlap
   await expectationTrigger.scrollIntoViewIfNeeded();
   await expectationTrigger.hover();
 
-  // The notation and citation surfaces are mutually exclusive groups: the
-  // notation glyph took over, so the pinned citation must be gone — not
-  // lurking underneath, and not one stray blur event away from popping back
-  // on top of it.
+  // Several cards can be open at once (explico 0.11): the pinned citation
+  // stays, and the hovered notation card is placed clear of it.
   await expect(notationPopup).toBeVisible();
-  await expect(citationPanel).toBeHidden();
-  await expect(citationPanel.locator('[data-panel-pin]')).toHaveAttribute(
-    'aria-pressed',
-    'false',
-  );
+  await expect(citationPanel).toBeVisible();
+  const [citation, notation] = [
+    await citationPanel.boundingBox(),
+    await notationPopup.boundingBox(),
+  ];
+  if (!citation || !notation) throw new Error('a card has no layout box');
+  expect(
+    citation.x < notation.x + notation.width &&
+      notation.x < citation.x + citation.width &&
+      citation.y < notation.y + notation.height &&
+      notation.y < citation.y + citation.height,
+  ).toBe(false);
 
   await page.mouse.move(2, 2);
   await expect(notationPopup).toBeHidden();
-  await expect(citationPanel).toBeHidden();
+  await expect(citationPanel).toBeVisible();
 });

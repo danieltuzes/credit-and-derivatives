@@ -14,7 +14,7 @@
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
-      "line": 16,
+      "line": 17,
       "scope": "shared",
       "symbol": "0"
     },
@@ -23,7 +23,7 @@
       "definitionId": "page:foundations.risk-neutral-pricing:risk-neutral-pricing-horizon",
       "key": "risk-neutral-pricing-horizon",
       "kind": "prose",
-      "line": 17,
+      "line": 18,
       "scope": "local",
       "symbol": "T"
     },
@@ -32,7 +32,7 @@
       "definitionId": "shared:terminal-random-payoff",
       "key": "terminal-random-payoff",
       "kind": "prose",
-      "line": 18,
+      "line": 19,
       "scope": "shared",
       "symbol": "X_T"
     },
@@ -41,7 +41,7 @@
       "definitionId": "shared:real-world-probability-measure",
       "key": "real-world-probability-measure",
       "kind": "prose",
-      "line": 22,
+      "line": 23,
       "scope": "shared",
       "symbol": "\\mathbb{P}"
     },
@@ -50,7 +50,7 @@
       "definitionId": "shared:risk-neutral-probability-measure",
       "key": "risk-neutral-probability-measure",
       "kind": "prose",
-      "line": 24,
+      "line": 25,
       "scope": "shared",
       "symbol": "\\mathbb{Q}"
     },
@@ -59,7 +59,7 @@
       "definitionId": "shared:expectation",
       "key": "expectation",
       "kind": "prose",
-      "line": 54,
+      "line": 55,
       "scope": "shared",
       "symbol": "\\mathbb{E}"
     },
@@ -68,7 +68,7 @@
       "definitionId": "shared:risk-neutral-probability-measure",
       "key": "risk-neutral-probability-measure",
       "kind": "prose",
-      "line": 54,
+      "line": 55,
       "scope": "shared",
       "symbol": "\\mathbb{Q}"
     },
@@ -77,7 +77,7 @@
       "definitionId": "page:foundations.risk-neutral-pricing:risk-neutral-scenario-index",
       "key": "risk-neutral-scenario-index",
       "kind": "prose",
-      "line": 57,
+      "line": 58,
       "scope": "local",
       "symbol": "j"
     },
@@ -86,7 +86,7 @@
       "definitionId": "page:foundations.risk-neutral-pricing:risk-neutral-scenario-count",
       "key": "risk-neutral-scenario-count",
       "kind": "prose",
-      "line": 57,
+      "line": 58,
       "scope": "local",
       "symbol": "m"
     },
@@ -95,7 +95,7 @@
       "definitionId": "page:foundations.risk-neutral-pricing:risk-neutral-scenario-payoff",
       "key": "risk-neutral-scenario-payoff",
       "kind": "prose",
-      "line": 59,
+      "line": 60,
       "scope": "local",
       "symbol": "x_j"
     },
@@ -104,7 +104,7 @@
       "definitionId": "page:foundations.risk-neutral-pricing:risk-neutral-scenario-probability",
       "key": "risk-neutral-scenario-probability",
       "kind": "prose",
-      "line": 60,
+      "line": 61,
       "scope": "local",
       "symbol": "q_j"
     },
@@ -113,7 +113,7 @@
       "definitionId": "shared:discount-factor",
       "key": "discount-factor",
       "kind": "prose",
-      "line": 75,
+      "line": 76,
       "scope": "shared",
       "symbol": "D(0,t)"
     },
@@ -122,10 +122,10 @@
       "definitionId": "shared:present-value",
       "key": "present-value",
       "kind": "prose",
-      "line": 76,
+      "line": 77,
       "scope": "shared",
       "symbol": "PV_0"
     }
   ],
-  "schemaVersion": 6
+  "schemaVersion": 24
 }

@@ -26,7 +26,7 @@ The protection-buyer net present value $PV_0^{\mathrm{buyer}}$ is signed even
 though both displayed leg values are positive magnitudes:
 
 $$
-PV_0^{\mathrm{buyer}}=PV_0^{\mathrm{prot}}-PV_0^{\mathrm{prem}}.
+PV_0^{\mathrm{buyer}}=PV_0^{\mathrm{prot}}-PV_0^{\mathrm{prem}}
 $$
 
 This identity excludes upfront amounts, counterparty credit risk, collateral,

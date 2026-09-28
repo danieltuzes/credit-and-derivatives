@@ -1,0 +1,35 @@
+---
+title: Foundations
+description: Cash flows, probability, rates, discounting, and no-arbitrage pricing, the tools every later part uses.
+editorialStatus: draft
+aiAssisted: true
+---
+
+import PartBridge from 'explico/components/PartBridge.astro';
+import PartOverview from 'explico/components/PartOverview.astro';
+import PartScope from 'explico/components/PartScope.astro';
+
+<PartScope>
+
+This part builds the valuation tools that the rest of the course reuses. The
+first three chapters set up the inputs: a timeline of signed, dated cash flows,
+events and expectations over a finite partition, and rate quotes with their
+compounding convention and units. The next two chapters turn a rate into a
+discount factor and add discounted cash flows into a present value. The last
+two chapters value one payoff from another. A replicating portfolio fixes a
+price by no-arbitrage, and risk-neutral pricing states the same price as a
+discounted expectation under pricing weights, which are not forecasts.
+
+</PartScope>
+
+<PartOverview
+  chain={[
+    'A valuation starts from signed cash flows placed on one time axis',
+    'An expectation over disjoint events weights each value by its probability',
+    'A rate quote needs its compounding convention to give a periodic rate',
+    'A discount factor converts one future unit into its value at time zero',
+    'Present value discounts each dated amount before adding',
+    'A portfolio that matches every future cash flow has the same price',
+    'Pricing weights state that price as a discounted expectation',
+  ]}
+/>

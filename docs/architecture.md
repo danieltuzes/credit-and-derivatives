@@ -344,12 +344,14 @@ current.
 
 Same principle as notation — the glyph is not the identity. **Every top-level
 display equation in a lesson body is numbered** from appearance order in the
-lesson. The lesson's 1-based course position is the first component, so `(2.4)`
-is the fourth display equation in chapter 2; the number is never authored.
+lesson. Since explico 0.10 the number is `‹part›.‹chapter›.‹n›` — the part's
+position in `course.config.ts` `parts`, the lesson's position in that part, and
+the equation's position in the lesson — so `(1.2.4)` is the fourth display
+equation in chapter 2 of part 1; the number is never authored.
 `remark-notation` wraps each one in
 `div.keyed-equation` with a `data-eq-number` and a focusable
 `a.keyed-equation__number` (outside KaTeX, so it survives print and screen
-readers name it "Equation 2.4"). The number is transparent until the row is
+readers name it "Equation 1.2.4"). The number is transparent until the row is
 hovered, focused, or deep-linked — a partial opacity fails the WCAG contrast
 check, so it is all or nothing, matching Starlight's heading anchor links. A
 `$$…$$` nested in an MDX component (a `<CompactExample>`, an `<Aside>`) is
@@ -361,12 +363,12 @@ An author marks a referenced equation with a trailing `\label{eq:<key>}`
 inside its `$$…$$` block (the `:` is safe there; it is inside math) to give it a
 **stable** anchor that survives edits and cross-page references. `remark-notation`
 strips the label and anchors the equation at `id="eq-<key>"` (an unkeyed one
-anchors at its positional chapter/index id, e.g. `#eq-2-4`).
+anchors at its positional part/chapter/index id, e.g. `#eq-1-2-4`).
 
 Prose refers to a _keyed_ equation with the reserved `eq-` prefix (a bare `:` in
 `[[…]]` prose is eaten by `remark-directive`): `[[eq-<key>]]` on the same page,
 `[[<lesson-slug>#eq-<key>]]` across pages — the cross-page number comes from
-`manifest.equations.numbersBySlug`. Both render `(2.4)` linked to the anchor; a
+`manifest.equations.numbersBySlug`. Both render `(1.2.4)` linked to the anchor; a
 missing target fails the build.
 
 `<Table>` and `<Figure>` use the same identity model with their own counters.
@@ -545,7 +547,7 @@ review guideline. When you add a rule, add its enforcement or the tag.
 | `content/domain/` imports no React/Astro/content/browser; the engine (`src/`) imports nothing from the course (`content/`) | `tests/unit/boundaries.test.ts` (`core-not-course`, `domain-pure`) — Phase F                                                                |
 | Components hold no independent copy of a pricing formula                                                                   | **guideline-only**                                                                                                                          |
 | No worked number is transcribed without an independent check                                                               | **guideline-only** — partly covered by domain unit tests                                                                                    |
-| Every quantitative claim cites a source or reviewed code                                                                   | **guideline-only** — `reference/consistency.ts` `numerals-tagged` (D6) lists untagged numerals                                              |
+| Every quantitative claim cites a source or reviewed code                                                                   | **guideline-only** — the D6 `numerals-tagged` listing was retired in explico 0.7                                                            |
 | One convention set across all lessons; signs never silently flip                                                           | **guideline-only** — `reference/consistency.ts` `glyph-unique-in-corpus` / `convention-single-definition` / `weak-local` (D6) surface drift |
 | No convention hidden in a calculator default                                                                               | **guideline-only**                                                                                                                          |
 | Every feature, including UI, ships with a test                                                                             | **guideline-only** — CI runs the suite but does not require coverage per feature                                                            |
@@ -586,8 +588,7 @@ seams, the engine / course split, and packaging the engine as
   `meaning` text — kept separate from tooling changes so no entry's editorial
   status moves as a side effect.
 - **Tier-3 consistency findings** from `reference/consistency.ts` are recorded,
-  not fixed: `numerals-tagged` (numerals in `$…$` / result tables not tied to a
-  `content/domain/` call or a source locator), `notation-units` /
+  not fixed: `notation-units` /
   `units-vocab`, `glyph-unique-in-corpus`, `weak-local`,
   `gloss-wants-promoting`, `card-wants-demoting`, `gloss-name-shape`. Each is an
   open content pass;

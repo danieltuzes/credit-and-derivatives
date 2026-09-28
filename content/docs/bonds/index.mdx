@@ -1,0 +1,45 @@
+---
+title: Bonds
+description: The simplified fixed-rate bond, its promised payments, its price from discount factors or a yield, and its settlement.
+editorialStatus: draft
+aiAssisted: true
+---
+
+import PartBridge from 'explico/components/PartBridge.astro';
+import PartOverview from 'explico/components/PartOverview.astro';
+import PartScope from 'explico/components/PartScope.astro';
+
+<PartBridge>
+
+Part 1 gave a timeline of signed cash flows, rate quotes with their
+compounding, discount factors, and present value as a sum of discounted dated
+amounts. A fixed-rate bond is the first contract the course values with these
+tools: its contract terms fix the promised payments, and its price is their
+present value. The last chapter, on bond forwards, also uses the forward
+contract of Part 4.
+
+</PartBridge>
+
+<PartScope>
+
+This part values a simplified fixed-rate bond with deterministic promised
+payments. The first chapter turns face value, coupon rate, payment frequency,
+and maturity into the payment schedule. The next two chapters price the bond,
+first from one discount factor per payment and then from a single yield to
+maturity. The fourth chapter explains why the price decreases when the yield
+increases and why the price-yield curve is not linear. The last two chapters
+add trading details: accrued interest and the clean and dirty price at
+settlement, and the delivery price of a bond forward.
+
+</PartScope>
+
+<PartOverview
+  chain={[
+    'The contract terms fix every promised payment',
+    'The price is the present value of those payments',
+    'A yield to maturity summarizes the discounting in one rate',
+    'A higher yield gives a lower price, along a curve',
+    'Accrued interest separates the quoted clean price from the cash dirty price',
+    'Cash-and-carry gives a bond forward delivery price on the dirty-price basis',
+  ]}
+/>

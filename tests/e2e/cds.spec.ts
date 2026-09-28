@@ -154,7 +154,15 @@ test('sidebar and footer navigation connect bonds, credit risk, and CDS', async 
     '/bonds/settlement-clean-and-dirty-price/',
   );
 
+  // Each part opens with its overview page, so the credit part leads into the
+  // CDS overview, and the overview into the first CDS chapter.
   await page.goto('/credit/recovery-and-risky-present-value/');
+  await expect(page.locator('footer a[rel="next"]')).toHaveAttribute(
+    'href',
+    '/cds/',
+  );
+
+  await page.goto('/cds/');
   await expect(page.locator('footer a[rel="next"]')).toHaveAttribute(
     'href',
     lessonPath,

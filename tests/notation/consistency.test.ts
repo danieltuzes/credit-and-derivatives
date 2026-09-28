@@ -75,7 +75,7 @@ describe('lint-ignore registry', () => {
 });
 
 describe('runConsistencyChecks (real corpus)', () => {
-  it('produces only warnings, and a lint-ignore entry suppresses a finding', async () => {
+  it('never blocks, and a lint-ignore entry suppresses a finding', async () => {
     const [notationInput, catalog] = await Promise.all([
       loadNotationRegistryInput(),
       loadCurriculumCatalog(),
@@ -92,7 +92,10 @@ describe('runConsistencyChecks (real corpus)', () => {
       conventions: CONVENTIONS,
     });
     expect(all.length).toBeGreaterThan(0);
-    expect(all.every((d) => d.severity === 'warning')).toBe(true);
+    // Tier 3: a finding is a warning or, since explico 0.7, an info.
+    expect(
+      all.every((d) => d.severity === 'warning' || d.severity === 'info'),
+    ).toBe(true);
 
     // `n` is a known cross-page glyph collision; acknowledging it drops it.
     const withIgnore = runConsistencyChecks({
@@ -145,12 +148,17 @@ describe('manifest D6 additions', () => {
 
     const { consistency } = manifest.diagnostics;
     expect(Array.isArray(consistency)).toBe(true);
-    expect(consistency.every((d) => d.severity === 'warning')).toBe(true);
+    expect(
+      consistency.every(
+        (d) => d.severity === 'warning' || d.severity === 'info',
+      ),
+    ).toBe(true);
 
     const counts = consistencyCounts(consistency);
     const codes = Object.keys(counts) as ConsistencyCode[];
     expect(codes.sort()).toEqual(
       [
+        'accent-explained',
         'card-wants-demoting',
         'convention-single-definition',
         'gloss-name-shape',
@@ -158,8 +166,11 @@ describe('manifest D6 additions', () => {
         'glyph-unique-in-corpus',
         'notation-source-locator',
         'notation-units',
-        'numerals-tagged',
         'operator-explained',
+        'operator-shadowed',
+        'operator-suspended',
+        'operator-suspension-reason',
+        'roman-label-explained',
         'units-vocab',
         'weak-local',
       ].sort(),

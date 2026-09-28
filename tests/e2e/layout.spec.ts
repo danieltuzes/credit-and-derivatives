@@ -1,24 +1,48 @@
 import { expect, test, type Locator } from '@playwright/test';
 
 const lessonPath = '/foundations/cash-flow-timelines/';
-const navigationPreference = 'credit-playground:layout:navigation-hidden';
-const contentsPreference = 'credit-playground:layout:contents-hidden';
+const navigationPreference = 'explico:layout:navigation-hidden';
+const contentsPreference = 'explico:layout:contents-hidden';
 
 async function expectVisibleIconCentered(toggle: Locator) {
   const toggleBox = await toggle.boundingBox();
+  // The control's glyph is text (explico 0.9), centred to within a pixel.
   const iconBox = await toggle
-    .locator('.layout-edge-icon:visible')
+    .locator('.layout-edge-glyph:visible')
     .boundingBox();
   expect(toggleBox).not.toBeNull();
   expect(iconBox).not.toBeNull();
   expect(iconBox!.x + iconBox!.width / 2).toBeCloseTo(
     toggleBox!.x + toggleBox!.width / 2,
-    5,
+    0,
   );
   expect(iconBox!.y + iconBox!.height / 2).toBeCloseTo(
     toggleBox!.y + toggleBox!.height / 2,
-    5,
+    0,
   );
+}
+
+type Box = { x: number; y: number; width: number; height: number };
+
+/**
+ * While a collapsed panel peeks open its control grows towards the separator
+ * (explico 0.9), so compare the edge that stays put: the outer one, and the
+ * block position both controls share.
+ */
+function expectOuterEdgeKept(
+  side: 'navigation' | 'contents',
+  during: Box | null,
+  before: Box | null,
+) {
+  expect(during).not.toBeNull();
+  expect(before).not.toBeNull();
+  expect(during!.y).toBeCloseTo(before!.y, 1);
+  expect(during!.height).toBeCloseTo(before!.height, 1);
+  if (side === 'navigation') {
+    expect(during!.x).toBeCloseTo(before!.x, 1);
+  } else {
+    expect(during!.x + during!.width).toBeCloseTo(before!.x + before!.width, 1);
+  }
 }
 
 test('desktop edge controls collapse both sidebars and persist narrow rails', async ({
@@ -30,7 +54,7 @@ test('desktop edge controls collapse both sidebars and persist narrow rails', as
   const navigationToggle = page.locator('[data-layout-toggle="navigation"]');
   const contentsToggle = page.locator('[data-layout-toggle="contents"]');
   const navigationShell = page.locator('.sidebar-pane');
-  const contentsShell = page.locator('.right-sidebar-container');
+  const contentsShell = page.locator('.right-sidebar');
 
   await expect(navigationToggle).toBeVisible();
   await expect(navigationToggle).toHaveAttribute('aria-expanded', 'true');
@@ -132,7 +156,11 @@ test('desktop edge controls collapse both sidebars and persist narrow rails', as
   const mainDuringPreview = await mainPane.boundingBox();
   const contentsToggleDuringPreview = await contentsToggle.boundingBox();
   expect(mainDuringPreview).toEqual(mainBeforePreview);
-  expect(contentsToggleDuringPreview).toEqual(contentsToggleBeforePreview);
+  expectOuterEdgeKept(
+    'contents',
+    contentsToggleDuringPreview,
+    contentsToggleBeforePreview,
+  );
   expect(
     await rightPanel.evaluate((element) => getComputedStyle(element).zIndex),
   ).not.toBe('auto');
@@ -161,7 +189,7 @@ for (const viewportWidth of [1152, 1440, 1920, 2560]) {
       await page.goto(lessonPath);
 
       const contentsToggle = page.locator('[data-layout-toggle="contents"]');
-      const contentsShell = page.locator('.right-sidebar-container');
+      const contentsShell = page.locator('.right-sidebar');
       const rightPanel = page.locator('.right-sidebar');
       const tocContent = page.locator('.right-sidebar-panel > .sl-container');
       const mainPane = page.locator('.main-pane');
@@ -206,7 +234,7 @@ for (const viewportWidth of [1152, 1440, 1920, 2560]) {
       expect(previewTocBox!.width).toBeCloseTo(openTocBox!.width, 5);
       expect(previewBackground).toBe(openBackground);
       expect(mainDuringPreview).toEqual(mainBeforePreview);
-      expect(toggleDuringPreview).toEqual(toggleBeforePreview);
+      expectOuterEdgeKept('contents', toggleDuringPreview, toggleBeforePreview);
       expect(
         await page.evaluate(
           (storageKey) => localStorage.getItem(storageKey),
@@ -239,7 +267,11 @@ test('the collapsed navigation previews without persisting and restores by keybo
   await expect(navigationContent).toBeVisible();
   await expect(navigationToggle).toHaveAttribute('aria-expanded', 'false');
   const navigationToggleDuringPreview = await navigationToggle.boundingBox();
-  expect(navigationToggleDuringPreview).toEqual(navigationToggleBeforePreview);
+  expectOuterEdgeKept(
+    'navigation',
+    navigationToggleDuringPreview,
+    navigationToggleBeforePreview,
+  );
   expect(
     await page.evaluate(
       (storageKey) => localStorage.getItem(storageKey),

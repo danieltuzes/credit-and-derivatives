@@ -12,19 +12,6 @@ assumptions:
   - The underlying and required financing positions can be traded under the lesson's frictionless no-arbitrage assumptions
 notation:
   local:
-    - key: parity-income-present-value
-      latex: 'I_0'
-      meaning: 'Valuation-time value of deterministic income paid by the underlying before the matched option expiry. Subtracting it from spot gives the prepaid forward value used in parity.'
-      units: stated currency at valuation time per unit of underlying
-      sources:
-        - id: hull-options-futures
-          locator: 'Ch. 5 §5.5, printed pp. 107-108, Eq. 5.2 (spot less present value of known pre-delivery income), and Ch. 10 §10.7, printed pp. 229-230, Eq. 10.10 (present value of dividends in European put-call parity).'
-      seeAlso:
-        - discount-factor
-      alignment:
-        kind: competency
-        introducedByCompetency: options.put-call-parity.calculate
-        introducedInLesson: derivatives.put-call-parity
     - key: prepaid-forward-value
       latex: '\widetilde{F}_{0,T_{\mathrm{opt}}}'
       meaning: 'Current value of receiving the underlying at expiry with no delivery payment then. Under the known-income model it equals spot value less the present value of income paid before expiry.'
@@ -60,7 +47,7 @@ expiry:
 $$
 \max\!\left(S_{T_{\mathrm{opt}}}-K,0\right)
 -\max\!\left(K-S_{T_{\mathrm{opt}}},0\right)
-=S_{T_{\mathrm{opt}}}-K.
+=S_{T_{\mathrm{opt}}}-K
 $$
 
 The left side is long call plus short put. The right side is the payoff of a
@@ -69,7 +56,7 @@ state, not a forecast or an average.
 
 ## Present-value parity
 
-Let local [[parity-income-present-value]] be $I_0$. The local
+Let the [[underlying-income-present-value]] be $I_0$. The local
 [[prepaid-forward-value]] is
 $\widetilde{F}_{0,T_{\mathrm{opt}}}=S_0-I_0$. Applying the law of one price to
 the matched portfolios, with [[call-option-value]] $c_0$,
@@ -79,7 +66,7 @@ $D(0,T_{\mathrm{opt}})$, gives put-call parity in present-value form:
 $$
 c_0-p_0
 =\widetilde{F}_{0,T_{\mathrm{opt}}}
--K D(0,T_{\mathrm{opt}}).
+-K D(0,T_{\mathrm{opt}})
 $$
 
 The prepaid forward value is the discounted [[forward-price]]
@@ -87,7 +74,7 @@ $F_{0,T_{\mathrm{opt}}}$ for delivery at option expiry:
 
 $$
 \widetilde{F}_{0,T_{\mathrm{opt}}}
-=D(0,T_{\mathrm{opt}})F_{0,T_{\mathrm{opt}}}.
+=D(0,T_{\mathrm{opt}})F_{0,T_{\mathrm{opt}}}
 $$
 
 Here $F_{0,T_{\mathrm{opt}}}$ is the current forward price, not the fixed
@@ -97,7 +84,7 @@ form gives put-call parity in forward form:
 $$
 c_0-p_0
 =D(0,T_{\mathrm{opt}})
-\left(F_{0,T_{\mathrm{opt}}}-K\right).
+\left(F_{0,T_{\mathrm{opt}}}-K\right)
 $$
 
 Hull derives put-call parity by comparing the expiry values of two portfolios
@@ -107,7 +94,7 @@ For $c_0=8$, $\widetilde{F}_{0,T_{\mathrm{opt}}}=97$, $K=100$, and
 $D(0,T_{\mathrm{opt}})=0.95$, the present-value form gives the put value:
 
 $$
-p_0=8-97+100(0.95)=6.
+p_0=8-97+100(0.95)=6
 $$
 
 ## When put-call parity does not apply
@@ -119,8 +106,6 @@ flows in the default state. If both options terminate on issuer default, the
 call payoff minus the put payoff is zero in that state. So the matching
 forward-style claim must also terminate on issuer default. The formula for
 options without a knockout does not apply unchanged.
-
-## Check your understanding
 
 <AssessmentSet />
 

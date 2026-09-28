@@ -364,7 +364,7 @@
       "symbol": "X^{\\mathrm{up}}"
     },
     {
-      "column": 5,
+      "column": 10,
       "definitionId": "page:derivatives.one-period-binomial-option-valuation:binomial-risk-neutral-up-weight",
       "key": "binomial-risk-neutral-up-weight",
       "kind": "math",
@@ -490,5 +490,5 @@
       "symbol": "V_0"
     }
   ],
-  "schemaVersion": 6
+  "schemaVersion": 24
 }

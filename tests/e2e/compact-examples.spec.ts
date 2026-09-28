@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 const lessons = [
   {
     path: '/foundations/cash-flow-timelines/',
+    id: 'reading-cash-flow-timelines',
     labels: [
       'Read a timeline',
       'Reverse the perspective',
@@ -11,6 +12,7 @@ const lessons = [
   },
   {
     path: '/foundations/probability-events-and-expectation/',
+    id: 'expectation-over-events',
     labels: [
       'Constant value on each event',
       'Conditional means inside events',
@@ -19,6 +21,7 @@ const lessons = [
   },
   {
     path: '/foundations/rates-compounding-and-basis-points/',
+    id: 'compounding-and-basis-points',
     labels: [
       'Nominal 6%, compounded semiannually',
       'Nominal is not effective annual',
@@ -27,6 +30,7 @@ const lessons = [
   },
   {
     path: '/foundations/discount-factors/',
+    id: 'discount-factor-calculations',
     labels: [
       'Annual compounding',
       'Semiannual compounding',
@@ -35,14 +39,17 @@ const lessons = [
   },
   {
     path: '/foundations/present-value/',
+    id: 'present-value-calculations',
     labels: ['One payment', 'Mixed signed cash flows', 'Additivity'],
   },
   {
     path: '/bonds/fixed-rate-contract-and-cash-flows/',
+    id: 'coupon-schedules',
     labels: ['Annual coupons', 'Semiannual coupons', 'Quarterly coupon amount'],
   },
   {
     path: '/bonds/price-from-discount-factors/',
+    id: 'bond-price-from-discount-factors',
     labels: [
       'Two discount factors',
       'Unfamiliar schedule',
@@ -51,6 +58,7 @@ const lessons = [
   },
   {
     path: '/bonds/yield-to-maturity/',
+    id: 'yield-to-maturity-pricing',
     labels: [
       'Annual payments',
       'Semiannual compounding',
@@ -59,6 +67,7 @@ const lessons = [
   },
   {
     path: '/bonds/price-yield-relationship/',
+    id: 'price-yield-comparisons',
     labels: [
       'Three points form a curve',
       'Equal shocks, unequal price changes',
@@ -67,6 +76,7 @@ const lessons = [
   },
   {
     path: '/credit/default-hazard-and-survival/',
+    id: 'survival-and-default-probabilities',
     labels: [
       'One interval drop',
       'Three years at constant hazard',
@@ -75,6 +85,7 @@ const lessons = [
   },
   {
     path: '/credit/recovery-and-risky-present-value/',
+    id: 'recovery-of-par-present-values',
     labels: [
       'Partial recovery',
       'Zero-recovery boundary',
@@ -83,6 +94,7 @@ const lessons = [
   },
   {
     path: '/cds/premium-protection-legs-and-par-spread/',
+    id: 'exact-cds-legs',
     labels: [
       'A finite event partition',
       'One-year exact legs',
@@ -91,63 +103,75 @@ const lessons = [
   },
 ] as const;
 
-for (const { path, labels } of lessons) {
-  test(`${path} starts collapsed and exposes three labeled tabs`, async ({
+type Page = import('@playwright/test').Page;
+
+// A set of worked examples is a section of its own (explico 0.10): its
+// `<h2 id="ex-‹id›">` is the bar of the section fold `CollapsibleSections`
+// builds around the set, and it starts as `disclosure.workedExamples` says
+// (closed, the engine default this course keeps).
+const setOf = (page: Page, id: string) =>
+  page.locator('compact-examples').filter({ has: page.locator(`#ex-${id}`) });
+const foldOf = (page: Page, id: string) =>
+  page.locator(`#ex-${id}`).locator('xpath=ancestor::details[1]');
+const openSet = async (page: Page, id: string) => {
+  const fold = foldOf(page, id);
+  await fold.locator(':scope > summary').click();
+  await expect(fold).toHaveJSProperty('open', true);
+};
+
+for (const { path, id, labels } of lessons) {
+  test(`${path} starts folded and exposes three labeled tabs`, async ({
     page,
   }) => {
     await page.goto(path);
 
-    const exampleGroups = page.locator('compact-examples');
-    for (const disclosure of await exampleGroups
-      .locator(':scope > details')
-      .all()) {
-      await expect(disclosure).not.toHaveAttribute('open', '');
-    }
-    for (const panel of await exampleGroups
+    const examples = setOf(page, id);
+    await expect(examples).toHaveCount(1);
+    await expect(foldOf(page, id)).toHaveJSProperty('open', false);
+    for (const panel of await examples
       .locator('[data-compact-example]')
       .all()) {
       await expect(panel).toBeHidden();
     }
 
-    const notationAudit = await exampleGroups.evaluateAll((roots) => {
-      const unmarkedVariables = roots
-        .flatMap((root) =>
-          Array.from(root.querySelectorAll<HTMLElement>('.katex-html .mord')),
-        )
-        .filter((element) => {
-          if (element.childElementCount > 0) return false;
-          if (element.closest('[data-notation-key]')) return false;
+    const notationAudit = await page
+      .locator('compact-examples')
+      .evaluateAll((roots) => {
+        const unmarkedVariables = roots
+          .flatMap((root) =>
+            Array.from(root.querySelectorAll<HTMLElement>('.katex-html .mord')),
+          )
+          .filter((element) => {
+            if (element.childElementCount > 0) return false;
+            if (element.closest('[data-notation-key]')) return false;
 
-          const text = element.textContent?.trim() ?? '';
-          const isVariable = element.classList.contains('mathnormal');
-          const isGreekVariable =
-            /^\p{Script=Greek}$/u.test(text) &&
-            !element.classList.contains('mathrm') &&
-            !element.classList.contains('text');
-          return isVariable || isGreekVariable;
-        })
-        .map((element) => element.textContent?.trim());
+            const text = element.textContent?.trim() ?? '';
+            const isVariable = element.classList.contains('mathnormal');
+            const isGreekVariable =
+              /^\p{Script=Greek}$/u.test(text) &&
+              !element.classList.contains('mathrm') &&
+              !element.classList.contains('text');
+            return isVariable || isGreekVariable;
+          })
+          .map((element) => element.textContent?.trim());
 
-      return {
-        hasLiteralTerm: roots.some((root) => root.innerHTML.includes('[[')),
-        katexErrors: roots.reduce(
-          (count, root) => count + root.querySelectorAll('.katex-error').length,
-          0,
-        ),
-        unmarkedVariables,
-      };
-    });
+        return {
+          hasLiteralTerm: roots.some((root) => root.innerHTML.includes('[[')),
+          katexErrors: roots.reduce(
+            (count, root) =>
+              count + root.querySelectorAll('.katex-error').length,
+            0,
+          ),
+          unmarkedVariables,
+        };
+      });
     expect(notationAudit, `${path} compact-example notation`).toEqual({
       hasLiteralTerm: false,
       katexErrors: 0,
       unmarkedVariables: [],
     });
 
-    const examples = exampleGroups.filter({ hasText: labels[0] });
-    await expect(examples).toHaveCount(1);
-    const disclosure = examples.locator(':scope > details');
-    await examples.locator('summary').click();
-    await expect(disclosure).toHaveAttribute('open', '');
+    await openSet(page, id);
 
     const tabs = examples.getByRole('tab');
     const panels = examples.locator('[role="tabpanel"]');
@@ -166,8 +190,9 @@ test('example tabs support arrow, Home, and End keyboard navigation', async ({
 }) => {
   await page.goto('/foundations/rates-compounding-and-basis-points/');
 
-  const examples = page.locator('compact-examples');
-  await examples.locator('summary').click();
+  const id = 'compounding-and-basis-points';
+  await openSet(page, id);
+  const examples = setOf(page, id);
   const tabs = examples.getByRole('tab');
   const panels = examples.locator('[role="tabpanel"]');
 
@@ -195,8 +220,9 @@ test('notation remains compiled inside compact example components', async ({
 }) => {
   await page.goto('/foundations/rates-compounding-and-basis-points/');
 
-  const examples = page.locator('compact-examples');
-  await examples.locator('summary').click();
+  const id = 'compounding-and-basis-points';
+  await openSet(page, id);
+  const examples = setOf(page, id);
   await expect(
     examples.locator('.katex-html [data-notation-key="nominal-annual-rate"]'),
   ).toBeVisible();
@@ -218,14 +244,10 @@ test('all examples remain available when JavaScript is disabled', async ({
 
   try {
     await page.goto('/foundations/cash-flow-timelines/');
-    const examples = page.locator('compact-examples');
-    const disclosure = examples.locator(':scope > details');
+    const examples = setOf(page, lessons[0].id);
 
+    // No script: no tabs and no fold, so every example reads in turn.
     await expect(examples.getByRole('tab')).toHaveCount(0);
-    await expect(disclosure).not.toHaveAttribute('open', '');
-    await examples.locator('summary').click();
-    await expect(disclosure).toHaveAttribute('open', '');
-
     const panels = examples.locator('[data-compact-example]');
     await expect(panels).toHaveCount(3);
     for (const panel of await panels.all()) {
@@ -242,19 +264,26 @@ test('all examples remain available when JavaScript is disabled', async ({
   }
 });
 
-test('print media reveals every example even while the disclosure is closed', async ({
+test('print follows the screen: a folded set prints its heading, an open set every example', async ({
   page,
 }) => {
   await page.goto('/foundations/discount-factors/');
-  const examples = page.locator('compact-examples');
-  await expect(examples.locator(':scope > details')).not.toHaveAttribute(
-    'open',
-    '',
-  );
-  await expect(examples.locator('[role="tabpanel"]')).toHaveCount(3);
+  const id = 'discount-factor-calculations';
+  const examples = setOf(page, id);
+  const panels = examples.locator('[role="tabpanel"]');
+  await expect(foldOf(page, id)).toHaveJSProperty('open', false);
+  await expect(panels).toHaveCount(3);
 
   await page.emulateMedia({ media: 'print' });
-  for (const panel of await examples.locator('[role="tabpanel"]').all()) {
+  await expect(page.locator(`#ex-${id}`)).toBeVisible();
+  for (const panel of await panels.all()) {
+    await expect(panel).toBeHidden();
+  }
+
+  await page.emulateMedia({ media: 'screen' });
+  await openSet(page, id);
+  await page.emulateMedia({ media: 'print' });
+  for (const panel of await panels.all()) {
     await expect(panel).toBeVisible();
   }
 });

@@ -23,7 +23,7 @@ The bond payment index $k$ labels one remaining scheduled payment in increasing
 time order. The [[number-of-bond-payments]] gives the final included index.
 
 $$
-k\in\{1,\ldots,n\}.
+k\in\{1,\ldots,n\}
 $$
 
 This index is bookkeeping. The matching [[payment-time]] gives the time

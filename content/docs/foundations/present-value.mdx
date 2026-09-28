@@ -82,7 +82,7 @@ The present value of the deterministic schedule is the sum of the discounted
 cash flows:
 
 $$
-PV_0=\sum_{k=1}^{n}CF_kD(0,t_k).
+PV_0=\sum_{k=1}^{n}CF_kD(0,t_k)
 \label{eq:present-value-sum}
 $$
 
@@ -96,11 +96,11 @@ both schedules $\mathrm{A}$ and $\mathrm{B}$. For two compatible schedules, the
 present value is additive:
 
 $$
-PV_0(\mathrm{A}\mathbin{\|}\mathrm{B})=PV_0(\mathrm{A})+PV_0(\mathrm{B}).
+PV_0(\mathrm{A}\mathbin{\|}\mathrm{B})=PV_0(\mathrm{A})+PV_0(\mathrm{B})
 \label{eq:present-value-additivity}
 $$
 
-<CompactExamples summary="Worked examples (3)">
+<CompactExamples id="present-value-calculations" short="Present values of dated cash flows">
   <CompactExample label="One payment">
 
 A deterministic receipt of USD 1,000 is paid after two years, and
@@ -110,7 +110,7 @@ $$
 PV_0
 =1000\times0.9070294785
 =\text{USD }907.0294785
-\approx\text{USD }907.03.
+\approx\text{USD }907.03
 $$
 
 The present value is in USD at [[valuation-time]], from the holder's
@@ -132,7 +132,7 @@ receives USD 300 at $t_3$. The discount factors are 0.97, 0.93, and
 The present value is the sum of the discounted cash flows:
 
 $$
-PV_0=97.00-37.20+264.00=\text{USD }323.80.
+PV_0=97.00-37.20+264.00=\text{USD }323.80
 $$
 
 Discounting does not change the sign of a cash flow. Reversing the perspective

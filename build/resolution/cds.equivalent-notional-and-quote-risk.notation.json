@@ -241,7 +241,7 @@
       "symbol": "\\lambda"
     },
     {
-      "column": 40,
+      "column": 45,
       "definitionId": "shared:cds-market-standard-quote",
       "key": "cds-market-standard-quote",
       "kind": "math",
@@ -250,7 +250,7 @@
       "symbol": "s_{\\mathrm{MSQ}}"
     },
     {
-      "column": 94,
+      "column": 99,
       "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-quote-bump",
       "key": "cds-quote-bump",
       "kind": "math",
@@ -277,7 +277,7 @@
       "symbol": "\\lambda"
     },
     {
-      "column": 40,
+      "column": 45,
       "definitionId": "shared:cds-market-standard-quote",
       "key": "cds-market-standard-quote",
       "kind": "math",
@@ -322,7 +322,7 @@
       "symbol": "\\lambda"
     },
     {
-      "column": 40,
+      "column": 45,
       "definitionId": "shared:cds-market-standard-quote",
       "key": "cds-market-standard-quote",
       "kind": "math",
@@ -331,7 +331,7 @@
       "symbol": "s_{\\mathrm{MSQ}}"
     },
     {
-      "column": 94,
+      "column": 99,
       "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-quote-bump",
       "key": "cds-quote-bump",
       "kind": "math",
@@ -358,7 +358,7 @@
       "symbol": "\\lambda"
     },
     {
-      "column": 40,
+      "column": 45,
       "definitionId": "shared:cds-market-standard-quote",
       "key": "cds-market-standard-quote",
       "kind": "math",
@@ -641,7 +641,7 @@
       "definitionId": "shared:cds-standard-coupon",
       "key": "cds-standard-coupon",
       "kind": "math",
-      "line": 229,
+      "line": 230,
       "scope": "shared",
       "symbol": "c_{\\mathrm{std}}"
     },
@@ -650,7 +650,7 @@
       "definitionId": "shared:cds-market-standard-quote",
       "key": "cds-market-standard-quote",
       "kind": "math",
-      "line": 231,
+      "line": 232,
       "scope": "shared",
       "symbol": "s_{\\mathrm{MSQ}}"
     },
@@ -659,7 +659,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 234,
+      "line": 235,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -668,7 +668,7 @@
       "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-liquid-unit-value",
       "key": "cds-liquid-unit-value",
       "kind": "math",
-      "line": 236,
+      "line": 237,
       "scope": "local",
       "symbol": "v_L"
     },
@@ -677,7 +677,7 @@
       "definitionId": "page:cds.equivalent-notional-and-quote-risk:cds-position-notional",
       "key": "cds-position-notional",
       "kind": "math",
-      "line": 239,
+      "line": 240,
       "scope": "local",
       "symbol": "N_{\\mathrm{pos}}"
     },
@@ -799,5 +799,5 @@
       "symbol": "\\mathrm{LGD}"
     }
   ],
-  "schemaVersion": 6
+  "schemaVersion": 24
 }

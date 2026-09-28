@@ -10,7 +10,7 @@
       "definitionId": "shared:nominal-annual-rate",
       "key": "nominal-annual-rate",
       "kind": "prose",
-      "line": 17,
+      "line": 18,
       "scope": "shared",
       "symbol": "j^{(m)}"
     },
@@ -19,7 +19,7 @@
       "definitionId": "shared:compounding-frequency",
       "key": "compounding-frequency",
       "kind": "prose",
-      "line": 18,
+      "line": 19,
       "scope": "shared",
       "symbol": "m"
     },
@@ -28,7 +28,7 @@
       "definitionId": "shared:periodic-rate",
       "key": "periodic-rate",
       "kind": "prose",
-      "line": 19,
+      "line": 20,
       "scope": "shared",
       "symbol": "r_m"
     },
@@ -37,7 +37,7 @@
       "definitionId": "shared:payment-time",
       "key": "payment-time",
       "kind": "prose",
-      "line": 21,
+      "line": 22,
       "scope": "shared",
       "symbol": "t_k"
     },
@@ -46,7 +46,7 @@
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
-      "line": 22,
+      "line": 23,
       "scope": "shared",
       "symbol": "0"
     },
@@ -55,7 +55,7 @@
       "definitionId": "page:foundations.rates-compounding-and-basis-points:number-of-compounding-periods",
       "key": "number-of-compounding-periods",
       "kind": "prose",
-      "line": 22,
+      "line": 23,
       "scope": "local",
       "symbol": "N"
     },
@@ -64,7 +64,7 @@
       "definitionId": "shared:accumulation-factor",
       "key": "accumulation-factor",
       "kind": "prose",
-      "line": 23,
+      "line": 24,
       "scope": "shared",
       "symbol": "A(0,t)"
     },
@@ -73,7 +73,7 @@
       "definitionId": "page:foundations.rates-compounding-and-basis-points:number-of-compounding-periods",
       "key": "number-of-compounding-periods",
       "kind": "prose",
-      "line": 45,
+      "line": 46,
       "scope": "local",
       "symbol": "N"
     },
@@ -82,7 +82,7 @@
       "definitionId": "shared:accumulation-factor",
       "key": "accumulation-factor",
       "kind": "prose",
-      "line": 46,
+      "line": 47,
       "scope": "shared",
       "symbol": "A(0,t)"
     },
@@ -91,7 +91,7 @@
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
-      "line": 54,
+      "line": 55,
       "scope": "shared",
       "symbol": "0"
     },
@@ -100,7 +100,7 @@
       "definitionId": "shared:payment-time",
       "key": "payment-time",
       "kind": "prose",
-      "line": 55,
+      "line": 56,
       "scope": "shared",
       "symbol": "t_k"
     },
@@ -109,10 +109,10 @@
       "definitionId": "shared:basis-point",
       "key": "basis-point",
       "kind": "prose",
-      "line": 74,
+      "line": 75,
       "scope": "shared",
       "symbol": "1\\,\\mathrm{bp}"
     }
   ],
-  "schemaVersion": 6
+  "schemaVersion": 24
 }

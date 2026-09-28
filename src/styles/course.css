@@ -1,26 +1,31 @@
 /*
- * Explico 0.3.0 keeps equation numbers partially visible at rest so a reader
- * scanning the page can always find them. Explico's default pairs a 0.45
- * opacity with `--sl-color-text-accent`, and that blended color fails the
- * automated contrast check. Keep the always-visible behaviour but make it
+ * Explico keeps equation numbers partially visible at rest so a reader
+ * scanning the page can always find them: a lesson equation's `(1.4.1)` and a
+ * glossary formula's `(G.1)`. Explico's default pairs a 0.45 opacity with
+ * `--sl-color-text-accent`, and that blended color fails the automated
+ * contrast check. Keep the always-visible behaviour but make it
  * contrast-safe: the high-contrast accent color at an opacity that still
  * clears 4.5:1 in both themes (~5.8:1 light, ~7.6:1 dark). The engine's
- * discovery states below still push it to full opacity.
+ * discovery states below (and, for a glossary formula, its own hover and
+ * focus rules, which are more specific) still push it to full opacity.
  */
-.sl-markdown-content a.keyed-equation__number {
+.sl-markdown-content a.keyed-equation__number,
+a.notation-formula-number {
   color: var(--sl-color-accent-high);
   opacity: 0.72;
   transition: opacity 120ms ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sl-markdown-content a.keyed-equation__number {
+  .sl-markdown-content a.keyed-equation__number,
+  a.notation-formula-number {
     transition: none;
   }
 }
 
 @media (hover: none) {
-  .sl-markdown-content a.keyed-equation__number {
+  .sl-markdown-content a.keyed-equation__number,
+  a.notation-formula-number {
     opacity: 1;
   }
 }
@@ -35,7 +40,8 @@
 }
 
 @media print, (forced-colors: active) {
-  .sl-markdown-content a.keyed-equation__number {
+  .sl-markdown-content a.keyed-equation__number,
+  a.notation-formula-number {
     opacity: 1;
   }
 }
@@ -44,4 +50,25 @@
  * inheriting Starlight's responsive SVG shrink and becoming illegible. */
 .sl-markdown-content .diagram-scroll svg {
   max-width: none;
+}
+
+/* Explico 0.11 lifts the site header one level above Starlight's navbar at
+ * every width, so the side panels and explanation cards pass under it. Below
+ * 50rem Starlight's menu button is a fixed element at the navbar level that
+ * sits outside the header, so the header covered it and a phone could not
+ * open the navigation. Keep the button above the header; Starlight hides it
+ * from 50rem up. Reported upstream as
+ * explico/docs/bugs/mobile-menu-button-under-header.md; remove this once the
+ * engine keeps the button reachable. */
+starlight-menu-button > button {
+  z-index: calc(var(--sl-z-index-navbar) + 2);
+}
+
+/* Explico 0.11.1's part overview and course contents render their links in
+ * `.not-content`, out of reach of Starlight's link colour, so they showed the
+ * browser's default blue. Reported upstream as
+ * explico/docs/bugs/overview-link-colour.md; remove once the engine fixes it. */
+.part-overview a,
+.course-contents a {
+  color: var(--sl-color-text-accent);
 }

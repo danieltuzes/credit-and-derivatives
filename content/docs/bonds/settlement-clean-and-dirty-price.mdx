@@ -46,13 +46,15 @@ full, cash, or invoice price. The dirty price is the clean price plus the
 $$
 \explain{dirty-bond-price}{P^{\mathrm{dirty}}}
 =\explain{clean-bond-price}{P^{\mathrm{clean}}}
-+\explain{accrued-interest}{AI}.
++\explain{accrued-interest}{AI}
 \label{eq:dirty-price-bridge}
 $$
 
 On a coupon date, the accrued interest is zero, so the two prices are equal.
 For this reason, the earlier bond lessons, which settle on a coupon date, use
 one bond-price symbol.
+
+{/* explico-allow N9: "actual/actual" names the day-count convention; it is not a division */}
 
 ## Actual/actual within one coupon period
 
@@ -66,7 +68,7 @@ $$
 \explain{accrued-interest}{AI}
 =\explain{coupon-payment}{C}
 \frac{\explain{coupon-period-elapsed-days}{n_{\mathrm{elapsed}}}}
-{\explain{coupon-period-total-days}{n_{\mathrm{period}}}}.
+{\explain{coupon-period-total-days}{n_{\mathrm{period}}}}
 \label{eq:coupon-period-accrual}
 $$
 
@@ -78,7 +80,7 @@ accrued interest:
 $$
 AI
 =31.25\left(\frac{91}{181}\right)
-=15.71132597\ \text{USD per bond}.
+=15.71132597\ \text{USD per bond}
 $$
 
 The domain code checks that the dates are valid ISO dates and counts UTC
@@ -94,12 +96,11 @@ the exercise date to the strike before the payoff is calculated. Also, each
 coupon paid before delivery must be assigned to the party that owns the bond on
 the coupon date.
 
-## Check your understanding
-
 <AssessmentSet />
 
 ## Sources
 
+{/* explico-allow N9: "actual/actual" names the day-count convention; it is not a division */}
 The identity between the clean and the dirty price [[eq-dirty-price-bridge]] and the actual/actual
 calculation [[eq-coupon-period-accrual]] follow Tuckman
 and Serrat, Chapter 1 §1.6 [@tuckman-serrat-fixed-income]. Hull's European bond

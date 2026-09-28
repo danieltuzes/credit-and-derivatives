@@ -23,7 +23,7 @@ aiAssisted: true
 One basis point is one hundredth of one percentage point.
 
 $$
-1\,\mathrm{bp}=0.01\%=0.0001.
+1\,\mathrm{bp}=0.01\%=0.0001
 $$
 
 The unit describes a rate difference. A move from $4.10\%$ to $4.35\%$ is

@@ -42,6 +42,7 @@ import CompactExample from 'explico/components/examples/CompactExample.astro';
 import CompactExamples from 'explico/components/examples/CompactExamples.astro';
 import BondPriceExplorer from '../../labs/BondPriceExplorer';
 import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
+import Table from 'explico/components/table/Table.astro';
 
 ## What you will be able to do
 
@@ -68,27 +69,32 @@ $$
 P(y)=
 \sum_{k=1}^{n}
 \frac{CF_k^{\mathrm{bond}}}
-{\left(1+y/m_{\mathrm B}\right)^k}.
+{\left(1+y/m_{\mathrm B}\right)^k}
 $$
 
 Assume that the yield stays non-negative and that every cash flow stays fixed.
 If the yield increases, every denominator increases. So every discounted cash
-flow decreases, and the [[bond-price]] decreases. The table below also assumes
+flow decreases, and the [[bond-price]] decreases. [[tab-yield-shock-price-change]] also assumes
 that the new yield is non-negative.
 
 Define the local [[yield-shock]] $\Delta y$ as new yield minus old
 yield, and define the local [[price-change]] $\Delta P$ as new price
 minus old price.
 
+<Table id="yield-shock-price-change" short="Signs of a yield shock and the price change" caption="For a rise and a fall in the yield, the direction of every discount denominator and the sign of the price change, with the promised cash flows held fixed.">
+
 | Yield shock  | Denominators | Price change |
 | ------------ | ------------ | ------------ |
 | $\Delta y>0$ | Increase     | $\Delta P<0$ |
 | $\Delta y<0$ | Decrease     | $\Delta P>0$ |
 
+</Table>
+
 The table holds only if the promised cash flows stay fixed.
 
 <CompactExamples
-  summary="Worked examples"
+  id="price-yield-comparisons"
+  short="Price-yield comparisons"
   hint="Open the set, then choose a price-yield comparison."
   tabsLabel="Bond price-yield relationship examples"
 >

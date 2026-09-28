@@ -21,14 +21,14 @@ editorialStatus: draft
 aiAssisted: true
 ---
 
-The nominal annual rate $j^{(\explain{compounding-frequency}{m})}$ is an
+The nominal annual rate $\explain{nominal-annual-rate}{j^{(m)}}$ is an
 annualized quote whose periodic rate is
 obtained using its stated [[compounding-frequency]] $\explain{compounding-frequency}{m}$.
 
 In this playground's nominal-compounding model,
 
 $$
-r_{\explain{compounding-frequency}{m}}=\frac{j^{(\explain{compounding-frequency}{m})}}{\explain{compounding-frequency}{m}}.
+r_{\explain{compounding-frequency}{m}}=\frac{\explain{nominal-annual-rate}{j^{(m)}}}{\explain{compounding-frequency}{m}}
 $$
 
 It is not silently interchangeable with an effective annual rate.

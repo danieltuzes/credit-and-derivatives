@@ -29,6 +29,7 @@ notation:
 import CompactExample from 'explico/components/examples/CompactExample.astro';
 import CompactExamples from 'explico/components/examples/CompactExamples.astro';
 import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
+import Table from 'explico/components/table/Table.astro';
 
 ## What you will be able to do
 
@@ -53,19 +54,19 @@ Under the nominal-rate convention of this lesson, the periodic rate is the
 nominal annual rate divided by the compounding frequency:
 
 $$
-r_m=\frac{j^{(m)}}{m}.
+r_m=\frac{j^{(m)}}{m}
 $$
 
 This division is a convention of the quote. It is not a conversion rule for
 every kind of annual rate.
 
-<CompactExamples summary="Worked examples (3)">
+<CompactExamples id="compounding-and-basis-points" short="Compounding and basis points">
   <CompactExample label="Nominal 6%, compounded semiannually">
 
 With $j^{(2)}=0.06$ and $m=2$, the periodic rate is:
 
 $$
-r_2=\frac{0.06}{2}=0.03.
+r_2=\frac{0.06}{2}=0.03
 $$
 
 The model applies the periodic rate of 3% once every half-year. Over
@@ -75,7 +76,7 @@ the [[accumulation-factor]] is:
 $$
 A(0,1.5)
 =(1+0.03)^3
-=1.092727.
+=1.092727
 $$
 
 One unit at [[valuation-time]] accumulates to 1.092727 units at the
@@ -88,7 +89,7 @@ Under the same convention, the effective annual rate, i.e., the growth over
 one year of compounding, is:
 
 $$
-(1.03)^2-1=0.0609=6.09\%.
+(1.03)^2-1=0.0609=6.09\%
 $$
 
 So the nominal annual rate of 6% and the effective annual rate of 6.09% are
@@ -105,7 +106,7 @@ $$
 25\,\mathrm{bp}
 =25\times0.0001
 =0.0025
-=0.25\%.
+=0.25\%
 $$
 
 A change from 4.10% to 4.35% is $0.25$ percentage points (25 bp). Write the
@@ -116,11 +117,15 @@ unit explicitly, because the number 25 without a unit is ambiguous.
 
 ## Common unit boundary
 
+<Table id="rate-representations" short="One rate in three representations" caption="The same rate as the decimal the domain code takes, the percentage shown to a learner, and the number of basis points above zero.">
+
 | Representation                | Same rate |
 | ----------------------------- | --------: |
 | Decimal used by domain code   |    0.0435 |
 | Percentage shown to a learner |     4.35% |
 | Basis points above zero       |    435 bp |
+
+</Table>
 
 A lab converts a percentage input to a decimal. The domain functions take
 decimal rates.

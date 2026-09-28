@@ -11,30 +11,6 @@ assumptions:
   - No claim that the input lattice has been calibrated or is complete outside its modeled states
 notation:
   local:
-    - key: lattice-node-discount-factor
-      latex: 'd_{i,j}'
-      meaning: Currency at node i,j per one unit of currency at either successor node one step later.
-      units: current-node currency per next-time currency
-      sources:
-        - id: hull-options-futures
-          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eq. 12.5 and Eqs. 12.7-12.10 (one-step discounting in backward induction).'
-      alignment:
-        kind: competency
-        introducedByCompetency: finance.backward-induction.calculate
-        introducedInLesson: derivatives.multiperiod-lattice-valuation
-    - key: lattice-node-up-weight
-      latex: 'q_{i,j}'
-      meaning: Pricing probability assigned to the up successor conditional on the current node.
-      units: probability between zero and one
-      sources:
-        - id: hull-options-futures
-          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eq. 12.6 and Eqs. 12.7-12.10 (risk-neutral up weight in backward induction).'
-      seeAlso:
-        - risk-neutral-probability-measure
-      alignment:
-        kind: competency
-        introducedByCompetency: finance.backward-induction.calculate
-        introducedInLesson: derivatives.multiperiod-lattice-valuation
     - key: lattice-next-cash-flow
       latex: 'CF_{i+1,j}'
       meaning: Signed cash paid at a successor node immediately before its continuation value is measured.
@@ -58,7 +34,7 @@ lattice applies the same pricing step at every node, beginning with the last
 row and moving backward to [[valuation-time]].
 
 At the node with [[lattice-time-index]] $i$ and [[lattice-state-index]] $j$,
-let the local [[lattice-node-up-weight]] be $q_{i,j}$ and the local
+let the [[lattice-node-up-weight]] be $q_{i,j}$ and the
 [[lattice-node-discount-factor]] be $d_{i,j}$. Let the local next-date cash
 flow $\explain{lattice-next-cash-flow}{CF_{i+1,j}}$ be paid at the successor
 node $(i+1,j)$; the node value $V_{i+1,j}$ excludes it. The
@@ -69,13 +45,13 @@ $$
 \explain{lattice-node-value}{V_{i,j}}
 =\explain{lattice-node-discount-factor}{d_{i,j}}
 \left[
-(1-\explain{lattice-node-up-weight}{q_{i,j}})
+\left(1-\explain{lattice-node-up-weight}{q_{i,j}}\right)
 \left(\explain{lattice-next-cash-flow}{CF_{i+1,j}}
 +\explain{lattice-node-value}{V_{i+1,j}}\right)
 +\explain{lattice-node-up-weight}{q_{i,j}}
 \left(\explain{lattice-next-cash-flow}{CF_{i+1,j+1}}
 +\explain{lattice-node-value}{V_{i+1,j+1}}\right)
-\right].
+\right]
 \label{eq:lattice-backward-step}
 $$
 
@@ -93,7 +69,8 @@ the option payoff.
 
 <Diagram
   id="backward-induction-flow"
-  label="Backward-induction order"
+  short="Backward-induction order"
+  caption="Start from terminal node values. At each earlier row, add any next-date cash flow to each successor value, form the local risk-neutral weighted average, multiply by the local discount factor, and repeat."
   direction="LR"
   nodes={[
     { id: 'terminal', text: 'Set terminal node values' },
@@ -108,7 +85,6 @@ the option payoff.
     { from: 'expectation', to: 'discount' },
     { from: 'discount', to: 'repeat' },
   ]}
-  description="Start from terminal node values. At each earlier row, add any next-date cash flow to each successor value, form the local risk-neutral weighted average, multiply by the local discount factor, and repeat."
 />
 
 ## Worked example
@@ -120,17 +96,15 @@ index 0, the discount factor is 0.95 and the up weight is 0.50. Applying
 
 $$
 \begin{aligned}
-V_{1,0}&=0.90\left[(1-0.25)(0)+0.25(20)\right]=4.50,\\
-V_{1,1}&=0.90\left[(1-0.75)(20)+0.75(40)\right]=31.50,\\
-V_{0,0}&=0.95\left[(1-0.50)(4.50)+0.50(31.50)\right]\\
-&=17.10\ \text{USD}.
+V_{1,0}&=0.90\left[\left(1-0.25\right)\left(0\right)+0.25\left(20\right)\right]=4.50\\
+V_{1,1}&=0.90\left[\left(1-0.75\right)\left(20\right)+0.75\left(40\right)\right]=31.50\\
+V_{0,0}&=0.95\left[\left(1-0.50\right)\left(4.50\right)+0.50\left(31.50\right)\right]\\
+&=17.10\ \text{USD}
 \end{aligned}
 $$
 
 `backwardInductionValue` reproduces the three node rows
 `[[17.1], [4.5, 31.5], [0, 20, 40]]` in its independent reference test.
-
-## Check your understanding
 
 <AssessmentSet />
 

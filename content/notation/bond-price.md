@@ -28,7 +28,7 @@ promised [[bond-cash-flow]] amounts.
 Given one [[discount-factor]] for each scheduled time,
 
 $$
-P_0=\sum_{k=1}^{n}CF_k^{\mathrm{bond}}D(0,t_k).
+P_0=\sum_{k=1}^{n}CF_k^{\mathrm{bond}}D(0,t_k)
 $$
 
 Settlement is on a coupon date here, so these lessons do not yet distinguish

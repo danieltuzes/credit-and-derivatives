@@ -26,7 +26,7 @@ Under the toy schedule, the count is the [[bond-payment-frequency]]
 multiplied by [[maturity-time]]:
 
 $$
-n=m_{\mathrm B}T.
+n=m_{\mathrm B}T
 $$
 
 The model requires this product to be a positive integer, so no stub period is

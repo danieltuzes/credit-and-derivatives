@@ -33,7 +33,7 @@ In the bond lessons it appears in
 
 $$
 P_0=\sum_{k=1}^{n}\frac{CF_k^{\mathrm{bond}}}
-{\left(1+y^{(\explain{bond-payment-frequency}{m_{\mathrm B}})}/\explain{bond-payment-frequency}{m_{\mathrm B}}\right)^k}.
+{\left(1+y^{\left(\explain{bond-payment-frequency}{m_{\mathrm B}}\right)}/\explain{bond-payment-frequency}{m_{\mathrm B}}\right)^k}
 $$
 
 It is not silently treated as the coupon rate, a spot rate, an effective annual

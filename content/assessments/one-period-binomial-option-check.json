@@ -1,6 +1,6 @@
 {
   "id": "one-period-binomial-option-check",
-  "title": "One-period binomial option valuation check",
+  "title": "One-period binomial option valuation",
   "editorialStatus": "draft",
   "items": [
     {
@@ -37,7 +37,7 @@
       "evidenceKind": "transfer",
       "prompt": "A claim pays USD 10 when the underlying is USD 130 and USD -2 when it is USD 90. Its hedge quantity is 0.3 underlying units. What risk-free cash amount is required at expiry to reproduce the down-state payoff, in USD?",
       "answer": { "value": -29, "tolerance": 0.000001 },
-      "explanation": "Cash at expiry is payoff_down - delta × underlying_down = -2 - 0.3 × 90 = USD -29. A negative amount is borrowing."
+      "explanation": "Cash at expiry is $M_{T_{\\mathrm{opt}}}=X^{\\mathrm{down}}-\\Delta\\,S^{\\mathrm{down}}=-2-0.3\\times90=\\text{USD }{-29}$. A negative amount is borrowing."
     }
   ]
 }

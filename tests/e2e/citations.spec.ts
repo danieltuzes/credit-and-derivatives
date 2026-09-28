@@ -81,8 +81,11 @@ test('hovering a citation marker opens a pinnable source panel', async ({
   await expect(panel.locator('[data-panel-label]')).toContainText('Tuckman');
   await expect(panel.locator('[data-panel-locator]')).toContainText('3.2');
 
-  // Pin keeps it open after the pointer leaves; Escape closes it.
-  await panel.locator('[data-panel-pin]').click({ force: true });
+  // The card header's Pin keeps it open after the pointer leaves; Escape
+  // closes it.
+  const pin = panel.locator('[data-card-pin]');
+  await pin.click();
+  await expect(pin).toHaveAttribute('aria-pressed', 'true');
   await page.mouse.move(2, 2);
   await expect(panel).toBeVisible();
   await page.keyboard.press('Escape');

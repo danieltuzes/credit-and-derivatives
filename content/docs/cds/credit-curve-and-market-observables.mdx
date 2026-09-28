@@ -143,6 +143,7 @@ notation:
 import CompactExample from 'explico/components/examples/CompactExample.astro';
 import CompactExamples from 'explico/components/examples/CompactExamples.astro';
 import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
+import Table from 'explico/components/table/Table.astro';
 
 ## What you will be able to do
 
@@ -178,7 +179,7 @@ expectation of this sum:
 
 $$
 \explain{present-value}{PV_0}
-=\mathbb{E}^{\mathbb{Q}}\!\left[\explain{cds-buyer-discounted-cash-flows}{\Pi^{\mathrm{buyer}}}\right].
+=\mathbb{E}^{\mathbb{Q}}\!\left[\explain{cds-buyer-discounted-cash-flows}{\Pi^{\mathrm{buyer}}}\right]
 \label{eq:cds-price-is-expectation}
 $$
 
@@ -192,7 +193,7 @@ $$
 \explain{cds-upfront-amount}{U_0}
 =\mathbb{E}^{\mathbb{Q}}\!\left[\explain{cds-buyer-discounted-cash-flows}{\Pi^{\mathrm{buyer}}}\right]
 =\explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}
--\explain{cds-premium-leg-present-value}{PV_0^{\mathrm{prem}}}.
+-\explain{cds-premium-leg-present-value}{PV_0^{\mathrm{prem}}}
 \label{eq:cds-upfront-is-expectation}
 $$
 
@@ -230,11 +231,13 @@ parameters, the curve is under-determined, and a convention must fix the
 remaining parameters. With more prices than parameters, the curve can in
 general only fit the prices approximately (a best fit).
 
-## What the market shows, what the model assumes, what the model solves
+## What the market shows, the model assumes, and the model solves
 
 If every quantity is called an input, it is not clear which quantities the
-market can contradict. The table classifies the quantities of a standard
+market can contradict. [[tab-cds-quantity-status]] classifies the quantities of a standard
 contract at one tenor.
+
+<Table id="cds-quantity-status" short="Observed, contractual, convention, and solved quantities" caption="Each quantity of a standard contract at one tenor: whether the market shows it, the contract fixes it, a convention assumes it, or the model solves it, and where it comes from.">
 
 | Quantity                                                                                                         | Status                                        | Where it comes from                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -244,6 +247,8 @@ contract at one tenor.
 | [[recovery-rate]] $R$ and hence [[loss-given-default]] $\mathrm{LGD}$                                            | **Convention**                                | Assumed by the converter, commonly 40% but 20% or 25% for some contract types. It is not observed in the quote. [@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed p. 368, n. 15]                                                                                                                                                                                                                                                                                        |
 | Shape of the hazard rate between and beyond tenors, accrual treatment                                            | **Convention**                                | The converter's single flat hazard rate, or this lesson's piecewise-constant curve. [@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed p. 370 (the quote-to-upfront translation is a convention like price and yield; participants need not believe in constant hazard or a particular recovery, but all use the convention)]                                                                                                                                            |
 | [[hazard-rate]] $\lambda$, the survival curve, the [[cds-par-spread]] $s^{\star}$, the other quotation           | **Solved**                                    | Root of [[eq-cds-upfront-is-expectation]] given everything above. [@hull-options-futures; Ch. 24 §24.4, printed pp. 556-557 (a hazard rate is implied from the quoted spread by iterative search)]                                                                                                                                                                                                                                                                         |
+
+</Table>
 
 The risk-neutral interpretation has two consequences.
 
@@ -304,7 +309,7 @@ $$
 \exp\!\left(-\explain{cds-segment-hazard-rate}{\lambda_k}
 \left(\explain{cds-tenor-maturity}{T_k}-\explain{cds-tenor-maturity}{T_{k-1}}\right)\right),
 \qquad
-\explain{survival-probability}{S^{\mathbb{Q}}(0,0)}=1,
+\explain{survival-probability}{S^{\mathbb{Q}}(0,0)}=1
 \label{eq:cds-piecewise-survival}
 $$
 
@@ -353,7 +358,7 @@ $$
 \explain{cds-segment-hazard-rate}{\lambda_1},\ldots,
 \explain{cds-segment-hazard-rate}{\lambda_k}\right)
 =\explain{cds-tenor-upfront-fraction}{u_k}\,
-\explain{cds-notional}{N}.
+\explain{cds-notional}{N}
 \label{eq:cds-curve-fit-tenor}
 $$
 
@@ -385,7 +390,8 @@ negative hazard rate, because a survival probability cannot increase with
 time.
 
 <CompactExamples
-  summary="Worked curve"
+  id="credit-curve-from-marks"
+  short="A credit curve from market marks"
   hint="Open the set, then follow one MSQ-marked curve through transformation and fit."
   tabsLabel="Credit curve examples"
 >
@@ -402,11 +408,11 @@ $\explain{cds-tenor-maturity}{T_3}=5$ model-years. Notional is USD 10,000,000.
 
 For each tenor separately, the flat converter of the preceding lesson gives:
 
-| Tenor $k$ | $\explain{cds-tenor-quote}{s_k}$, bp/yr | $\explain{cds-flat-tenor-hazard-rate}{\lambda^{\mathrm{flat}}_k}$, per yr | Flat $\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}$, model-yrs | $\explain{cds-tenor-upfront-fraction}{u_k}$ | $\explain{cds-upfront-amount}{U_0}$, USD | Flat $\explain{survival-probability}{S(0,T_k)}$ |
-| --------: | --------------------------------------: | ------------------------------------------------------------------------: | -------------------------------------------------------------------: | ------------------------------------------: | ---------------------------------------: | ----------------------------------------------: |
-|         1 |                                      80 |                                                               0.013300046 |                                                          0.981077842 |                                −0.001962156 |                               −19,621.56 |                                     0.986788009 |
-|         2 |                                     120 |                                                               0.019950083 |                                                          2.820140305 |                                 0.005640281 |                                56,402.81 |                                     0.941905574 |
-|         3 |                                     160 |                                                               0.026600129 |                                                          4.449093452 |                                 0.026694561 |                               266,945.61 |                                     0.875464525 |
+| Tenor $k$ | $\explain{cds-tenor-quote}{s_k}\ \text{(bp/yr)}$ | $\explain{cds-flat-tenor-hazard-rate}{\lambda^{\mathrm{flat}}_k}$, per yr | Flat $\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}$, model-yrs | $\explain{cds-tenor-upfront-fraction}{u_k}$ | $\explain{cds-upfront-amount}{U_0}$, USD | Flat $\explain{survival-probability}{S(0,T_k)}$ |
+| --------: | -----------------------------------------------: | ------------------------------------------------------------------------: | -------------------------------------------------------------------: | ------------------------------------------: | ---------------------------------------: | ----------------------------------------------: |
+|         1 |                                               80 |                                                               0.013300046 |                                                          0.981077842 |                                −0.001962156 |                               −19,621.56 |                                     0.986788009 |
+|         2 |                                              120 |                                                               0.019950083 |                                                          2.820140305 |                                 0.005640281 |                                56,402.81 |                                     0.941905574 |
+|         3 |                                              160 |                                                               0.026600129 |                                                          4.449093452 |                                 0.026694561 |                               266,945.61 |                                     0.875464525 |
 
 Each row is the conversion of the preceding lesson. For example, at five
 years, $u_3=4.449093452\times(0.016-0.010)=0.026694561$. The one-year mark
@@ -422,11 +428,11 @@ at two years.
 Now fit a piecewise-constant hazard curve to the three upfront fractions in
 maturity order.
 
-| Tenor $k$ | Segment, model-yrs | $\explain{cds-segment-hazard-rate}{\lambda_k}$, per yr | Fitted $\explain{survival-probability}{S(0,T_k)}$ | Fitted $\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}$, model-yrs | Fitted $\explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}/\explain{cds-notional}{N}$ | Fitted $\explain{cds-par-spread}{s^{\star}}$, bp/yr |
-| --------: | -----------------: | -----------------------------------------------------: | ------------------------------------------------: | ---------------------------------------------------------------------: | --------------------------------------------------------------------------------------------------: | --------------------------------------------------: |
-|         1 |             (0, 1] |                                            0.013300046 |                                       0.986788009 |                                                            0.981077842 |                                                                                         0.007848623 |                                             80.0000 |
-|         2 |             (1, 3] |                                            0.023463765 |                                       0.941550234 |                                                            2.829254583 |                                                                                         0.033932826 |                                            119.9356 |
-|         3 |             (3, 5] |                                            0.037572831 |                                       0.873389867 |                                                            4.500220799 |                                                                                         0.071696769 |                                            159.3183 |
+| Tenor $k$ | Segment, model-yrs | $\explain{cds-segment-hazard-rate}{\lambda_k}$, per yr | Fitted $\explain{survival-probability}{S(0,T_k)}$ | Fitted $\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}$, model-yrs | Fitted $\explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}/\explain{cds-notional}{N}$ | Fitted $\explain{cds-par-spread}{s^{\star}}\ \text{(bp/yr)}$ |
+| --------: | -----------------: | -----------------------------------------------------: | ------------------------------------------------: | ---------------------------------------------------------------------: | --------------------------------------------------------------------------------------------------: | -----------------------------------------------------------: |
+|         1 |             (0, 1] |                                            0.013300046 |                                       0.986788009 |                                                            0.981077842 |                                                                                         0.007848623 |                                                      80.0000 |
+|         2 |             (1, 3] |                                            0.023463765 |                                       0.941550234 |                                                            2.829254583 |                                                                                         0.033932826 |                                                     119.9356 |
+|         3 |             (3, 5] |                                            0.037572831 |                                       0.873389867 |                                                            4.500220799 |                                                                                         0.071696769 |                                                     159.3183 |
 
 Every tenor reprices. For example, at five years,
 $0.071696769-0.010\times4.500220799=0.026694561=u_3$. In the tested
@@ -492,10 +498,12 @@ describe them.
 ## A note on jargon
 
 The vocabulary of CDS trading desks mixes contract terms, quotation conventions, and risk
-measures. The table gives this course's reading of the most common phrases,
+measures. [[tab-cds-desk-jargon]] gives this course's reading of the most common phrases,
 with the registered source where one supports it. Entries marked
 `NEEDS_SOURCE` are recorded as usage this course adopts locally; a human should
 confirm or replace them before review.
+
+<Table id="cds-desk-jargon" short="CDS desk jargon" caption="Common phrases of CDS trading desks with this course's reading of each and the registered source that supports it. Entries marked NEEDS_SOURCE are local usage for a human to confirm.">
 
 | Phrase                                                                      | Meaning in this course                                                                                                                                                                                                                                                                    |
 | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -521,6 +529,8 @@ confirm or replace them before review.
 | Binary CDS                                                                  | A CDS paying a fixed amount on default, independent of recovery. [@hull-options-futures; Ch. 24 §24.2, printed p. 554]                                                                                                                                                                    |
 | Jump-to-default, JTD                                                        | The loss on an immediate default of the reference entity, as opposed to the loss from a spread move; the next lesson computes one. The label is `NEEDS_SOURCE`.                                                                                                                           |
 | Clearing                                                                    | Offsetting cleared trades cancel at the central counterparty; uncleared offsetting trades leave two contracts in force. [@tuckman-serrat-fixed-income; Ch. 14 §14.6, printed p. 367, n. 14] [@hull-options-futures; Ch. 24 §24.1, printed p. 550]                                         |
+
+</Table>
 
 ## Check your understanding
 

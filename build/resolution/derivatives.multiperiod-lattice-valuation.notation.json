@@ -2,9 +2,7 @@
   "file": "content/docs/derivatives/multiperiod-lattice-valuation.mdx",
   "lesson": "derivatives.multiperiod-lattice-valuation",
   "localKeys": [
-    "lattice-next-cash-flow",
-    "lattice-node-discount-factor",
-    "lattice-node-up-weight"
+    "lattice-next-cash-flow"
   ],
   "references": [
     {
@@ -35,21 +33,21 @@
       "symbol": "j"
     },
     {
-      "column": 15,
-      "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-up-weight",
+      "column": 9,
+      "definitionId": "shared:lattice-node-up-weight",
       "key": "lattice-node-up-weight",
       "kind": "prose",
       "line": 12,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "q_{i,j}"
     },
     {
       "column": 1,
-      "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-discount-factor",
+      "definitionId": "shared:lattice-node-discount-factor",
       "key": "lattice-node-discount-factor",
       "kind": "prose",
       "line": 13,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "d_{i,j}"
     },
     {
@@ -81,20 +79,20 @@
     },
     {
       "column": 2,
-      "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-discount-factor",
+      "definitionId": "shared:lattice-node-discount-factor",
       "key": "lattice-node-discount-factor",
       "kind": "math",
       "line": 21,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "d_{i,j}"
     },
     {
-      "column": 4,
-      "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-up-weight",
+      "column": 9,
+      "definitionId": "shared:lattice-node-up-weight",
       "key": "lattice-node-up-weight",
       "kind": "math",
       "line": 23,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "q_{i,j}"
     },
     {
@@ -117,11 +115,11 @@
     },
     {
       "column": 2,
-      "definitionId": "page:derivatives.multiperiod-lattice-valuation:lattice-node-up-weight",
+      "definitionId": "shared:lattice-node-up-weight",
       "key": "lattice-node-up-weight",
       "kind": "math",
       "line": 26,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "q_{i,j}"
     },
     {
@@ -143,5 +141,5 @@
       "symbol": "V_{i,j}"
     }
   ],
-  "schemaVersion": 6
+  "schemaVersion": 24
 }

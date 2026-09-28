@@ -1,0 +1,44 @@
+---
+title: Derivative foundations
+description: Forwards and European options, from contracts and payoffs to parity and lattice valuation.
+editorialStatus: draft
+aiAssisted: true
+---
+
+import PartBridge from 'explico/components/PartBridge.astro';
+import PartOverview from 'explico/components/PartOverview.astro';
+import PartScope from 'explico/components/PartScope.astro';
+
+<PartBridge>
+
+Part 1 gave present value, no-arbitrage replication, and risk-neutral pricing
+as a discounted expectation over a finite set of states. This part applies
+those results to the first derivative contracts. Replication fixes the forward
+delivery price and put-call parity, and the risk-neutral expectation values an
+option, first on a one-period tree and then node by node on a multi-period
+lattice.
+
+</PartBridge>
+
+<PartScope>
+
+This part covers forwards and European options on one underlying. The first
+chapter separates a forward's obligation, its fair delivery price, and the
+value of an existing contract. The second chapter separates an option's right
+and expiry payoff from its current value, premium, and profit. The third
+chapter matches call and put portfolios to derive put-call parity. The last
+two chapters value an option: on a one-period binomial tree by replication and
+by risk-neutral weights, and on a multi-period lattice by backward induction
+with local discount factors.
+
+</PartScope>
+
+<PartOverview
+  chain={[
+    'A forward is an obligation, and its delivery price makes a new contract worth zero',
+    'An option is a right, and its payoff at expiry is not its value today',
+    'Matched call and put portfolios give put-call parity',
+    'A two-state payoff is replicated, or weighted by risk-neutral probabilities',
+    'Backward induction repeats the one-period step node by node',
+  ]}
+/>

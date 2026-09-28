@@ -28,7 +28,7 @@ final date.
 For $n$ payments in the simplified model,
 
 $$
-CF_k^{\mathrm{bond}}=C+\mathbf{1}_{\{k=n\}}F.
+CF_k^{\mathrm{bond}}=C+\mathbf{1}_{\{k=n\}}F
 $$
 
 This is a promised-cash-flow description, not a default-adjusted expectation.

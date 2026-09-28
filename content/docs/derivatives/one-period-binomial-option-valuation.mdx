@@ -147,7 +147,7 @@ $$
 =\frac{\explain{binomial-up-claim-payoff}{X^{\mathrm{up}}}
 -\explain{binomial-down-claim-payoff}{X^{\mathrm{down}}}}
 {\explain{binomial-up-underlying-value}{S^{\mathrm{up}}}
--\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}}.
+-\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}}
 $$
 
 The local [[binomial-risk-free-expiry-cash]] is then chosen so that the
@@ -157,7 +157,7 @@ $$
 \explain{binomial-risk-free-expiry-cash}{M_{T_{\mathrm{opt}}}}
 =\explain{binomial-down-claim-payoff}{X^{\mathrm{down}}}
 -\explain{binomial-hedge-units}{\Delta}\,
-\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}.
+\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}
 $$
 
 So the local [[binomial-claim-value]] is the value of the replicating
@@ -168,7 +168,7 @@ $$
 =\explain{binomial-hedge-units}{\Delta}\,
 \explain{derivative-underlying-value}{S_0}
 +\explain{discount-factor}{D(0,T_{\mathrm{opt}})}
-\explain{binomial-risk-free-expiry-cash}{M_{T_{\mathrm{opt}}}}.
+\explain{binomial-risk-free-expiry-cash}{M_{T_{\mathrm{opt}}}}
 $$
 
 ## The same value with risk-neutral weights
@@ -181,7 +181,7 @@ $$
 =\frac{\explain{derivative-underlying-value}{S_0}/D(0,T_{\mathrm{opt}})
 -\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}}
 {\explain{binomial-up-underlying-value}{S^{\mathrm{up}}}
--\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}}.
+-\explain{binomial-down-underlying-value}{S^{\mathrm{down}}}}
 $$
 
 Under the [[risk-neutral-probability-measure]] $\mathbb{Q}$, the claim value
@@ -192,8 +192,8 @@ $$
 =\explain{discount-factor}{D(0,T_{\mathrm{opt}})}
 \left(\explain{binomial-risk-neutral-up-weight}{q}\,
 \explain{binomial-up-claim-payoff}{X^{\mathrm{up}}}
-+(1-\explain{binomial-risk-neutral-up-weight}{q})
-\explain{binomial-down-claim-payoff}{X^{\mathrm{down}}}\right).
++\left(1-\explain{binomial-risk-neutral-up-weight}{q}\right)
+\explain{binomial-down-claim-payoff}{X^{\mathrm{down}}}\right)
 $$
 
 Hull derives the one-step hedge and then shows that its no-arbitrage value equals
@@ -220,7 +220,7 @@ $$
 \explain{binomial-claim-value}{V_0}
 =0.5(100)+\frac{-40}{1.05}
 =\frac{0.625(20)+0.375(0)}{1.05}
-=11.9047619.
+=11.9047619
 $$
 
 The negative cash position is borrowing. It is not a negative option value.
@@ -232,8 +232,6 @@ backward induction on a multi-period tree. The later bond-option lessons need a
 discount factor at each node and an additional state for survival and default.
 An option with a knockout triggered by default cannot be valued from the
 distribution at expiry alone, because the option can terminate before expiry.
-
-## Check your understanding
 
 <AssessmentSet />
 

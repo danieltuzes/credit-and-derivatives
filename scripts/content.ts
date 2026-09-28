@@ -1,15 +1,21 @@
 /**
- * `pnpm content <command>` — the AI-authoring surface (Phase G1).
+ * `pnpm content <command>` — the AI-authoring surface.
  *
- * A read-only router over the one compiler manifest (`src/content/manifest.ts`).
- * The logic lives in `src/content/cli.ts`; this file only parses argv, prints
- * the result (`--json` = data only, no stack traces), and sets the exit code.
+ * A read-only router over the one compiler manifest. The logic lives in
+ * `explico/compiler/cli`; this file only parses argv, prints the result
+ * (`--json` = data only, no stack traces), and sets the exit code.
  *
  *   content status                       counts, draft debt, orphans
+ *   content diagnostics [severity] [--json]
+ *                                        diagnostics at info, warning, or error+
+ *   content warnings [--json]            warnings only, with source locations
  *   content context <lesson> [--json]    that lesson + only what a drafter needs
  *   content check <lesson> [--changed] [--json]
  *                                        schema + refs + renderability (MDX →
  *                                        remark → KaTeX → HTML)
+ *   content rules [--element <e>[,<e>]] [--enforcement script|partial|guide|locked] [--json]
+ *                                        the rules this course has on, by
+ *                                        element — read before drafting
  *   content new lesson <id>              non-overwriting draft scaffold
  *   content new term <key>               non-overwriting draft scaffold
  *
@@ -24,7 +30,11 @@ import {
   ContentCliError,
   contentCheck,
   contentContext,
+  contentDiagnostics,
+  contentRules,
   contentStatus,
+  contentWarnings,
+  parseRulesFilter,
   scaffoldLesson,
   scaffoldTerm,
   type Scaffold,
@@ -33,8 +43,11 @@ import { courseConfig } from '../content/course.config';
 
 const USAGE = `Usage:
   pnpm content status
+  pnpm content diagnostics [info|warning|error] [--json]
+  pnpm content warnings [--json]
   pnpm content context <lesson> [--json]
   pnpm content check <lesson> [--changed] [--json]
+  pnpm content rules [--element <e>[,<e>]] [--enforcement script|partial|guide|locked] [--json]
   pnpm content new lesson <id>
   pnpm content new term <key>`;
 
@@ -43,26 +56,39 @@ interface ParsedArgs {
   readonly positionals: readonly string[];
   readonly json: boolean;
   readonly changed: boolean;
+  /** `--element a,b` — a value-taking flag; also `--element=a,b`. */
+  readonly element?: string;
+  /** `--enforcement script` — a value-taking flag; also `--enforcement=script`. */
+  readonly enforcement?: string;
 }
 
 function parseArgs(argv: readonly string[]): ParsedArgs {
   const positionals: string[] = [];
   let json = false;
   let changed = false;
-  for (const arg of argv) {
+  let element: string | undefined;
+  let enforcement: string | undefined;
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i]!;
+    const valued = /^--(element|enforcement)(?:=(.*))?$/.exec(arg);
     if (arg === '--json') json = true;
     else if (arg === '--changed') changed = true;
-    else positionals.push(arg);
+    else if (valued) {
+      const value = valued[2] ?? argv[(i += 1)] ?? '';
+      if (valued[1] === 'element') element = value;
+      else enforcement = value;
+    } else positionals.push(arg);
   }
   return {
     command: positionals[0] ?? '',
     positionals: positionals.slice(1),
     json,
     changed,
+    ...(element === undefined ? {} : { element }),
+    ...(enforcement === undefined ? {} : { enforcement }),
   };
 }
 
-/** Print a value as pretty JSON. */
 function emitJson(value: unknown): void {
   process.stdout.write(`${JSON.stringify(value, null, 2)}\n`);
 }
@@ -130,14 +156,83 @@ async function main(): Promise<void> {
       else {
         const c = report.counts;
         process.stdout.write(
-          `Lessons ${c.lessons} (draft ${report.draftDebt.lessons.length}) · ` +
+          `Knowledge version ${report.knowledgeVersion}\n` +
+            `Lessons ${c.lessons} (draft ${report.draftDebt.lessons.length}) · ` +
             `competencies ${c.competencies} · assessments ${c.assessments} · ` +
             `sources ${c.sources} · tracks ${c.tracks} · ` +
             `notation ${c.notationDefinitions} (draft ${report.draftDebt.notation.length}) · ` +
-            `keyed equations ${c.keyedEquations} · keyed tables ${c.keyedTables} · ` +
-            `keyed figures ${c.keyedFigures}\n` +
-            `Diagnostics: ${report.diagnostics.errors} error(s), ${report.diagnostics.warnings} warning(s)\n` +
+            `keyed equations ${c.keyedEquations} · tables ${c.keyedTables} · ` +
+            `figures ${c.keyedFigures} · diagrams ${c.keyedDiagrams} · ` +
+            `example sets ${c.keyedExamples}\n` +
+            `Diagnostics: ${report.diagnostics.errors} error(s), ${report.diagnostics.warnings} warning(s), ${report.diagnostics.infos} info\n` +
             `Orphans: ${report.orphans.length}\n`,
+        );
+      }
+      return;
+    }
+
+    case 'rules': {
+      const filter = parseRulesFilter({
+        ...(args.element === undefined ? {} : { element: args.element }),
+        ...(args.enforcement === undefined
+          ? {}
+          : { enforcement: args.enforcement }),
+      });
+      const report = contentRules(manifest, filter);
+      if (args.json)
+        emitJson({
+          filter: report.filter,
+          count: report.count,
+          rules: report.rules,
+        });
+      else process.stdout.write(report.markdown);
+      return;
+    }
+
+    case 'warnings': {
+      const report = contentWarnings(manifest);
+      if (args.json) emitJson(report);
+      else {
+        for (const warning of report.warnings) {
+          const location = warning.file
+            ? `${warning.file}:${warning.line ?? 1}:${warning.column ?? 1}: `
+            : '';
+          process.stdout.write(
+            `${location}warning ${warning.code}: ${warning.message}\n`,
+          );
+        }
+        process.stdout.write(`${report.count} warning(s)\n`);
+      }
+      return;
+    }
+
+    case 'diagnostics': {
+      const [requested = 'info', ...extra] = args.positionals;
+      if (
+        extra.length > 0 ||
+        (requested !== 'info' &&
+          requested !== 'warning' &&
+          requested !== 'error')
+      ) {
+        fail(
+          'usage',
+          'content diagnostics expects one of: info, warning, error.',
+          args.json,
+        );
+      }
+      const report = contentDiagnostics(manifest, requested);
+      if (args.json) emitJson(report);
+      else {
+        for (const diagnostic of report.diagnostics) {
+          const location = diagnostic.file
+            ? `${diagnostic.file}:${diagnostic.line ?? 1}:${diagnostic.column ?? 1}: `
+            : '';
+          process.stdout.write(
+            `${location}${diagnostic.severity} ${diagnostic.code}: ${diagnostic.message}\n`,
+          );
+        }
+        process.stdout.write(
+          `${report.count} diagnostic(s) at ${report.minimumSeverity} or higher\n`,
         );
       }
       return;

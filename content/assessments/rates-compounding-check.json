@@ -1,6 +1,6 @@
 {
   "id": "rates-compounding-check",
-  "title": "Rates, compounding, and basis points check",
+  "title": "Rates, compounding, and basis points",
   "editorialStatus": "draft",
   "items": [
     {
@@ -21,7 +21,7 @@
         { "id": "six-per-month", "label": "A 6% rate in each month" }
       ],
       "correctOptionId": "three-per-half-year",
-      "explanation": "For a nominal annual rate y compounded m times per year, the lesson convention uses y/m in each period: 6% / 2 = 3%."
+      "explanation": "For a nominal annual rate $j^{(m)}$ compounded $m$ times per year, the lesson convention uses $r_m=j^{(m)}/m$ in each period: $6\\%/2=3\\%$."
     },
     {
       "id": "nominal-rate-quote-transfer",
@@ -44,7 +44,7 @@
         }
       ],
       "correctOptionId": "frequency-matters",
-      "explanation": "A nominal quote is incomplete without frequency; the period rate is y/m and compounding applies it m times."
+      "explanation": "A nominal quote is incomplete without frequency; the period rate is $r_m=j^{(m)}/m$ and compounding applies it $m$ times."
     },
     {
       "id": "periodic-rate-direct",
@@ -53,7 +53,7 @@
       "evidenceKind": "direct",
       "prompt": "Enter the per-period rate as a decimal for a 6% nominal annual rate compounded twice per year.",
       "answer": { "value": 0.03, "tolerance": 0.000000000001 },
-      "explanation": "With y = 0.06 and m = 2, the period rate is y/m = 0.06/2 = 0.03."
+      "explanation": "With $j^{(2)}=0.06$ and $m=2$, the period rate is $r_2=0.06/2=0.03$."
     },
     {
       "id": "periodic-rate-transfer",
@@ -62,7 +62,7 @@
       "evidenceKind": "transfer",
       "prompt": "Enter the quarterly rate as a decimal for a 4.8% nominal annual rate compounded four times per year.",
       "answer": { "value": 0.012, "tolerance": 0.000000000001 },
-      "explanation": "With y = 0.048 and m = 4, the quarterly rate is y/m = 0.048/4 = 0.012."
+      "explanation": "With $j^{(4)}=0.048$ and $m=4$, the quarterly rate is $r_4=0.048/4=0.012$."
     },
     {
       "id": "basis-points-direct",

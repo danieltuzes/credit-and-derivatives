@@ -6,23 +6,46 @@ hero:
   tagline: Build intuition first, then verify it with models, exercises, and explicit prerequisites.
   actions:
     # Relative links so they resolve under both the local root and the
-    # deploy base (`/equations/`). Starlight renders hero action links
-    # verbatim — a leading-slash path would not carry the base.
-    - text: Start with cash-flow timelines
-      link: foundations/cash-flow-timelines/
+    # deploy base (`/credit-and-derivatives/`). Starlight renders hero action
+    # links verbatim — a leading-slash path would not carry the base.
+    - text: Start with the foundations
+      link: foundations/
       icon: right-arrow
       variant: primary
+    - text: Browse the course contents
+      link: '#course-contents'
+      icon: list-format
+    - text: Go to the CDS part
+      link: cds/
+      icon: right-arrow
+      variant: minimal
     - text: View the curriculum map
       link: curriculum-map/
       icon: open-book
-    - text: Explore CDS legs
-      link: cds/premium-protection-legs-and-par-spread/
-      icon: right-arrow
+      variant: minimal
 editorialStatus: draft
 aiAssisted: true
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
+import CourseContents from 'explico/components/CourseContents.astro';
+
+## Course contents
+
+The course has seven parts. Each part opens with an overview page that states
+what the part covers, how it builds on the earlier parts, and the argument
+that runs through its chapters. Equations, tables, diagrams, knowledge checks,
+and worked examples are numbered by part and chapter, and each kind starts
+again in every chapter, so equation (1.5.1) is the first numbered equation of
+the fifth chapter of Part 1. Section headings are numbered the same way.
+
+<CourseContents headingLevel={3} />
+
+Two reference pages sit outside the chapter sequence: the
+[curriculum map](curriculum-map/) shows which competency supports which, and
+the [notation glossary](glossary/) collects every shared symbol in one place.
+
+## How the course works
 
 <CardGrid>
   <Card title="Prerequisite-aware" icon="puzzle">

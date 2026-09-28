@@ -67,8 +67,12 @@ describe('content context', () => {
       .join('\n');
     expect(report.domainSignatures.length).toBeGreaterThan(0);
     expect(signatureText).toMatch(/\(/); // each signature carries its parameter list
+    // A kebab-case code, prefixed by its group where the engine gives one
+    // (`consistency:weak-local`, `math:prose-notation`, `ex-key-unused`).
     expect(
-      report.diagnostics.every((d) => /^[a-z-]+:[a-z-]+$/.test(d.code)),
+      report.diagnostics.every((d) =>
+        /^(?:[a-zA-Z]+:)?[a-z0-9]+(?:-[a-z0-9]+)*$/.test(d.code),
+      ),
     ).toBe(true);
   });
 

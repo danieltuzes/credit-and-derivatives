@@ -189,7 +189,7 @@ describe('completeness gate — every rendered-math context', () => {
     });
   });
 
-  it('warns on an unresolved variable in assessment prompt/explanation math', () => {
+  it('fails on an unresolved variable in assessment prompt/explanation math', () => {
     const diagnostics = gateContentMath({
       notationInput: {
         sharedDefinitions: [discountFactor],
@@ -223,7 +223,7 @@ describe('completeness gate — every rendered-math context', () => {
     expect(diagnostics).toHaveLength(1);
     expect(diagnostics[0]).toMatchObject({
       context: 'assessment',
-      severity: 'warning',
+      severity: 'error',
       file: 'assessment-check (q1)',
       token: 'q',
     });

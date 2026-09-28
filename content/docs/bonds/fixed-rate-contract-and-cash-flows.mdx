@@ -58,7 +58,7 @@ The number of payment dates is the payment frequency multiplied by the
 maturity:
 
 $$
-n=m_{\mathrm B}T.
+n=m_{\mathrm B}T
 $$
 
 The bond payment frequency is a different concept from the
@@ -71,7 +71,7 @@ The level coupon payment is the annual coupon rate multiplied by the face
 value, divided by the payment frequency:
 
 $$
-C=\frac{cF}{m_{\mathrm B}}.
+C=\frac{cF}{m_{\mathrm B}}
 $$
 
 The coupon rate is applied to the face value, not to the market price of the
@@ -84,7 +84,7 @@ plus the face value on the final date:
 
 $$
 CF_k^{\mathrm{bond}}
-=C+\mathbf{1}_{\{k=n\}}F.
+=C+\mathbf{1}_{\{k=n\}}F
 $$
 
 The indicator $\mathbf{1}_{\{k=n\}}$ equals one on the final date and zero on
@@ -95,11 +95,12 @@ time, is:
 
 $$
 t_k=\frac{k}{m_{\mathrm B}},
-\qquad 0\text{ is the valuation time}.
+\qquad 0\text{ is the valuation time}
 $$
 
 <CompactExamples
-  summary="Worked examples"
+  id="coupon-schedules"
+  short="Coupon schedules by payment frequency"
   hint="Open the set, then choose a payment frequency."
   tabsLabel="Fixed-rate bond cash-flow examples"
 >
@@ -109,7 +110,7 @@ A two-year bond has a face value of USD 1,000, an annual coupon rate of 5%,
 and one payment per year. The coupon is:
 
 $$
-C=\frac{0.05\times1000}{1}=\text{USD }50.
+C=\frac{0.05\times1000}{1}=\text{USD }50
 $$
 
 | Payment index $k$ | Payment time $t_k$, years | Coupon, USD | Principal, USD | Total, USD |
@@ -127,7 +128,7 @@ and two payments per year. The coupon and the number of payments are:
 $$
 C=\frac{0.04\times1000}{2}=\text{USD }20,
 \qquad
-n=2\times1.5=3.
+n=2\times1.5=3
 $$
 
 Its payments at 0.5, 1.0, and 1.5 years are USD 20, USD 20, and USD 1,020.
@@ -140,7 +141,7 @@ For a face value of USD 500, an annual coupon rate of 4.8%, and quarterly
 payments, the coupon is:
 
 $$
-C=\frac{0.048\times500}{4}=\text{USD }6.
+C=\frac{0.048\times500}{4}=\text{USD }6
 $$
 
 The maturity determines the number of payments. Under the level-coupon

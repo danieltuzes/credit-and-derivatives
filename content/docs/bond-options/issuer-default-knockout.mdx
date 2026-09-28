@@ -15,28 +15,6 @@ assumptions:
   - No counterparty default, early exercise, option rebate, restructuring, settlement delay, correlation calibration, liquidity, tax, or funding adjustment
 notation:
   local:
-    - key: knockout-node-discount-factor
-      latex: 'd_{i,j}'
-      meaning: One-period discount factor from the current alive node to the next lattice time.
-      units: current-node currency per next-time currency
-      sources:
-        - id: hull-options-futures
-          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eq. 12.5 and Eqs. 12.7-12.10 (one-step discounting in backward induction).'
-      alignment:
-        kind: competency
-        introducedByCompetency: bond-options.default-knockout-value.calculate
-        introducedInLesson: bond-options.issuer-default-knockout
-    - key: knockout-node-up-weight
-      latex: 'q_{i,j}'
-      meaning: Conditional pricing probability assigned to the next up rate state if the issuer survives.
-      units: probability between zero and one
-      sources:
-        - id: hull-options-futures
-          locator: 'Ch. 12 §12.3, printed pp. 259-261, Eq. 12.6 and Eqs. 12.7-12.10 (risk-neutral up weight in backward induction).'
-      alignment:
-        kind: competency
-        introducedByCompetency: bond-options.default-knockout-value.calculate
-        introducedInLesson: bond-options.issuer-default-knockout
     - key: surviving-bond-next-cash-flow
       latex: 'CF^{B}_{i+1}'
       meaning: Coupon or coupon-plus-redemption paid at the next lattice time only if the issuer survives the period.
@@ -103,10 +81,10 @@ expected alive bond value:
 $$
 \explain{surviving-bond-continuation-value}{H^B_{i,j}}
 =\explain{surviving-bond-next-cash-flow}{CF^B_{i+1}}
-+(1-\explain{knockout-node-up-weight}{q_{i,j}})
++(1-\explain{lattice-node-up-weight}{q_{i,j}})
 \explain{alive-bond-value}{B^{\mathrm{alive}}_{i+1,j}}
-+\explain{knockout-node-up-weight}{q_{i,j}}
-\explain{alive-bond-value}{B^{\mathrm{alive}}_{i+1,j+1}}.
++\explain{lattice-node-up-weight}{q_{i,j}}
+\explain{alive-bond-value}{B^{\mathrm{alive}}_{i+1,j+1}}
 \label{eq:surviving-bond-continuation}
 $$
 
@@ -116,13 +94,13 @@ default. Survival gives the continuation value from
 
 $$
 \explain{alive-bond-value}{B^{\mathrm{alive}}_{i,j}}
-=\explain{knockout-node-discount-factor}{d_{i,j}}
+=\explain{lattice-node-discount-factor}{d_{i,j}}
 \left[
 \explain{conditional-node-survival-probability}{s_{i,j}}
 \explain{surviving-bond-continuation-value}{H^B_{i,j}}
-+(1-\explain{conditional-node-survival-probability}{s_{i,j}})
++\left(1-\explain{conditional-node-survival-probability}{s_{i,j}}\right)
 \explain{bond-default-recovery-cash}{R^B_{i,j}}
-\right].
+\right]
 \label{eq:alive-bond-recursion}
 $$
 
@@ -138,7 +116,7 @@ $$
 \explain{knockout-bond-option-value}{O^{\mathrm{KO}}_{T,j}}
 =\max\left(
 \explain{alive-bond-value}{B^{\mathrm{alive}}_{T,j}}
--\explain{option-strike-price}{K},0\right).
+-\explain{option-strike-price}{K},0\right)
 \label{eq:knockout-terminal-payoff}
 $$
 
@@ -148,14 +126,14 @@ values at the two successor nodes:
 
 $$
 \explain{knockout-bond-option-value}{O^{\mathrm{KO}}_{i,j}}
-=\explain{knockout-node-discount-factor}{d_{i,j}}
+=\explain{lattice-node-discount-factor}{d_{i,j}}
 \explain{conditional-node-survival-probability}{s_{i,j}}
 \left[
-(1-\explain{knockout-node-up-weight}{q_{i,j}})
+\left(1-\explain{lattice-node-up-weight}{q_{i,j}}\right)
 \explain{knockout-bond-option-value}{O^{\mathrm{KO}}_{i+1,j}}
-+\explain{knockout-node-up-weight}{q_{i,j}}
++\explain{lattice-node-up-weight}{q_{i,j}}
 \explain{knockout-bond-option-value}{O^{\mathrm{KO}}_{i+1,j+1}}
-\right].
+\right]
 \label{eq:knockout-option-recursion}
 $$
 
@@ -166,7 +144,8 @@ positive.
 
 <Diagram
   id="knockout-bond-option-flow"
-  label="Issuer-default knockout valuation flow"
+  short="Issuer-default knockout valuation flow"
+  caption="Value the underlying bond first, including its separate input recovery. At option expiry, apply the payoff only in alive states. Before expiry, discount only the survival-weighted option values, because the option value at default is zero."
   direction="LR"
   nodes={[
     { id: 'bond', text: 'Value the alive bond with recovery' },
@@ -180,7 +159,6 @@ positive.
     { from: 'bond', to: 'terminal' },
     { from: 'terminal', to: 'option' },
   ]}
-  description="Value the underlying bond first, including its separate input recovery. At option expiry, apply the payoff only in alive states. Before expiry, discount only the survival-weighted option values, because the option value at default is zero."
 />
 
 ## Worked example
@@ -194,11 +172,11 @@ values are:
 
 $$
 \begin{aligned}
-O^{\mathrm{KO}}_{1,0}&=\max(82.80-85,0)=0,\\
-O^{\mathrm{KO}}_{1,1}&=\max(88.65-85,0)=3.65,\\
+O^{\mathrm{KO}}_{1,0}&=\max(82.80-85,0)=0\\
+O^{\mathrm{KO}}_{1,1}&=\max(88.65-85,0)=3.65\\
 O^{\mathrm{KO}}_{0,0}
-&=0.95(0.90)\left[(1-0.50)(0)+0.50(3.65)\right]\\
-&=1.560375\ \text{USD per option}.
+&=0.95(0.90)\left[\left(1-0.50\right)\left(0\right)+0.50\left(3.65\right)\right]\\
+&=1.560375\ \text{USD per option}
 \end{aligned}
 $$
 
@@ -221,8 +199,6 @@ lesson combines the two descriptions for teaching: an option on the issuer's
 bond that is knocked out by issuer default. The lesson implements the stated
 contract. It does not claim that all bond options use this convention. The
 joint lattice for rates and credit is an input; it is not calibrated.
-
-## Check your understanding
 
 <AssessmentSet />
 

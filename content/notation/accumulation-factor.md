@@ -30,7 +30,7 @@ Using [[periodic-rate]] $r_{\explain{compounding-frequency}{m}}$ and
 [[compounding-frequency]] $\explain{compounding-frequency}{m}$,
 
 $$
-A(0,t)=(1+r_{\explain{compounding-frequency}{m}})^{\explain{compounding-frequency}{m}t}.
+A(0,t)=(1+r_{\explain{compounding-frequency}{m}})^{\explain{compounding-frequency}{m}t}
 $$
 
 Its reciprocal is called a discount factor. Keeping the two concepts separate

@@ -10,7 +10,10 @@ import {
   stripEquationLabels,
 } from 'explico/reference/equations.mjs';
 import { validateEquations } from 'explico/reference/equations-validate';
-import { compileManifest } from 'explico/compiler/manifest';
+import {
+  compileManifest,
+  MANIFEST_SCHEMA_VERSION,
+} from 'explico/compiler/manifest';
 
 // --- pure helpers -----------------------------------------------------
 
@@ -215,13 +218,17 @@ describe('remarkNotation equation wrapping (D7)', () => {
 
     const wrapper = tree.children[1] as unknown as {
       data: { hName: string; hProperties: Record<string, unknown> };
-      children: { type: string }[];
+      children: { type: string; children?: { type: string }[] }[];
     };
     expect(wrapper.data.hName).toBe('div');
     expect(wrapper.data.hProperties.id).toBe('eq-demo');
     expect(wrapper.data.hProperties['data-eq-number']).toBe('1.1');
     expect(wrapper.children[0].type).toBe('math');
+    // The number link leads the equation's controls row (with the copy button).
     expect(wrapper.children[1]).toMatchObject({
+      data: { hProperties: { className: ['keyed-equation__controls'] } },
+    });
+    expect(wrapper.children[1].children?.[0]).toMatchObject({
       type: 'link',
       url: '#eq-demo',
     });
@@ -273,7 +280,7 @@ describe('remarkNotation equation wrapping (D7)', () => {
 describe('manifest equation identity (D7)', () => {
   it('records labelled equations, the cross-page table, and no blocking diagnostics', async () => {
     const manifest = await compileManifest(courseConfig);
-    expect(manifest.schemaVersion).toBe(6);
+    expect(manifest.schemaVersion).toBe(MANIFEST_SCHEMA_VERSION);
 
     const keys = manifest.equations.labels.map((l) => l.key).sort();
     expect(keys).toEqual([
@@ -319,11 +326,13 @@ describe('manifest equation identity (D7)', () => {
       'risk-neutral-present-value',
       'surviving-bond-continuation',
     ]);
+    // Numbers are ‹part›.‹chapter›.‹n› (explico 0.10): present value is the
+    // fifth chapter of the first part.
     expect(
       manifest.equations.numbersBySlug['foundations/present-value'],
     ).toEqual({
-      'present-value-additivity': '5.2',
-      'present-value-sum': '5.1',
+      'present-value-additivity': '1.5.2',
+      'present-value-sum': '1.5.1',
     });
 
     expect(
@@ -334,8 +343,8 @@ describe('manifest equation identity (D7)', () => {
       (l) => l.id === 'foundations.present-value',
     );
     expect(pv?.equations).toEqual([
-      { key: 'present-value-sum', number: '5.1' },
-      { key: 'present-value-additivity', number: '5.2' },
+      { key: 'present-value-sum', number: '1.5.1' },
+      { key: 'present-value-additivity', number: '1.5.2' },
     ]);
   });
 });

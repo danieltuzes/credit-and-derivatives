@@ -211,7 +211,7 @@ $$
 \left(
 \explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}
 -\explain{cds-premium-leg-present-value}{PV_0^{\mathrm{prem}}}
-\right).
+\right)
 \label{eq:cds-position-value}
 $$
 
@@ -233,7 +233,7 @@ $$
 }
 -\explain{cds-standard-coupon}{c_{\mathrm{std}}}
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}
-(\explain{cds-liquid-tenor-maturity}{T_L}).
+(\explain{cds-liquid-tenor-maturity}{T_L})
 \label{eq:cds-liquid-unit-value}
 $$
 
@@ -268,9 +268,9 @@ value when the quote increases by $h$:
 $$
 \explain{cds-position-quote-sensitivity}{\mathrm{DV01}^{\mathrm{pos}}}
 =\explain{cds-position-value}{V^{\mathrm{pos}}}
-\!\left(\explain{hazard-rate}{\lambda}(\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}+\explain{cds-quote-bump}{h})\right)
+\!\left(\explain{hazard-rate}{\lambda}\left(\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}+\explain{cds-quote-bump}{h}\right)\right)
 -\explain{cds-position-value}{V^{\mathrm{pos}}}
-\!\left(\explain{hazard-rate}{\lambda}(\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}})\right).
+\!\left(\explain{hazard-rate}{\lambda}\left(\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}\right)\right)
 \label{eq:cds-risky-dv01}
 $$
 
@@ -280,9 +280,9 @@ one unit of bought liquid protection:
 $$
 \explain{cds-liquid-unit-quote-sensitivity}{\mathrm{DV01}^{L}}
 =\explain{cds-liquid-unit-value}{v_L}
-\!\left(\explain{hazard-rate}{\lambda}(\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}+\explain{cds-quote-bump}{h})\right)
+\!\left(\explain{hazard-rate}{\lambda}\left(\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}+\explain{cds-quote-bump}{h}\right)\right)
 -\explain{cds-liquid-unit-value}{v_L}
-\!\left(\explain{hazard-rate}{\lambda}(\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}})\right).
+\!\left(\explain{hazard-rate}{\lambda}\left(\explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}\right)\right)
 \label{eq:cds-liquid-unit-dv01}
 $$
 
@@ -319,7 +319,7 @@ $$
 \explain{cds-position-quote-sensitivity}{\mathrm{DV01}^{\mathrm{pos}}}
 }{
 \explain{cds-liquid-unit-quote-sensitivity}{\mathrm{DV01}^{L}}
-}.
+}
 \label{eq:cds-equivalent-notional}
 $$
 
@@ -336,7 +336,7 @@ $$
 \lvert\explain{cds-equivalent-notional}{N_{\mathrm{eq}}}\rvert
 }{
 \explain{cds-position-notional}{N_{\mathrm{pos}}}
-}.
+}
 \label{eq:cds-equivalent-ratio}
 $$
 
@@ -374,7 +374,7 @@ d\explain{cds-liquid-unit-value}{v_L}/d\explain{cds-liquid-quotation}{q}
 d\explain{cds-position-value}{V^{\mathrm{pos}}}/d\explain{hazard-rate}{\lambda}
 }{
 d\explain{cds-liquid-unit-value}{v_L}/d\explain{hazard-rate}{\lambda}
-}.
+}
 \label{eq:cds-equivalent-invariance}
 $$
 
@@ -387,7 +387,8 @@ a finite bump, the three equivalent ratios differ only because of the
 curvature, as the worked example shows.
 
 <CompactExamples
-  summary="Worked hedges"
+  id="equivalent-notional-hedges"
+  short="Equivalent-notional hedges"
   hint="Open the set, then size the liquid five-year contract against two positions."
   tabsLabel="Equivalent notional examples"
 >
@@ -404,8 +405,7 @@ $\explain{hazard-rate}{\lambda}=0.026600129$ per year. By
 $\explain{cds-liquid-unit-value}{v_L}=0.026694561$ before the upfront amount.
 
 The position is bought protection on a seven-year contract with the same
-coupon of 100 basis points and $\explain{cds-position-notional}{N_{\mathrm{pos}}}=
-\text{USD }10{,}000{,}000$. At the calibrated hazard rate, the protection-leg
+coupon of 100 basis points and $\explain{cds-position-notional}{N_{\mathrm{pos}}}= \text{USD }10{,}000{,}000$. At the calibrated hazard rate, the protection-leg
 present value of the position is USD 953,285.99, and its premium-leg present
 value is USD 595,803.74. So by [[eq-cds-position-value]],
 $\explain{cds-position-value}{V^{\mathrm{pos}}}=\text{USD }357{,}482.24$.
@@ -418,13 +418,13 @@ $$
 \explain{cds-position-quote-sensitivity}{\mathrm{DV01}^{\mathrm{pos}}}
 =363{,}240.36-357{,}482.24
 =\text{USD }5{,}758.12
-\text{ per basis point},
+\text{ per basis point}
 $$
 
 $$
 \explain{cds-liquid-unit-quote-sensitivity}{\mathrm{DV01}^{L}}
 =0.000434070474
-\text{ per unit notional per basis point}.
+\text{ per unit notional per basis point}
 $$
 
 By [[eq-cds-equivalent-notional]], the equivalent notional is:
@@ -432,7 +432,7 @@ By [[eq-cds-equivalent-notional]], the equivalent notional is:
 $$
 \explain{cds-equivalent-notional}{N_{\mathrm{eq}}}
 =-\frac{5{,}758.117764}{0.000434070474}
-=-\text{USD }13{,}265{,}398.37.
+=-\text{USD }13{,}265{,}398.37
 $$
 
 So the hedge sells protection on a notional of USD 13,265,398 of the five-year
@@ -460,7 +460,7 @@ USD 1,893,025.81. So the sensitivity is:
 $$
 \explain{cds-position-quote-sensitivity}{\mathrm{DV01}^{\mathrm{pos}}}
 =-\text{USD }6{,}046.59
-\text{ per basis point}.
+\text{ per basis point}
 $$
 
 The seller loses value when the quote increases. With the same
@@ -470,7 +470,7 @@ the equivalent notional is:
 $$
 \explain{cds-equivalent-notional}{N_{\mathrm{eq}}}
 =-\frac{-6{,}046.591823}{0.000434070474}
-=+\text{USD }13{,}929{,}977.23.
+=+\text{USD }13{,}929{,}977.23
 $$
 
 So the hedge buys protection on a notional of USD 13,929,977 of the five-year

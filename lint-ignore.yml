@@ -10,9 +10,28 @@
 # reviewer records it here with a reason.
 #
 # Check codes: glyph-unique-in-corpus, notation-units, units-vocab,
-# convention-single-definition, numerals-tagged, weak-local,
+# convention-single-definition, weak-local,
 # notation-source-locator, gloss-wants-promoting, card-wants-demoting,
 # gloss-name-shape.
 #
-# Nothing is acknowledged yet: every D6 finding is an open item for a
-# human-quantitative-reviewed content pass.
+# glyph-unique-in-corpus: a letter reused with a lesson-local meaning on
+# different pages. Rule N4 allows one meaning per glyph per page, and the math
+# gate enforces that page by page; these lines acknowledge the reuse across
+# pages. Where two lessons declared the same meaning twice, the entries were
+# merged into one shared card instead (default-time, lattice-node-discount-factor,
+# lattice-node-up-weight, underlying-income-present-value). Drafted 2026-09-28
+# (AI-assisted) at the maintainer's request; each line stands only once the
+# maintainer has reviewed it.
+- glyph-unique-in-corpus:\mathbb{P} — generic page-local probability measure in the probability lesson, which states that it does not yet name a measure, and the shared real-world measure the risk-neutral lesson introduces to contrast with Q; the later lesson narrows the earlier meaning.
+- glyph-unique-in-corpus:C — shared coupon payment in the bond lessons; page-local single dated amount of the discounting lab in the present-value lesson, which is not a coupon.
+- glyph-unique-in-corpus:F — shared face value in the bond lessons; page-local par amount that recovery of par applies to in the recovery lesson.
+- glyph-unique-in-corpus:i — bookkeeping index each lesson declares for its own sequence: CDS periods, credit periods, lattice time rows, replicating securities.
+- glyph-unique-in-corpus:j — bookkeeping index each lesson declares for its own sequence: lattice states, probability-partition events, risk-neutral scenarios.
+- glyph-unique-in-corpus:k — bookkeeping index each lesson declares for its own schedule: bond payments, cash-flow rows, present-value rows, CDS tenors.
+- glyph-unique-in-corpus:K — shared option strike in the option lessons; page-local count of quoted tenors in the credit-curve lesson.
+- glyph-unique-in-corpus:m — shared compounding frequency; page-local partition size in the probability lesson and scenario count in the risk-neutral lesson.
+- glyph-unique-in-corpus:n — count each lesson declares for its own schedule: bond payments, CDS periods, credit periods, future payments, replicating securities.
+- glyph-unique-in-corpus:N — shared CDS notional; page-local forward-contract quantity in the forward lesson and number of compounding periods in the rates lesson.
+- glyph-unique-in-corpus:q — page-local risk-neutral up weight in the one-period binomial lesson and page-local liquid-contract quotation in the equivalent-notional lesson.
+- glyph-unique-in-corpus:T — horizon each lesson declares: shared bond maturity, the end time of forward discounting, the recovery payment time, the risk-neutral pricing horizon.
+- glyph-unique-in-corpus:x_j — value of the random value on event j in the probability lesson, and the payoff in scenario j in the risk-neutral lesson, which applies the same idea to a pricing partition.

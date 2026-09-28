@@ -3,8 +3,6 @@
   "lesson": "bond-options.issuer-default-knockout",
   "localKeys": [
     "bond-default-recovery-cash",
-    "knockout-node-discount-factor",
-    "knockout-node-up-weight",
     "surviving-bond-continuation-value",
     "surviving-bond-next-cash-flow"
   ],
@@ -65,11 +63,11 @@
     },
     {
       "column": 5,
-      "definitionId": "page:bond-options.issuer-default-knockout:knockout-node-up-weight",
-      "key": "knockout-node-up-weight",
+      "definitionId": "shared:lattice-node-up-weight",
+      "key": "lattice-node-up-weight",
       "kind": "math",
       "line": 29,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "q_{i,j}"
     },
     {
@@ -83,11 +81,11 @@
     },
     {
       "column": 2,
-      "definitionId": "page:bond-options.issuer-default-knockout:knockout-node-up-weight",
-      "key": "knockout-node-up-weight",
+      "definitionId": "shared:lattice-node-up-weight",
+      "key": "lattice-node-up-weight",
       "kind": "math",
       "line": 31,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "q_{i,j}"
     },
     {
@@ -119,11 +117,11 @@
     },
     {
       "column": 2,
-      "definitionId": "page:bond-options.issuer-default-knockout:knockout-node-discount-factor",
-      "key": "knockout-node-discount-factor",
+      "definitionId": "shared:lattice-node-discount-factor",
+      "key": "lattice-node-discount-factor",
       "kind": "math",
       "line": 42,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "d_{i,j}"
     },
     {
@@ -145,7 +143,7 @@
       "symbol": "H^B_{i,j}"
     },
     {
-      "column": 5,
+      "column": 10,
       "definitionId": "shared:conditional-node-survival-probability",
       "key": "conditional-node-survival-probability",
       "kind": "math",
@@ -200,11 +198,11 @@
     },
     {
       "column": 2,
-      "definitionId": "page:bond-options.issuer-default-knockout:knockout-node-discount-factor",
-      "key": "knockout-node-discount-factor",
+      "definitionId": "shared:lattice-node-discount-factor",
+      "key": "lattice-node-discount-factor",
       "kind": "math",
       "line": 74,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "d_{i,j}"
     },
     {
@@ -217,12 +215,12 @@
       "symbol": "s_{i,j}"
     },
     {
-      "column": 4,
-      "definitionId": "page:bond-options.issuer-default-knockout:knockout-node-up-weight",
-      "key": "knockout-node-up-weight",
+      "column": 9,
+      "definitionId": "shared:lattice-node-up-weight",
+      "key": "lattice-node-up-weight",
       "kind": "math",
       "line": 77,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "q_{i,j}"
     },
     {
@@ -236,11 +234,11 @@
     },
     {
       "column": 2,
-      "definitionId": "page:bond-options.issuer-default-knockout:knockout-node-up-weight",
-      "key": "knockout-node-up-weight",
+      "definitionId": "shared:lattice-node-up-weight",
+      "key": "lattice-node-up-weight",
       "kind": "math",
       "line": 79,
-      "scope": "local",
+      "scope": "shared",
       "symbol": "q_{i,j}"
     },
     {
@@ -253,5 +251,5 @@
       "symbol": "O^{\\mathrm{KO}}_{i,j}"
     }
   ],
-  "schemaVersion": 6
+  "schemaVersion": 24
 }

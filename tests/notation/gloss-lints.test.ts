@@ -71,7 +71,7 @@ describe('gloss-wants-promoting', () => {
 
     expect(findings).toHaveLength(1);
     expect(findings[0]).toMatchObject({
-      severity: 'warning',
+      severity: 'info',
       glyph: '\\Omega',
     });
     expect(findings[0]?.message).toContain('alpha, beta, gamma');
@@ -121,7 +121,7 @@ describe('card-wants-demoting', () => {
     );
 
     expect(findings).toHaveLength(1);
-    expect(findings[0]).toMatchObject({ key: 'thin', severity: 'warning' });
+    expect(findings[0]).toMatchObject({ key: 'thin', severity: 'info' });
   });
 
   it('leaves a card alone once it earns its tier', () => {

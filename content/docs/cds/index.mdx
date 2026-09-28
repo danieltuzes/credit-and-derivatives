@@ -1,0 +1,44 @@
+---
+title: CDS
+description: The premium and protection legs of a credit default swap, its market quote and upfront, the credit curve, and quote risk.
+editorialStatus: draft
+aiAssisted: true
+---
+
+import PartBridge from 'explico/components/PartBridge.astro';
+import PartOverview from 'explico/components/PartOverview.astro';
+import PartScope from 'explico/components/PartScope.astro';
+
+<PartBridge>
+
+Part 6 gave survival probabilities from a hazard rate, recovery of par, and
+the present value of a payment that depends on default. A credit default swap
+exchanges payments that depend on the same default time, so each of its legs
+is a discounted expectation over the default intervals. The credit-curve
+chapter also uses the discount curve of Part 3.
+
+</PartBridge>
+
+<PartScope>
+
+This part values a credit default swap in a toy model and connects the value
+to the way the market quotes it. The first chapter builds the premium and
+protection legs from exact default-time expectations and solves the par
+spread. The second chapter converts a market-standard quote into a signed
+upfront amount against a fixed running coupon, and back. The third chapter
+separates what the market shows from what the model assumes or solves, and
+fits a credit curve to several tenors. The last chapter measures a position's
+sensitivity to the liquid contract's quote and sizes the equivalent notional
+that offsets it.
+
+</PartScope>
+
+<PartOverview
+  chain={[
+    'Each leg is a discounted expectation over the default intervals',
+    'The par spread makes the two legs equal with zero upfront',
+    'A market quote converts to an upfront amount against a fixed coupon',
+    'Several tenor marks fit a piecewise-constant hazard curve',
+    'Bump and reprice gives the quote risk, and the equivalent notional offsets it',
+  ]}
+/>

@@ -134,7 +134,7 @@ disjoint and exhaustive list $A_1,\ldots,A_m$, additivity of the probability
 measure gives the sum of the event probabilities:
 
 $$
-\sum_{j=1}^{m}\mathbb{P}(A_j)=1.
+\sum_{j=1}^{m}\mathbb{P}(A_j)=1
 $$
 
 If the events overlap, the sum of their probabilities can count some outcomes
@@ -152,7 +152,7 @@ of $A$ given $\explain{probability-event}{B}$ is defined as:
 $$
 \mathbb{P}(A\mid\explain{probability-event}{B})
 =\frac{\mathbb{P}(A\cap\explain{probability-event}{B})}
-{\mathbb{P}(\explain{probability-event}{B})}.
+{\mathbb{P}(\explain{probability-event}{B})}
 $$
 
 The denominator is the probability of the outcomes that the condition “given
@@ -162,7 +162,7 @@ $\explain{probability-event}{B}$. Then the conditional probability is:
 
 $$
 \mathbb{P}(A\mid\explain{probability-event}{B})
-=\frac{0.12}{0.30}=0.40.
+=\frac{0.12}{0.30}=0.40
 $$
 
 In a default model, consider the probability of “default during this period
@@ -194,7 +194,7 @@ of its event:
 $$
 \mathbb{E}[X]
 =\sum_{j=1}^{m}x_j\mathbb{P}(A_j),
-\qquad X=x_j\text{ on }A_j.
+\qquad X=x_j\text{ on }A_j
 \label{eq:expectation-event-values}
 $$
 
@@ -209,7 +209,7 @@ conditional mean of $X$ inside that event. The expectation is then:
 
 $$
 \mathbb{E}[X]
-=\sum_{j=1}^{m}\mathbb{P}(A_j)\mathbb{E}[X\mid A_j].
+=\sum_{j=1}^{m}\mathbb{P}(A_j)\mathbb{E}[X\mid A_j]
 \label{eq:expectation-conditional-events}
 $$
 
@@ -221,7 +221,7 @@ using the partial-averaging property of conditional expectation. Shreve gives
 the disjoint-event integral split and the unconditional-average property of
 conditional expectation[@shreve-stochastic-calculus-finance-ii; Ch. 1 §1.3, printed p. 17, Remark 1.3.2; Ch. 2 §2.3, printed pp. 68-72, eqs. 2.3.16-2.3.17 and 2.3.25].
 
-<CompactExamples summary="Worked examples (3)">
+<CompactExamples id="expectation-over-events" short="Expectation over disjoint events">
   <CompactExample label="Constant value on each event">
 
 Suppose $X$ is a payment in USD. It equals USD 0, USD 50, or USD
@@ -239,7 +239,7 @@ The expectation is the sum of the contributions:
 $$
 \mathbb{E}[X]
 =0\times0.10+50\times0.20+100\times0.70
-=\text{USD }80.
+=\text{USD }80
 $$
 
 The expectation of USD 80 is a probability-weighted average. An expectation
@@ -256,7 +256,7 @@ conditional means is:
 $$
 \mathbb{E}[X]
 =0.01\times40+0.02\times30+0.97\times0
-=\text{USD }1.00.
+=\text{USD }1.00
 $$
 
 USD 40 is the average payment inside the first event. The example does not

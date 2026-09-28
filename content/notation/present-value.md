@@ -27,7 +27,7 @@ For deterministic cash flows, its definition nests
 [[signed-cash-flow]] and [[discount-factor]]:
 
 $$
-PV_0=\sum_{k=1}^{n}CF_kD(0,t_k).
+PV_0=\sum_{k=1}^{n}CF_kD(0,t_k)
 $$
 
 Each dated amount is discounted before the results are added.

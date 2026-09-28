@@ -1,0 +1,39 @@
+---
+title: Rates and curves
+description: From one discount factor to a dated discount curve and the discount factor between two future dates.
+editorialStatus: draft
+aiAssisted: true
+---
+
+import PartBridge from 'explico/components/PartBridge.astro';
+import PartOverview from 'explico/components/PartOverview.astro';
+import PartScope from 'explico/components/PartScope.astro';
+
+<PartBridge>
+
+Part 1 defined a discount factor for one future date from a rate quote, and
+Part 2 applied one discount factor to each promised bond payment. This part
+collects the discount factors of many dates into one deterministic discount
+curve. The credit-curve chapter of Part 7 uses that curve as the risk-free
+discount input of a CDS.
+
+</PartBridge>
+
+<PartScope>
+
+This part has one chapter. It reads a deterministic discount curve that is
+input at a set of dates, interpolates log-linearly between those dates, and
+calculates the forward discount factor between two future dates as the ratio
+of their discount factors from valuation time. The curve is an input: the
+chapter does not calibrate it to market prices, and it does not extrapolate
+beyond the last input date.
+
+</PartScope>
+
+<PartOverview
+  chain={[
+    'A discount curve holds one discount factor for each input date',
+    'Log-linear interpolation gives the dates between the inputs',
+    'The ratio of two discount factors discounts from one future date to another',
+  ]}
+/>

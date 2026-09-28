@@ -39,23 +39,6 @@ notation:
       alignment:
         kind: general
         rationale: Finite schedule indexing is a bookkeeping assumption of this lesson.
-    - key: credit-default-time
-      latex: '\tau'
-      meaning: 'Random model time at which the reference entity first defaults. It is measured in model-years from valuation time under the stated risk-neutral model.'
-      formula: '\tau \geq 0'
-      units: model-years after valuation time
-      sources:
-        - id: tuckman-serrat-fixed-income
-          locator: 'Appendix A14.1, printed p. 505, Eqs. A14.1-A14.4 (constant-hazard survival and cumulative default probabilities over time).'
-        - id: hull-options-futures
-          locator: 'Ch. 24 §§24.1-24.2, printed pp. 548-552 (default timing relative to scheduled premium dates and modeled default times within payment periods).'
-      seeAlso:
-        - valuation-time
-        - hazard-rate
-      alignment:
-        kind: competency
-        introducedByCompetency: credit.hazard-rate.interpret
-        introducedInLesson: credit.default-hazard-and-survival
     - key: credit-small-time-increment
       latex: '\Delta t'
       meaning: 'Positive model-time interval used in the conditional definition of hazard. The hazard definition takes this increment down toward zero while holding the starting time fixed.'
@@ -93,14 +76,14 @@ After this lesson, you should be able to:
 The [[survival-probability]] $S^{\mathbb{Q}}(0,t)$ is the probability, under
 the [[risk-neutral-probability-measure]] $\mathbb{Q}$, that the reference
 entity has not defaulted between [[valuation-time]] $0$ and a future time $t$.
-With the local [[credit-default-time]] $\tau$, the survival probability is
+With the [[default-time]] $\tau$, the survival probability is
 defined as:
 
 $$
 \explain{survival-probability}{S^{\mathbb{Q}}(0,t)}
 =\explain{risk-neutral-probability-measure}{\mathbb{Q}}
-(\explain{credit-default-time}{\tau}>
-\explain{payment-time}{t}).
+(\explain{default-time}{\tau}>
+\explain{payment-time}{t})
 $$
 
 In this lesson, the survival probabilities are inputs: the lesson states their
@@ -138,7 +121,7 @@ probability over the interval:
 $$
 \explain{interval-default-probability}{\Delta q_i^{\mathbb{Q}}}
 =\explain{survival-probability}{S^{\mathbb{Q}}(0,t_{i-1})}
--\explain{survival-probability}{S^{\mathbb{Q}}(0,t_i)}.
+-\explain{survival-probability}{S^{\mathbb{Q}}(0,t_i)}
 $$
 
 The survival probability at the start of the interval comes first in the
@@ -147,7 +130,7 @@ $\Delta q_i\geq0$. The sum of the interval default probabilities from time zero
 to $t_n$ is the cumulative default probability by $t_n$:
 
 $$
-\sum_{i=1}^{n}\Delta q_i=1-\explain{survival-probability}{S(0,t_n)}.
+\sum_{i=1}^{n}\Delta q_i=1-\explain{survival-probability}{S(0,t_n)}
 $$
 
 This identity holds because the sum telescopes: each intermediate survival
@@ -167,9 +150,9 @@ $$
 =\lim_{\Delta t\downarrow0}
 \frac{
 \explain{risk-neutral-probability-measure}{\mathbb{Q}}
-(t<\explain{credit-default-time}{\tau}\leq t+\Delta t
-\mid \explain{credit-default-time}{\tau}>t)
-}{\Delta t}.
+(t<\explain{default-time}{\tau}\leq t+\Delta t
+\mid \explain{default-time}{\tau}>t)
+}{\Delta t}
 $$
 
 The probability in this definition is conditional on the event $\tau>t$. So the
@@ -180,7 +163,7 @@ With a constant hazard rate, the survival probability is:
 
 $$
 \explain{survival-probability}{S^{\mathbb{Q}}(0,t)}
-=\exp(-\explain{hazard-rate}{\lambda}t).
+=\exp(-\explain{hazard-rate}{\lambda}t)
 \label{eq:constant-hazard-survival}
 $$
 
@@ -192,7 +175,8 @@ and so does Hull
 [@hull-options-futures; Ch. 23 §§23.2 and 23.5, printed pp. 522–523 and 528–530].
 
 <CompactExamples
-  summary="Worked examples"
+  id="survival-and-default-probabilities"
+  short="Survival and default probabilities"
   hint="Open the set, then choose a survival calculation."
   tabsLabel="Default and survival examples"
 >
@@ -202,7 +186,7 @@ Suppose the one-year survival probability is $S(0,1)=0.97$. With $S(0,0)=1$,
 the interval default probability of the first year is:
 
 $$
-\explain{interval-default-probability}{\Delta q_1}=1-0.97=0.03=3\%.
+\explain{interval-default-probability}{\Delta q_1}=1-0.97=0.03=3\%
 $$
 
 The 3% is the probability of default during the first year. It is not
@@ -217,13 +201,13 @@ values into [[eq-constant-hazard-survival]] gives the three-year survival
 probability:
 
 $$
-S(0,3)=\exp(-0.02\times3)=\exp(-0.06)\approx0.941765.
+S(0,3)=\exp(-0.02\times3)=\exp(-0.06)\approx0.941765
 $$
 
 The cumulative default probability by three years is:
 
 $$
-1-S(0,3)\approx0.058235=5.8235\%.
+1-S(0,3)\approx0.058235=5.8235\%
 $$
 
 The cumulative default probability is not $\lambda t=6\%$. The product

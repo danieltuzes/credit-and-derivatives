@@ -20,7 +20,7 @@ editorialStatus: draft
 aiAssisted: true
 ---
 
-The forward price $F_{t,\explain{forward-delivery-time}{T_{\mathrm{fwd}}}}$ is
+The forward price $\explain{forward-price}{F_{t,T_{\mathrm{fwd}}}}$ is
 the delivery price that makes a new forward maturing at
 $\explain{forward-delivery-time}{T_{\mathrm{fwd}}}$ worth zero at time $t$ under the
 stated carry model. It differs from the fixed delivery price of an older

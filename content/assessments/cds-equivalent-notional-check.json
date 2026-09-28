@@ -1,6 +1,6 @@
 {
   "id": "cds-equivalent-notional-check",
-  "title": "Equivalent notional and quote risk check",
+  "title": "Equivalent notional and quote risk",
   "editorialStatus": "draft",
   "items": [
     {
@@ -28,7 +28,7 @@
       "evidenceKind": "direct",
       "prompt": "A bought-protection position has risky DV01 of USD 5,758.117764 per basis point. One unit of notional of bought protection in the liquid five-year contract has risky DV01 of 0.000434070474 per basis point. Calculate the magnitude in USD of the liquid-tenor equivalent notional that offsets the position.",
       "answer": { "value": 13265398.4, "tolerance": 1 },
-      "explanation": "N_eq = -5,758.117764 / 0.000434070474 = -USD 13,265,398.4. The negative sign means the hedge sells protection in the five-year contract; its magnitude is USD 13,265,398.4."
+      "explanation": "$N_{\\mathrm{eq}}=\\frac{-5{,}758.117764}{0.000434070474}=-\\text{USD }13{,}265{,}398.4$. The negative sign means the hedge sells protection in the five-year contract; its magnitude is USD 13,265,398.4."
     },
     {
       "id": "cds-equivalent-notional-transfer",
@@ -37,7 +37,7 @@
       "evidenceKind": "transfer",
       "prompt": "A sold-protection position with notional USD 20,000,000 has risky DV01 of USD -6,046.591823 per basis point for the seller. One unit of notional of bought protection in the liquid five-year contract has risky DV01 of 0.000434070474 per basis point. Calculate the equivalent ratio of the liquid-tenor hedge to the position notional.",
       "answer": { "value": 0.6965, "tolerance": 0.0001 },
-      "explanation": "N_eq = -(-6,046.591823) / 0.000434070474 = +USD 13,929,977.2, so the hedge buys protection in the five-year contract. The equivalent ratio is 13,929,977.2 / 20,000,000 = 0.6965."
+      "explanation": "$N_{\\mathrm{eq}}=\\frac{-(-6{,}046.591823)}{0.000434070474}=+\\text{USD }13{,}929{,}977.2$, so the hedge buys protection in the five-year contract. The equivalent ratio is 13,929,977.2 / 20,000,000 = 0.6965."
     }
   ]
 }

@@ -1,0 +1,42 @@
+---
+title: Bond options
+description: European options on a bond, valued on a lattice, and an option that issuer default extinguishes.
+editorialStatus: draft
+aiAssisted: true
+---
+
+import PartBridge from 'explico/components/PartBridge.astro';
+import PartOverview from 'explico/components/PartOverview.astro';
+import PartScope from 'explico/components/PartScope.astro';
+
+<PartBridge>
+
+Part 2 put a bond's quoted and cash prices on one basis, and Part 4 valued a
+European option by backward induction on a lattice. This part combines them:
+the underlying of the option is a bond, and the lattice gives the bond values
+at expiry. The second chapter also uses the survival probability and the
+recovery of Part 6, because issuer default ends the option.
+
+</PartBridge>
+
+<PartScope>
+
+This part values European options whose underlying is a bond. The first
+chapter defines a standalone call or put on a bond, puts the strike and the
+bond value on one cash-price basis, and values the expiry payoffs on an input
+lattice. The second chapter adds issuer default. Default before exercise
+extinguishes the option with no rebate, the bond's recovery stays a separate
+cash flow of the bond, and each backward step discounts only the
+survival-weighted option values.
+
+</PartScope>
+
+<PartOverview
+  chain={[
+    "A bond option's strike and bond value share one cash-price basis",
+    'The lattice gives the bond value at each expiry node',
+    'Backward induction values the expiry payoffs',
+    'Issuer default before exercise extinguishes the option',
+    'Each backward step weights the option value by survival',
+  ]}
+/>

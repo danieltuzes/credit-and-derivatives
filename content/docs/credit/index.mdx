@@ -1,0 +1,42 @@
+---
+title: Credit risk
+description: Default time, survival and hazard rates, recovery of par, and the present value of a risky payment.
+editorialStatus: draft
+aiAssisted: true
+---
+
+import PartBridge from 'explico/components/PartBridge.astro';
+import PartOverview from 'explico/components/PartOverview.astro';
+import PartScope from 'explico/components/PartScope.astro';
+
+<PartBridge>
+
+Part 1 gave events and expectations over a partition, present value, and
+risk-neutral pricing weights. This part applies them to a new event, the
+default of a reference entity. Default and survival partition the outcomes at
+each future date, so a survival curve gives default probabilities, and a
+risky payment is valued as a discounted expectation over the survival and
+default states.
+
+</PartBridge>
+
+<PartScope>
+
+This part introduces the default time of a reference entity in the course's
+toy models. The first chapter reads an input survival curve, calculates the
+default probability of each interval, and uses a constant hazard rate. The
+second chapter values one claim under recovery of par: it pays its full amount
+on survival and a recovered fraction of par on default, both at maturity, and
+the claim's value is the discounted expectation of those two payments.
+
+</PartScope>
+
+<PartOverview
+  chain={[
+    'The default time is random, and survival to a date is an event',
+    'A survival curve gives the default probability of each interval',
+    'A constant hazard rate gives an exponential survival curve',
+    'Recovery of par sets the payment in the default state',
+    'A risky payment is the discounted expectation over survival and default',
+  ]}
+/>

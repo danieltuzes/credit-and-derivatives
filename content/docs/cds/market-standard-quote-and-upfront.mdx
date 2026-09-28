@@ -23,6 +23,7 @@ assumptions:
 import CompactExample from 'explico/components/examples/CompactExample.astro';
 import CompactExamples from 'explico/components/examples/CompactExamples.astro';
 import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
+import Table from 'explico/components/table/Table.astro';
 
 ## What you will be able to do
 
@@ -81,14 +82,18 @@ to decimal form by dividing by 10,000.
 
 The equation that connects the par spread and the hazard rate can be used in
 two directions. So a quantity can be an input in one calculation and solved in
-another. The table shows the inputs and the solved quantities of each
+another. [[tab-quote-conversion-inputs]] shows the inputs and the solved quantities of each
 calculation.
+
+<Table id="quote-conversion-inputs" short="Inputs and solved quantities of each calculation" caption="For the model par spread and for each direction of the quote conversion, the quantities taken as inputs and the quantities solved or calculated.">
 
 | Calculation      | Input                                                                                              | Solved or calculated                                  |
 | ---------------- | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
 | Model par spread | Hazard rate, recovery, discount input, maturity, and cash-flow conventions                         | Par spread $s^{\star}$                                |
 | MSQ to upfront   | Market quote $s_{\mathrm{MSQ}}$, standard coupon $c_{\mathrm{std}}$, and the converter conventions | Flat hazard rate $\lambda$, then signed upfront $U_0$ |
 | Upfront to MSQ   | Market upfront $U_0$, standard coupon $c_{\mathrm{std}}$, and the converter conventions            | Flat hazard rate $\lambda$, then $s_{\mathrm{MSQ}}$   |
+
+</Table>
 
 If the hazard rate is an input, the par spread is the output:
 
@@ -100,7 +105,7 @@ $$
 }{
 \explain{cds-notional}{N}
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda})
-}.
+}
 \label{eq:cds-par-spread-from-hazard}
 $$
 
@@ -128,7 +133,7 @@ $$
 \explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}
 =
 \explain{cds-premium-leg-present-value}{PV_0^{\mathrm{prem}}}
-+\explain{cds-upfront-amount}{U_0}.
++\explain{cds-upfront-amount}{U_0}
 \label{eq:cds-upfront-balance}
 $$
 
@@ -139,7 +144,7 @@ $$
 0=
 \explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}
 -\explain{cds-premium-leg-present-value}{PV_0^{\mathrm{prem}}}
--\explain{cds-upfront-amount}{U_0}.
+-\explain{cds-upfront-amount}{U_0}
 $$
 
 This is a value identity, not a claim that the CDS becomes riskless. After
@@ -178,7 +183,7 @@ $$
 \explain{cds-notional}{N}
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda})
 =
-\explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}(\explain{hazard-rate}{\lambda}).
+\explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}(\explain{hazard-rate}{\lambda})
 \label{eq:cds-msq-calibration}
 $$
 
@@ -193,7 +198,7 @@ $$
 =
 \explain{cds-standard-coupon}{c_{\mathrm{std}}}
 \explain{cds-notional}{N}
-\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda}).
+\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda})
 \label{eq:cds-fixed-coupon-premium}
 $$
 
@@ -215,7 +220,7 @@ $$
 \left(
 \explain{cds-market-standard-quote}{s_{\mathrm{MSQ}}}
 -\explain{cds-standard-coupon}{c_{\mathrm{std}}}
-\right).
+\right)
 \end{aligned}
 \label{eq:cds-upfront-from-msq}
 $$
@@ -255,7 +260,7 @@ $$
 }{
 \explain{cds-notional}{N}
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda})
-}.
+}
 \label{eq:cds-hazard-to-msq}
 $$
 
@@ -272,7 +277,7 @@ $$
 }{
 \explain{cds-notional}{N}
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda})
-}.
+}
 $$
 
 This shortcut is not the full conversion from upfront to quote when the quote
@@ -305,7 +310,7 @@ $$
 }{
 \explain{cds-notional}{N}
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda})
-}.
+}
 \end{aligned}
 \label{eq:cds-msq-par-equality}
 $$
@@ -325,7 +330,7 @@ $$
 -
 \explain{cds-standard-coupon}{c_{\mathrm{std}}}
 \explain{cds-notional}{N}
-\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}.
+\explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}
 $$
 
 This price does not show the protection-leg present value and the premium
@@ -345,7 +350,8 @@ traded on otherwise identical terms. Then a curve calibrated consistently to
 that traded contract would have to give it zero value. [@tuckman-serrat-fixed-income; Ch. 1 §§1.3-1.4, printed pp. 53-57 (law of one price, replication, and arbitrage enforcement)]
 
 <CompactExamples
-  summary="Worked conversions"
+  id="quote-upfront-conversions"
+  short="Quote and upfront conversions"
   hint="Open the set, then compare calibration, running premium, protection, and upfront."
   tabsLabel="CDS quote and upfront examples"
 >
@@ -366,7 +372,7 @@ $$
 \explain{hazard-rate}{\lambda}=0.024937617\text{ per year},
 \qquad
 \explain{cds-premium-annuity}{A_0^{\mathrm{prem}}}(\explain{hazard-rate}{\lambda})
-=4.466915290\text{ model-years}.
+=4.466915290\text{ model-years}
 $$
 
 Because the calibrated quote is a par spread, the protection-leg present value
@@ -375,7 +381,7 @@ is:
 $$
 \explain{cds-protection-leg-present-value}{PV_0^{\mathrm{prot}}}
 =0.015(10{,}000{,}000)(4.466915290)
-=\text{USD }670{,}037.29.
+=\text{USD }670{,}037.29
 $$
 
 The premium-leg present value with the fixed coupon is:
@@ -383,7 +389,7 @@ The premium-leg present value with the fixed coupon is:
 $$
 \explain{cds-premium-leg-present-value}{PV_0^{\mathrm{prem}}}
 =0.010(10{,}000{,}000)(4.466915290)
-=\text{USD }446{,}691.53.
+=\text{USD }446{,}691.53
 $$
 
 The upfront amount is the difference of the two present values:
@@ -391,7 +397,7 @@ The upfront amount is the difference of the two present values:
 $$
 \explain{cds-upfront-amount}{U_0}
 =670{,}037.29-446{,}691.53
-=\text{USD }223{,}345.76.
+=\text{USD }223{,}345.76
 $$
 
 The upfront amount is positive, so the protection buyer pays it. As a check,

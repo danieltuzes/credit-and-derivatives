@@ -14,19 +14,6 @@ assumptions:
   - No initial margin, collateral, counterparty default, bid-ask spread, tax, short-sale constraint, or daily settlement
 notation:
   local:
-    - key: deterministic-income-present-value
-      latex: 'I_0'
-      meaning: 'Valuation-time value of cash income paid by the underlying after valuation and before forward delivery. It is subtracted from spot value because the forward long does not own the asset early enough to receive that income.'
-      units: stated currency at valuation time per unit of underlying
-      sources:
-        - id: hull-options-futures
-          locator: 'Ch. 5 §5.5, printed pp. 107-108, Eq. 5.2 (present value I of known pre-delivery income), and §5.7, printed p. 111, Eq. 5.6 (known-income forward value).'
-      seeAlso:
-        - discount-factor
-      alignment:
-        kind: competency
-        introducedByCompetency: derivatives.forward-delivery-price.calculate
-        introducedInLesson: derivatives.forward-contracts-and-value
     - key: forward-contract-quantity
       latex: N
       meaning: 'Positive number of underlying units delivered under the forward contract. Contract value and payoff scale linearly with this quantity.'
@@ -72,7 +59,7 @@ is the asset value minus the delivery price:
 
 $$
 \Pi_{T_{\mathrm{fwd}}}^{\mathrm{long}}
-=S_{T_{\mathrm{fwd}}}-K_{\mathrm{fwd}}.
+=S_{T_{\mathrm{fwd}}}-K_{\mathrm{fwd}}
 $$
 
 The payoff of the short is the negative of the payoff of the long. Hull distinguishes this bilateral
@@ -83,8 +70,8 @@ long and short payoff directions[@hull-options-futures; Ch. 1 §1.3, printed pp.
 
 The [[forward-price]] $F_{0,T_{\mathrm{fwd}}}$ is the delivery price that
 would make a new contract worth zero at [[valuation-time]] $0$. Suppose
-the underlying is worth $S_0$ and the local
-[[deterministic-income-present-value]] paid before delivery is $I_0$.
+the underlying is worth $S_0$ and the
+[[underlying-income-present-value]] paid before delivery is $I_0$.
 The long does not own the asset before delivery and does not receive the
 income. So the prepaid value of the asset delivered is $S_0-I_0$.
 
@@ -94,7 +81,7 @@ forward price:
 
 $$
 F_{0,T_{\mathrm{fwd}}}
-=\frac{S_0-I_0}{D(0,T_{\mathrm{fwd}})}.
+=\frac{S_0-I_0}{D(0,T_{\mathrm{fwd}})}
 $$
 
 Hull derives the no-income and known-income forward prices by matching a spot
@@ -105,7 +92,7 @@ For $S_0=100$, $I_0=4$, and $D(0,T_{\mathrm{fwd}})=0.95$, the forward price
 is:
 
 $$
-F_{0,T_{\mathrm{fwd}}}=\frac{100-4}{0.95}=101.0526316.
+F_{0,T_{\mathrm{fwd}}}=\frac{100-4}{0.95}=101.0526316
 $$
 
 The delivery price is not a premium paid at inception. A new contract with a
@@ -122,21 +109,19 @@ difference between the current forward price and the delivery price:
 $$
 V_0^{\mathrm{fwd}}
 =N D(0,T_{\mathrm{fwd}})
-\left(F_{0,T_{\mathrm{fwd}}}-K_{\mathrm{fwd}}\right).
+\left(F_{0,T_{\mathrm{fwd}}}-K_{\mathrm{fwd}}\right)
 $$
 
 If $N=10$, the current forward price is 98, the contract delivery price is 102,
 and the discount factor is 0.94, the value to the long is:
 
 $$
-V_0^{\mathrm{fwd}}=10(0.94)(98-102)=-37.60.
+V_0^{\mathrm{fwd}}=10(0.94)(98-102)=-37.60
 $$
 
 The short's value is USD +37.60 under the same inputs. Hull derives this
 discounted forward-price difference for an existing contract
 [@hull-options-futures; Ch. 5 §5.7, printed pp. 109-111, valuation of existing forward contracts].
-
-## Check your understanding
 
 <AssessmentSet />
 
