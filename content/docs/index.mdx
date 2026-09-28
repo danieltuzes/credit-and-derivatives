@@ -1,9 +1,9 @@
 ---
 title: Credit Products Playground
-description: Interactive foundations for bonds, credit risk, CDS, CDX, and options on them.
+description: A prerequisite-aware course from cash flows and discounting to bonds, derivatives, credit risk, and credit default swaps.
 template: splash
 hero:
-  tagline: Build intuition first, then verify it with models, exercises, and explicit prerequisites.
+  tagline: A course in quantitative finance, from cash flows and discounting to bonds, options, credit risk, and credit default swaps. Build intuition first, then check it with toy models, worked examples, and knowledge checks.
   actions:
     # Relative links so they resolve under both the local root and the
     # deploy base (`/credit-and-derivatives/`). Starlight renders hero action
@@ -12,12 +12,13 @@ hero:
       link: foundations/
       icon: right-arrow
       variant: primary
+    - text: Choose a starting point
+      link: '#where-to-start'
+      icon: down-arrow
+      variant: secondary
     - text: Browse the course contents
       link: '#course-contents'
       icon: list-format
-    - text: Go to the CDS part
-      link: cds/
-      icon: right-arrow
       variant: minimal
     - text: View the curriculum map
       link: curriculum-map/
@@ -27,43 +28,156 @@ editorialStatus: draft
 aiAssisted: true
 ---
 
-import { Card, CardGrid } from '@astrojs/starlight/components';
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 import CourseContents from 'explico/components/CourseContents.astro';
+
+## What this course is
+
+This course teaches the valuation of fixed-income and credit products. It
+starts from signed cash flows, rates, and discounting. It then values
+fixed-rate bonds, forwards, and European options, and it ends with options on
+a bond and with credit default swaps (CDS). The seven parts build on each
+other, and each part states which earlier parts it uses.
+
+The chapters work in toy models. A toy model has stated inputs, and the
+chapter states what the model simplifies or leaves out. A chapter states what
+you will be able to do, explains the idea before the formula, and works a
+numerical example. Most chapters end with a knowledge check and a model
+boundary. Some chapters add an interactive lab, in which you change the
+inputs and see the result change.
+
+The course is an educational draft. It is not a pricing system, and it uses
+no live market data.
+
+## Where to start
+
+Every part is a starting point. Start at Part 1 if the course is new to you.
+The two learning paths go through the course in a fixed order. Both paths
+assume only basic algebra, percentages and decimal notation, and integer
+exponents, and both begin with the same chapter:
+[Cash-flow timelines and perspective](foundations/cash-flow-timelines/).
+
+### Follow a learning path
+
+<CardGrid>
+  <Card title="Credit products path" icon="right-arrow">
+    From discounting to the value and the market quote of a CDS.
+
+    1. [Foundations](foundations/): all seven chapters.
+    2. [Rates and curves](rates/): the discount curve.
+    3. [Bonds](bonds/): the contract, the price, the yield to maturity, and
+       the price-yield relationship.
+    4. [Credit risk](credit/): default, survival, and recovery.
+    5. [CDS](cds/): the two legs, the market quote and upfront, the credit
+       curve, and quote risk.
+
+  </Card>
+  <Card title="Bond derivatives path" icon="right-arrow">
+    From discounting to options on a bond, including an option that issuer
+    default extinguishes.
+
+    1. [Foundations](foundations/) and [Rates and curves](rates/).
+    2. [Bonds](bonds/): the contract, the price, the yield to maturity, and
+       settlement.
+    3. [Derivative foundations](derivatives/): forward contracts, then
+       [bond forwards](bonds/bond-forwards/).
+    4. [Derivative foundations](derivatives/): options, put-call parity, and
+       lattice valuation.
+    5. [European bond options](bond-options/european-bond-options/).
+    6. [Credit risk](credit/), then the
+       [issuer-default knockout](bond-options/issuer-default-knockout/).
+
+  </Card>
+</CardGrid>
+
+### Start at a part
+
+To start at a later part, first read the parts that it requires, and the
+parts that those parts require. The [curriculum map](curriculum-map/) shows
+the same requirements chapter by chapter.
+
+<CardGrid>
+  <LinkCard
+    title="Part 1 · Foundations"
+    href="foundations/"
+    description="Cash flows, probability, rates, discounting, and no-arbitrage pricing. Requires basic algebra, percentages and decimal notation, and integer exponents."
+  />
+  <LinkCard
+    title="Part 2 · Bonds"
+    href="bonds/"
+    description="The fixed-rate bond, its price from discount factors or from a yield, and its settlement. Requires Part 1. The bond-forwards chapter also requires Part 4."
+  />
+  <LinkCard
+    title="Part 3 · Rates and curves"
+    href="rates/"
+    description="A dated discount curve and the discount factor between two future dates. Requires the discount factors of Part 1."
+  />
+  <LinkCard
+    title="Part 4 · Derivative foundations"
+    href="derivatives/"
+    description="Forwards and European options, from payoffs to put-call parity and lattice valuation. Requires Part 1."
+  />
+  <LinkCard
+    title="Part 5 · Bond options"
+    href="bond-options/"
+    description="European options on a bond, and an option that issuer default extinguishes. Requires Parts 2 and 4. The issuer-default chapter also requires Part 6."
+  />
+  <LinkCard
+    title="Part 6 · Credit risk"
+    href="credit/"
+    description="Default time, survival and hazard rates, recovery of par, and the value of a risky payment. Requires Part 1."
+  />
+  <LinkCard
+    title="Part 7 · CDS"
+    href="cds/"
+    description="The premium and protection legs, the market quote and upfront, the credit curve, and quote risk. Requires Parts 1 and 6. The credit-curve chapter also requires Part 3."
+  />
+</CardGrid>
+
+### Look up a term or a prerequisite
+
+<CardGrid>
+  <LinkCard
+    title="Curriculum map"
+    href="curriculum-map/"
+    description="The competencies that each chapter requires and teaches, as a graph."
+  />
+  <LinkCard
+    title="Notation glossary"
+    href="glossary/"
+    description="Every shared symbol with its meaning, its units, and the chapters that use it."
+  />
+</CardGrid>
 
 ## Course contents
 
-The course has seven parts. Each part opens with an overview page that states
-what the part covers, how it builds on the earlier parts, and the argument
-that runs through its chapters. Equations, tables, diagrams, knowledge checks,
-and worked examples are numbered by part and chapter, and each kind starts
-again in every chapter, so equation (1.5.1) is the first numbered equation of
-the fifth chapter of Part 1. Section headings are numbered the same way.
+Each part opens with an overview page that states what the part covers, how
+it builds on the earlier parts, and the argument that runs through its
+chapters. Equations, tables, diagrams, knowledge checks, and worked examples
+are numbered by part and chapter, and each kind starts again in every
+chapter, so equation (1.5.1) is the first numbered equation of the fifth
+chapter of Part 1. Section headings are numbered the same way.
 
 <CourseContents headingLevel={3} />
 
-Two reference pages sit outside the chapter sequence: the
-[curriculum map](curriculum-map/) shows which competency supports which, and
-the [notation glossary](glossary/) collects every shared symbol in one place.
-
-## How the course works
+## How the course is built
 
 <CardGrid>
   <Card title="Prerequisite-aware" icon="puzzle">
-    Lessons declare the exact competencies they require and teach. A validator
-    rejects missing references and cycles.
+    Each chapter declares the exact competencies that it requires and teaches. A
+    validator rejects a missing reference and a cycle.
   </Card>
-  <Card title="Interactive, with boundaries" icon="rocket">
-    Change inputs and inspect relationships, while every model states what it
-    simplifies or leaves out.
+  <Card title="One meaning per symbol" icon="information">
+    Each symbol in the rendered math resolves to one notation entry. The
+    [notation glossary](glossary/) collects the shared entries.
   </Card>
-  <Card title="CDS legs, step by step" icon="open-book">
-    Build probability, risk-neutral, survival, and recovery prerequisites;
-    integrate exact default-time legs; then convert a conventional spread quote
-    into a signed upfront amount.
+  <Card title="Tested numbers" icon="approve-check-circle">
+    Each worked number comes from the course's tested calculation code or from a
+    cited source. The models state their units, signs, and conventions.
   </Card>
   <Card title="Draft until reviewed" icon="approve-check">
-    This is an educational playground. AI-assisted material remains visibly
-    draft until humans verify its prose, sources, formulas, and tests.
+    The material was drafted with AI assistance. Each chapter stays marked draft
+    until a person checks its prose, sources, formulas, and numbers.
   </Card>
 </CardGrid>
 

@@ -77,6 +77,23 @@ test('the homepage lists every part and chapter in reading order', async ({
   }
 });
 
+test('the homepage offers every part as a starting point', async ({ page }) => {
+  await page.goto('/');
+  // The starting-point cards are authored, not generated, so this is what
+  // catches a new or renamed part that the homepage does not yet offer.
+  for (const part of manifest.parts) {
+    const card = page.locator('main').getByRole('link', {
+      name: `Part ${part.ordinal} · ${part.label}`,
+      exact: true,
+    });
+    await expect(card).toHaveAttribute('href', `${part.dir}/`);
+    const response = await page.request.get(
+      new URL(`${part.dir}/`, page.url()).toString(),
+    );
+    expect(response.ok(), part.dir).toBe(true);
+  }
+});
+
 test('overview and contents links use the course accent, not the default link blue', async ({
   page,
 }) => {

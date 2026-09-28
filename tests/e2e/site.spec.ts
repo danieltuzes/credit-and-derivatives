@@ -8,16 +8,20 @@ test('the splash homepage hero actions link to real pages', async ({
 
   const heroActions = [
     { name: /Start with the foundations/i, heading: /^Foundations$/ },
-    { name: /Go to the CDS part/i, heading: /^CDS$/ },
     { name: /View the curriculum map/i, heading: /Curriculum map/i },
   ];
 
-  // The contents action stays on the page: it jumps to the contents list.
-  const contents = page.getByRole('link', {
-    name: /Browse the course contents/i,
-  });
-  await expect(contents).toHaveAttribute('href', '#course-contents');
-  await expect(page.locator('#course-contents')).toHaveCount(1);
+  // Two actions stay on the page: they jump to a section of the homepage.
+  for (const [name, anchor] of [
+    [/Choose a starting point/i, '#where-to-start'],
+    [/Browse the course contents/i, '#course-contents'],
+  ] as const) {
+    await expect(page.getByRole('link', { name })).toHaveAttribute(
+      'href',
+      anchor,
+    );
+    await expect(page.locator(anchor)).toHaveCount(1);
+  }
 
   for (const action of heroActions) {
     const link = page.getByRole('link', { name: action.name });
