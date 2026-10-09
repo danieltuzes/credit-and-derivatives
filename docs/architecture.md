@@ -170,14 +170,14 @@ layout UI      → PreferenceStore seam → (browser) localStorage adapter
 Six collections. Filename must equal `id` (or `key`) for every entry. IDs are
 lowercase, dot/dash-namespaced, case-sensitive: `rates.discount-factor.calculate`.
 
-| Entity         | Location                         | Schema                                    | Notes                                                                                                                                                                                                                                                                                                                             |
-| -------------- | -------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Competency** | `content/competencies/<id>.json` | `src/content.config.ts` → `competencies`  | One atomic, observable outcome (verb-phrased). `prerequisites` form a DAG. `evidence` declares `minimumIndependentItems`, `requiresTransfer`, `requiresUnassistedPass`. Split any record that says "and".                                                                                                                         |
-| **Assessment** | `content/assessments/<id>.json`  | → `assessments`                           | `items[]` of `numeric` (`answer.value` + `tolerance`) or `single-choice` (`options` + `correctOptionId`). Each item: one `competencyId`, `evidenceKind` `direct`\|`transfer`. Numeric answers come from reviewed domain code or an independent calculation — never a prose answer copied into a test.                             |
-| **Source**     | `content/sources/<id>.json`      | → `sources`                               | Metadata only (`type`, `title`, `authors`/`organization`, `edition`, `year`, `isbn`/`url`, `locator`, `accessed`, `licenseNotes`). Never licensed body text. Prefer contractual/regulatory > original papers/official docs > textbooks > secondary.                                                                               |
-| **Track**      | `content/tracks/<id>.json`       | → `tracks`                                | Ordered `lessons[]`. The validator walks the track and fails if a lesson precedes a taught prerequisite.                                                                                                                                                                                                                          |
-| **Notation**   | `content/notation/<key>.md`      | → `notation`                              | Frontmatter: `key`, `latex`, `meaning`, `formula?`, `units` or `dimensionless: true`, `seeAlso`, `sources` (`{id, locator}`), `alignment`, `label?`; shared-only extras `domain`, `aliases`, `editorialStatus`, `aiAssisted`, plus a Markdown body that may `[[key]]` other shared entries. `meaning` is the compact explanation. |
-| **Lesson**     | `content/docs/<area>/<slug>.mdx` | → `docs` (extends Starlight `docsSchema`) | Authored: `title`, `description`, `teaches[]` (ordered — the curriculum contract), `assumptions[]`, `notation.local[]`. Artifact flag: `editorialStatus`. Everything else is derived, never authored (see below).                                                                                                                 |
+| Entity         | Location                         | Schema                                    | Notes                                                                                                                                                                                                                                                                                                          |
+| -------------- | -------------------------------- | ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Competency** | `content/competencies/<id>.json` | `src/content.config.ts` → `competencies`  | One atomic, observable outcome (verb-phrased). `prerequisites` form a DAG. `evidence` declares `minimumIndependentItems`, `requiresTransfer`, `requiresUnassistedPass`. Split any record that says "and".                                                                                                      |
+| **Assessment** | `content/assessments/<id>.json`  | → `assessments`                           | `items[]` of `numeric` (`answer.value` + `tolerance`) or `single-choice` (`options` + `correctOptionId`). Each item: one `competencyId`, `evidenceKind` `direct`\|`transfer`. Numeric answers come from reviewed domain code or an independent calculation — never a prose answer copied into a test.          |
+| **Source**     | `content/sources/<id>.json`      | → `sources`                               | Metadata only (`type`, `title`, `authors`/`organization`, `edition`, `year`, `isbn`/`url`, `locator`, `accessed`, `licenseNotes`). Never licensed body text. Prefer contractual/regulatory > original papers/official docs > textbooks > secondary.                                                            |
+| **Track**      | `content/tracks/<id>.json`       | → `tracks`                                | Ordered `lessons[]`. The validator walks the track and fails if a lesson precedes a taught prerequisite.                                                                                                                                                                                                       |
+| **Notation**   | `content/notation/<key>.md`      | → `notation`                              | Frontmatter: `key`, `latex`, `meaning`, `formula?`, `units` or `dimensionless: true`, `seeAlso`, `sources` (`{id, locator}`), `alignment`, `label?`; shared-only extras `domain`, `aliases`, `aiAssisted`, plus a Markdown body that may `[[key]]` other shared entries. `meaning` is the compact explanation. |
+| **Lesson**     | `content/docs/<area>/<slug>.mdx` | → `docs` (extends Starlight `docsSchema`) | Authored: `title`, `description`, `teaches[]` (ordered — the curriculum contract), `assumptions[]`, `notation.local[]`. Everything else is derived, never authored (see below).                                                                                                                                |
 
 Derived into the manifest, never in lesson frontmatter: `lessonId` (doc slug),
 `requires[]` (direct competency-DAG prerequisites of `teaches`, minus `teaches`),
@@ -185,8 +185,8 @@ Derived into the manifest, never in lesson frontmatter: `lessonId` (doc slug),
 `<lesson>.checks.yml`), sidebar order (track order). `notation.uses[]` is
 retired (D3): a lesson pulls a shared key into scope by naming it — `[[key]]` in
 prose or `\explain{key}{…}` in math. `aiAssisted`, `lastReviewed`, `riskTier`,
-and `estimatedMinutes` were dropped (git history + `editorialStatus` +
-`NEEDS_SOURCE` carry provenance).
+and `estimatedMinutes` were dropped (git history + `NEEDS_SOURCE` carry
+provenance).
 
 `notation.local[]` entry (same `notationEntry` shape as a shared entry): `key`,
 `latex`, `meaning`, `formula?`, `units?` or `dimensionless: true`, `seeAlso[]`,
@@ -482,8 +482,8 @@ secret, or deployment behaviour without human review. Unsupported claims are
 marked `NEEDS_SOURCE`.
 
 **Provenance** of material AI assistance is carried by version-control history
-plus the per-artifact `editorialStatus` and `aiAssisted` flags and inline
-`NEEDS_SOURCE` markers.
+plus the `aiAssisted` flag on notation entries and inline `NEEDS_SOURCE`
+markers.
 
 **Reference library:** `reference-library/` holds local copies of copyrighted
 sources for verification. Read them to check a definition, convention, day count,

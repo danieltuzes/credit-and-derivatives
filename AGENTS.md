@@ -7,11 +7,12 @@ reviewer, or approver.
 
 ## Always
 
-- Keep every AI-assisted entry `editorialStatus: draft` (and `aiAssisted: true`
-  on a notation entry, which still carries that flag — lessons dropped it; git
-  history + `NEEDS_SOURCE` carry provenance). Reviewed content returns to
-  `draft` when materially changed unless the responsible human re-approves the
-  changed scope.
+- Keep `aiAssisted: true` on every AI-assisted notation entry (lessons carry no
+  such flag; git history + `NEEDS_SOURCE` carry provenance). Never add
+  `editorialStatus`: explico 0.13 retired it and `validate:content` fails with
+  `retired-key`. AI never marks content reviewed; a material change to content a
+  human has reviewed needs the responsible human to re-approve the changed
+  scope.
 - Never invent a citation, reviewer identity, market practice, contractual
   wording, or numerical answer. Unsupported claims are marked `NEEDS_SOURCE`.
 - Preserve the boundaries in `docs/architecture.md` §5: formulas live in

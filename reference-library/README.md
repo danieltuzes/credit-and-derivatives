@@ -40,7 +40,7 @@ whatever sits in this folder is a disposable local copy.
 2. Reference that `id` from the consuming entry:
    - lesson / notation frontmatter `sources: [<id>]`
    - `notation.local[].sources` for page-local definitions
-3. Keep the entry `editorialStatus: draft`; a human verifies the source.
+3. Keep an unverified claim marked `NEEDS_SOURCE`; a human verifies the source.
 
 ## What's in this folder
 

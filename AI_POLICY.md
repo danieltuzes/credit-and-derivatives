@@ -15,8 +15,8 @@ runtime tutor, pricing engine, or publishing agent.
   rebind an existing glyph to a new meaning without flagging it.
 - Quantitative output is produced by deterministic reviewed code, not generated
   prose.
-- AI assistance is recorded by version-control history plus the per-artifact
-  `editorialStatus` and `aiAssisted` flags and inline `NEEDS_SOURCE` markers.
+- AI assistance is recorded by version-control history plus the `aiAssisted`
+  flag on notation entries and inline `NEEDS_SOURCE` markers.
   Do not store hidden reasoning or raw transcripts.
 - Do not provide an AI system with credentials, private positions, client data,
   licensed market data, deployment authority, or trading access.
