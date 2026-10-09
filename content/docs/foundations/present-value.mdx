@@ -1,7 +1,6 @@
 ---
 title: Present value of a cash-flow schedule
 description: Discount each signed dated amount and then add the comparable values.
-editorialStatus: draft
 teaches:
   - finance.present-value.interpret
   - finance.present-value.calculate
@@ -15,6 +14,7 @@ notation:
       latex: k
       meaning: 'Selects one dated cash flow in the finite schedule. This lesson-local index keeps sequence bookkeeping separate from the associated time measured in years.'
       formula: 'k \in \{1,\ldots,n\}'
+      range: '1, \dots, n'
       dimensionless: true
       seeAlso:
         - payment-time
@@ -151,8 +151,8 @@ cannot be added without another model.
 </CompactExamples>
 
 The lab below is a calculator for the one-payment case. It calculates the
-[[discount-factor]] from one [[discounting-lab-rate]] with annual
-compounding. It then multiplies one [[discounting-lab-cash-flow]] by the
+[[discount-factor]] for one [[time-from-valuation]] $t$ from one
+[[discounting-lab-rate]] with annual compounding. It then multiplies one [[discounting-lab-cash-flow]] by the
 discount factor to give the [[present-value]] at [[valuation-time]] $0$. The
 lab formulas use the same symbols as the text above.
 

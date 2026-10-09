@@ -16,6 +16,5 @@
   "misconceptions": [
     "Terminal values can be averaged directly to time zero without valuing intermediate nodes.",
     "One valuation-time discount factor must be reused at every node even when the input lattice has node-specific factors."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

@@ -17,6 +17,5 @@
   "misconceptions": [
     "The option continuation value should include the bond's recovery cash flow in the default branch.",
     "Unconditional survival to expiry can always replace node-by-node conditional survival in a state-dependent lattice."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

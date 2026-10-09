@@ -13,7 +13,6 @@ alignment:
   kind: competency
   introducedByCompetency: options.european-contract.interpret
   introducedInLesson: derivatives.european-option-contracts-and-payoffs
-editorialStatus: draft
 aiAssisted: true
 ---
 

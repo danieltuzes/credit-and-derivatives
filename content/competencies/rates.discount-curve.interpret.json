@@ -13,6 +13,5 @@
   "misconceptions": [
     "A single yield is interchangeable with an entire dated discount curve.",
     "Discount factors must be below one even when rates can be negative."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

@@ -16,7 +16,6 @@ alignment:
   kind: competency
   introducedByCompetency: derivatives.forward-delivery-price.calculate
   introducedInLesson: derivatives.forward-contracts-and-value
-editorialStatus: draft
 aiAssisted: true
 ---
 

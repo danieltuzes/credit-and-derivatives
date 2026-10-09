@@ -44,6 +44,24 @@
   present value of the underlying's income. The default time is now stated as
   τ > 0, which follows from S(0,0) = 1; the survival lesson previously stated
   τ ≥ 0.
+- Upgraded the course engine to explico 0.13.1, with Astro 7.3 and Starlight
+  0.42. The number of an equation, diagram, table, or example set now has a
+  toolbar to pin or dock its card and to copy its link. Every page has a print
+  button and a Download menu. Touch screens have a text-size control. The
+  mobile menu opens as a popover. No formula, input value, result, or answer
+  key changed.
+- Added the shared notation entry "Time from valuation" for the symbol t
+  written without a row index. The discounting, rates, credit, and CDS lessons
+  already used t that way, and they now introduce it. In the survival and CDS
+  equations, hovering t now opens that card instead of the payment time.
+- Stated the set that each index runs over on its card, for example
+  k = 1, …, n for the bond payment index. Added the page-local entries "Final
+  payment indicator" in the bond cash-flow lesson and "Partition event" in the
+  probability lesson, and named the letters of the yield-shock formula.
+- Restated the periodic-rate equation of the nominal annual rate entry in
+  words. The entry no longer uses the symbol r with a subscript, because the
+  periodic rate entry defines it.
+- Removed the retired `editorialStatus` field from every content file.
 
 ## [0.4.0] - 2026-09-23
 

@@ -17,6 +17,5 @@
   "misconceptions": [
     "Put-call parity applies to any call and put even when strike, expiry, exercise style, or underlying differs.",
     "Put-call parity is a forecast of the underlying's expiry price."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

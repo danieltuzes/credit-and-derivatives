@@ -21,7 +21,6 @@ alignment:
   kind: competency
   introducedByCompetency: finance.risk-neutral-measure.interpret
   introducedInLesson: foundations.risk-neutral-pricing
-editorialStatus: draft
 aiAssisted: true
 ---
 

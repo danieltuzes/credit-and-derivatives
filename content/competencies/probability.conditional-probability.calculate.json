@@ -13,6 +13,5 @@
   "misconceptions": [
     "Conditioning changes the event being measured but not the set of possible conditioning outcomes.",
     "The denominator in a conditional probability is the unconditional probability of the event being predicted."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

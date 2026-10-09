@@ -18,6 +18,5 @@
   "misconceptions": [
     "Survival at a later tenor uses only the hazard rate of the segment ending there.",
     "A fitted segment hazard rate may be negative when the later mark is cheaper than the earlier one."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

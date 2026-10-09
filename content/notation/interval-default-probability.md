@@ -18,7 +18,6 @@ alignment:
   kind: competency
   introducedByCompetency: credit.default-probability-from-survival.calculate
   introducedInLesson: credit.default-hazard-and-survival
-editorialStatus: draft
 aiAssisted: true
 ---
 

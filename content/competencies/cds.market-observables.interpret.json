@@ -18,6 +18,5 @@
   "misconceptions": [
     "The recovery rate used by a standard converter is observed in the CDS quote.",
     "The hazard rate is a quoted market input rather than a quantity solved from a traded price."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

@@ -1,7 +1,6 @@
 {
   "id": "bond-yield-check",
   "title": "Yield to maturity",
-  "editorialStatus": "draft",
   "items": [
     {
       "id": "ytm-meaning-direct",

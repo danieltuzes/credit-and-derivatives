@@ -6,6 +6,7 @@
     "probability-event-index",
     "probability-event-value",
     "probability-measure",
+    "probability-partition-event",
     "probability-partition-size",
     "probability-random-value"
   ],
@@ -164,5 +165,5 @@
       "symbol": "x_j"
     }
   ],
-  "schemaVersion": 24
+  "schemaVersion": 31
 }

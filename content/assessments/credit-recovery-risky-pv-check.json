@@ -1,7 +1,6 @@
 {
   "id": "credit-recovery-risky-pv-check",
   "title": "Recovery and risky present value",
-  "editorialStatus": "draft",
   "items": [
     {
       "id": "recovery-rate-direct",

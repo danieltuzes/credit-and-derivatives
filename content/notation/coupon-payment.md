@@ -17,7 +17,6 @@ alignment:
   kind: competency
   introducedByCompetency: bonds.coupon-amount.calculate
   introducedInLesson: bonds.fixed-rate-contract-and-cash-flows
-editorialStatus: draft
 aiAssisted: true
 ---
 

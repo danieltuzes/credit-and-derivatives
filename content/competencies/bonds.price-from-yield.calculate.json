@@ -10,6 +10,5 @@
     "requiresTransfer": true,
     "requiresUnassistedPass": true
   },
-  "misconceptions": ["Yield is a cash flow paid by the issuer."],
-  "editorialStatus": "draft"
+  "misconceptions": ["Yield is a cash flow paid by the issuer."]
 }

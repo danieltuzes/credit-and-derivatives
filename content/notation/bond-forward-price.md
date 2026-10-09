@@ -15,7 +15,6 @@ alignment:
   kind: competency
   introducedByCompetency: bonds.forward-delivery-price.calculate
   introducedInLesson: bonds.bond-forwards
-editorialStatus: draft
 aiAssisted: true
 ---
 

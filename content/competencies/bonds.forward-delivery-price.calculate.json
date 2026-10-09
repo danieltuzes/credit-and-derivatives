@@ -17,6 +17,5 @@
   "misconceptions": [
     "Coupons paid before forward delivery belong to the forward buyer.",
     "Clean spot price can be combined with a dirty delivery strike without an accrued-interest adjustment."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

@@ -18,6 +18,5 @@
   },
   "misconceptions": [
     "Recovery paid after default should be added to the full survival payoff instead of replacing the par payoff in the default state."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

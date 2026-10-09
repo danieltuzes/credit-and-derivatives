@@ -18,7 +18,6 @@ alignment:
   kind: competency
   introducedByCompetency: bonds.price-from-discount-factors.calculate
   introducedInLesson: bonds.price-from-discount-factors
-editorialStatus: draft
 aiAssisted: true
 ---
 

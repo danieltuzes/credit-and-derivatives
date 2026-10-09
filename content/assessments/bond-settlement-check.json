@@ -1,7 +1,6 @@
 {
   "id": "bond-settlement-check",
   "title": "Bond settlement",
-  "editorialStatus": "draft",
   "items": [
     {
       "id": "clean-dirty-direct",

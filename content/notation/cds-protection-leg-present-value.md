@@ -20,7 +20,6 @@ alignment:
   kind: competency
   introducedByCompetency: cds.protection-leg.calculate
   introducedInLesson: cds.premium-protection-legs-and-par-spread
-editorialStatus: draft
 aiAssisted: true
 ---
 

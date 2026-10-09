@@ -18,7 +18,6 @@ alignment:
   kind: competency
   introducedByCompetency: bond-options.default-knockout-value.calculate
   introducedInLesson: bond-options.issuer-default-knockout
-editorialStatus: draft
 aiAssisted: true
 ---
 

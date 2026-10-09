@@ -6,6 +6,7 @@ aliases:
   - coupon payment index
 domain: bonds
 units: dimensionless schedule index
+range: '1, \dots, n'
 sources: []
 seeAlso:
   - number-of-bond-payments
@@ -15,7 +16,6 @@ alignment:
   kind: competency
   introducedByCompetency: bonds.fixed-cashflows.identify
   introducedInLesson: bonds.fixed-rate-contract-and-cash-flows
-editorialStatus: draft
 aiAssisted: true
 ---
 

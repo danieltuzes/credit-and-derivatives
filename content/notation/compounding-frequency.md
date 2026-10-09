@@ -6,6 +6,7 @@ aliases:
   - periods per year
 domain: rates
 units: compounding periods per year
+range: '1, 2, 3, \dots'
 sources:
   - id: tuckman-serrat-fixed-income
     locator: 'Ch. 2 §2.1, printed pp. 66-67, Eq. 2.7 (n periods per year and an annual rate compounded n times per year).'
@@ -16,7 +17,6 @@ alignment:
   kind: competency
   introducedByCompetency: rates.periodic-rate.calculate
   introducedInLesson: foundations.rates-compounding-and-basis-points
-editorialStatus: draft
 aiAssisted: true
 ---
 

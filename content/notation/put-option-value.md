@@ -15,7 +15,6 @@ alignment:
   kind: competency
   introducedByCompetency: options.value-payoff-profit.distinguish
   introducedInLesson: derivatives.european-option-contracts-and-payoffs
-editorialStatus: draft
 aiAssisted: true
 ---
 

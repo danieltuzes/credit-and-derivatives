@@ -20,7 +20,6 @@ alignment:
   kind: competency
   introducedByCompetency: credit.risky-present-value.calculate
   introducedInLesson: credit.recovery-and-risky-present-value
-editorialStatus: draft
 aiAssisted: true
 ---
 

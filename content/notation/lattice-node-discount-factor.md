@@ -15,7 +15,6 @@ alignment:
   kind: competency
   introducedByCompetency: finance.backward-induction.calculate
   introducedInLesson: derivatives.multiperiod-lattice-valuation
-editorialStatus: draft
 aiAssisted: true
 ---
 

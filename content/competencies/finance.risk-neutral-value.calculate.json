@@ -16,6 +16,5 @@
   "misconceptions": [
     "The expected payoff should be computed with real-world probabilities when risk-neutral probabilities are the pricing inputs.",
     "A future expected payoff can be reported as time-zero value without discounting."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

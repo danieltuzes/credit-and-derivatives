@@ -1,7 +1,9 @@
 {
   "file": "content/docs/bonds/fixed-rate-contract-and-cash-flows.mdx",
   "lesson": "bonds.fixed-rate-contract-and-cash-flows",
-  "localKeys": [],
+  "localKeys": [
+    "final-payment-indicator"
+  ],
   "references": [
     {
       "column": 33,
@@ -103,5 +105,5 @@
       "symbol": "m"
     }
   ],
-  "schemaVersion": 24
+  "schemaVersion": 31
 }

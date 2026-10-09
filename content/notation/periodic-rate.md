@@ -17,16 +17,15 @@ alignment:
   kind: competency
   introducedByCompetency: rates.periodic-rate.calculate
   introducedInLesson: foundations.rates-compounding-and-basis-points
-editorialStatus: draft
 aiAssisted: true
 ---
 
-The periodic rate $r_{\explain{compounding-frequency}{m}}$ is the rate applied
+The periodic rate $\explain{periodic-rate}{r_{\explain{compounding-frequency}{m}}}$ is the rate applied
 once per compounding period.
 
 For the nominal convention used here, it nests the
 [[nominal-annual-rate]] and [[compounding-frequency]] definitions:
 
 $$
-r_{\explain{compounding-frequency}{m}}=\frac{\explain{nominal-annual-rate}{j^{(m)}}}{\explain{compounding-frequency}{m}}
+\explain{periodic-rate}{r_{\explain{compounding-frequency}{m}}}=\frac{\explain{nominal-annual-rate}{j^{(m)}}}{\explain{compounding-frequency}{m}}
 $$

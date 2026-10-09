@@ -15,7 +15,6 @@ alignment:
   kind: competency
   introducedByCompetency: derivatives.forward-contract.interpret
   introducedInLesson: derivatives.forward-contracts-and-value
-editorialStatus: draft
 aiAssisted: true
 ---
 

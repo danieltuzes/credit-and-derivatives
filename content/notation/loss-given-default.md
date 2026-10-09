@@ -15,7 +15,6 @@ alignment:
   kind: competency
   introducedByCompetency: credit.loss-given-default.calculate
   introducedInLesson: credit.recovery-and-risky-present-value
-editorialStatus: draft
 aiAssisted: true
 ---
 

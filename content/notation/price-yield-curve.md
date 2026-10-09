@@ -18,7 +18,6 @@ alignment:
   kind: competency
   introducedByCompetency: bonds.price-yield-curvature.interpret
   introducedInLesson: bonds.price-yield-relationship
-editorialStatus: draft
 aiAssisted: true
 ---
 

@@ -16,6 +16,5 @@
   "misconceptions": [
     "The equivalent notional equals the position notional whenever the reference entity is the same.",
     "An equivalent-ratio hedge also offsets the loss on an immediate default."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

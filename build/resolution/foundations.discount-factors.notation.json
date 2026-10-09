@@ -7,6 +7,15 @@
   "references": [
     {
       "column": 31,
+      "definitionId": "shared:time-from-valuation",
+      "key": "time-from-valuation",
+      "kind": "prose",
+      "line": 16,
+      "scope": "shared",
+      "symbol": "t"
+    },
+    {
+      "column": 58,
       "definitionId": "shared:payment-time",
       "key": "payment-time",
       "kind": "prose",
@@ -15,7 +24,7 @@
       "symbol": "t_k"
     },
     {
-      "column": 24,
+      "column": 51,
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
@@ -78,5 +87,5 @@
       "symbol": "j^{(m)}"
     }
   ],
-  "schemaVersion": 24
+  "schemaVersion": 31
 }

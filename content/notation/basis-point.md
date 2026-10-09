@@ -16,7 +16,6 @@ alignment:
   kind: competency
   introducedByCompetency: rates.basis-points.convert
   introducedInLesson: foundations.rates-compounding-and-basis-points
-editorialStatus: draft
 aiAssisted: true
 ---
 

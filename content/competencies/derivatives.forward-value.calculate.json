@@ -13,6 +13,5 @@
   "misconceptions": [
     "A forward with zero inception value has zero value throughout its life.",
     "Forward price and forward contract value are interchangeable currency amounts."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

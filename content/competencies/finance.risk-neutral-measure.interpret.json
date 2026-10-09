@@ -18,6 +18,5 @@
     "Risk-neutral probabilities are forecasts of real-world event frequencies.",
     "Changing to a risk-neutral measure removes uncertainty or volatility.",
     "Risk-neutral valuation assumes every investor is indifferent to risk."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

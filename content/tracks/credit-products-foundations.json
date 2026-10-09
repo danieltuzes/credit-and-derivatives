@@ -27,6 +27,5 @@
     "cds.market-standard-quote-and-upfront",
     "cds.credit-curve-and-market-observables",
     "cds.equivalent-notional-and-quote-risk"
-  ],
-  "editorialStatus": "draft"
+  ]
 }

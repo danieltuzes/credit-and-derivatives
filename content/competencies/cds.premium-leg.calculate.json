@@ -22,6 +22,5 @@
   "misconceptions": [
     "Scheduled CDS premium is paid with certainty at every date, regardless of survival.",
     "A single half-period accrued amount is exact even when discounting and default density vary within the period."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

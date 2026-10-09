@@ -34,4 +34,5 @@
 - glyph-unique-in-corpus:N — shared CDS notional; page-local forward-contract quantity in the forward lesson and number of compounding periods in the rates lesson.
 - glyph-unique-in-corpus:q — page-local risk-neutral up weight in the one-period binomial lesson and page-local liquid-contract quotation in the equivalent-notional lesson.
 - glyph-unique-in-corpus:T — horizon each lesson declares: shared bond maturity, the end time of forward discounting, the recovery payment time, the risk-neutral pricing horizon.
+- glyph-unique-in-corpus:t — shared time in years from the valuation time in the discounting, rates, credit and CDS lessons; page-local earlier time from which a later payment is valued in the discount-curve lesson, itself a model time from valuation. Drafted 2026-10-08 (AI-assisted) with the explico 0.13 upgrade; stands only once the maintainer has reviewed it.
 - glyph-unique-in-corpus:x_j — value of the random value on event j in the probability lesson, and the payoff in scenario j in the risk-neutral lesson, which applies the same idea to a pricing partition.

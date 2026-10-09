@@ -17,6 +17,5 @@
   "misconceptions": [
     "The forward price equals the spot price regardless of funding and income.",
     "Known income paid before delivery should be added to the prepaid forward value."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

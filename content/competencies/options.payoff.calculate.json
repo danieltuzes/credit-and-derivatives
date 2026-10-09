@@ -13,6 +13,5 @@
   "misconceptions": [
     "The holder payoff can be negative when the option finishes out of the money.",
     "Call and put payoff formulas have the same subtraction order."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

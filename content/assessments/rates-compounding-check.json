@@ -1,7 +1,6 @@
 {
   "id": "rates-compounding-check",
   "title": "Rates, compounding, and basis points",
-  "editorialStatus": "draft",
   "items": [
     {
       "id": "nominal-rate-quote-direct",

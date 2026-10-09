@@ -17,6 +17,5 @@
   "misconceptions": [
     "The real-world probability of an up move is required when the arbitrage-consistent risk-neutral weight is determined by the model.",
     "The expected expiry payoff is already a time-zero value and should not be discounted."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

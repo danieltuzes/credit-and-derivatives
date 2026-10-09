@@ -16,6 +16,5 @@
   "misconceptions": [
     "A call on a bond is the same contract as an issuer call feature embedded in a callable bond.",
     "A clean strike and dirty strike are interchangeable away from a coupon date."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

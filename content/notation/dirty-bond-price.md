@@ -21,7 +21,6 @@ alignment:
   kind: competency
   introducedByCompetency: bonds.clean-dirty-price.calculate
   introducedInLesson: bonds.settlement-clean-and-dirty-price
-editorialStatus: draft
 aiAssisted: true
 ---
 

@@ -18,6 +18,5 @@
   "misconceptions": [
     "Converting each tenor's quote to an upfront with the standard converter produces one consistent survival curve.",
     "A par spread read from a fitted term structure must equal the tenor's market-standard quote."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

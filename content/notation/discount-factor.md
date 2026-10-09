@@ -17,7 +17,6 @@ alignment:
   kind: competency
   introducedByCompetency: rates.discount-factor.interpret
   introducedInLesson: foundations.discount-factors
-editorialStatus: draft
 aiAssisted: true
 ---
 
@@ -27,7 +26,7 @@ deterministic unit paid at future time $t$ under the stated model.
 It is the reciprocal of the [[accumulation-factor]]:
 
 $$
-D(0,t)=\frac{1}{A(0,t)}=(1+r_{\explain{compounding-frequency}{m}})^{-\explain{compounding-frequency}{m}t}
+D(0,t)=\frac{1}{A(0,t)}=(1+\explain{periodic-rate}{r_{\explain{compounding-frequency}{m}}})^{-\explain{compounding-frequency}{m}t}
 $$
 
 It is neither an interest-rate quote nor a probability of payment.

@@ -10,6 +10,5 @@
     "requiresTransfer": true,
     "requiresUnassistedPass": true
   },
-  "misconceptions": ["One basis point is one percentage point."],
-  "editorialStatus": "draft"
+  "misconceptions": ["One basis point is one percentage point."]
 }

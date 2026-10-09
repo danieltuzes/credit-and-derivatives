@@ -58,7 +58,7 @@
       "definitionId": "shared:call-option-value",
       "key": "call-option-value",
       "kind": "prose",
-      "line": 48,
+      "line": 49,
       "scope": "shared",
       "symbol": "c_t"
     },
@@ -67,7 +67,7 @@
       "definitionId": "shared:put-option-value",
       "key": "put-option-value",
       "kind": "prose",
-      "line": 48,
+      "line": 49,
       "scope": "shared",
       "symbol": "p_t"
     },
@@ -76,7 +76,7 @@
       "definitionId": "page:derivatives.european-option-contracts-and-payoffs:option-premium-paid",
       "key": "option-premium-paid",
       "kind": "prose",
-      "line": 49,
+      "line": 50,
       "scope": "local",
       "symbol": "\\pi_0"
     },
@@ -85,10 +85,10 @@
       "definitionId": "page:derivatives.european-option-contracts-and-payoffs:option-holder-expiry-profit",
       "key": "option-holder-expiry-profit",
       "kind": "prose",
-      "line": 53,
+      "line": 54,
       "scope": "local",
       "symbol": "G_{T_{\\mathrm{opt}}}"
     }
   ],
-  "schemaVersion": 24
+  "schemaVersion": 31
 }

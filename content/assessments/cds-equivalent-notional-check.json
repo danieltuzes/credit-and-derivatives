@@ -1,7 +1,6 @@
 {
   "id": "cds-equivalent-notional-check",
   "title": "Equivalent notional and quote risk",
-  "editorialStatus": "draft",
   "items": [
     {
       "id": "cds-quote-sensitivity-direct",

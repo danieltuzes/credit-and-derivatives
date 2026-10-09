@@ -19,18 +19,17 @@ alignment:
   kind: competency
   introducedByCompetency: rates.periodic-rate.calculate
   introducedInLesson: foundations.rates-compounding-and-basis-points
-editorialStatus: draft
 aiAssisted: true
 ---
 
 The accumulation factor $A(0,t)$ grows one unit at
 [[valuation-time]] to time $t$ under the stated compounding model.
 
-Using [[periodic-rate]] $r_{\explain{compounding-frequency}{m}}$ and
+Using [[periodic-rate]] $\explain{periodic-rate}{r_{\explain{compounding-frequency}{m}}}$ and
 [[compounding-frequency]] $\explain{compounding-frequency}{m}$,
 
 $$
-A(0,t)=(1+r_{\explain{compounding-frequency}{m}})^{\explain{compounding-frequency}{m}t}
+A(0,t)=(1+\explain{periodic-rate}{r_{\explain{compounding-frequency}{m}}})^{\explain{compounding-frequency}{m}t}
 $$
 
 Its reciprocal is called a discount factor. Keeping the two concepts separate

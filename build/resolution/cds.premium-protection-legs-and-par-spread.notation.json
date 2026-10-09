@@ -327,15 +327,15 @@
     },
     {
       "column": 2,
-      "definitionId": "shared:payment-time",
-      "key": "payment-time",
+      "definitionId": "shared:time-from-valuation",
+      "key": "time-from-valuation",
       "kind": "math",
       "line": 101,
       "scope": "shared",
-      "symbol": "t_k"
+      "symbol": "t"
     },
     {
-      "column": 49,
+      "column": 56,
       "definitionId": "shared:survival-probability",
       "key": "survival-probability",
       "kind": "math",
@@ -354,12 +354,12 @@
     },
     {
       "column": 21,
-      "definitionId": "shared:payment-time",
-      "key": "payment-time",
+      "definitionId": "shared:time-from-valuation",
+      "key": "time-from-valuation",
       "kind": "math",
       "line": 106,
       "scope": "shared",
-      "symbol": "t_k"
+      "symbol": "t"
     },
     {
       "column": 1,
@@ -1010,5 +1010,5 @@
       "symbol": "\\alpha_i"
     }
   ],
-  "schemaVersion": 24
+  "schemaVersion": 31
 }

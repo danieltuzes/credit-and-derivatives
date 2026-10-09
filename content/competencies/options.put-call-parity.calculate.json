@@ -16,6 +16,5 @@
   "misconceptions": [
     "The undiscounted strike should be subtracted from a time-zero option value.",
     "Known income before expiry has no effect on parity."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

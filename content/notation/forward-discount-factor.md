@@ -16,7 +16,6 @@ alignment:
   kind: competency
   introducedByCompetency: rates.forward-discount-factor.calculate
   introducedInLesson: rates.discount-curve-and-forward-discounting
-editorialStatus: draft
 aiAssisted: true
 ---
 

@@ -13,6 +13,5 @@
   "misconceptions": [
     "Events in a probability sum may overlap without double-counting outcomes.",
     "A list of disjoint events is automatically exhaustive."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

@@ -1,7 +1,6 @@
 ---
 title: Multi-period lattice valuation
 description: Extend one-period risk-neutral valuation to node-by-node backward induction with local discount factors.
-editorialStatus: draft
 teaches:
   - finance.backward-induction.calculate
 assumptions:
@@ -72,6 +71,7 @@ the option payoff.
   short="Backward-induction order"
   caption="Start from terminal node values. At each earlier row, add any next-date cash flow to each successor value, form the local risk-neutral weighted average, multiply by the local discount factor, and repeat."
   direction="LR"
+  warnAboveWidth={false}
   nodes={[
     { id: 'terminal', text: 'Set terminal node values' },
     { id: 'successor', text: 'Add next-date cash flows' },

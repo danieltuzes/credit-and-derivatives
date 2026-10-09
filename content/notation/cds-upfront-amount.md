@@ -22,7 +22,6 @@ alignment:
   kind: competency
   introducedByCompetency: cds.upfront-amount.calculate
   introducedInLesson: cds.market-standard-quote-and-upfront
-editorialStatus: draft
 aiAssisted: true
 ---
 

@@ -1,7 +1,6 @@
 ---
 title: Events, conditional probability, and expectation
 description: Calculate expected values from disjoint events, including values that vary inside an event.
-editorialStatus: draft
 teaches:
   - probability.events.interpret
   - probability.conditional-probability.calculate
@@ -29,10 +28,25 @@ notation:
         kind: competency
         introducedByCompetency: probability.events.interpret
         introducedInLesson: foundations.probability-events-and-expectation
+    - key: probability-partition-event
+      latex: 'A_j'
+      meaning: "One event of the lesson's finite disjoint and exhaustive partition, selected by the event index."
+      dimensionless: true
+      sources:
+        - id: shreve-stochastic-calculus-finance-ii
+          locator: 'Ch. 1 §1.1, printed pp. 1-3, Eq. 1.1.5 (an event as a subset of the sample space and finitely many indexed disjoint events).'
+      seeAlso:
+        - probability-event
+        - probability-event-index
+      alignment:
+        kind: competency
+        introducedByCompetency: probability.events.interpret
+        introducedInLesson: foundations.probability-events-and-expectation
     - key: probability-event-index
       latex: j
       meaning: "Selects one event in the lesson's finite partition. The index is bookkeeping and has no probability or monetary unit."
       formula: 'j \in \{1,\ldots,m\}'
+      range: '1, \dots, m'
       dimensionless: true
       sources:
         - id: shreve-stochastic-calculus-finance-ii
@@ -48,6 +62,7 @@ notation:
       latex: m
       meaning: "Counts the events in the lesson's finite partition. The count is a positive integer and does not represent time."
       formula: 'm \in \mathbb{N}'
+      range: '1, 2, \dots'
       dimensionless: true
       sources:
         - id: shreve-stochastic-calculus-finance-ii

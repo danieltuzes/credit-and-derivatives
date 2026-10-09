@@ -18,7 +18,6 @@ alignment:
   kind: competency
   introducedByCompetency: bonds.fixed-rate-contract.interpret
   introducedInLesson: bonds.fixed-rate-contract-and-cash-flows
-editorialStatus: draft
 aiAssisted: true
 ---
 

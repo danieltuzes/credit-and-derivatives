@@ -16,6 +16,5 @@
   "misconceptions": [
     "Option payoff and option profit are identical even when a premium was paid.",
     "The strike price is the option premium."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

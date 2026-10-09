@@ -1,7 +1,6 @@
 {
   "id": "bond-option-check",
   "title": "European bond option",
-  "editorialStatus": "draft",
   "items": [
     {
       "id": "bond-option-contract-direct",

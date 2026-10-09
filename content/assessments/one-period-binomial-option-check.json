@@ -1,7 +1,6 @@
 {
   "id": "one-period-binomial-option-check",
   "title": "One-period binomial option valuation",
-  "editorialStatus": "draft",
   "items": [
     {
       "id": "binomial-option-value-direct",

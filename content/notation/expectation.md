@@ -29,7 +29,6 @@ alignment:
   kind: competency
   introducedByCompetency: probability.expectation-by-partition.calculate
   introducedInLesson: foundations.probability-events-and-expectation
-editorialStatus: draft
 aiAssisted: true
 ---
 

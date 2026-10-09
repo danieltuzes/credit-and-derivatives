@@ -17,6 +17,5 @@
   "misconceptions": [
     "The current bond price can be inserted directly into the expiry payoff formula.",
     "Coupons paid before expiry should remain inside an ex-coupon expiry bond value."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

@@ -18,7 +18,6 @@ alignment:
   kind: competency
   introducedByCompetency: finance.risk-neutral-value.calculate
   introducedInLesson: foundations.risk-neutral-pricing
-editorialStatus: draft
 aiAssisted: true
 ---
 

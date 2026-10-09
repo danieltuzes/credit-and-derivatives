@@ -16,6 +16,5 @@
   "misconceptions": [
     "The hedge ratio is the option payoff divided by the current underlying value.",
     "The risk-free cash position must be positive."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

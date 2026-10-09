@@ -1,7 +1,6 @@
 ---
 title: European option contracts and payoffs
 description: Separate call and put rights from expiry payoff, current value, premium, and profit.
-editorialStatus: draft
 teaches:
   - options.european-contract.interpret
   - options.payoff.calculate
@@ -116,6 +115,7 @@ three such puts has a signed payoff of $-45$.
 
 ## Value, premium, payoff, and profit are different
 
+{/* explico-allow N23: t in c_t and p_t is the current model time, a label that names the time of the value, not an index that runs over a set */}
 The [[call-option-value]] $c_t$ or [[put-option-value]] $p_t$ is a
 current value. At inception, the holder pays the local [[option-premium-paid]] $\pi_0$,
 under the stated settlement convention. The payoff is determined later, by the

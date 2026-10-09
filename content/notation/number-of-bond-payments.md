@@ -6,6 +6,7 @@ aliases:
   - remaining coupon-date count
 domain: bonds
 units: scheduled payment dates
+range: '1, 2, \dots'
 sources: []
 seeAlso:
   - bond-payment-index
@@ -15,7 +16,6 @@ alignment:
   kind: competency
   introducedByCompetency: bonds.fixed-rate-contract.interpret
   introducedInLesson: bonds.fixed-rate-contract-and-cash-flows
-editorialStatus: draft
 aiAssisted: true
 ---
 

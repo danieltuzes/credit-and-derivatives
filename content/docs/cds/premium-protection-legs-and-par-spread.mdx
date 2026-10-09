@@ -1,7 +1,6 @@
 ---
 title: CDS premium and protection legs
 description: Build exact default-time expectations for the two CDS legs and solve the zero-upfront par spread.
-editorialStatus: draft
 teaches:
   - cds.cash-flow-legs.interpret
   - cds.premium-leg.calculate
@@ -25,6 +24,7 @@ notation:
       latex: 'i'
       meaning: 'Selects one default interval and its following scheduled premium date. The index is bookkeeping and is not itself a time, probability, or currency amount.'
       formula: 'i \in \{1,\ldots,n\}'
+      range: '1, \dots, n'
       dimensionless: true
       sources:
         - id: tuckman-serrat-fixed-income
@@ -42,6 +42,7 @@ notation:
       latex: 'n'
       meaning: 'Counts the finite premium and default intervals in the simplified CDS schedule. It is a positive integer determined by model term and payment frequency.'
       formula: 'n \in \{1,2,\ldots\}'
+      range: '1, 2, \dots'
       dimensionless: true
       sources: []
       seeAlso:
@@ -328,12 +329,12 @@ $$
 
 Dividing by the (positive) survival probability turns the left side into a
 derivative of its logarithm, $-d\ln\left(\explain{survival-probability}{S^{\mathbb{Q}}\left(0,u\right)}\right)= \explain{cds-general-hazard-rate}{\lambda(u)}\,d \explain{cds-default-integration-time}{u}$. Integrating from $0$ to
-$\explain{payment-time}{t}$ and using $\ln\left(\explain{survival-probability}{S^{\mathbb{Q}}\left(0,0\right)}\right)=\ln(1)=0$ gives the survival
+$\explain{time-from-valuation}{t}$ and using $\ln\left(\explain{survival-probability}{S^{\mathbb{Q}}\left(0,0\right)}\right)=\ln(1)=0$ gives the survival
 probability:
 
 $$
 \explain{survival-probability}{S^{\mathbb{Q}}(0,t)}
-=\exp\left(-\int_0^{\explain{payment-time}{t}}
+=\exp\left(-\int_0^{\explain{time-from-valuation}{t}}
 \explain{cds-general-hazard-rate}{\lambda\left(u\right)}\,d
 \explain{cds-default-integration-time}{u}\right)
 $$

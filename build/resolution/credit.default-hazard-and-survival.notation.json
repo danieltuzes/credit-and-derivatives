@@ -35,11 +35,20 @@
       "symbol": "0"
     },
     {
+      "column": 1,
+      "definitionId": "shared:time-from-valuation",
+      "key": "time-from-valuation",
+      "kind": "prose",
+      "line": 21,
+      "scope": "shared",
+      "symbol": "t"
+    },
+    {
       "column": 10,
       "definitionId": "shared:default-time",
       "key": "default-time",
       "kind": "prose",
-      "line": 21,
+      "line": 22,
       "scope": "shared",
       "symbol": "\\tau"
     },
@@ -48,7 +57,7 @@
       "definitionId": "shared:survival-probability",
       "key": "survival-probability",
       "kind": "math",
-      "line": 25,
+      "line": 26,
       "scope": "shared",
       "symbol": "S(0,t)"
     },
@@ -57,7 +66,7 @@
       "definitionId": "shared:risk-neutral-probability-measure",
       "key": "risk-neutral-probability-measure",
       "kind": "math",
-      "line": 26,
+      "line": 27,
       "scope": "shared",
       "symbol": "\\mathbb{Q}"
     },
@@ -66,25 +75,25 @@
       "definitionId": "shared:default-time",
       "key": "default-time",
       "kind": "math",
-      "line": 27,
+      "line": 28,
       "scope": "shared",
       "symbol": "\\tau"
     },
     {
       "column": 1,
-      "definitionId": "shared:payment-time",
-      "key": "payment-time",
+      "definitionId": "shared:time-from-valuation",
+      "key": "time-from-valuation",
       "kind": "math",
-      "line": 28,
+      "line": 29,
       "scope": "shared",
-      "symbol": "t_k"
+      "symbol": "t"
     },
     {
       "column": 11,
       "definitionId": "page:credit.default-hazard-and-survival:credit-period-index",
       "key": "credit-period-index",
       "kind": "prose",
-      "line": 56,
+      "line": 57,
       "scope": "local",
       "symbol": "i"
     },
@@ -93,7 +102,7 @@
       "definitionId": "page:credit.default-hazard-and-survival:number-of-credit-periods",
       "key": "number-of-credit-periods",
       "kind": "prose",
-      "line": 57,
+      "line": 58,
       "scope": "local",
       "symbol": "n"
     },
@@ -102,7 +111,7 @@
       "definitionId": "shared:payment-time",
       "key": "payment-time",
       "kind": "prose",
-      "line": 58,
+      "line": 59,
       "scope": "shared",
       "symbol": "t_k"
     },
@@ -111,7 +120,7 @@
       "definitionId": "shared:payment-time",
       "key": "payment-time",
       "kind": "math",
-      "line": 59,
+      "line": 60,
       "scope": "shared",
       "symbol": "t_k"
     },
@@ -120,7 +129,7 @@
       "definitionId": "shared:interval-default-probability",
       "key": "interval-default-probability",
       "kind": "prose",
-      "line": 60,
+      "line": 61,
       "scope": "shared",
       "symbol": "\\Delta q_i"
     },
@@ -129,18 +138,9 @@
       "definitionId": "shared:interval-default-probability",
       "key": "interval-default-probability",
       "kind": "math",
-      "line": 64,
-      "scope": "shared",
-      "symbol": "\\Delta q_i"
-    },
-    {
-      "column": 2,
-      "definitionId": "shared:survival-probability",
-      "key": "survival-probability",
-      "kind": "math",
       "line": 65,
       "scope": "shared",
-      "symbol": "S(0,t)"
+      "symbol": "\\Delta q_i"
     },
     {
       "column": 2,
@@ -152,11 +152,20 @@
       "symbol": "S(0,t)"
     },
     {
+      "column": 2,
+      "definitionId": "shared:survival-probability",
+      "key": "survival-probability",
+      "kind": "math",
+      "line": 67,
+      "scope": "shared",
+      "symbol": "S(0,t)"
+    },
+    {
       "column": 28,
       "definitionId": "shared:survival-probability",
       "key": "survival-probability",
       "kind": "math",
-      "line": 75,
+      "line": 76,
       "scope": "shared",
       "symbol": "S(0,t)"
     },
@@ -165,7 +174,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "prose",
-      "line": 84,
+      "line": 85,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -174,7 +183,7 @@
       "definitionId": "page:credit.default-hazard-and-survival:credit-small-time-increment",
       "key": "credit-small-time-increment",
       "kind": "prose",
-      "line": 87,
+      "line": 88,
       "scope": "local",
       "symbol": "\\Delta t"
     },
@@ -183,7 +192,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 91,
+      "line": 92,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -192,7 +201,7 @@
       "definitionId": "shared:risk-neutral-probability-measure",
       "key": "risk-neutral-probability-measure",
       "kind": "math",
-      "line": 94,
+      "line": 95,
       "scope": "shared",
       "symbol": "\\mathbb{Q}"
     },
@@ -201,7 +210,7 @@
       "definitionId": "shared:default-time",
       "key": "default-time",
       "kind": "math",
-      "line": 95,
+      "line": 96,
       "scope": "shared",
       "symbol": "\\tau"
     },
@@ -210,7 +219,7 @@
       "definitionId": "shared:default-time",
       "key": "default-time",
       "kind": "math",
-      "line": 96,
+      "line": 97,
       "scope": "shared",
       "symbol": "\\tau"
     },
@@ -219,7 +228,7 @@
       "definitionId": "shared:survival-probability",
       "key": "survival-probability",
       "kind": "math",
-      "line": 107,
+      "line": 108,
       "scope": "shared",
       "symbol": "S(0,t)"
     },
@@ -228,7 +237,7 @@
       "definitionId": "shared:hazard-rate",
       "key": "hazard-rate",
       "kind": "math",
-      "line": 108,
+      "line": 109,
       "scope": "shared",
       "symbol": "\\lambda"
     },
@@ -237,7 +246,7 @@
       "definitionId": "shared:interval-default-probability",
       "key": "interval-default-probability",
       "kind": "math",
-      "line": 131,
+      "line": 132,
       "scope": "shared",
       "symbol": "\\Delta q_i"
     },
@@ -246,7 +255,7 @@
       "definitionId": "shared:payment-time",
       "key": "payment-time",
       "kind": "math",
-      "line": 165,
+      "line": 166,
       "scope": "shared",
       "symbol": "t_k"
     },
@@ -255,10 +264,10 @@
       "definitionId": "shared:survival-probability",
       "key": "survival-probability",
       "kind": "math",
-      "line": 165,
+      "line": 166,
       "scope": "shared",
       "symbol": "S(0,t)"
     }
   ],
-  "schemaVersion": 24
+  "schemaVersion": 31
 }

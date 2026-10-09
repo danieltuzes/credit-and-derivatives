@@ -16,7 +16,6 @@ alignment:
   kind: competency
   introducedByCompetency: finance.present-value.interpret
   introducedInLesson: foundations.present-value
-editorialStatus: draft
 aiAssisted: true
 ---
 

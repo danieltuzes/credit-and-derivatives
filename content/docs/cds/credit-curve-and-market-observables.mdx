@@ -1,7 +1,6 @@
 ---
 title: Credit curve and market observables
 description: Separate what the CDS market shows from what a pricing model assumes or solves, read a credit curve as tenor marks plus a fitted survival curve, and distinguish transforming quotes from fitting the curve.
-editorialStatus: draft
 teaches:
   - cds.market-observables.interpret
   - cds.credit-curve.interpret
@@ -21,6 +20,7 @@ notation:
       latex: 'k'
       meaning: 'Selects one quoted tenor of the credit curve in increasing maturity order. The index is bookkeeping and is not itself a time, a quote, or a probability.'
       formula: 'k \in \{1,\ldots,K\}'
+      range: '1, \dots, K'
       dimensionless: true
       sources: []
       seeAlso:

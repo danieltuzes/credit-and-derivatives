@@ -14,7 +14,6 @@ alignment:
   kind: competency
   introducedByCompetency: credit.recovery-rate.interpret
   introducedInLesson: credit.recovery-and-risky-present-value
-editorialStatus: draft
 aiAssisted: true
 ---
 

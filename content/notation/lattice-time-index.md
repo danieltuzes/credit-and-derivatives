@@ -4,6 +4,7 @@ latex: i
 meaning: 'Integer label for one time row in a finite recombining valuation lattice; a bookkeeping label, not a model-year time or currency amount.'
 domain: finance
 units: dimensionless integer index
+range: '0, 1, 2, \dots'
 sources:
   - id: hull-options-futures
     locator: 'Ch. 12 §12.3, printed pp. 259-261, Fig. 12.3 through Fig. 12.6 (time steps and state rows in a recombining two-step tree).'
@@ -14,7 +15,6 @@ alignment:
   kind: competency
   introducedByCompetency: finance.backward-induction.calculate
   introducedInLesson: derivatives.multiperiod-lattice-valuation
-editorialStatus: draft
 aiAssisted: true
 ---
 

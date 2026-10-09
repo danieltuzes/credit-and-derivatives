@@ -1,7 +1,6 @@
 ---
 title: Fixed-rate bond contract and cash flows
 description: Translate face value, coupon rate, frequency, and maturity into promised payments.
-editorialStatus: draft
 teaches:
   - bonds.fixed-rate-contract.interpret
   - bonds.coupon-amount.calculate
@@ -13,6 +12,17 @@ assumptions:
   - Settlement and valuation occur on a coupon date
   - Bondholder perspective with promised payments treated as positive receipts
   - No default, accrued interest, tax, callability, or other embedded option
+notation:
+  local:
+    - key: final-payment-indicator
+      latex: '\mathbf{1}_{\{k=n\}}'
+      meaning: 'Equals one on the final payment date, where the payment index equals the number of payments, and zero on every other date. It places the face value on the final date only.'
+      dimensionless: true
+      sources: []
+      alignment:
+        kind: competency
+        introducedByCompetency: bonds.fixed-cashflows.identify
+        introducedInLesson: bonds.fixed-rate-contract-and-cash-flows
 ---
 
 import CompactExample from 'explico/components/examples/CompactExample.astro';

@@ -18,7 +18,6 @@ alignment:
   kind: competency
   introducedByCompetency: credit.hazard-rate.interpret
   introducedInLesson: credit.default-hazard-and-survival
-editorialStatus: draft
 aiAssisted: true
 ---
 

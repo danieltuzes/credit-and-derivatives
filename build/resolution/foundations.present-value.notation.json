@@ -90,16 +90,25 @@
       "symbol": "D(0,t)"
     },
     {
-      "column": 30,
+      "column": 29,
+      "definitionId": "shared:time-from-valuation",
+      "key": "time-from-valuation",
+      "kind": "prose",
+      "line": 97,
+      "scope": "shared",
+      "symbol": "t"
+    },
+    {
+      "column": 1,
       "definitionId": "page:foundations.present-value:discounting-lab-rate",
       "key": "discounting-lab-rate",
       "kind": "prose",
-      "line": 97,
+      "line": 98,
       "scope": "local",
       "symbol": "y"
     },
     {
-      "column": 37,
+      "column": 74,
       "definitionId": "page:foundations.present-value:discounting-lab-cash-flow",
       "key": "discounting-lab-cash-flow",
       "kind": "prose",
@@ -126,5 +135,5 @@
       "symbol": "0"
     }
   ],
-  "schemaVersion": 24
+  "schemaVersion": 31
 }

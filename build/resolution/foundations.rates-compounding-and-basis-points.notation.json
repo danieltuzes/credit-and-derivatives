@@ -34,6 +34,15 @@
     },
     {
       "column": 31,
+      "definitionId": "shared:time-from-valuation",
+      "key": "time-from-valuation",
+      "kind": "prose",
+      "line": 22,
+      "scope": "shared",
+      "symbol": "t"
+    },
+    {
+      "column": 58,
       "definitionId": "shared:payment-time",
       "key": "payment-time",
       "kind": "prose",
@@ -42,7 +51,7 @@
       "symbol": "t_k"
     },
     {
-      "column": 1,
+      "column": 26,
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
@@ -51,7 +60,7 @@
       "symbol": "0"
     },
     {
-      "column": 42,
+      "column": 67,
       "definitionId": "page:foundations.rates-compounding-and-basis-points:number-of-compounding-periods",
       "key": "number-of-compounding-periods",
       "kind": "prose",
@@ -114,5 +123,5 @@
       "symbol": "1\\,\\mathrm{bp}"
     }
   ],
-  "schemaVersion": 24
+  "schemaVersion": 31
 }

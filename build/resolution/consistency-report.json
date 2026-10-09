@@ -1,8 +1,8 @@
 {
   "counts": {
     "accent-explained": 0,
+    "accent-swallowed": 0,
     "card-wants-demoting": 0,
-    "convention-single-definition": 0,
     "gloss-name-shape": 0,
     "gloss-wants-promoting": 0,
     "glyph-unique-in-corpus": 0,
@@ -109,5 +109,5 @@
     }
   ],
   "generatedBy": "pnpm validate:content",
-  "schemaVersion": 24
+  "schemaVersion": 31
 }

@@ -15,6 +15,5 @@
   },
   "misconceptions": [
     "Notional must remain in the par-spread ratio even though it scales both leg magnitudes equally."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

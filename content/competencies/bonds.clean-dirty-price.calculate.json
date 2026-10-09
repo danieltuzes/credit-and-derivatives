@@ -16,6 +16,5 @@
   "misconceptions": [
     "The clean quoted price is always the cash amount exchanged at settlement.",
     "Actual/actual coupon-period accrual counts an assumed 180 days regardless of the calendar dates."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

@@ -22,6 +22,5 @@
   "misconceptions": [
     "The protection leg uses survival probability where the model requires default probability density.",
     "A default anywhere in a period must be discounted from the period end."
-  ],
-  "editorialStatus": "draft"
+  ]
 }

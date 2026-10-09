@@ -16,7 +16,6 @@ alignment:
   kind: competency
   introducedByCompetency: finance.cash-flow-timeline.interpret
   introducedInLesson: foundations.cash-flow-timelines
-editorialStatus: draft
 aiAssisted: true
 ---
 

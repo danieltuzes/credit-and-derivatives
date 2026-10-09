@@ -23,7 +23,6 @@ alignment:
   kind: competency
   introducedByCompetency: cds.market-standard-quote.interpret
   introducedInLesson: cds.market-standard-quote-and-upfront
-editorialStatus: draft
 aiAssisted: true
 ---
 

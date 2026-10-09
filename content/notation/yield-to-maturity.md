@@ -20,7 +20,6 @@ alignment:
   kind: competency
   introducedByCompetency: bonds.yield-to-maturity.interpret
   introducedInLesson: bonds.yield-to-maturity
-editorialStatus: draft
 aiAssisted: true
 ---
 

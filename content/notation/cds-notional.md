@@ -16,7 +16,6 @@ alignment:
   kind: competency
   introducedByCompetency: cds.cash-flow-legs.interpret
   introducedInLesson: cds.premium-protection-legs-and-par-spread
-editorialStatus: draft
 aiAssisted: true
 ---
 
