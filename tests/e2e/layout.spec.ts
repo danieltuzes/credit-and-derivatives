@@ -350,21 +350,17 @@ test('stored desktop preferences do not alter Starlight mobile navigation or con
   await expect(page.locator('[data-layout-toggle="navigation"]')).toBeHidden();
   await expect(page.locator('[data-layout-toggle="contents"]')).toBeHidden();
 
-  const mobileMenuToggle = page.locator('starlight-menu-button > button');
+  // Starlight 0.42: a plain `button.sl-menu-button` opens `#starlight__sidebar`
+  // as a popover. A plain click must reach it (the raised header must not).
+  const mobileMenuToggle = page.locator('.sl-menu-button');
   const mobileMenu = page.locator('#starlight__sidebar');
+  const openMenu = page.locator('#starlight__sidebar:popover-open');
   await expect(mobileMenuToggle).toBeVisible();
   await expect(mobileMenu).toBeHidden();
   await mobileMenuToggle.click();
-  await expect(page.locator('starlight-menu-button')).toHaveAttribute(
-    'aria-expanded',
-    'true',
-  );
-  await expect(mobileMenu).toBeVisible();
-  await mobileMenuToggle.click();
-  await expect(page.locator('starlight-menu-button')).toHaveAttribute(
-    'aria-expanded',
-    'false',
-  );
+  await expect(openMenu).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(openMenu).toHaveCount(0);
   await expect(mobileMenu).toBeHidden();
 
   const mobileContents = page.locator('mobile-starlight-toc');

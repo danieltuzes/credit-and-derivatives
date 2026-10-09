@@ -19,14 +19,7 @@ import type {
   SharedNotationDefinitionInput,
 } from 'explico/reference/types';
 
-type EditorialCompetency = CompetencyDefinition & {
-  readonly editorialStatus: 'draft' | 'in-review' | 'reviewed';
-};
-
-const competency = (
-  id: string,
-  editorialStatus: EditorialCompetency['editorialStatus'] = 'draft',
-): EditorialCompetency => ({
+const competency = (id: string): CompetencyDefinition => ({
   id,
   title: id,
   prerequisites: [],
@@ -35,16 +28,13 @@ const competency = (
     requiresTransfer: false,
     requiresUnassistedPass: false,
   },
-  editorialStatus,
 });
 
 const curriculumLesson = (
   id: string,
   teaches: readonly string[] = [],
-  status: LessonDefinition['status'] = 'draft',
 ): LessonDefinition => ({
   id,
-  status,
   requires: [],
   teaches,
   assessments: [],
@@ -76,7 +66,6 @@ const alignedDefinition = (
   sources: [],
   seeAlso: [],
   alignment,
-  status: 'draft',
   aiAssisted: false,
   body: '',
   references: [],
@@ -90,7 +79,6 @@ const notationLesson = (
   key = 'discount-factor',
 ): NotationLessonInput => ({
   lessonId,
-  status: 'draft',
   localDefinitions: [],
   references: [
     {
@@ -238,34 +226,6 @@ describe('notation curriculum alignment', () => {
         message: expect.stringContaining(
           'used by foundations.rates before its declared introduction',
         ),
-      }),
-    );
-  });
-
-  it('does not allow a reviewed definition to outrun its owner records', () => {
-    const introduction = 'foundations.discount-factors';
-    const owner = 'rates.discount-factor.interpret';
-    const registry = buildNotationRegistry({
-      sharedDefinitions: [
-        alignedDefinition(ownership(owner, introduction), {
-          status: 'reviewed',
-        }),
-      ],
-      lessons: [notationLesson(introduction)],
-    });
-    const diagnostics = validateNotationAlignment(
-      registry,
-      catalog({
-        competencies: [competency(owner, 'draft')],
-        lessons: [curriculumLesson(introduction, [owner], 'draft')],
-        tracks: [{ id: 'credit-foundations', lessons: [introduction] }],
-      }),
-    );
-
-    expect(diagnostics).toContainEqual(
-      expect.objectContaining({
-        code: 'alignment-review-state',
-        definitionId: 'shared:discount-factor',
       }),
     );
   });

@@ -18,11 +18,9 @@ import {
 } from 'explico/reference/units-vocab';
 import { buildNotationRegistry } from 'explico/reference/registry';
 import { loadNotationRegistryInput } from 'explico/compiler/collections';
-import { loadCurriculumCatalog } from 'explico/compiler/collections';
 import { courseConfig } from '../../content/course.config';
 
 const NO_IGNORE = { entries: [], matches: () => false };
-const CONVENTIONS = courseConfig.conventions;
 
 describe('units vocabulary', () => {
   it('splits on whitespace and internal hyphens, drops bare numbers', () => {
@@ -76,10 +74,7 @@ describe('lint-ignore registry', () => {
 
 describe('runConsistencyChecks (real corpus)', () => {
   it('never blocks, and a lint-ignore entry suppresses a finding', async () => {
-    const [notationInput, catalog] = await Promise.all([
-      loadNotationRegistryInput(),
-      loadCurriculumCatalog(),
-    ]);
+    const notationInput = await loadNotationRegistryInput();
     const registry = buildNotationRegistry(notationInput);
     const specs = loadNotationSpecs();
 
@@ -87,9 +82,7 @@ describe('runConsistencyChecks (real corpus)', () => {
       registry,
       notationInput,
       specs,
-      catalog,
       lintIgnore: NO_IGNORE,
-      conventions: CONVENTIONS,
     });
     expect(all.length).toBeGreaterThan(0);
     // Tier 3: a finding is a warning or, since explico 0.7, an info.
@@ -102,13 +95,11 @@ describe('runConsistencyChecks (real corpus)', () => {
       registry,
       notationInput,
       specs,
-      catalog,
       lintIgnore: {
         entries: [],
         matches: (code, detail) =>
           code === 'glyph-unique-in-corpus' && detail === 'n',
       },
-      conventions: CONVENTIONS,
     });
     expect(
       all.some((d) => d.code === 'glyph-unique-in-corpus' && d.glyph === 'n'),
@@ -121,19 +112,14 @@ describe('runConsistencyChecks (real corpus)', () => {
   });
 
   it('is stable across two runs', async () => {
-    const [notationInput, catalog] = await Promise.all([
-      loadNotationRegistryInput(),
-      loadCurriculumCatalog(),
-    ]);
+    const notationInput = await loadNotationRegistryInput();
     const registry = buildNotationRegistry(notationInput);
     const specs = loadNotationSpecs();
     const input = {
       registry,
       notationInput,
       specs,
-      catalog,
       lintIgnore: NO_IGNORE,
-      conventions: CONVENTIONS,
     };
     expect(JSON.stringify(runConsistencyChecks(input))).toBe(
       JSON.stringify(runConsistencyChecks(input)),
@@ -159,8 +145,8 @@ describe('manifest D6 additions', () => {
     expect(codes.sort()).toEqual(
       [
         'accent-explained',
+        'accent-swallowed',
         'card-wants-demoting',
-        'convention-single-definition',
         'gloss-name-shape',
         'gloss-wants-promoting',
         'glyph-unique-in-corpus',

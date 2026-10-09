@@ -17,17 +17,23 @@ import {
 
 // --- pure helpers -----------------------------------------------------
 
+// A display equation is `$$` on its own lines (explico 0.12+); `$$ … $$` inside
+// a line is inline math and is not numbered.
+const display = (latex: string) => `$$\n${latex}\n$$`;
+
 describe('equation identity helpers (D7)', () => {
   it('numbers keyed `$$` blocks per `##` section', () => {
     const md = [
-      '$$ a=b \\label{eq:pre} $$', // before any section
+      display('a=b \\label{eq:pre}'), // before any section
       '## First',
-      '$$ c=d \\label{eq:one} $$',
+      display('c=d \\label{eq:one}'),
       '## Second',
-      'text $$ e=f \\label{eq:two} $$ more',
-      '$$ g=h \\label{eq:three} $$',
+      // Inline math, even with two dollars: not a display equation.
+      'text $$ e=f $$ more',
+      display('e=f \\label{eq:two}'),
+      display('g=h \\label{eq:three}'),
       '```',
-      '$$ x=y \\label{eq:infence} $$',
+      display('x=y \\label{eq:infence}'),
       '```',
     ].join('\n\n');
     expect(
@@ -43,9 +49,9 @@ describe('equation identity helpers (D7)', () => {
   it('numbers every display equation; a keyed one counts unkeyed neighbours', () => {
     const md = [
       '## S',
-      '$$ a=b $$',
-      'text $$ c=d \\label{eq:keyed} $$ more',
-      '$$ e=f $$',
+      display('a=b'),
+      display('c=d \\label{eq:keyed}'),
+      display('e=f'),
     ].join('\n\n');
     // The keyed equation is the second display block in the section.
     expect(
@@ -105,10 +111,10 @@ describe('equation identity helpers (D7)', () => {
     };
     const md = [
       '## A',
-      '$$ a=b \\label{eq:one} $$',
+      display('a=b \\label{eq:one}'),
       '## B',
-      '$$ c=d \\label{eq:two} $$',
-      '$$ e=f $$',
+      display('c=d \\label{eq:two}'),
+      display('e=f'),
     ].join('\n\n');
     const fromTree = collectEquationLabels(tree, undefined).map((l) => [
       l.key,
@@ -144,7 +150,7 @@ describe('validateEquations (D7)', () => {
     const result = validateEquations([
       lesson({
         lessonId: 'foundations.present-value',
-        body: '## S\n\n$$ x \\label{eq:pv} $$\n\nsee [[eq-pv]]',
+        body: `## S\n\n${display('x \\label{eq:pv}')}\n\nsee [[eq-pv]]`,
       }),
       lesson({
         lessonId: 'bonds.price-from-discount-factors',
@@ -161,7 +167,7 @@ describe('validateEquations (D7)', () => {
     const result = validateEquations([
       lesson({
         lessonId: 'a.b',
-        body: '## S\n\n$$ x \\label{eq:dup} $$\n\n$$ y \\label{eq:dup} $$\n\n$$ z \\label{eq:lonely} $$\n\nsee [[eq-missing]]',
+        body: `## S\n\n${display('x \\label{eq:dup}')}\n\n${display('y \\label{eq:dup}')}\n\n${display('z \\label{eq:lonely}')}\n\nsee [[eq-missing]]`,
       }),
     ]);
     const codes = result.diagnostics.map((d) => d.code).sort();

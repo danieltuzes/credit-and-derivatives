@@ -1,0 +1,91 @@
+diff --git a/dist/components/float-name.js b/dist/components/float-name.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..dc5e8371fc0db90469280c22e9be2b4c2fa2a105
+--- /dev/null
++++ b/dist/components/float-name.js
+@@ -0,0 +1,85 @@
++/**
++ * A numbered float's reader-facing name: its kind word and number, then its
++ * short caption when it has one — "Diagram 2.1.1 Steps of the range
++ * derivation" (docs/plans/figures-and-short-captions.md, decisions 9 and 11).
++ * A `<Fold>`'s bar names the floats inside it this way.
++ *
++ * A float carries both halves on its root element, as `data-<kind>-number`
++ * and `data-<kind>-short` (`Figure.astro`, `Table.astro`, `Diagram.astro`);
++ * nothing else in the page carries those attributes.
++ */
++export const FLOAT_KIND_WORDS = {
++    fig: 'Figure',
++    tab: 'Table',
++    dia: 'Diagram',
++};
++/** `Figure 2.1.1 Projectile trajectory explorer`, or `Figure 2.1.1` with no short caption. */
++export function floatName(float) {
++    const label = `${FLOAT_KIND_WORDS[float.kind]} ${float.number}`;
++    return float.short ? `${label} ${float.short}` : label;
++}
++/**
++ * The bold title that opens a caption line when the float has a short
++ * caption (docs/plans/figures-and-short-captions.md, decision 9.1): the
++ * short caption with a closing period, unless it already ends in one — the
++ * journal-legend style, "Fig. 1 | Title. Description".
++ */
++export function captionTitle(short) {
++    const title = short.trim();
++    return /[.!?…:;]$/u.test(title) ? title : `${title}.`;
++}
++/**
++ * A numbered float's name, read off its root element in the page — the same
++ * `data-<kind>-number` / `data-<kind>-short` pair `floatsInHtml` reads from
++ * markup. `null` for an element that is no numbered float.
++ */
++export function floatOf(element) {
++    for (const kind of ['fig', 'tab', 'dia']) {
++        const number = element.getAttribute(`data-${kind}-number`);
++        if (!number)
++            continue;
++        const short = element.getAttribute(`data-${kind}-short`) ?? undefined;
++        return {
++            kind,
++            number,
++            ...(short ? { short } : {}),
++            ...(element.id ? { anchorId: element.id } : {}),
++        };
++    }
++    return null;
++}
++/** Astro writes `&` and `"` in an attribute value as numeric references. */
++function decodeAttribute(value) {
++    return value
++        .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
++        .replace(/&#x([\da-f]+);/gi, (_, code) => String.fromCodePoint(Number.parseInt(code, 16)))
++        .replace(/&quot;/g, '"')
++        .replace(/&lt;/g, '<')
++        .replace(/&gt;/g, '>')
++        .replace(/&amp;/g, '&');
++}
++/**
++ * Every numbered float in rendered HTML, in document order — for a build-time
++ * component that renders its slot first (`<Fold>`). Reads the start tags
++ * only: attribute values are double-quoted, with `"` escaped, so a tag ends
++ * at the first `>` outside one.
++ */
++export function floatsInHtml(html) {
++    const floats = [];
++    for (const tag of html.matchAll(/<[A-Za-z][\w-]*((?:\s+[^\s"'>/=]+(?:="[^"]*")?)*)\s*\/?>/g)) {
++        const attributes = tag[1] ?? '';
++        const number = /\sdata-(fig|tab|dia)-number="([^"]*)"/.exec(attributes);
++        if (!number?.[2])
++            continue;
++        const kind = number[1];
++        const short = new RegExp(`\\sdata-${kind}-short="([^"]*)"`).exec(attributes)?.[1];
++        const anchorId = /\sid="([^"]*)"/.exec(attributes)?.[1];
++        floats.push({
++            kind,
++            number: decodeAttribute(number[2]),
++            ...(short ? { short: decodeAttribute(short) } : {}),
++            ...(anchorId ? { anchorId: decodeAttribute(anchorId) } : {}),
++        });
++    }
++    return floats;
++}

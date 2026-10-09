@@ -597,15 +597,18 @@ describe('remark notation authoring adapter', () => {
     );
   });
 
-  it('leaves math untouched in ordinary prose pages outside the registry', () => {
+  it('fails a symbol on an ordinary prose page that never introduced it (rule S10)', () => {
+    // Before explico 0.12 math on a page outside the registry was left alone.
+    // A page that is not a chapter binds its math like a chapter's now.
     const tree: TestNode = {
       type: 'root',
       children: [{ type: 'inlineMath', value: 'P_0' }],
     };
-    remarkNotation({ definitions: bondRegistry })(
-      tree as never,
-      { path: 'src/content/docs/about.md', data: {}, fail() {} } as never,
-    );
-    expect(tree.children?.[0]?.value).toBe('P_0');
+    expect(() =>
+      remarkNotation({ definitions: bondRegistry })(
+        tree as never,
+        { path: 'src/content/docs/about.md', data: {}, fail() {} } as never,
+      ),
+    ).toThrow(/Unresolved notation in page math[\s\S]*rule S10/);
   });
 });

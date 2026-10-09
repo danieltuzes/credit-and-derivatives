@@ -24,12 +24,12 @@
     "deploy": "tsx scripts/commit-and-deploy.ts"
   },
   "dependencies": {
-    "@astrojs/markdown-remark": "7.2.4",
-    "@astrojs/react": "6.0.4",
-    "@astrojs/starlight": "0.41.9",
+    "@astrojs/markdown-remark": "7.3.1",
+    "@astrojs/react": "7.0.0",
+    "@astrojs/starlight": "0.42.4",
     "@observablehq/plot": "0.6.17",
-    "astro": "7.2.7",
-    "explico": "0.11.1",
+    "astro": "7.3.5",
+    "explico": "0.13.1",
     "katex": "0.16.47",
     "react": "19.2.8",
     "react-dom": "19.2.8",

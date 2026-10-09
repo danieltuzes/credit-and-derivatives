@@ -88,7 +88,6 @@ describe('curriculum validation', () => {
 const lesson = (
   overrides: Partial<LessonDefinition> & Pick<LessonDefinition, 'id'>,
 ): LessonDefinition => ({
-  status: 'draft',
   requires: [],
   teaches: [],
   assessments: [],

@@ -8,6 +8,7 @@ import {
   contentCheck,
   contentContext,
   contentStatus,
+  contentWarnings,
   estimateTokens,
   findLesson,
   normalizeLessonId,
@@ -21,20 +22,15 @@ const DOCS = join(process.cwd(), 'content', 'docs');
 const SAMPLE_LESSON = 'foundations.discount-factors';
 
 describe('content status', () => {
-  it('reports live counts, draft debt, and a clean diagnostic split', () => {
+  it('reports live counts and a clean diagnostic split', () => {
     const report = contentStatus(manifest);
     expect(report.counts.lessons).toBe(manifest.lessons.length);
     expect(report.counts.competencies).toBe(manifest.competencies.length);
     expect(report.counts.notationDefinitions).toBe(
       manifest.notation.definitions.length,
     );
-    // Every lesson is a draft today; the count must track the manifest, not a
-    // hand-written number.
-    expect(report.draftDebt.lessons.length).toBe(
-      manifest.lessons.filter((lesson) => lesson.status === 'draft').length,
-    );
     expect(report.diagnostics.errors).toBe(0);
-    expect(report.diagnostics.warnings).toBeGreaterThan(0);
+    expect(report.diagnostics.warnings).toBe(contentWarnings(manifest).count);
     expect(Array.isArray(report.orphans)).toBe(true);
   });
 });
@@ -149,7 +145,8 @@ describe('content new — non-overwriting draft scaffolds', () => {
   it('scaffolds a lesson with the reduced frontmatter and a checks.yml', () => {
     const scaffold = scaffoldLesson('foundations/brand-new-lesson');
     expect(scaffold.path).toBe('content/docs/foundations/brand-new-lesson.mdx');
-    expect(scaffold.contents).toMatch(/editorialStatus: draft/);
+    // explico 0.13 retired the draft / reviewed flag; a scaffold must not emit it.
+    expect(scaffold.contents).not.toMatch(/editorialStatus/);
     expect(scaffold.contents).toMatch(/teaches: \[\]/);
     expect(scaffold.companions[0]?.path).toBe(
       'content/docs/foundations/brand-new-lesson.checks.yml',
@@ -160,7 +157,7 @@ describe('content new — non-overwriting draft scaffolds', () => {
     const scaffold = scaffoldTerm('brand-new-term');
     expect(scaffold.path).toBe('content/notation/brand-new-term.md');
     expect(scaffold.contents).toMatch(/key: brand-new-term/);
-    expect(scaffold.contents).toMatch(/editorialStatus: draft/);
+    expect(scaffold.contents).not.toMatch(/editorialStatus/);
     expect(scaffold.contents).toMatch(/aiAssisted: true/);
   });
 

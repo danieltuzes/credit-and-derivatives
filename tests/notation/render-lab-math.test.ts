@@ -3,7 +3,7 @@ import { renderLabMath } from 'explico/reference/render-lab-math';
 
 const scope = [
   { key: 'discount-factor', notation: 'D(0,t)' },
-  { key: 'payment-time', notation: 't_k' },
+  { key: 'time-from-valuation', notation: 't' },
   { key: 'present-value', notation: 'PV_0' },
   { key: 'discounting-lab-rate', notation: 'y' },
   { key: 'discounting-lab-cash-flow', notation: 'C' },
@@ -18,7 +18,7 @@ describe('renderLabMath', () => {
 
     expect(rendered.html).toContain('data-notation-key="discount-factor"');
     expect(rendered.html).toContain('data-notation-key="discounting-lab-rate"');
-    expect(rendered.html).toContain('data-notation-key="payment-time"');
+    expect(rendered.html).toContain('data-notation-key="time-from-valuation"');
     expect(rendered.html).toContain('data-lab-slot="rate"');
     expect(rendered.html).toContain('data-lab-slot="years"');
     expect(rendered.html).toContain('data-lab-slot="factor"');
@@ -29,7 +29,7 @@ describe('renderLabMath', () => {
       expect.arrayContaining([
         'discount-factor',
         'discounting-lab-rate',
-        'payment-time',
+        'time-from-valuation',
       ]),
     );
   });

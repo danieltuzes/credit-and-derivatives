@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 
-import type { CurriculumCatalog } from 'explico/curriculum/validation';
 import { runConsistencyChecks } from 'explico/reference/consistency';
 import { buildNotationRegistry } from 'explico/reference/registry';
 import { resolveGlosses } from 'explico/reference/gloss';
@@ -9,17 +8,8 @@ import type {
   NotationRegistryInput,
   SharedNotationDefinitionInput,
 } from 'explico/reference/types';
-import { courseConfig } from '../../content/course.config';
 
 const NO_IGNORE = { entries: [], matches: () => false };
-
-const catalog: CurriculumCatalog = {
-  competencies: [],
-  lessons: [],
-  assessments: [],
-  sources: [],
-  tracks: [],
-};
 
 const card = (
   key: string,
@@ -34,7 +24,6 @@ const card = (
   sources: [],
   seeAlso: [],
   alignment: { kind: 'general', rationale: 'Test fixture.' },
-  status: 'draft',
   aiAssisted: false,
   body: '',
   references: [],
@@ -55,9 +44,7 @@ const run = (sharedDefinitions: SharedNotationDefinitionInput[]) => {
     registry: buildNotationRegistry(notationInput),
     notationInput,
     specs: [],
-    catalog,
     lintIgnore: NO_IGNORE,
-    conventions: courseConfig.conventions,
   });
 };
 
@@ -99,13 +86,11 @@ describe('gloss-wants-promoting', () => {
       registry: buildNotationRegistry(notationInput),
       notationInput,
       specs: [],
-      catalog,
       lintIgnore: {
         entries: [],
         matches: (code, detail) =>
           code === 'gloss-wants-promoting' && detail === '\\Omega',
       },
-      conventions: courseConfig.conventions,
     });
 
     expect(

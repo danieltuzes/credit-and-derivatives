@@ -2,3 +2,5 @@ allowBuilds:
   esbuild: false
 minimumReleaseAgeExclude:
   - explico@0.11.1
+patchedDependencies:
+  explico@0.13.1: patches/explico@0.13.1.patch

@@ -52,23 +52,13 @@ a.notation-formula-number {
   max-width: none;
 }
 
-/* Explico 0.11 lifts the site header one level above Starlight's navbar at
- * every width, so the side panels and explanation cards pass under it. Below
- * 50rem Starlight's menu button is a fixed element at the navbar level that
- * sits outside the header, so the header covered it and a phone could not
- * open the navigation. Keep the button above the header; Starlight hides it
- * from 50rem up. Reported upstream as
- * explico/docs/bugs/mobile-menu-button-under-header.md; remove this once the
- * engine keeps the button reachable. */
-starlight-menu-button > button {
-  z-index: calc(var(--sl-z-index-navbar) + 2);
-}
-
-/* Explico 0.11.1's part overview and course contents render their links in
- * `.not-content`, out of reach of Starlight's link colour, so they showed the
- * browser's default blue. Reported upstream as
- * explico/docs/bugs/overview-link-colour.md; remove once the engine fixes it. */
-.part-overview a,
-.course-contents a {
-  color: var(--sl-color-text-accent);
+/* Explico 0.13 tints every active notation target with `--sl-color-accent-low`,
+ * a prose term link (`a.notation-term`) included. A link's accent text on that
+ * tint is 4.42:1 in the light theme (#08775b on #d1ece4), just under the 4.5:1
+ * the accessibility check requires. Use the high-contrast accent while the
+ * link is active. Reported upstream as
+ * explico/docs/bugs/active-term-link-contrast.md; remove once the engine's
+ * highlight keeps a link's text at 4.5:1. */
+a.notation-term.is-notation-active {
+  color: var(--sl-color-accent-high);
 }

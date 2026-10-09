@@ -5,7 +5,7 @@
  * `explico/compiler/cli`; this file only parses argv, prints the result
  * (`--json` = data only, no stack traces), and sets the exit code.
  *
- *   content status                       counts, draft debt, orphans
+ *   content status                       counts, diagnostics, orphans
  *   content diagnostics [severity] [--json]
  *                                        diagnostics at info, warning, or error+
  *   content warnings [--json]            warnings only, with source locations
@@ -157,10 +157,10 @@ async function main(): Promise<void> {
         const c = report.counts;
         process.stdout.write(
           `Knowledge version ${report.knowledgeVersion}\n` +
-            `Lessons ${c.lessons} (draft ${report.draftDebt.lessons.length}) · ` +
+            `Lessons ${c.lessons} · ` +
             `competencies ${c.competencies} · assessments ${c.assessments} · ` +
             `sources ${c.sources} · tracks ${c.tracks} · ` +
-            `notation ${c.notationDefinitions} (draft ${report.draftDebt.notation.length}) · ` +
+            `notation ${c.notationDefinitions} · ` +
             `keyed equations ${c.keyedEquations} · tables ${c.keyedTables} · ` +
             `figures ${c.keyedFigures} · diagrams ${c.keyedDiagrams} · ` +
             `example sets ${c.keyedExamples}\n` +
@@ -247,7 +247,7 @@ async function main(): Promise<void> {
       else {
         const t = report.tokens;
         process.stdout.write(
-          `${report.lesson.id} — ${report.lesson.title} [${report.lesson.status}]\n` +
+          `${report.lesson.id} — ${report.lesson.title}\n` +
             `teaches: ${report.lesson.teaches.join(', ') || '(none)'}\n` +
             `requires: ${report.lesson.requires.join(', ') || '(none)'}\n` +
             `notation: ${report.notation.map((n) => n.key).join(', ') || '(none)'}\n` +
@@ -261,9 +261,8 @@ async function main(): Promise<void> {
     }
 
     case 'check': {
-      const [lesson] = args.positionals;
       const report = await contentCheck(manifest, {
-        lesson,
+        lessons: args.positionals,
         changed: args.changed,
       });
       if (args.json) emitJson(report);

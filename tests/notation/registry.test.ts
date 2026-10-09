@@ -33,7 +33,6 @@ const sharedDefinition = (
     kind: 'general',
     rationale: 'Test fixture with no curriculum owner.',
   },
-  status: 'draft',
   aiAssisted: false,
   body: '',
   references: [],
@@ -68,7 +67,6 @@ const lesson = (
   overrides: Partial<NotationLessonInput> = {},
 ): NotationLessonInput => ({
   lessonId,
-  status: 'draft',
   localDefinitions: [],
   references: [],
   body: '',
@@ -133,13 +131,13 @@ describe('notation registry', () => {
         definitionId: 'shared:rate',
       }),
     ]);
+    // The page's own local entries seed its bundle (explico 0.12); the shared
+    // `curve` body still binds the shared `rate`, not the page's local one.
     expect(registry.bundles[0]?.definitionIds).toEqual([
+      `page:${lessonId}:rate`,
       'shared:curve',
       'shared:rate',
     ]);
-    expect(registry.bundles[0]?.definitionIds).not.toContain(
-      `page:${lessonId}:rate`,
-    );
   });
 
   it('resolves local seeAlso through page scope and counts a shared import as used', () => {
@@ -214,6 +212,7 @@ describe('notation registry', () => {
 
     expect(registry.bundles[0]?.definitionIds).toEqual([
       `page:${lessonId}:local-summary`,
+      `page:${lessonId}:rate`,
     ]);
     expect(codes(registry.diagnostics)).not.toContain('undeclared-reference');
   });

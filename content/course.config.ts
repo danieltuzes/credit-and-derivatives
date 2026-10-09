@@ -68,13 +68,4 @@ export const courseConfig = {
     N10: { allow: ['up', 'down'] },
     N14: { allow: ['USD'] },
   },
-
-  /**
-   * Keys the corpus-consistency checks resolve a stated sign / cash-flow
-   * convention against (`convention-single-definition`, D6).
-   */
-  conventions: {
-    signConventionKey: 'signed-cash-flow',
-    cashFlowPerspectiveCompetency: 'finance.cash-flow-perspective.apply',
-  },
 };

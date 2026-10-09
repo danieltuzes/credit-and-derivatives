@@ -18,7 +18,6 @@ const shared = (
   sources: [],
   seeAlso: [],
   alignment: { kind: 'general', rationale: 'Test fixture.' },
-  status: 'draft',
   aiAssisted: false,
   body: '',
   references: [],
@@ -29,7 +28,6 @@ const shared = (
 const lesson = (
   overrides: Partial<NotationLessonInput> & { lessonId: string },
 ): NotationLessonInput => ({
-  status: 'draft',
   localDefinitions: [],
   references: [],
   body: '',

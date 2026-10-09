@@ -25,7 +25,6 @@ const sources = [
     authors: ['Bruce Tuckman', 'Angel Serrat'],
     edition: '4',
     year: 2022,
-    editorialStatus: 'draft',
   },
   {
     id: 'finra-bond-yield',
@@ -33,7 +32,6 @@ const sources = [
     title: 'Understanding Bond Yield and Return',
     organization: 'FINRA',
     url: 'https://www.finra.org/investors/insights/bond-yield-return',
-    editorialStatus: 'draft',
   },
 ];
 

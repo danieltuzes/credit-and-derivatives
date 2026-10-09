@@ -110,9 +110,22 @@ describe('page glyph-map resolver', () => {
   it('fails rather than guessing when a base glyph has two meanings', () => {
     expect(() =>
       resolveMathGlyphs('P', [
-        definition('bond-price', 'P_0'),
+        definition('price-time-curve', 'P(t)'),
         definition('price-yield-curve', 'P(y)'),
       ]),
     ).toThrow(GlyphResolutionError);
+  });
+
+  it('does not lend a fixed-label entry to a bare symbol (rule N23)', () => {
+    // Before explico 0.12 the bare `P` was ambiguous between `P_0` and `P(y)`.
+    // `P_0` is a fixed label now and lends its card to nothing, so the function
+    // form `P(y)` is the only one a bare `P` can mean.
+    const result = resolveMathGlyphs('P', [
+      definition('bond-price', 'P_0'),
+      definition('price-yield-curve', 'P(y)'),
+    ]);
+
+    expect(result.latex).toBe(String.raw`\explain{price-yield-curve}{P}`);
+    expect(result.unresolved).toEqual([]);
   });
 });
