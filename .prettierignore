@@ -5,3 +5,6 @@ playwright-report/
 test-results/
 pnpm-lock.yaml
 build/
+# Agent procedures copied from the engine by `pnpm content init-agent --write`;
+# kept byte-identical to node_modules/explico/docs/course-agent/.
+.claude/
