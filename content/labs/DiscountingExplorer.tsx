@@ -7,10 +7,15 @@ import {
   useImperativeHandle,
   useMemo,
   useRef,
-  useState,
 } from 'react';
+import { setFigureState } from 'explico/components/figure/figure-state.ts';
 import type { RenderedLabMath } from 'explico/reference/render-lab-math';
 import { periodicDiscountFactor } from '../domain/present-value';
+import { chartBox } from './chart-box';
+import { createLabState } from './lab-state';
+
+const CHART_WIDTH = 680;
+const CHART_HEIGHT = 300;
 
 const money = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -34,6 +39,10 @@ function fixed(value: number, fractionDigits: number): string {
   }).format(value);
 }
 
+function yearsText(value: number): string {
+  return `${value} ${value === 1 ? 'year' : 'years'}`;
+}
+
 // Math templates for this lab. Real notation symbols (D(0,t), y, t, PV_0, C)
 // are resolved against the page's notation scope at build time by
 // DiscountingExplorerMath.astro; `\slot{name}{fallback}` marks a numeric hole
@@ -45,6 +54,125 @@ export const DISCOUNTING_LAB_MATH = {
 } as const;
 
 type TemplateId = keyof typeof DISCOUNTING_LAB_MATH;
+
+interface DiscountingInputs {
+  /** The future payment, USD. */
+  readonly amount: number;
+  readonly annualRatePercent: number;
+  /** Whole years from valuation to payment. */
+  readonly years: number;
+}
+
+/** The case shown until a reader moves a control; the export draws it too. */
+export const DISCOUNTING_DEFAULTS: DiscountingInputs = {
+  amount: 1_000,
+  annualRatePercent: 5,
+  years: 2,
+};
+
+/** The plot (the figure's picture) and the tools after its caption share these. */
+const useDiscountingInputs = createLabState(DISCOUNTING_DEFAULTS);
+
+/** The discount factor and the value today at the chosen time to payment. */
+function discounting({ amount, annualRatePercent, years }: DiscountingInputs) {
+  const factorAt = periodicDiscountFactor(annualRatePercent / 100, 1);
+  const factor = factorAt(years);
+  return { factorAt, factor, presentValue: amount * factor };
+}
+
+/**
+ * The plot for one payment: its value today across the whole 0–30 year range
+ * at the chosen rate, with a dot at the chosen time to payment and a dashed
+ * line at the undiscounted amount.
+ */
+export function discountingPlotOptions(
+  inputs: DiscountingInputs,
+): Plot.PlotOptions {
+  const { amount, years } = inputs;
+  const { factorAt, presentValue } = discounting(inputs);
+  const curve = Array.from({ length: 61 }, (_, index) => {
+    const timeYears = index * 0.5;
+    return { timeYears, value: amount * factorAt(timeYears) };
+  });
+  return {
+    ariaLabel:
+      'Value today by time to payment. The curve falls as the wait grows.',
+    ariaDescription:
+      'Moving the sliders updates the marked point and the table below.',
+    width: CHART_WIDTH,
+    height: CHART_HEIGHT,
+    marginLeft: 68,
+    marginTop: 24,
+    x: { label: 'Time to payment (years)', grid: true },
+    y: { label: 'Value today (USD)', grid: true, zero: true },
+    marks: [
+      Plot.ruleY([amount], {
+        strokeDasharray: '4,4',
+        ariaHidden: 'true',
+      }),
+      Plot.line(curve, {
+        x: 'timeYears',
+        y: 'value',
+        stroke: '#1a9876',
+        strokeWidth: 3,
+        ariaHidden: 'true',
+      }),
+      Plot.ruleX([years], {
+        stroke: '#d2542d',
+        strokeOpacity: 0.35,
+        ariaHidden: 'true',
+      }),
+      Plot.dot([{ timeYears: years, value: presentValue }], {
+        x: 'timeYears',
+        y: 'value',
+        fill: '#d2542d',
+        stroke: 'var(--sl-color-bg)',
+        strokeWidth: 2,
+        r: 6,
+        ariaHidden: 'true',
+      }),
+    ],
+  };
+}
+
+/**
+ * The figure's picture: the plot for the payment, rate and time the tools
+ * set. It also states that case at the end of the figure's caption, which
+ * prints with the plot.
+ */
+export function DiscountingPlot() {
+  const [inputs] = useDiscountingInputs();
+  const chartRef = useRef<HTMLDivElement>(null);
+  const options = useMemo(() => discountingPlotOptions(inputs), [inputs]);
+  const { presentValue } = discounting(inputs);
+
+  useEffect(() => {
+    const host = chartRef.current;
+    if (!host) return;
+    // No-break spaces keep a currency code with its amount.
+    setFigureState(host, [
+      `Shown for a future payment of USD\u00a0${fixed(inputs.amount, 0)} in ${yearsText(inputs.years)} at an annual rate of ${percent.format(inputs.annualRatePercent)}%: value today USD\u00a0${fixed(presentValue, 2)}.`,
+    ]);
+  }, [inputs, presentValue]);
+
+  useEffect(() => {
+    const host = chartRef.current;
+    if (!host) return;
+    const chart = Plot.plot(options);
+    host.replaceChildren(chart);
+    return () => chart.remove();
+  }, [options]);
+
+  return (
+    <div className="lab-shell">
+      <div
+        className="lab-chart"
+        style={chartBox(CHART_WIDTH, CHART_HEIGHT)}
+        ref={chartRef}
+      />
+    </div>
+  );
+}
 
 interface LabMathHandle {
   setSlots(values: Readonly<Record<string, string>>): void;
@@ -154,23 +282,24 @@ function RangeField({
 
 const CHART_TIMES = [0, 5, 10, 15, 20, 25, 30];
 
-export default function DiscountingExplorer({
+/**
+ * The figure's tools, after its caption: what to do, the three controls, the
+ * live result and formulas, and the model's assumptions with a table of
+ * values. `DiscountingExplorerMath.astro` renders the formulas at build time.
+ */
+export function DiscountingTools({
   math,
 }: {
   math: Record<TemplateId, RenderedLabMath>;
 }) {
-  const [amount, setAmount] = useState(1_000);
-  const [annualRatePercent, setAnnualRatePercent] = useState(5);
-  const [years, setYears] = useState(2);
-  const chartRef = useRef<HTMLDivElement>(null);
+  const [inputs, setInputs] = useDiscountingInputs();
+  const { amount, annualRatePercent, years } = inputs;
   const mathRefs = useRef<Partial<Record<TemplateId, LabMathHandle | null>>>(
     {},
   );
 
   const rate = annualRatePercent / 100;
-  const factorAt = useMemo(() => periodicDiscountFactor(rate, 1), [rate]);
-  const factor = factorAt(years);
-  const presentValue = amount * factor;
+  const { factorAt, factor, presentValue } = discounting(inputs);
 
   useEffect(() => {
     mathRefs.current.discountFactor?.setSlots({
@@ -185,66 +314,13 @@ export default function DiscountingExplorer({
     });
   });
 
-  const curve = useMemo(
-    () =>
-      Array.from({ length: 61 }, (_, index) => {
-        const timeYears = index * 0.5;
-        return { timeYears, value: amount * factorAt(timeYears) };
-      }),
-    [amount, factorAt],
-  );
-
-  useEffect(() => {
-    const host = chartRef.current;
-    if (!host) return;
-
-    const chart = Plot.plot({
-      ariaLabel:
-        'Value today by time to payment. The curve falls as the wait grows.',
-      ariaDescription:
-        'Moving the sliders updates the marked point and the table below.',
-      width: 680,
-      height: 300,
-      marginLeft: 68,
-      marginTop: 24,
-      x: { label: 'Time to payment (years)', grid: true },
-      y: { label: 'Value today (USD)', grid: true, zero: true },
-      marks: [
-        Plot.ruleY([amount], {
-          strokeDasharray: '4,4',
-          ariaHidden: 'true',
-        }),
-        Plot.line(curve, {
-          x: 'timeYears',
-          y: 'value',
-          stroke: '#1a9876',
-          strokeWidth: 3,
-          ariaHidden: 'true',
-        }),
-        Plot.ruleX([years], {
-          stroke: '#d2542d',
-          strokeOpacity: 0.35,
-          ariaHidden: 'true',
-        }),
-        Plot.dot([{ timeYears: years, value: presentValue }], {
-          x: 'timeYears',
-          y: 'value',
-          fill: '#d2542d',
-          stroke: 'var(--sl-color-bg)',
-          strokeWidth: 2,
-          r: 6,
-          ariaHidden: 'true',
-        }),
-      ],
-    });
-
-    host.replaceChildren(chart);
-    return () => chart.remove();
-  }, [curve, years, presentValue, amount]);
-
   return (
-    <section className="lab-shell" aria-labelledby="discounting-lab-title">
-      <h3 id="discounting-lab-title">Try discounting a future payment</h3>
+    <div className="lab-shell lab-tools">
+      <p className="lab-instruction">
+        Move a slider, or type an exact value, to change the future payment, the
+        annual rate, or the time to payment. The formulas below use the same
+        symbols as the text above.
+      </p>
       <div className="lab-controls">
         <RangeField
           label="Future payment"
@@ -254,7 +330,7 @@ export default function DiscountingExplorer({
           step={100}
           value={amount}
           format={(value) => wholeMoney.format(value)}
-          onChange={setAmount}
+          onChange={(value) => setInputs({ amount: value })}
         />
         <RangeField
           label="Annual rate"
@@ -264,7 +340,7 @@ export default function DiscountingExplorer({
           step={0.25}
           value={annualRatePercent}
           format={(value) => `${percent.format(value)}%`}
-          onChange={setAnnualRatePercent}
+          onChange={(value) => setInputs({ annualRatePercent: value })}
         />
         <RangeField
           label="Time to payment"
@@ -273,8 +349,8 @@ export default function DiscountingExplorer({
           max={30}
           step={1}
           value={years}
-          format={(value) => `${value} ${value === 1 ? 'year' : 'years'}`}
-          onChange={setYears}
+          format={yearsText}
+          onChange={(value) => setInputs({ years: value })}
         />
       </div>
 
@@ -296,15 +372,6 @@ export default function DiscountingExplorer({
           mathRefs.current.presentValue = handle;
         }}
       />
-
-      <figure className="lab-chart-figure">
-        <div className="lab-chart" ref={chartRef} />
-        <figcaption>
-          Value today across the whole 0–30 year range at the current rate. The
-          dot is your selected payment; the dashed line is its undiscounted
-          amount.
-        </figcaption>
-      </figure>
 
       <p>
         The future payment is unchanged. Increasing the rate or waiting longer
@@ -331,15 +398,13 @@ export default function DiscountingExplorer({
           <tbody>
             {CHART_TIMES.map((time) => (
               <tr key={time}>
-                <td>
-                  {time} {time === 1 ? 'year' : 'years'}
-                </td>
+                <td>{yearsText(time)}</td>
                 <td>{money.format(amount * factorAt(time))}</td>
               </tr>
             ))}
           </tbody>
         </table>
       </details>
-    </section>
+    </div>
   );
 }

@@ -32,7 +32,7 @@
     },
     "bonds/price-yield-relationship": {
       "since": null,
-      "source": "sha256:6d9fbd97dd4dca2eb4de80cbda3af6124761fef81d16ac867608582ea3c13390"
+      "source": "sha256:1a53411f8a09fdd1810583f76c10772bf4862ddb47a167c7eb93610eda5ca672"
     },
     "bonds/settlement-clean-and-dirty-price": {
       "since": null,
@@ -60,7 +60,7 @@
     },
     "cds/premium-protection-legs-and-par-spread": {
       "since": null,
-      "source": "sha256:6a6627cbd528a68204c5362f7aae42c2e771e749af88663864099346d64b9c8f"
+      "source": "sha256:70dcc2130be11ba02abe59766a3efa65aefe2bb9119164e196c5a43c28676c5f"
     },
     "credit/default-hazard-and-survival": {
       "since": null,
@@ -116,7 +116,7 @@
     },
     "foundations/present-value": {
       "since": null,
-      "source": "sha256:074e4f6a1f4098467545c529af9c2ca28f293eca4d019f9fefd5fa02d62efc4b"
+      "source": "sha256:d698d0692fddc686284bc79b1961e888265fee881d69409b76f8dc2e502d71b7"
     },
     "foundations/probability-events-and-expectation": {
       "since": null,

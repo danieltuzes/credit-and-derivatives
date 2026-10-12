@@ -13,7 +13,7 @@
       "definitionId": "page:foundations.present-value:present-value-payment-index",
       "key": "present-value-payment-index",
       "kind": "prose",
-      "line": 17,
+      "line": 19,
       "scope": "local",
       "symbol": "k"
     },
@@ -22,7 +22,7 @@
       "definitionId": "page:foundations.present-value:number-of-future-payments",
       "key": "number-of-future-payments",
       "kind": "prose",
-      "line": 18,
+      "line": 20,
       "scope": "local",
       "symbol": "n"
     },
@@ -31,7 +31,7 @@
       "definitionId": "shared:signed-cash-flow",
       "key": "signed-cash-flow",
       "kind": "prose",
-      "line": 19,
+      "line": 21,
       "scope": "shared",
       "symbol": "CF_k"
     },
@@ -40,7 +40,7 @@
       "definitionId": "shared:payment-time",
       "key": "payment-time",
       "kind": "prose",
-      "line": 20,
+      "line": 22,
       "scope": "shared",
       "symbol": "t_k"
     },
@@ -49,7 +49,7 @@
       "definitionId": "shared:discount-factor",
       "key": "discount-factor",
       "kind": "prose",
-      "line": 20,
+      "line": 22,
       "scope": "shared",
       "symbol": "D(0,t)"
     },
@@ -58,7 +58,7 @@
       "definitionId": "shared:present-value",
       "key": "present-value",
       "kind": "prose",
-      "line": 21,
+      "line": 23,
       "scope": "shared",
       "symbol": "PV_0"
     },
@@ -67,7 +67,7 @@
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
-      "line": 22,
+      "line": 24,
       "scope": "shared",
       "symbol": "0"
     },
@@ -76,7 +76,7 @@
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
-      "line": 59,
+      "line": 61,
       "scope": "shared",
       "symbol": "0"
     },
@@ -85,7 +85,7 @@
       "definitionId": "shared:discount-factor",
       "key": "discount-factor",
       "kind": "prose",
-      "line": 97,
+      "line": 99,
       "scope": "shared",
       "symbol": "D(0,t)"
     },
@@ -94,7 +94,7 @@
       "definitionId": "shared:time-from-valuation",
       "key": "time-from-valuation",
       "kind": "prose",
-      "line": 97,
+      "line": 99,
       "scope": "shared",
       "symbol": "t"
     },
@@ -103,34 +103,34 @@
       "definitionId": "page:foundations.present-value:discounting-lab-rate",
       "key": "discounting-lab-rate",
       "kind": "prose",
-      "line": 98,
+      "line": 100,
       "scope": "local",
       "symbol": "y"
     },
     {
-      "column": 74,
+      "column": 55,
       "definitionId": "page:foundations.present-value:discounting-lab-cash-flow",
       "key": "discounting-lab-cash-flow",
       "kind": "prose",
-      "line": 98,
+      "line": 100,
       "scope": "local",
       "symbol": "C"
     },
     {
-      "column": 29,
+      "column": 27,
       "definitionId": "shared:present-value",
       "key": "present-value",
       "kind": "prose",
-      "line": 99,
+      "line": 101,
       "scope": "shared",
       "symbol": "PV_0"
     },
     {
-      "column": 50,
+      "column": 48,
       "definitionId": "shared:valuation-time",
       "key": "valuation-time",
       "kind": "prose",
-      "line": 99,
+      "line": 101,
       "scope": "shared",
       "symbol": "0"
     }

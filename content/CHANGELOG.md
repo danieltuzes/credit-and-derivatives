@@ -73,8 +73,18 @@
 - Added PDF and Markdown downloads to the Download menu of every page, for each
   chapter, each part, and the whole course. Each PDF is typeset on letter paper
   and comes with its LaTeX source. Each Markdown download writes the math as
-  `$…$` and includes the diagrams as PNG images. The interactive explorers are
-  on the website only. No formula, input value, result, or answer key changed.
+  `$…$` and includes the diagrams as PNG images. No formula, input value,
+  result, or answer key changed.
+- Made each interactive explorer a numbered figure: the one-payment
+  discounting explorer in the present-value lesson, the bond price–yield
+  explorer, and the CDS leg explorer. The figure's picture is the explorer's
+  chart, and its caption ends with the case the chart shows. The controls,
+  the live results and formulas, the assumptions, and the tables follow the
+  caption on the website, where a reader can fold them away. The PDF and
+  Markdown downloads include each chart at the explorer's default inputs,
+  with its caption. The text around each explorer now refers to its figure,
+  and the CDS lesson's section "Try it" is now "Both legs for one contract";
+  its anchor changed. No formula, input value, result, or answer key changed.
 
 ## [0.4.0] - 2026-09-23
 

@@ -1,6 +1,12 @@
 import * as Plot from '@observablehq/plot';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { setFigureState } from 'explico/components/figure/figure-state.ts';
 import { valueSimplifiedFlatHazardCds } from '../domain/cds/flat-hazard-cds';
+import { chartBox } from './chart-box';
+import { createLabState } from './lab-state';
+
+const CHART_WIDTH = 680;
+const CHART_HEIGHT = 300;
 
 const NOTIONAL = 10_000_000;
 const PAYMENT_FREQUENCY = 4;
@@ -8,6 +14,10 @@ const PAYMENT_FREQUENCY = 4;
 const money = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
+  maximumFractionDigits: 0,
+});
+
+const wholeAmount = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0,
 });
 
@@ -19,6 +29,112 @@ const basisPoints = new Intl.NumberFormat('en-US', {
   minimumFractionDigits: 1,
   maximumFractionDigits: 1,
 });
+
+interface CdsInputs {
+  readonly contractSpreadBasisPoints: number;
+  readonly hazardPercent: number;
+  readonly recoveryPercent: number;
+  readonly discountRatePercent: number;
+  /** Whole model-years to maturity. */
+  readonly termYears: number;
+}
+
+/** The contract shown until a reader moves a control; the export draws it too. */
+export const CDS_DEFAULTS: CdsInputs = {
+  contractSpreadBasisPoints: 120,
+  hazardPercent: 2.5,
+  recoveryPercent: 40,
+  discountRatePercent: 4,
+  termYears: 5,
+};
+
+/** The plot (the figure's picture) and the tools after its caption share these. */
+const useCdsInputs = createLabState(CDS_DEFAULTS);
+
+/** The tested domain valuation of the contract the inputs describe. */
+function cdsValue(inputs: CdsInputs) {
+  return valueSimplifiedFlatHazardCds({
+    termYears: inputs.termYears,
+    paymentFrequency: PAYMENT_FREQUENCY,
+    notional: NOTIONAL,
+    fixedCouponAnnualRate: inputs.contractSpreadBasisPoints / 10_000,
+    recoveryRate: inputs.recoveryPercent / 100,
+    continuouslyCompoundedRiskFreeRatePerYear: inputs.discountRatePercent / 100,
+    constantRiskNeutralHazardRatePerYear: inputs.hazardPercent / 100,
+  });
+}
+
+/** One bar per leg, each the leg's present value as a positive magnitude. */
+export function cdsLegPlotOptions(
+  premiumLegPresentValue: number,
+  protectionLegPresentValue: number,
+): Plot.PlotOptions {
+  const data = [
+    { leg: 'Premium', presentValue: premiumLegPresentValue },
+    { leg: 'Protection', presentValue: protectionLegPresentValue },
+  ];
+  return {
+    ariaLabel:
+      'CDS premium-leg and protection-leg present-value magnitudes in US dollars.',
+    ariaDescription:
+      'The same values and their protection-buyer difference appear in text below the caption, before the period table.',
+    width: CHART_WIDTH,
+    height: CHART_HEIGHT,
+    marginLeft: 78,
+    x: { label: null },
+    y: { label: 'Present-value magnitude (USD)', grid: true },
+    marks: [
+      Plot.barY(data, {
+        x: 'leg',
+        y: 'presentValue',
+        fill: (row) => (row.leg === 'Premium' ? '#d2542d' : '#1a9876'),
+        ariaHidden: 'true',
+      }),
+      Plot.ruleY([0], { ariaHidden: 'true' }),
+    ],
+  };
+}
+
+/**
+ * The figure's picture: the two legs of the contract the tools set. It also
+ * states that contract and both leg values at the end of the figure's
+ * caption, which prints with the plot.
+ */
+export function CdsLegPlot() {
+  const [inputs] = useCdsInputs();
+  const chartRef = useRef<HTMLDivElement>(null);
+  const value = useMemo(() => cdsValue(inputs), [inputs]);
+  const { premiumLegPresentValue, protectionLegPresentValue } = value;
+
+  useEffect(() => {
+    const host = chartRef.current;
+    if (!host) return;
+    // No-break spaces keep a currency code with its amount.
+    setFigureState(host, [
+      `Shown for a contractual spread of ${basisPoints.format(inputs.contractSpreadBasisPoints)} bp/year, a constant risk-neutral hazard rate of ${percent.format(inputs.hazardPercent)}%/year, a recovery rate of ${percent.format(inputs.recoveryPercent)}%, a continuously compounded risk-free rate of ${percent.format(inputs.discountRatePercent)}% and a maturity of ${inputs.termYears} ${inputs.termYears === 1 ? 'year' : 'years'}: premium leg USD\u00a0${wholeAmount.format(premiumLegPresentValue)}, protection leg USD\u00a0${wholeAmount.format(protectionLegPresentValue)}.`,
+    ]);
+  }, [inputs, premiumLegPresentValue, protectionLegPresentValue]);
+
+  useEffect(() => {
+    const host = chartRef.current;
+    if (!host) return;
+    const chart = Plot.plot(
+      cdsLegPlotOptions(premiumLegPresentValue, protectionLegPresentValue),
+    );
+    host.replaceChildren(chart);
+    return () => chart.remove();
+  }, [premiumLegPresentValue, protectionLegPresentValue]);
+
+  return (
+    <div className="lab-shell">
+      <div
+        className="lab-chart cds-leg-chart"
+        style={chartBox(CHART_WIDTH, CHART_HEIGHT)}
+        ref={chartRef}
+      />
+    </div>
+  );
+}
 
 interface RangeFieldProps {
   readonly label: string;
@@ -101,69 +217,25 @@ function modelInterpretation(
     : 'At this contractual spread, premium exceeds protection, so the model value is negative to the protection buyer.';
 }
 
-export default function CdsLegExplorer() {
-  const titleId = useId();
-  const chartRef = useRef<HTMLDivElement>(null);
+/**
+ * The figure's tools, after its caption: what to do, the model's fixed
+ * terms, the five controls, the live leg values and par spread, the model's
+ * assumptions, and the period-by-period table.
+ */
+export function CdsLegTools() {
   const [interactive, setInteractive] = useState(false);
-  const [contractSpreadBasisPoints, setContractSpreadBasisPoints] =
-    useState(120);
-  const [hazardPercent, setHazardPercent] = useState(2.5);
-  const [recoveryPercent, setRecoveryPercent] = useState(40);
-  const [discountRatePercent, setDiscountRatePercent] = useState(4);
-  const [termYears, setTermYears] = useState(5);
+  const [inputs, setInputs] = useCdsInputs();
+  const {
+    contractSpreadBasisPoints,
+    hazardPercent,
+    recoveryPercent,
+    discountRatePercent,
+    termYears,
+  } = inputs;
 
   useEffect(() => setInteractive(true), []);
 
-  const value = useMemo(() => {
-    return valueSimplifiedFlatHazardCds({
-      termYears,
-      paymentFrequency: PAYMENT_FREQUENCY,
-      notional: NOTIONAL,
-      fixedCouponAnnualRate: contractSpreadBasisPoints / 10_000,
-      recoveryRate: recoveryPercent / 100,
-      continuouslyCompoundedRiskFreeRatePerYear: discountRatePercent / 100,
-      constantRiskNeutralHazardRatePerYear: hazardPercent / 100,
-    });
-  }, [
-    contractSpreadBasisPoints,
-    discountRatePercent,
-    hazardPercent,
-    recoveryPercent,
-    termYears,
-  ]);
-
-  useEffect(() => {
-    const host = chartRef.current;
-    if (!host) return;
-
-    const data = [
-      { leg: 'Premium', presentValue: value.premiumLegPresentValue },
-      { leg: 'Protection', presentValue: value.protectionLegPresentValue },
-    ];
-    const chart = Plot.plot({
-      ariaLabel:
-        'CDS premium-leg and protection-leg present-value magnitudes in US dollars.',
-      ariaDescription:
-        'The same values and their protection-buyer difference appear in text immediately above and in the period table below.',
-      width: 680,
-      height: 300,
-      marginLeft: 78,
-      x: { label: null },
-      y: { label: 'Present-value magnitude (USD)', grid: true },
-      marks: [
-        Plot.barY(data, {
-          x: 'leg',
-          y: 'presentValue',
-          fill: (row) => (row.leg === 'Premium' ? '#d2542d' : '#1a9876'),
-          ariaHidden: 'true',
-        }),
-        Plot.ruleY([0], { ariaHidden: 'true' }),
-      ],
-    });
-
-    host.replaceChildren(chart);
-    return () => chart.remove();
-  }, [value.premiumLegPresentValue, value.protectionLegPresentValue]);
+  const value = useMemo(() => cdsValue(inputs), [inputs]);
 
   const interpretation = modelInterpretation(
     value.protectionBuyerPresentValueBeforeUpfront,
@@ -171,8 +243,12 @@ export default function CdsLegExplorer() {
   );
 
   return (
-    <section className="lab-shell" aria-labelledby={titleId}>
-      <h3 id={titleId}>Explore the CDS premium and protection legs</h3>
+    <div className="lab-shell lab-tools">
+      <p className="lab-instruction">
+        Change the contractual spread, the constant risk-neutral hazard rate,
+        the recovery rate, the risk-free rate, or the maturity. The table at the
+        end shows the contribution of every period.
+      </p>
       <p>
         The notional is fixed at {money.format(NOTIONAL)} and the synthetic
         schedule has four equal model periods per year. Default-triggered cash
@@ -197,7 +273,9 @@ export default function CdsLegExplorer() {
           value={contractSpreadBasisPoints}
           disabled={!interactive}
           format={(number) => `${basisPoints.format(number)} bp/year`}
-          onChange={setContractSpreadBasisPoints}
+          onChange={(number) =>
+            setInputs({ contractSpreadBasisPoints: number })
+          }
         />
         <RangeField
           label="Constant risk-neutral hazard"
@@ -208,7 +286,7 @@ export default function CdsLegExplorer() {
           value={hazardPercent}
           disabled={!interactive}
           format={(number) => `${percent.format(number)}%/year`}
-          onChange={setHazardPercent}
+          onChange={(number) => setInputs({ hazardPercent: number })}
         />
         <RangeField
           label="Recovery rate"
@@ -219,7 +297,7 @@ export default function CdsLegExplorer() {
           value={recoveryPercent}
           disabled={!interactive}
           format={(number) => `${percent.format(number)}%`}
-          onChange={setRecoveryPercent}
+          onChange={(number) => setInputs({ recoveryPercent: number })}
         />
         <RangeField
           label="Continuously compounded risk-free rate"
@@ -230,7 +308,7 @@ export default function CdsLegExplorer() {
           value={discountRatePercent}
           disabled={!interactive}
           format={(number) => `${percent.format(number)}%`}
-          onChange={setDiscountRatePercent}
+          onChange={(number) => setInputs({ discountRatePercent: number })}
         />
         <RangeField
           label="Maturity"
@@ -241,7 +319,7 @@ export default function CdsLegExplorer() {
           value={termYears}
           disabled={!interactive}
           format={(number) => `${number} ${number === 1 ? 'year' : 'years'}`}
-          onChange={(number) => setTermYears(Math.round(number))}
+          onChange={(number) => setInputs({ termYears: Math.round(number) })}
         />
       </div>
 
@@ -287,16 +365,8 @@ export default function CdsLegExplorer() {
         <p data-cds-output="interpretation">{interpretation}</p>
       </div>
 
-      <figure className="lab-chart-figure">
-        <div className="lab-chart cds-leg-chart" ref={chartRef} />
-        <figcaption>
-          Positive leg magnitudes at the selected contractual spread. The signed
-          buyer value is protection minus premium, as reported above.
-        </figcaption>
-      </figure>
-
       <div className="lab-model-note">
-        <h4>Model assumptions beside this output</h4>
+        <h3>Model assumptions beside this output</h3>
         <ul>
           <li>
             Exact equal quarterly model periods; no dates, day count, stubs, or
@@ -322,7 +392,7 @@ export default function CdsLegExplorer() {
         </ul>
       </div>
 
-      <h4>Period-by-period factor table</h4>
+      <h3>Period-by-period factor table</h3>
       <p>
         The annuity columns are per unit notional and per unit annual spread.
         The protection factor already includes loss given default. Summing each
@@ -385,6 +455,6 @@ export default function CdsLegExplorer() {
           </tfoot>
         </table>
       </div>
-    </section>
+    </div>
   );
 }

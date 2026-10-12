@@ -232,8 +232,9 @@ notation:
 
 import CompactExample from 'explico/components/examples/CompactExample.astro';
 import CompactExamples from 'explico/components/examples/CompactExamples.astro';
-import CdsLegExplorer from '../../labs/CdsLegExplorer';
+import { CdsLegPlot, CdsLegTools } from '../../labs/CdsLegExplorer';
 import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
+import Figure from 'explico/components/figure/Figure.astro';
 
 ## What a CDS is
 
@@ -685,14 +686,20 @@ product were a CDS option, had wrong-way risk, or had nonlinear exposure. The
 risk-neutral measure gives the pricing weights. The restrictive model
 assumptions, not the measure, remove the need for a separate volatility input.
 
-## Try it
+## Both legs for one contract
 
-Change the running spread, the constant risk-neutral hazard rate, the recovery
-rate, the risk-free rate, and the term. The explorer integrates the accrued
-premium and the protection payment over the exact modeled default time. It
-shows the contribution of every period.
+[[fig-cds-leg-explorer]] shows the present value of each leg for one contract
+in this model. The explorer integrates the accrued premium and the protection
+payment over the exact modeled default time.
 
-<CdsLegExplorer client:load />
+<Figure
+  id="cds-leg-explorer"
+  short="CDS leg explorer"
+  caption="The present values of the premium leg and the protection leg, as positive magnitudes in USD, for a notional of USD 10,000,000 and four equal model periods a year. The protection buyer's value is the protection leg minus the premium leg."
+>
+  <CdsLegPlot client:load />
+  <CdsLegTools slot="tools" client:load />
+</Figure>
 
 ## Check your understanding
 

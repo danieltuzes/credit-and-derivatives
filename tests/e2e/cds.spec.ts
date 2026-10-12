@@ -2,6 +2,9 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 const lessonPath = '/cds/premium-protection-legs-and-par-spread/';
+// The explorer is a numbered figure: its caption names it (rule V3), and the
+// figure holds its picture and its tools.
+const LAB_NAME = /CDS leg explorer/;
 
 test('CDS explorer reproduces its default case and key boundaries', async ({
   page,
@@ -13,8 +16,8 @@ test('CDS explorer reproduces its default case and key boundaries', async ({
   });
 
   await page.goto(lessonPath);
-  const lab = page.getByRole('region', {
-    name: 'Explore the CDS premium and protection legs',
+  const lab = page.getByRole('figure', {
+    name: LAB_NAME,
   });
   await expect(lab).toBeVisible();
 
@@ -92,8 +95,8 @@ test('CDS explorer remains useful without JavaScript', async ({
 
   try {
     await page.goto(lessonPath);
-    const lab = page.getByRole('region', {
-      name: 'Explore the CDS premium and protection legs',
+    const lab = page.getByRole('figure', {
+      name: LAB_NAME,
     });
     await expect(lab).toContainText(
       'Interactive controls and the chart require JavaScript',
@@ -121,8 +124,8 @@ test('CDS explorer is accessible and contained on a narrow viewport', async ({
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto(lessonPath);
 
-  const lab = page.getByRole('region', {
-    name: 'Explore the CDS premium and protection legs',
+  const lab = page.getByRole('figure', {
+    name: LAB_NAME,
   });
   const exactSpread = lab.getByLabel(
     'Exact contractual spread in basis points per year',

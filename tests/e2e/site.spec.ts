@@ -52,6 +52,13 @@ test('renders and operates the bond lesson', async ({ page }) => {
   await expect(
     page.locator('svg[aria-label^="Bond price by yield"]'),
   ).toBeVisible();
+  // The plot and the controls are two islands of one figure (rule V3): type
+  // only once the controls have hydrated too.
+  await expect(
+    page.locator(
+      '#fig-bond-price-yield-explorer .keyed-figure__tools astro-island',
+    ),
+  ).not.toHaveAttribute('ssr', /.*/);
   await yieldInput.fill('10');
   await expect(price).not.toContainText('95.73');
 });
@@ -60,8 +67,9 @@ test('has no automatically detectable accessibility violations', async ({
   page,
 }) => {
   await page.goto('/bonds/price-yield-relationship/');
+  // The explorer is a numbered figure, named by its caption (rule V3).
   await expect(
-    page.getByRole('heading', { name: 'Explore the bond price–yield curve' }),
+    page.getByRole('figure', { name: /Bond price–yield explorer/ }),
   ).toBeVisible();
   await page
     .getByLabel('Exact yield to maturity in percent')

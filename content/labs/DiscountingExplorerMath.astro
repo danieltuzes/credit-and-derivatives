@@ -4,9 +4,12 @@ import {
   renderLabMath,
   type RenderedLabMath,
 } from 'explico/reference/render-lab-math';
-import DiscountingExplorer, {
-  DISCOUNTING_LAB_MATH,
-} from './DiscountingExplorer';
+import { DiscountingTools, DISCOUNTING_LAB_MATH } from './DiscountingExplorer';
+
+// The discounting figure's tools (its `tools` slot): the two formulas are
+// rendered here, at build time, against the page's notation, and the island
+// only patches numbers into them. The plot is the figure's picture,
+// `DiscountingPlot`, which the lesson places itself.
 
 type TemplateId = keyof typeof DISCOUNTING_LAB_MATH;
 
@@ -25,4 +28,4 @@ for (const id of Object.keys(DISCOUNTING_LAB_MATH) as TemplateId[]) {
 }
 ---
 
-<DiscountingExplorer client:visible math={math} />
+<DiscountingTools client:visible math={math} />

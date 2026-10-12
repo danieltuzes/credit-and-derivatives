@@ -44,8 +44,9 @@ notation:
 
 import CompactExample from 'explico/components/examples/CompactExample.astro';
 import CompactExamples from 'explico/components/examples/CompactExamples.astro';
-import BondPriceExplorer from '../../labs/BondPriceExplorer';
+import { BondPricePlot, BondPriceTools } from '../../labs/BondPriceExplorer';
 import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
+import Figure from 'explico/components/figure/Figure.astro';
 import Table from 'explico/components/table/Table.astro';
 
 ## What you will be able to do
@@ -143,11 +144,18 @@ isolates the effect of the yield.
   </CompactExample>
 </CompactExamples>
 
-<BondPriceExplorer client:visible />
+<Figure
+  id="bond-price-yield-explorer"
+  short="Bond price–yield explorer"
+  caption="The price per 100 face value of one fixed-coupon bond at every yield to maturity from 0% to 15%. The dot marks the price at the yield shown; the dashed line marks par, a price of 100."
+>
+  <BondPricePlot client:visible />
+  <BondPriceTools slot="tools" client:visible />
+</Figure>
 
-The chart, the live result, and the data table all use the same tested domain
-function. The notation panel only explains the symbols; it does not calculate
-prices.
+One tested domain function calculates every price in
+[[fig-bond-price-yield-explorer]]. The notation panel only explains the
+symbols; it does not calculate prices.
 
 ## Check your understanding
 
