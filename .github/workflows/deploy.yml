@@ -16,24 +16,77 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Compiling every PDF with no cache takes most of this (see below).
+    timeout-minutes: 30
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Build with Astro
-        uses: withastro/action@v3
+
+      # The steps withastro/action@v3 ran (pnpm, Node, install, build, upload),
+      # written out so TeX Live and Chromium install between the install and
+      # the build: the TeX Live package list ships in the installed explico.
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.24.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 24.20.0
-          package-manager: pnpm@11.24.0
-          # withastro/action runs the package.json "build" script when present,
-          # i.e. `pnpm validate:content && astro check && astro build`.
+          cache: pnpm
+
+      - name: Install exact dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The PDF downloads (`lessonExports.latex`) compile every chapter, part
+      # and the course with LuaLaTeX and latexmk; with CI set, a missing TeX
+      # Live fails the build instead of leaving the PDFs out. The package list
+      # is the one the pinned explico ships, written for one TeX Live year:
+      # move `texlive_version` only after reading it again. The action picks a
+      # CTAN mirror itself and fails with "No mirror available" when its pick
+      # does not answer (explico's own CI, twice); this one serves tlnet
+      # directly.
+      - name: Install TeX Live for the PDF downloads
+        uses: zauguin/install-texlive@v4
+        with:
+          texlive_version: 2026
+          repository: https://mirrors.mit.edu/CTAN/systems/texlive/tlnet
+          package_file: node_modules/explico/src/compiler/exports/latex/texlive-packages.txt
+
+      # The Markdown downloads draw each diagram in Chromium as a PNG; with CI
+      # set, a missing browser fails the build too.
+      - name: Install Chromium for the diagram capture
+        run: pnpm exec playwright install --with-deps chromium
+
+      # The build compiles only the PDFs whose chapter, part or course changed
+      # and reuses the rest from this directory (explico 0.14.0 migration step
+      # 13). After a TeX Live package update the cache cannot see, set
+      # EXPLICO_LATEX_CACHE_SALT on the build step to any new value once.
+      - name: Restore compiled PDFs
+        uses: actions/cache@v4
+        with:
+          path: .cache/explico-latex
+          key: explico-latex-${{ github.sha }}
+          restore-keys: explico-latex-
+
+      # The package.json "build" script, as withastro/action ran it:
+      # `pnpm validate:content && astro check && astro build`.
+      - name: Build with Astro
+        run: pnpm build
         env:
           # Serve under danieltuzes.github.io/credit-and-derivatives/. The only
           # place the base path is set; local dev, `pnpm verify`, and e2e build
           # at `/`.
           SITE_BASE: /credit-and-derivatives
+          EXPLICO_LATEX_CACHE: .cache/explico-latex
+
+      - name: Upload the Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/
 
   deploy:
     needs: build

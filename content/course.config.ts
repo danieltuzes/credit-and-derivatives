@@ -68,4 +68,19 @@ export const courseConfig = {
     N10: { allow: ['up', 'down'] },
     N14: { allow: ['USD'] },
   },
+
+  /**
+   * The Download menu: the PDF of every chapter, each part and the course,
+   * with its LaTeX source (`latex`), and the same as Markdown with its
+   * diagrams as PNG (`markdown`). The build needs TeX Live for the PDFs and
+   * Playwright's Chromium for the diagrams (README.md); in CI a missing one
+   * fails the build. `canonicalBaseUrl` is the published site, for links that
+   * leave a download.
+   */
+  lessonExports: {
+    latex: true,
+    latexPaper: 'letter',
+    markdown: true,
+    canonicalBaseUrl: 'https://danieltuzes.github.io/credit-and-derivatives/',
+  },
 };

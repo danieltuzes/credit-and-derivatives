@@ -33,6 +33,9 @@ export default defineConfig({
       'pnpm exec astro build && pnpm exec astro preview --host 127.0.0.1 --port 4371 && pnpm exec astro preview logs --follow',
     url: 'http://127.0.0.1:4371',
     reuseExistingServer: false,
-    timeout: 180_000,
+    // The build compiles every PDF download (`lessonExports.latex`): about
+    // 3.5 minutes with no EXPLICO_LATEX_CACHE on 8 threads, 5 on 4, so the
+    // former 3-minute limit failed every cold run. A warm cache takes seconds.
+    timeout: 20 * 60_000,
   },
 });

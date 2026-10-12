@@ -70,6 +70,11 @@
   have background colours of their own. An address that leads to no page now
   shows a course page with a link back to the course. No formula, input value,
   result, or answer key changed.
+- Added PDF and Markdown downloads to the Download menu of every page, for each
+  chapter, each part, and the whole course. Each PDF is typeset on letter paper
+  and comes with its LaTeX source. Each Markdown download writes the math as
+  `$…$` and includes the diagrams as PNG images. The interactive explorers are
+  on the website only. No formula, input value, result, or answer key changed.
 
 ## [0.4.0] - 2026-09-23
 

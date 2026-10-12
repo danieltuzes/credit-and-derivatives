@@ -27,6 +27,14 @@ Requirements: **Node.js `24.20.0`** (one exact version across [`.nvmrc`](.nvmrc)
 workflows; [`.npmrc`](.npmrc) sets `engine-strict`), **pnpm `11.24.0`** (pinned
 by `packageManager`), and Playwright's Chromium for the browser checks.
 
+The build also writes the PDF and Markdown downloads (`lessonExports` in
+`content/course.config.ts`). The PDFs need **TeX Live 2026** with LuaLaTeX and
+`latexmk`, and the packages in
+`node_modules/explico/src/compiler/exports/latex/texlive-packages.txt`. Without
+TeX Live a local build warns and leaves the PDFs out; in CI it fails. Compiling
+every PDF takes a few minutes. Set `EXPLICO_LATEX_CACHE=.cache/explico-latex`
+to recompile only the documents that changed.
+
 ```bash
 # 1. pnpm — standalone install bundles its own Node, so it works with no system Node:
 curl -fsSL https://get.pnpm.io/install.sh | sh -   # or: brew install pnpm

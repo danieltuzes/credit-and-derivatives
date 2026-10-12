@@ -38,6 +38,13 @@ export default defineConfig({
   output: 'static',
   site: 'https://danieltuzes.github.io',
   base,
+  // explico's PDF and Markdown downloads (`lessonExports`) learn the base from
+  // the first built-asset URL that contains `/astro-assets/` (explico 0.15.0,
+  // `inferBasePrefix`) and otherwise assume `/`. Under Astro's default
+  // `_astro/` and SITE_BASE, the diagram capture then loads none of the site's
+  // styles or fonts, and every link that leaves a download names the base
+  // twice (`…/credit-and-derivatives/credit-and-derivatives/glossary/`).
+  build: { assets: 'astro-assets' },
   integrations: [
     explicoContentRefresh(courseConfig, manifest),
     starlight({
