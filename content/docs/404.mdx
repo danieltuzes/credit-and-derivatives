@@ -1,0 +1,23 @@
+---
+title: '404: Page not in the course'
+description: The requested course page could not be found.
+template: splash
+hero:
+  title: '404'
+  tagline: This address does not lead to a page of the course. The course contents list every part and chapter.
+pagefind: false
+sidebar:
+  hidden: true
+editUrl: false
+aiAssisted: true
+---
+
+import { LinkButton } from '@astrojs/starlight/components';
+
+<LinkButton
+  href={import.meta.env.BASE_URL}
+  icon="left-arrow"
+  iconPlacement="start"
+>
+  Return to the course
+</LinkButton>

@@ -199,12 +199,19 @@ for (const viewportWidth of [1152, 1440, 1920, 2560]) {
       const openBackground = await rightPanel.evaluate(
         (element) => getComputedStyle(element).backgroundColor,
       );
-      const pageBackground = await page
-        .locator('body')
-        .evaluate((element) => getComputedStyle(element).backgroundColor);
+      // explico 0.14's default zones (`appearance.zones: "tonal"`) give the
+      // contents panel a colour of its own, `--ex-zone-toc`, not the page's.
+      const zoneBackground = await page.evaluate(() => {
+        const probe = document.createElement('div');
+        probe.style.backgroundColor = 'var(--ex-zone-toc)';
+        document.body.append(probe);
+        const color = getComputedStyle(probe).backgroundColor;
+        probe.remove();
+        return color;
+      });
       expect(openShellBox).not.toBeNull();
       expect(openTocBox).not.toBeNull();
-      expect(openBackground).toBe(pageBackground);
+      expect(openBackground).toBe(zoneBackground);
 
       await contentsToggle.click();
       await expect

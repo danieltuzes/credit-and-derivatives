@@ -48,27 +48,30 @@ const run = (sharedDefinitions: SharedNotationDefinitionInput[]) => {
   });
 };
 
-describe('gloss-wants-promoting', () => {
-  it('flags one gloss repeated across enough entries to be a shared meaning', () => {
+// explico 0.14 retired `gloss-wants-promoting` (a gloss repeated on three
+// entries) for `meaning-repeated`: one symbol and name defined at two or more
+// sites, in any tier.
+describe('meaning-repeated', () => {
+  it('flags one gloss repeated on two entries as a shared meaning', () => {
     const findings = run([
       card('alpha', { glosses: glossesOn('alpha') }),
       card('beta', { glosses: glossesOn('beta') }),
-      card('gamma', { glosses: glossesOn('gamma') }),
-    ]).filter((finding) => finding.code === 'gloss-wants-promoting');
+    ]).filter((finding) => finding.code === 'meaning-repeated');
 
     expect(findings).toHaveLength(1);
     expect(findings[0]).toMatchObject({
       severity: 'info',
       glyph: '\\Omega',
+      count: 2,
     });
-    expect(findings[0]?.message).toContain('alpha, beta, gamma');
+    expect(findings[0]?.message).toContain('gloss on alpha; gloss on beta');
   });
 
-  it('stays quiet while the same letter is glossed on only two entries', () => {
+  it('stays quiet while the letter is glossed on one entry only', () => {
     const findings = run([
       card('alpha', { glosses: glossesOn('alpha') }),
-      card('beta', { glosses: glossesOn('beta') }),
-    ]).filter((finding) => finding.code === 'gloss-wants-promoting');
+      card('beta'),
+    ]).filter((finding) => finding.code === 'meaning-repeated');
 
     expect(findings).toEqual([]);
   });
@@ -78,7 +81,6 @@ describe('gloss-wants-promoting', () => {
       sharedDefinitions: [
         card('alpha', { glosses: glossesOn('alpha') }),
         card('beta', { glosses: glossesOn('beta') }),
-        card('gamma', { glosses: glossesOn('gamma') }),
       ],
       lessons: [],
     };
@@ -89,12 +91,12 @@ describe('gloss-wants-promoting', () => {
       lintIgnore: {
         entries: [],
         matches: (code, detail) =>
-          code === 'gloss-wants-promoting' && detail === '\\Omega',
+          code === 'meaning-repeated' && detail === '\\Omega',
       },
     });
 
     expect(
-      findings.filter((finding) => finding.code === 'gloss-wants-promoting'),
+      findings.filter((finding) => finding.code === 'meaning-repeated'),
     ).toEqual([]);
   });
 });

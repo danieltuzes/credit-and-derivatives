@@ -1,0 +1,143 @@
+{
+  "format": 1,
+  "generatedBy": "pnpm validate:content (rule C5); do not edit",
+  "pages": {
+    "bond-options/european-bond-options": {
+      "since": null,
+      "source": "sha256:98f9dc081807bb19c79e2899b34771094e376aa33f4c9a58478c65dc72c80c17"
+    },
+    "bond-options/index": {
+      "since": null,
+      "source": "sha256:ea07ec4b73583f08a4f4aae16202712e23284460e0ae494e9c3612ee1bd07507"
+    },
+    "bond-options/issuer-default-knockout": {
+      "since": null,
+      "source": "sha256:f38a55ae32582dda967f9a819b8c03a06caf20e8dcfddaf127eccd94f2817d73"
+    },
+    "bonds/bond-forwards": {
+      "since": null,
+      "source": "sha256:0b69dc60a21d12096937550c31388aa8061a3d4a3644230d08a2fc46424389b8"
+    },
+    "bonds/fixed-rate-contract-and-cash-flows": {
+      "since": null,
+      "source": "sha256:1ee329ba126e121bc64e01117cd597ec10ca223b281c4d58f66b82af3e205e8f"
+    },
+    "bonds/index": {
+      "since": null,
+      "source": "sha256:c1dcc6ab0e8698a62925ae1c69a7695f5e7d747beae201262b01e83b67a57866"
+    },
+    "bonds/price-from-discount-factors": {
+      "since": null,
+      "source": "sha256:f2eb93230c459f3d7a9b7b2c66646173ca61fe89cd4105fa8ec2ca5e9be4baf6"
+    },
+    "bonds/price-yield-relationship": {
+      "since": null,
+      "source": "sha256:6d9fbd97dd4dca2eb4de80cbda3af6124761fef81d16ac867608582ea3c13390"
+    },
+    "bonds/settlement-clean-and-dirty-price": {
+      "since": null,
+      "source": "sha256:0a304bed3d4c999d38ac2c684840f0eab2447ec44e0811db1fdb8bd572623e2e"
+    },
+    "bonds/yield-to-maturity": {
+      "since": null,
+      "source": "sha256:a2cd4925c1a02625fa115f9252063967f066cfd8bd482790ec0c501192b32baf"
+    },
+    "cds/credit-curve-and-market-observables": {
+      "since": null,
+      "source": "sha256:6250ddf515804a463aa258a9f2536aef7e858cfbc3127f266cf0d83a7970c84a"
+    },
+    "cds/equivalent-notional-and-quote-risk": {
+      "since": null,
+      "source": "sha256:a32bc12716857cf980b81fc3753a87e2c46b09196303a9f7210740cc1820e5ea"
+    },
+    "cds/index": {
+      "since": null,
+      "source": "sha256:01cbda40fec86b27784aededc4c5f3b560707e60ba0a3d04a27f51f6a365dbf3"
+    },
+    "cds/market-standard-quote-and-upfront": {
+      "since": null,
+      "source": "sha256:b8ec043d0deb66f6e26e3f8f55a69ccaa354e8e498b6e4cfcd0c51c0ed221ebe"
+    },
+    "cds/premium-protection-legs-and-par-spread": {
+      "since": null,
+      "source": "sha256:6a6627cbd528a68204c5362f7aae42c2e771e749af88663864099346d64b9c8f"
+    },
+    "credit/default-hazard-and-survival": {
+      "since": null,
+      "source": "sha256:9f073992d7af9b8dcbdad2712a101563d0b23e7aa837149d9f1f93cf4d58ac8d"
+    },
+    "credit/index": {
+      "since": null,
+      "source": "sha256:3924364a7568689dc5824a4b92155efe7735f1999ca14a48206fa7392312f65b"
+    },
+    "credit/recovery-and-risky-present-value": {
+      "since": null,
+      "source": "sha256:cb76969c15c4d77530075b75291429bcda9e685933d969d09b262d1d9281766f"
+    },
+    "derivatives/european-option-contracts-and-payoffs": {
+      "since": null,
+      "source": "sha256:38acd2bf89147c3aa9148505e624f3a75b1901a99cfc8a3944afb39dc943608a"
+    },
+    "derivatives/forward-contracts-and-value": {
+      "since": null,
+      "source": "sha256:416c50f3d538fc25a198a18f38a95030bb9b5e717c64ddea0e0c91135ea0c73d"
+    },
+    "derivatives/index": {
+      "since": null,
+      "source": "sha256:06003a0ff197679c678746ecc85006ab86598222b8bc498686e116a2dc133fa2"
+    },
+    "derivatives/multiperiod-lattice-valuation": {
+      "since": null,
+      "source": "sha256:456b85105154e11c887022d83da9973b0a16f4379a6fd5d75bba58867c2506c5"
+    },
+    "derivatives/one-period-binomial-option-valuation": {
+      "since": null,
+      "source": "sha256:0214ba0e0fe8348de439009744155ace3322fccd655f804dd2adce1f2713b784"
+    },
+    "derivatives/put-call-parity": {
+      "since": null,
+      "source": "sha256:2e9fe3fda1cf70a41a6ce89505c64d4248d1c09e23b999a9477a1425f29e5535"
+    },
+    "foundations/cash-flow-timelines": {
+      "since": null,
+      "source": "sha256:b88d80a67d37f50d1d1bcae1430411d320b8551b40860154c8932d545040a572"
+    },
+    "foundations/discount-factors": {
+      "since": null,
+      "source": "sha256:53609b6f06669fc060b2538b4c96234545354a69e463e0e5ffa286cd166acee8"
+    },
+    "foundations/index": {
+      "since": null,
+      "source": "sha256:674f203d1057e524402c4df029f9fa89d1106586b65c7e9888f97171646c5fe0"
+    },
+    "foundations/no-arbitrage-and-replication": {
+      "since": null,
+      "source": "sha256:f8f9f498b058324cf9e28fc71309c627066ddd45c72cce3eabe50dae7a209b52"
+    },
+    "foundations/present-value": {
+      "since": null,
+      "source": "sha256:074e4f6a1f4098467545c529af9c2ca28f293eca4d019f9fefd5fa02d62efc4b"
+    },
+    "foundations/probability-events-and-expectation": {
+      "since": null,
+      "source": "sha256:1dec4ffa55c829312ba2bd3284dde715cfda175059f7999993363979255a9091"
+    },
+    "foundations/rates-compounding-and-basis-points": {
+      "since": null,
+      "source": "sha256:508fbbedd1bb8f673c7127d7ad0f627d3e67148732894e4024130f333fb37db4"
+    },
+    "foundations/risk-neutral-pricing": {
+      "since": null,
+      "source": "sha256:796e88165956b79a22cc9a1dc403e2dce60f43f8effa238b3aaf1043eed286a7"
+    },
+    "rates/discount-curve-and-forward-discounting": {
+      "since": null,
+      "source": "sha256:8ce1ec9ad6464ed0e007b98ae340eb9f75f8ea4f74efb755fa250644c4cf3304"
+    },
+    "rates/index": {
+      "since": null,
+      "source": "sha256:659a61e92f03e431e6b48772f5d608da135670e34764122e1f2dcf9e0bda30b0"
+    }
+  },
+  "version": "0.4.0"
+}

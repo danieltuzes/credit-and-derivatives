@@ -8,6 +8,7 @@ import {
   lessonIdFromSlug,
   mergeTrackOrder,
   parseCheckList,
+  sidebarLessonSlug,
 } from 'explico/compiler/lesson-derivation';
 import { loadCurriculumCatalog } from 'explico/compiler/collections';
 
@@ -118,8 +119,11 @@ describe('buildSidebar', () => {
     const sidebar = buildSidebar(tracks, slugs, sections);
     const foundations = sidebar.find((group) => group.label === 'Foundations');
     const bonds = sidebar.find((group) => group.label === 'Bonds');
-    expect(foundations?.items).toEqual(['foundations/intro']);
-    expect(bonds?.items).toEqual(['bonds/a', 'bonds/b']);
+    // explico 0.14 makes each lesson item `{ slug, attrs }` (manifest v34).
+    expect(foundations?.items.map(sidebarLessonSlug)).toEqual([
+      'foundations/intro',
+    ]);
+    expect(bonds?.items.map(sidebarLessonSlug)).toEqual(['bonds/a', 'bonds/b']);
     expect(sidebar.at(-1)).toEqual({
       label: 'Reference',
       items: [

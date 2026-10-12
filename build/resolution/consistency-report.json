@@ -3,9 +3,10 @@
     "accent-explained": 0,
     "accent-swallowed": 0,
     "card-wants-demoting": 0,
+    "definition-repeated": 0,
     "gloss-name-shape": 0,
-    "gloss-wants-promoting": 0,
     "glyph-unique-in-corpus": 0,
+    "meaning-repeated": 1,
     "notation-source-locator": 0,
     "notation-units": 0,
     "operator-explained": 0,
@@ -17,6 +18,13 @@
     "weak-local": 10
   },
   "diagnostics": [
+    {
+      "code": "meaning-repeated",
+      "count": 2,
+      "glyph": "\\mathbb{P}",
+      "message": "\\mathbb{P} as \"probability measure\" is defined 2 times: gloss on expectation; local probability-measure on foundations.probability-events-and-expectation — one shared card would serve every site; promote it and reference it",
+      "severity": "info"
+    },
     {
       "code": "weak-local",
       "count": 1,
@@ -109,5 +117,5 @@
     }
   ],
   "generatedBy": "pnpm validate:content",
-  "schemaVersion": 31
+  "schemaVersion": 37
 }

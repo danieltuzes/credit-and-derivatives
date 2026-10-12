@@ -90,7 +90,16 @@ describe('runConsistencyChecks (real corpus)', () => {
       all.every((d) => d.severity === 'warning' || d.severity === 'info'),
     ).toBe(true);
 
-    // `n` is a known cross-page glyph collision; acknowledging it drops it.
+    // Since explico 0.14, `glyph-unique-in-corpus` fires only when two shared
+    // cards claim one glyph: the page-local reuse of `n` is rule N4's declared
+    // exception and needs no acknowledgement.
+    expect(
+      all.some((d) => d.code === 'glyph-unique-in-corpus' && d.glyph === 'n'),
+    ).toBe(false);
+
+    // `bond-call-expiry-payoff` is a known weak local; acknowledging it drops it.
+    const isWeakCallPayoff = (d: (typeof all)[number]): boolean =>
+      d.code === 'weak-local' && d.key === 'bond-call-expiry-payoff';
     const withIgnore = runConsistencyChecks({
       registry,
       notationInput,
@@ -98,17 +107,11 @@ describe('runConsistencyChecks (real corpus)', () => {
       lintIgnore: {
         entries: [],
         matches: (code, detail) =>
-          code === 'glyph-unique-in-corpus' && detail === 'n',
+          code === 'weak-local' && detail === 'bond-call-expiry-payoff',
       },
     });
-    expect(
-      all.some((d) => d.code === 'glyph-unique-in-corpus' && d.glyph === 'n'),
-    ).toBe(true);
-    expect(
-      withIgnore.some(
-        (d) => d.code === 'glyph-unique-in-corpus' && d.glyph === 'n',
-      ),
-    ).toBe(false);
+    expect(all.some(isWeakCallPayoff)).toBe(true);
+    expect(withIgnore.some(isWeakCallPayoff)).toBe(false);
   });
 
   it('is stable across two runs', async () => {
@@ -147,9 +150,10 @@ describe('manifest D6 additions', () => {
         'accent-explained',
         'accent-swallowed',
         'card-wants-demoting',
+        'definition-repeated',
         'gloss-name-shape',
-        'gloss-wants-promoting',
         'glyph-unique-in-corpus',
+        'meaning-repeated',
         'notation-source-locator',
         'notation-units',
         'operator-explained',

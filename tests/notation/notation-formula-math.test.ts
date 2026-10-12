@@ -19,7 +19,8 @@ import {
  * The completeness gate reports `formula` findings at Tier 3, and the render
  * path degrades an unresolved glyph to an inert one rather than failing, so
  * neither would stop a regression reaching `dist/`. This test holds the corpus
- * at zero the way `notation-entry-body-math.test.ts` does for entry bodies.
+ * at zero. Entry bodies need no such test: since explico 0.14,
+ * `validate:content` fails on an unresolved symbol in one (rule N4).
  */
 describe('shared notation entry formula math', () => {
   it('every content/notation/*.md formula resolves against its entry scope', async () => {

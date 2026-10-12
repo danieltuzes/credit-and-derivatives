@@ -43,6 +43,9 @@ export default defineConfig({
     starlight({
       title: courseConfig.title,
       description: courseConfig.description,
+      // `content/docs/404.mdx` owns `/404.html` in a static build; Starlight's
+      // injected route still catches missing URLs under `astro dev`.
+      disable404Route: process.env.NODE_ENV === 'production',
       customCss: ['explico/styles/global.css', './src/styles/course.css'],
       components: {
         Footer: 'explico/components/starlight/LessonFooter.astro',
