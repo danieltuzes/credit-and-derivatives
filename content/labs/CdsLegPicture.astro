@@ -1,0 +1,22 @@
+---
+import {
+  CDS_DEFAULTS,
+  CdsLegPlot,
+  cdsLegPlotOptions,
+  cdsValue,
+} from './CdsLegExplorer';
+import { stillPlot } from './still-plot';
+
+// The CDS figure's picture (its default slot): the plot island, with the two
+// legs of the default contract drawn here at build time (rule V3), from the
+// same tested domain valuation the island calls. The island shows this copy
+// until it has drawn its own, so the page has the chart without JavaScript
+// too.
+const { premiumLegPresentValue, protectionLegPresentValue } =
+  cdsValue(CDS_DEFAULTS);
+const still = stillPlot(
+  cdsLegPlotOptions(premiumLegPresentValue, protectionLegPresentValue),
+);
+---
+
+<CdsLegPlot client:load><Fragment set:html={still} /></CdsLegPlot>

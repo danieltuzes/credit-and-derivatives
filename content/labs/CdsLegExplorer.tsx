@@ -1,5 +1,12 @@
 import * as Plot from '@observablehq/plot';
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import {
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import { setFigureState } from 'explico/components/figure/figure-state.ts';
 import { valueSimplifiedFlatHazardCds } from '../domain/cds/flat-hazard-cds';
 import { chartBox } from './chart-box';
@@ -52,7 +59,7 @@ export const CDS_DEFAULTS: CdsInputs = {
 const useCdsInputs = createLabState(CDS_DEFAULTS);
 
 /** The tested domain valuation of the contract the inputs describe. */
-function cdsValue(inputs: CdsInputs) {
+export function cdsValue(inputs: CdsInputs) {
   return valueSimplifiedFlatHazardCds({
     termYears: inputs.termYears,
     paymentFrequency: PAYMENT_FREQUENCY,
@@ -98,11 +105,14 @@ export function cdsLegPlotOptions(
 /**
  * The figure's picture: the two legs of the contract the tools set. It also
  * states that contract and both leg values at the end of the figure's
- * caption, which prints with the plot.
+ * caption, which prints with the plot. `children` is the build's copy of the
+ * plot at the defaults (`CdsLegPicture.astro`), shown until this one is
+ * drawn.
  */
-export function CdsLegPlot() {
+export function CdsLegPlot({ children }: { children?: ReactNode }) {
   const [inputs] = useCdsInputs();
   const chartRef = useRef<HTMLDivElement>(null);
+  const [drawn, setDrawn] = useState(false);
   const value = useMemo(() => cdsValue(inputs), [inputs]);
   const { premiumLegPresentValue, protectionLegPresentValue } = value;
 
@@ -122,16 +132,19 @@ export function CdsLegPlot() {
       cdsLegPlotOptions(premiumLegPresentValue, protectionLegPresentValue),
     );
     host.replaceChildren(chart);
+    setDrawn(true);
     return () => chart.remove();
   }, [premiumLegPresentValue, protectionLegPresentValue]);
 
   return (
-    <div className="lab-shell">
+    <div className="lab-shell not-content">
       <div
         className="lab-chart cds-leg-chart"
         style={chartBox(CHART_WIDTH, CHART_HEIGHT)}
-        ref={chartRef}
-      />
+      >
+        {drawn ? null : children}
+        <div className="lab-chart-live" ref={chartRef} />
+      </div>
     </div>
   );
 }
@@ -258,8 +271,9 @@ export function CdsLegTools() {
       </p>
       {!interactive && (
         <p className="lab-model-note">
-          Interactive controls and the chart require JavaScript. The default
-          result, assumptions, and complete period table remain available below.
+          Interactive controls require JavaScript. The chart shows the legs of
+          the default contract. The default result, assumptions, and complete
+          period table remain available below.
         </p>
       )}
 

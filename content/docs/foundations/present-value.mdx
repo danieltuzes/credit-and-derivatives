@@ -56,7 +56,7 @@ notation:
         rationale: Naming a single payment is an exploration aid for the lab, not a tracked competency.
 ---
 
-import { DiscountingPlot } from '../../labs/DiscountingExplorer';
+import DiscountingPicture from '../../labs/DiscountingPicture.astro';
 import DiscountingExplorerMath from '../../labs/DiscountingExplorerMath.astro';
 import Figure from 'explico/components/figure/Figure.astro';
 import CompactExample from 'explico/components/examples/CompactExample.astro';
@@ -162,7 +162,7 @@ discount factor gives the [[present-value]] at [[valuation-time]] $0$.
   short="One-payment discounting explorer"
   caption="The value today, in USD, of one future payment for every time to payment from 0 to 30 years, at one annual rate with annual compounding. The dot and the vertical line mark the time to payment shown; the dashed line marks the undiscounted payment."
 >
-  <DiscountingPlot client:visible />
+  <DiscountingPicture />
   <DiscountingExplorerMath slot="tools" />
 </Figure>
 

@@ -1,5 +1,12 @@
 import * as Plot from '@observablehq/plot';
-import { useEffect, useId, useMemo, useRef } from 'react';
+import {
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
 import { setFigureState } from 'explico/components/figure/figure-state.ts';
 import {
   createFixedCouponBond,
@@ -113,11 +120,13 @@ const PAYMENTS_A_YEAR = {
 /**
  * The figure's picture: the price-yield curve of the bond the tools set. It
  * also states that bond and its price at the end of the figure's caption,
- * which prints with the plot.
+ * which prints with the plot. `children` is the build's copy of the plot at
+ * the defaults (`BondPricePicture.astro`), shown until this one is drawn.
  */
-export function BondPricePlot() {
+export function BondPricePlot({ children }: { children?: ReactNode }) {
   const [inputs] = useBondInputs();
   const chartRef = useRef<HTMLDivElement>(null);
+  const [drawn, setDrawn] = useState(false);
   const options = useMemo(() => bondPricePlotOptions(inputs), [inputs]);
   const { price } = useMemo(() => bondPrices(inputs), [inputs]);
 
@@ -134,16 +143,16 @@ export function BondPricePlot() {
     if (!host) return;
     const chart = Plot.plot(options);
     host.replaceChildren(chart);
+    setDrawn(true);
     return () => chart.remove();
   }, [options]);
 
   return (
-    <div className="lab-shell">
-      <div
-        className="lab-chart"
-        style={chartBox(CHART_WIDTH, CHART_HEIGHT)}
-        ref={chartRef}
-      />
+    <div className="lab-shell not-content">
+      <div className="lab-chart" style={chartBox(CHART_WIDTH, CHART_HEIGHT)}>
+        {drawn ? null : children}
+        <div className="lab-chart-live" ref={chartRef} />
+      </div>
     </div>
   );
 }

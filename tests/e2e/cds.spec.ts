@@ -44,8 +44,11 @@ test('CDS explorer reproduces its default case and key boundaries', async ({
   await expect(lab.locator('[data-cds-output="par-spread"]')).toHaveText(
     '150.8 bp/year',
   );
+  // The live chart, which replaces the build's copy (labs.spec.ts).
   await expect(
-    lab.locator('svg[aria-label^="CDS premium-leg and protection-leg"]'),
+    lab.locator(
+      '.lab-chart-live svg[aria-label^="CDS premium-leg and protection-leg"]',
+    ),
   ).toBeVisible();
 
   await lab
@@ -99,7 +102,7 @@ test('CDS explorer remains useful without JavaScript', async ({
       name: LAB_NAME,
     });
     await expect(lab).toContainText(
-      'Interactive controls and the chart require JavaScript',
+      'Interactive controls require JavaScript. The chart shows the legs of the default contract.',
     );
     await expect(
       lab.getByLabel('Exact contractual spread in basis points per year'),
@@ -112,7 +115,17 @@ test('CDS explorer remains useful without JavaScript', async ({
         name: /Current exact-time quarterly schedule, survival values/,
       }),
     ).toBeVisible();
-    await expect(lab.locator('.cds-leg-chart svg')).toHaveCount(0);
+    // The build drew the chart at the default contract (rule V3): one chart,
+    // with a bar for each leg, and nothing drawn live.
+    const chart = lab.locator('.cds-leg-chart svg');
+    await expect(chart).toHaveCount(1);
+    await expect(chart).toBeVisible();
+    await expect(chart).toHaveAttribute(
+      'aria-label',
+      /^CDS premium-leg and protection-leg/,
+    );
+    await expect(chart.locator('rect')).toHaveCount(2);
+    await expect(lab.locator('.lab-chart-live svg')).toHaveCount(0);
   } finally {
     await context.close();
   }

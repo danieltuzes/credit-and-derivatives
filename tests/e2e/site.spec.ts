@@ -49,8 +49,9 @@ test('renders and operates the bond lesson', async ({ page }) => {
   await expect(price).toContainText('95.73');
   const yieldInput = page.getByLabel('Exact yield to maturity in percent');
   await yieldInput.scrollIntoViewIfNeeded();
+  // The live chart, which replaces the build's copy (labs.spec.ts).
   await expect(
-    page.locator('svg[aria-label^="Bond price by yield"]'),
+    page.locator('.lab-chart-live svg[aria-label^="Bond price by yield"]'),
   ).toBeVisible();
   // The plot and the controls are two islands of one figure (rule V3): type
   // only once the controls have hydrated too.
@@ -75,7 +76,7 @@ test('has no automatically detectable accessibility violations', async ({
     .getByLabel('Exact yield to maturity in percent')
     .scrollIntoViewIfNeeded();
   await expect(
-    page.locator('svg[aria-label^="Bond price by yield"]'),
+    page.locator('.lab-chart-live svg[aria-label^="Bond price by yield"]'),
   ).toBeVisible();
   const results = await new AxeBuilder({ page }).analyze();
   expect(results.violations).toEqual([]);

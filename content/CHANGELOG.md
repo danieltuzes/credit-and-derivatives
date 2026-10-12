@@ -82,7 +82,9 @@
   the live results and formulas, the assumptions, and the tables follow the
   caption on the website, where a reader can fold them away. The PDF and
   Markdown downloads include each chart at the explorer's default inputs,
-  with its caption. The text around each explorer now refers to its figure,
+  with its caption. The web page also holds that chart before the explorer
+  loads, so the chart shows without JavaScript too. The text around each
+  explorer now refers to its figure,
   and the CDS lesson's section "Try it" is now "Both legs for one contract";
   its anchor changed. No formula, input value, result, or answer key changed.
 

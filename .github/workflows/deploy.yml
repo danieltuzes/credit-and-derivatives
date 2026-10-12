@@ -50,7 +50,7 @@ jobs:
       # does not answer (explico's own CI, twice); this one serves tlnet
       # directly.
       - name: Install TeX Live for the PDF downloads
-        uses: zauguin/install-texlive@v4
+        uses: zauguin/install-texlive@f5e7d0b117035fff797d4392ea94131747e03d60 # v4.3.0
         with:
           texlive_version: 2026
           repository: https://mirrors.mit.edu/CTAN/systems/texlive/tlnet

@@ -1,0 +1,16 @@
+---
+import {
+  BOND_DEFAULTS,
+  BondPricePlot,
+  bondPricePlotOptions,
+} from './BondPriceExplorer';
+import { stillPlot } from './still-plot';
+
+// The bond figure's picture (its default slot): the plot island, with the
+// price-yield curve of the default bond drawn here at build time (rule V3).
+// The island shows this copy until it has drawn its own, so the page has the
+// chart without JavaScript too.
+const still = stillPlot(bondPricePlotOptions(BOND_DEFAULTS));
+---
+
+<BondPricePlot client:visible><Fragment set:html={still} /></BondPricePlot>

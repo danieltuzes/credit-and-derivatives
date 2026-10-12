@@ -232,7 +232,8 @@ notation:
 
 import CompactExample from 'explico/components/examples/CompactExample.astro';
 import CompactExamples from 'explico/components/examples/CompactExamples.astro';
-import { CdsLegPlot, CdsLegTools } from '../../labs/CdsLegExplorer';
+import CdsLegPicture from '../../labs/CdsLegPicture.astro';
+import { CdsLegTools } from '../../labs/CdsLegExplorer';
 import AssessmentSet from 'explico/components/assessments/AssessmentSet.astro';
 import Figure from 'explico/components/figure/Figure.astro';
 
@@ -697,7 +698,7 @@ payment over the exact modeled default time.
   short="CDS leg explorer"
   caption="The present values of the premium leg and the protection leg, as positive magnitudes in USD, for a notional of USD 10,000,000 and four equal model periods a year. The protection buyer's value is the protection leg minus the premium leg."
 >
-  <CdsLegPlot client:load />
+  <CdsLegPicture />
   <CdsLegTools slot="tools" client:load />
 </Figure>
 
