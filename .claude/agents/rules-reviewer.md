@@ -22,8 +22,8 @@ with `pnpm -s content …`.
    read the lesson file (`content/docs/<slug>.mdx`) with line numbers.
 3. `pnpm -s content rules --enforcement guide` lists the rules this course has
    on that no script checks, by element, each with a one-line summary. Apply
-   only those; a rule absent from the list is off. Open `pnpm -s content rule
-   <ID>` only when a summary does not settle a doubt.
+   only those; a rule absent from the list is off. Open
+   `pnpm -s content rule <ID>` only when a summary does not settle a doubt.
 4. Read the lesson once, rule list beside it, and note each place a guide-only
    rule is not followed: the rule id, the line, what you saw, the fix in one
    clause. A JSX prop string (`caption="…"`) is not prose for the math rules.

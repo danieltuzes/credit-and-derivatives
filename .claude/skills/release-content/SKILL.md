@@ -15,9 +15,11 @@ each page's own version in `content/versions.json` (rule C5).
 2. Pick the bump (rule C2): MAJOR when a lesson, competency or notation key
    was removed or renamed or a stated outcome changed; MINOR for something
    new; PATCH for a fix or clarification.
-3. From the course package: `pnpm release:content [major|minor|patch]`. It
-   moves `[Unreleased]` to a dated `## [x.y.z]` heading and sets
-   `about.version` to match in the same change (rule C3).
+3. From the course package: `pnpm content release [major|minor|patch]` shows
+   the release as a diff: `[Unreleased]` moved to a dated `## [x.y.z]`
+   heading and `about.version` set to match, in one change (rule C3). With no
+   bump it takes the one the section's headings imply; check that it agrees
+   with step 2. Add `--write` to apply it.
 4. `pnpm validate:content`: no `knowledge-*` warning; it rewrites
    `content/versions.json` — commit that file with the release, never edit it
    by hand.

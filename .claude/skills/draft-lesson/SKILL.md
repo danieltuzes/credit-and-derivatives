@@ -13,9 +13,9 @@ whose `package.json` has the `content` script); `pnpm content help` lists them.
    notation, references, assumptions and sources (a new lesson:
    `pnpm content new lesson <id>` scaffolds it).
 2. **Rules.** `pnpm content rules --element <prose,table,…>` lists only the
-   rules this course has on, with enforcement and codes; `pnpm content rule
-   <ID>` prints one whole, example included. A rule absent from the list is
-   off: neither apply it nor flag it.
+   rules this course has on, with enforcement and codes;
+   `pnpm content rule <ID>` prints one whole, example included. A rule absent
+   from the list is off: neither apply it nor flag it.
 3. **Notation, one question per symbol: is it already defined?**
    `pnpm content symbol <latex>`. A card with this meaning exists → reference
    it: `[[key]]` once in prose, bare math after; `\explain{key}{…}` only for a
@@ -32,6 +32,7 @@ whose `package.json` has the `content` script); `pnpm content help` lists them.
    for the rest; the counts come first, the lines on request.
 6. **Record.** A bullet under `## [Unreleased]` in `content/CHANGELOG.md`
    (rule C1); `pnpm validate:content` rewrites `content/versions.json`, which
-   is committed with the change (rule C5). Guide-only rules (`enforcement
-   guide`) have no check: before handing back, have the `rules-reviewer`
-   agent review the lesson, or review the draft against them yourself.
+   is committed with the change (rule C5). Guide-only rules
+   (`enforcement guide`) have no check: before handing back, have the
+   `rules-reviewer` agent review the lesson, or review the draft against them
+   yourself, and run `pnpm content verify`.

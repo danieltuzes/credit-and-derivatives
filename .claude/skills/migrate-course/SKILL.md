@@ -23,9 +23,10 @@ work or says no course changes are required.
    whose `scripts/content.ts` predates the shim), read the sections from
    `node_modules/explico/docs/authoring/migrating.md`; the section that
    introduced the shim says how to switch to it.
-4. The checks each section ends with, then: `pnpm validate:content` (passes on
-   its first run; commit `content/versions.json` if it changed),
-   `pnpm content check --changed`, `astro check`, `astro build`, and the
-   course's browser tests if it has any.
+4. The checks each section ends with, then `pnpm content verify --e2e`:
+   `validate:content` (passes on its first run; commit `content/versions.json`
+   if it changed), `content check --changed`, `astro check`, the course's
+   tests, `astro build` and its browser tests. An engine older than the
+   `verify` verb: run those by hand.
 5. Commit the dependency change, the migration edits and the generated files
    together, naming the versions in the message.

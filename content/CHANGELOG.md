@@ -62,7 +62,7 @@
   words. The entry no longer uses the symbol r with a subscript, because the
   periodic rate entry defines it.
 - Removed the retired `editorialStatus` field from every content file.
-- Upgraded the course engine to explico 0.14.0. Each chapter and part page
+- Upgraded the course engine to explico 0.15.0 (from 0.13.1, through 0.14.0). Each chapter and part page
   names the course version its content last changed in. The course asks each
   reader once whether it may remember their reading in this browser; with a
   yes, the sidebar marks the pages the reader has not opened yet and the pages
